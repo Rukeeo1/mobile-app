@@ -7,8 +7,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import { VeryBoldText } from './Text';
-import { pear, lightGrey } from '../config/colors';
+import { VeryBoldText } from '../Text';
+import { pear, lightGrey } from '../../config/colors';
 
 const Touchable =
   Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
