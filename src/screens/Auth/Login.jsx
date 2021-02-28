@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from "react-native";
 import growthLogo from "../../assets/growth_logo.png";
 import { Button } from "../../components";
 
-export const Login = () => {
+export const Login = ({navigation}) => {
   const authButtons = [
     {
       title: "Sign in with Apple",
@@ -23,7 +23,7 @@ export const Login = () => {
     {
       title: "Sign in with Email",
       coverStyle: styles.email,
-      onPress: () => alert("Apple sign in was clicked"),
+      onPress: () => navigation.navigate('Settings'),
     },
   ];
   return (

@@ -22,6 +22,7 @@ export const Button = ({ title, color = "#000", coverStyle, onPress }) => {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
+        borderRadius: 20,
 
         ...coverStyle,
       }}
