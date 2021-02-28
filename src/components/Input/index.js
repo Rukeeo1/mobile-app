@@ -8,12 +8,12 @@ const Input = ({
   placeholder = '',
   onChangeText = () => {},
   onBlur = () => {},
-  labelText='',
+  labelText = '',
   labelStyle = {},
   inputStyle = {},
 }) => {
   return (
-    <View style={{...containerStyle, ...styles.input}}>
+    <View style={[styles.input, containerStyle]}>
       <Text style={{ ...styles.labelText, ...labelStyle }}>{labelText}</Text>
       <TextInput
         placeholder={placeholder}
@@ -27,9 +27,9 @@ const Input = ({
 };
 
 const styles = StyleSheet.create({
-    container : {
-      marginTop: '20%'
-    },
+  container: {
+    marginTop: '20%',
+  },
   labelText: {
     fontSize: 18,
     color: constants.colors.black,

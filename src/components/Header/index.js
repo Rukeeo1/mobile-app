@@ -3,12 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import constants from '../../constants';
 
-
-const Header = ({title}) => {
+const Header = ({ title, onIconPress }) => {
   const { colors } = constants;
   return (
     <View style={styles.topBar}>
-      <SimpleLineIcons name='arrow-left' size={14} color={colors.greyDark} />
+      <SimpleLineIcons
+        name='arrow-left'
+        size={14}
+        color={colors.greyDark}
+        onPress={onIconPress}
+      />
       <View
         style={{
           justifyContent: 'center',
@@ -29,9 +33,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: 'center',
   },
-  textContainer: {
-
-  },
+  textContainer: {},
   headerText: {
     fontWeight: '600',
     fontSize: 18,

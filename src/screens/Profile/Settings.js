@@ -5,14 +5,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Text,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { Header, Input, Button } from '../../components';
+import { Header, Input, Button, GradientButton } from '../../components';
 
 import constants from '../../constants';
+import { ScrollView } from 'react-native-gesture-handler';
 
-const Settings = () => {
+const Settings = ({ navigation }) => {
   const nameOfPerson = 'Garden_of_Riley';
   const [profile, setProfile] = useState({
     name: nameOfPerson,
@@ -33,57 +35,62 @@ const Settings = () => {
       handleChange(name, nameOfPerson);
     }
   };
-  console.log(profile, 'this is profile');
+
   const profileImage =
     'https://images0.westend61.de/0001391125pw/smiling-woman-touching-white-flowers-growing-in-farm-LVVF00015.jpg';
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header title='Profile Settings' />
-      <View style={styles.profileImageContainer}>
-        <Image source={{ uri: profileImage }} style={styles.image} />
-        <TouchableOpacity style={styles.cameraContainer}>
-          <Ionicons
-            name='ios-camera-outline'
-            size={30}
-            color={constants.colors.green}
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <SafeAreaView>
+        <Header
+          title='Profile Settings'
+          onIconPress={() => navigation.goBack()}
+        />
+        <View style={styles.profileImageContainer}>
+          <Image source={{ uri: profileImage }} style={styles.image} />
+          <TouchableOpacity style={styles.cameraContainer}>
+            <Ionicons
+              name='ios-camera-outline'
+              size={30}
+              color={constants.colors.green}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.profileDetails}>
+          <Input
+            value={profile.name}
+            placeholder='Enter your name'
+            onChangeText={(text) => handleChange('name', text)}
+            onBlur={() => handleBlur('name')}
+            labelText='Name'
+            labelStyle={styles.labelText}
           />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.profileDetails}>
-        <Input
-          value={profile.name}
-          placeholder='Enter your name'
-          onChangeText={(text) => handleChange('name', text)}
-          onBlur={() => handleBlur('name')}
-          labelText='Name'
-          labelStyle={styles.labelText}
-        />
-        <Input
-          value={profile.bio}
-          placeholder='Enter your bio'
-          onChangeText={(text) => handleChange('bio', text)}
-          onBlur={() => handleBlur('bio')}
-          labelText='Bio'
-          labelStyle={styles.labelText}
-        />
-        <Input
-          value={profile.location}
-          placeholder='Enter your Location'
-          onChangeText={(text) => handleChange('location', text)}
-          onBlur={() => handleBlur('location')}
-          labelText='Location'
-          labelStyle={styles.labelText}
-        />
-
-        <Button
-          title='Save'
-          coverStyle={styles.button}
-          color={constants.colors.white}
-          onPress={() => alert("i was presed")}
-        />
-      </View>
-    </SafeAreaView>
+          <Input
+            value={profile.bio}
+            placeholder='Enter your bio'
+            onChangeText={(text) => handleChange('bio', text)}
+            onBlur={() => handleBlur('bio')}
+            labelText='Bio'
+            labelStyle={styles.labelText}
+            containerStyle={styles.input}
+          />
+          <Input
+            value={profile.location}
+            placeholder='Enter your Location'
+            onChangeText={(text) => handleChange('location', text)}
+            onBlur={() => handleBlur('location')}
+            labelText='Location'
+            labelStyle={styles.labelText}
+            containerStyle={styles.input}
+          />
+          <GradientButton
+            title='Save'
+            gradient={[constants.colors.green, '#83B403']}
+            coverStyle={styles.button}
+          />
+        </View>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -113,15 +120,17 @@ const styles = StyleSheet.create({
     width: 60,
   },
   profileDetails: {
-    marginTop: '10%',
+    marginTop: '5%',
     paddingHorizontal: '5%',
   },
   labelText: {
     color: constants.colors.blueLigth,
   },
+  input: {
+    marginTop: '8%',
+  },
   button: {
-    backgroundColor: constants.colors.green,
-    marginTop: '10%'
+    marginTop: '10%',
   },
 });
 
