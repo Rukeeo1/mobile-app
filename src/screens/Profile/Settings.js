@@ -5,14 +5,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  Text,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { ScrollView } from 'react-native-gesture-handler';
+import * as ImagePicker from 'expo-image-picker';
 
 import { Header, Input, Button, GradientButton } from '../../components';
 
 import constants from '../../constants';
-import { ScrollView } from 'react-native-gesture-handler';
+
+const profileImage =
+  'https://images0.westend61.de/0001391125pw/smiling-woman-touching-white-flowers-growing-in-farm-LVVF00015.jpg';
 
 const Settings = ({ navigation }) => {
   const nameOfPerson = 'Garden_of_Riley';
@@ -20,6 +23,7 @@ const Settings = ({ navigation }) => {
     name: nameOfPerson,
     bio: '<User bio grow baby grow>',
     location: '🇬🇧 Buckinghamshire',
+    profileImageUri: profileImage,
   });
 
   // to refactor argument to take object instead
@@ -36,8 +40,22 @@ const Settings = ({ navigation }) => {
     }
   };
 
-  const profileImage =
-    'https://images0.westend61.de/0001391125pw/smiling-woman-touching-white-flowers-growing-in-farm-LVVF00015.jpg';
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+      quality: 0.5,
+    });
+
+    if (!result.cancelled) {
+      setProfile((prevState) => ({
+        ...prevState,
+        profileImageUri: result.uri,
+      }));
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -47,8 +65,8 @@ const Settings = ({ navigation }) => {
           onIconPress={() => navigation.goBack()}
         />
         <View style={styles.profileImageContainer}>
-          <Image source={{ uri: profileImage }} style={styles.image} />
-          <TouchableOpacity style={styles.cameraContainer}>
+          <Image source={{ uri: profile.profileImageUri }} style={styles.image} />
+          <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
             <Ionicons
               name='ios-camera-outline'
               size={30}
