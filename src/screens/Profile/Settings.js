@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 
-import { Header, Input, Button, GradientButton } from '../../components';
+import { Header, Input, GradientButton } from '../../components';
 
 import constants from '../../constants';
 
@@ -65,7 +65,10 @@ const Settings = ({ navigation }) => {
           onIconPress={() => navigation.goBack()}
         />
         <View style={styles.profileImageContainer}>
-          <Image source={{ uri: profile.profileImageUri }} style={styles.image} />
+          <Image
+            source={{ uri: profile.profileImageUri }}
+            style={styles.image}
+          />
           <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
             <Ionicons
               name='ios-camera-outline'
