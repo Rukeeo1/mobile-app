@@ -1,5 +1,6 @@
-import React from "react";
-import { TouchableOpacity, Text } from "react-native";
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // todo: cater for props.children in cases where button needs to be wrapped around other components
 /**
@@ -11,22 +12,67 @@ import { TouchableOpacity, Text } from "react-native";
  * 5. This should be a default export if it's all that's being exported.
  *
  */
-export const Button = ({ title, color = "#000", coverStyle, onPress }) => {
+export const Button = ({
+  title,
+  color = '#000',
+  coverStyle,
+  onPress,
+  children,
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={{
-        width: "100%",
+        width: '100%',
         height: 50,
         marginTop: 15,
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderRadius: 20,
 
         ...coverStyle,
       }}
     >
-      <Text style={{ color, fontWeight: "600" }}>{title}</Text>
+      <Text style={{ color, fontWeight: '600' }}>{title}</Text>
     </TouchableOpacity>
   );
 };
+
+//  would combine this button with the one above... rather than have seperate buttons..
+export const GradientButton = ({
+  children,
+  title,
+  gradient = ['#000000', '#000000'],
+  coverStyle,
+}) => {
+  return (
+    <TouchableOpacity style={[styles.defaultBtnContainer, coverStyle]}>
+      <LinearGradient
+        colors={gradient}
+        style={{ ...styles.defaultLinearGradient }}
+      >
+        {children ? children : <Text style={styles.defaultText}>{title}</Text>}
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  defaultBtnContainer: {
+    width: '100%',
+    height: 50,
+    marginTop: 15,
+    borderRadius: 25,
+  },
+  defaultLinearGradient: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    borderRadius: 25,
+    backgroundColor: 'green',
+  },
+  defaultText: { color: '#ffffff', fontWeight: '600' },
+});
