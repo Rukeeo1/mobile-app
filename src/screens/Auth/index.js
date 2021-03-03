@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SocialAuthentication from './Login';
+import SocialAuthentication from './SocialAuth';
 import ManualAuthentication from './ManualAuth';
 import Register from './Register';
 

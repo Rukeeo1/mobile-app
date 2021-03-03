@@ -45,9 +45,10 @@ export const GradientButton = ({
   title,
   gradient = ['#000000', '#000000'],
   coverStyle,
+  onPress
 }) => {
   return (
-    <TouchableOpacity style={[styles.defaultBtnContainer, coverStyle]}>
+    <TouchableOpacity style={[styles.defaultBtnContainer, coverStyle]} onPress={onPress}>
       <LinearGradient
         colors={gradient}
         style={{ ...styles.defaultLinearGradient }}

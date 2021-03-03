@@ -5,7 +5,7 @@ import Swiper from 'react-native-web-swiper';
 
 import { GradientButton } from '../../components';
 
-const OnboardingLayout = () => {
+const OnboardingLayout = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Swiper controlsEnabled={false}>
@@ -76,6 +76,7 @@ const OnboardingLayout = () => {
             <GradientButton
               gradient={['#A6CB42', '#83B403']}
               title={'Got It!'}
+              onPress={() => navigation.navigate('Settings')}
             />
           </LinearGradient>
         </View>
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
   },
   screenDescription: {
     textAlign: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 20 ,
     color: '#FFFFFF',
   },
 

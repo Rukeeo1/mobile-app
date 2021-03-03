@@ -25,7 +25,9 @@ const ManualAuth = ({ navigation }) => {
       authDetails.password === 'test01!';
 
     if (valid) {
-      navigation.navigate('Onboarding');
+      setTimeout(() => {
+        navigation.navigate('Onboarding');
+      }, 500);
     }
   };
 
