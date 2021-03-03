@@ -103,6 +103,7 @@ const Settings = ({ navigation }) => {
             labelText='Location'
             labelStyle={styles.labelText}
             containerStyle={styles.input}
+            secureTextEntry={true}
           />
           <GradientButton
             title='Save'

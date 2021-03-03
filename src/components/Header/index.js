@@ -5,6 +5,7 @@ import constants from '../../constants';
 
 const Header = ({ title, onIconPress }) => {
   const { colors } = constants;
+  
   return (
     <View style={styles.topBar}>
       <SimpleLineIcons
