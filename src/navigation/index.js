@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { default as React, default as React } from 'react';
-import { Login, OnboardingLayout, Signup } from '../screens';
+import { default as React } from 'react';
+import { OnboardingLayout, Signup } from '../screens';
 import { Settings } from '../screens/Profile';
 
 
@@ -22,7 +22,7 @@ const RootNavigator = () => (
         headerShown: false,
       }}
     >
-      <Screen name='Login' component={Login} />
+      <Screen name='Login' component={OnboardingLayout} />
       <Screen name='Signup' component={Signup} />
       <Screen name='Settings' component={Settings} />
       <Screen name="Onboarding" component={OnboardingLayout} />
