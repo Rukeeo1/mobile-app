@@ -1,13 +1,9 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { default as React } from 'react';
+import { OnboardingLayout } from '../screens';
 import { Settings } from '../screens/Profile';
 import AuthNavigator from '../screens/Auth/';
-
-/**
- * This is a sketch... would set up properly/refactor after having meetings on the design...
- */
 
 const Stack = createStackNavigator();
 
@@ -23,12 +19,9 @@ const RootNavigator = () => (
     >
       <Screen name='AuthNavigator' component={AuthNavigator} />
       <Screen name='Settings' component={Settings} />
+      <Screen name='Onboarding' component={OnboardingLayout} />
     </Navigator>
   </NavigationContainer>
 );
 
 export default RootNavigator;
-
-{
-  /* <Screen name='Login' component={Login} /> */
-}
