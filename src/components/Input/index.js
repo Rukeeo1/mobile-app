@@ -4,13 +4,14 @@ import constants from '../../constants';
 
 const Input = ({
   containerStyle = {},
-  value = '',
+  value,
   placeholder = '',
   onChangeText = () => {},
   onBlur = () => {},
   labelText = '',
   labelStyle = {},
   inputStyle = {},
+  ...props
 }) => {
   return (
     <View style={[styles.input, containerStyle]}>
@@ -21,6 +22,7 @@ const Input = ({
         value={value}
         onChangeText={onChangeText}
         onBlur={onBlur}
+        {...props}
       />
     </View>
   );

@@ -1,69 +1,14 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import Swiper from 'react-native-web-swiper'
-import images from '../../assets'
-import { GradientButton } from '../../components'
+import React from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import Swiper from 'react-native-web-swiper';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  slideContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  slide1: {
-    backgroundColor: 'rgba(20,20,200,0.3)',
-  },
-  slide2: {
-    backgroundColor: 'rgba(20,200,20,0.3)',
-  },
-  slide3: {
-    backgroundColor: 'rgba(200,20,20,0.3)',
-  },
-  slide4: {
-    backgroundColor: 'rgba(200,20,20,0.3)',
-  },
+import { GradientButton } from '../../components';
 
-  imageContainer: {
-    width: 204,
-    height: 204,
-  },
-  screenTitle: {
-    textAlign: 'center',
-    marginTop: 36,
-    marginBottom: 28,
-    fontSize: 42,
-    color: '#FFFFFF',
-  },
-  screenDescription: {
-    textAlign: 'center',
-    paddingHorizontal: 20,
-    color: '#FFFFFF',
-  },
-
-  general: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
-  },
-  space: {
-    padding: 20
-  }
-})
-
-export const OnboardingLayout = () => {
-  console.log(images)
+const OnboardingLayout = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Swiper controlsEnabled={false} >
+      <Swiper controlsEnabled={false}>
         <View style={[styles.slideContainer, styles.slide1]}>
           <LinearGradient
             colors={['#A6CB42', '#83B403']}
@@ -131,34 +76,67 @@ export const OnboardingLayout = () => {
             <GradientButton
               gradient={['#A6CB42', '#83B403']}
               title={'Got It!'}
+              onPress={() => navigation.navigate('Settings')}
             />
           </LinearGradient>
         </View>
       </Swiper>
     </View>
-  )
-}
+  );
+};
 
-const style = StyleSheet.create({
-  genericBtnStyles: {
-    height: 40,
-    borderRadius: 20,
-    color: 'white',
-  },
-  linearGradient: {
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5,
   },
-  buttonText: {
-    fontSize: 18,
-    fontFamily: 'Gill Sans',
-    textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
-    backgroundColor: 'transparent',
+  slideContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-})
+  slide1: {
+    backgroundColor: 'rgba(20,20,200,0.3)',
+  },
+  slide2: {
+    backgroundColor: 'rgba(20,200,20,0.3)',
+  },
+  slide3: {
+    backgroundColor: 'rgba(200,20,20,0.3)',
+  },
+  slide4: {
+    backgroundColor: 'rgba(200,20,20,0.3)',
+  },
 
-export default OnboardingLayout
+  imageContainer: {
+    width: 204,
+    height: 204,
+  },
+  screenTitle: {
+    textAlign: 'center',
+    marginTop: 36,
+    marginBottom: 28,
+    fontSize: 42,
+    color: '#FFFFFF',
+  },
+  screenDescription: {
+    textAlign: 'center',
+    paddingHorizontal: 20 ,
+    color: '#FFFFFF',
+  },
+
+  general: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+  },
+  space: {
+    padding: 20,
+  },
+});
+
+export default OnboardingLayout;

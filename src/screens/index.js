@@ -1,5 +1,4 @@
 // screens are exported from here to app.js
-export * from './Auth/Login'
-export * from './Auth/Signup'
-export * from './Onboarding/Onboarding'
-
+export { default as AuthNavigator } from './Auth';
+export { default as OnboardingLayout } from './Onboarding/Onboarding';
+export * from './Profile'
