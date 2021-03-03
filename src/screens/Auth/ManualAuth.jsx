@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import constants from '../../constants';
-import { Input, Button, GradientButton, Header } from '../../components';
+import { Input, Button, Header } from '../../components';
 
 import growthLogo from '../../assets/growth_logo.png';
 
@@ -17,6 +17,16 @@ const ManualAuth = ({ navigation }) => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const temoparilyHandleSignIn = () => {
+    const valid =
+      authDetails.email === 'Testuser@tmail.com' &&
+      authDetails.password === 'test01!';
+
+    if (valid) {
+      navigation.navigate('Onboarding');
+    }
   };
 
   return (
@@ -57,6 +67,7 @@ const ManualAuth = ({ navigation }) => {
         <View>
           <Button
             title='Log In'
+            onPress={temoparilyHandleSignIn}
             coverStyle={{
               backgroundColor: colors.greenDeep,
               marginTop: '8%',

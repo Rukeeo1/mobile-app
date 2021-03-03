@@ -1,47 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import * as Facebook from 'expo-facebook';
-import * as GoogleSignIn from 'expo-google-sign-in';
-
-import { firebaseConfig } from '../../config/firebase';
 
 import { Button } from '../../components';
 
-// 72635043982-5pjlk522dpt7bh8pcq0qb1ooi83ad32j.apps.googleusercontent.com
+import { firebaseConfig } from '../../config/firebase';
 
 import growthLogo from '../../assets/growth_logo.png';
 
 export const Login = ({ navigation }) => {
-  const [user, setUser] = React.useState({});
-  React.useEffect(() => {
-    initAsync();
-  }, []);
-  const initAsync = async () => {
-    await GoogleSignIn.initAsync({
-      // You may ommit the clientId when the firebase `googleServicesFile` is configured
-      clientId: '<YOUR_IOS_CLIENT_ID>',
-    });
-    syncUserWithStateAsync();
-  };
-
-  const syncUserWithStateAsync = async () => {
-    const user = await GoogleSignIn.signInSilentlyAsync();
-    setUser({ user });
-  };
-
-  const signInAsync = async () => {
-    try {
-      await GoogleSignIn.askForPlayServicesAsync();
-      const { type, user } = await GoogleSignIn.signInAsync();
-      console.log(user, 'this is user');
-      if (type === 'success') {
-        syncUserWithStateAsync();
-      }
-    } catch ({ message }) {
-      alert('login: Error:' + message);
-    }
-  };
-
   const FacebookLogin = async () => {
     try {
       await Facebook.initializeAsync({
@@ -72,7 +39,7 @@ export const Login = ({ navigation }) => {
     {
       title: 'Sign in with Google',
       coverStyle: styles.googleButton,
-      onPress: () => signInAsync(),
+      onPress: () => {},
     },
     {
       title: 'Sign in with Email',

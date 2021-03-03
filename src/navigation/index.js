@@ -1,9 +1,8 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { default as React } from 'react';
-import { OnboardingLayout } from '../screens';
-import { Settings } from '../screens/Profile';
-import AuthNavigator from '../screens/Auth/';
+
+import { OnboardingLayout, AuthNavigator, Settings } from '../screens';
 
 const Stack = createStackNavigator();
 
