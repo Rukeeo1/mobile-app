@@ -1,17 +1,19 @@
-import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import Swiper from 'react-native-web-swiper';
+import { Button } from '../../components';
+import constants from '../../constants';
 
-import { GradientButton } from '../../components';
 
 const OnboardingLayout = ({navigation}) => {
+  const { colors } = constants;
   return (
     <View style={styles.container}>
       <Swiper controlsEnabled={false}>
         <View style={[styles.slideContainer, styles.slide1]}>
           <LinearGradient
-            colors={['#A6CB42', '#83B403']}
+            colors={[colors.green, colors.greenDeep]}
             style={[styles.general]}
           >
             <Image
@@ -27,7 +29,7 @@ const OnboardingLayout = ({navigation}) => {
         </View>
         <View style={[styles.slideContainer, styles.slide2]}>
           <LinearGradient
-            colors={['#AD0048', '#E8357F']}
+            colors={[colors.pink, colors.pinkDeep]}
             style={[styles.general]}
           >
             <Image
@@ -43,7 +45,7 @@ const OnboardingLayout = ({navigation}) => {
         </View>
         <View style={[styles.slideContainer, styles.slide3]}>
           <LinearGradient
-            colors={['#1369BE', '#002B55']}
+            colors={[colors.purshBlue, colors.purshBlueDeep]}
             style={[styles.general]}
           >
             <Image
@@ -59,7 +61,7 @@ const OnboardingLayout = ({navigation}) => {
         </View>
         <View style={[styles.slideContainer, styles.slide4]}>
           <LinearGradient
-            colors={['#1369BE', '#002B55']}
+            colors={[colors.purshBlue, colors.purshBlueDeep]}
             style={[styles.general, styles.space]}
           >
             <Image
@@ -73,8 +75,11 @@ const OnboardingLayout = ({navigation}) => {
               every step of the way.
             </Text>
 
-            <GradientButton
-              gradient={['#A6CB42', '#83B403']}
+            <Button
+              gradient={[colors.green, colors.greenDeep]}
+              coverStyle={{
+                margin: 20,
+              }}
               title={'Got It!'}
               onPress={() => navigation.navigate('Settings')}
             />
