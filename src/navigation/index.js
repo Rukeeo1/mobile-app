@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { OnboardingLayout, AuthNavigator, Settings } from '../screens';
+import { OnboardingLayout, AuthNavigator, ProfileNavigator } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +17,7 @@ const RootNavigator = () => (
       }}
     >
       <Screen name='AuthNavigator' component={AuthNavigator} />
-      <Screen name='Settings' component={Settings} />
+      <Screen name='Settings' component={ProfileNavigator} />
       <Screen name='Onboarding' component={OnboardingLayout} />
     </Navigator>
   </NavigationContainer>

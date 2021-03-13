@@ -11,10 +11,11 @@ const Input = ({
   labelText = '',
   labelStyle = {},
   inputStyle = {},
+  children,
   ...props
 }) => {
   return (
-    <View style={[styles.input, containerStyle]}>
+    <View style={[containerStyle]}>
       <Text style={{ ...styles.labelText, ...labelStyle }}>{labelText}</Text>
       <TextInput
         placeholder={placeholder}
@@ -24,6 +25,7 @@ const Input = ({
         onBlur={onBlur}
         {...props}
       />
+      {children}
     </View>
   );
 };
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   input: {
-    marginTop: 10,
+    // marginTop: 10,
     fontSize: 18,
     color: constants.colors.black,
     fontWeight: '100',

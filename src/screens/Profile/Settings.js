@@ -108,6 +108,7 @@ const Settings = ({ navigation }) => {
             title='Save'
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
+            onPress={() => navigation.navigate('Main-Profile')}
           />
         </View>
       </SafeAreaView>
