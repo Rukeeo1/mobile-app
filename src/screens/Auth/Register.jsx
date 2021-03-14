@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import growthLogo from '../../assets/growth_logo.png'
-import { Button, Header, Input } from '../../components'
-import constants from '../../constants'
+import React, { useState } from 'react';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import growthLogo from '../../assets/growth_logo.png';
+import { Button, Header, Input } from '../../components';
+import constants from '../../constants';
 
 export const Register = ({ navigation }) => {
   const [authDetails, setAuthDetails] = useState({
@@ -11,7 +18,7 @@ export const Register = ({ navigation }) => {
     bio: '',
     location: '',
     password: '',
-  })
+  });
 
   const { colors } = constants;
 
@@ -21,73 +28,74 @@ export const Register = ({ navigation }) => {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
       >
         <Image source={growthLogo} style={styles.image} />
         <View style={styles.container}>
           <Input
             inputStyle={styles.input}
             labelStyle={styles.label}
-            labelText="Email"
+            labelText='Email'
             value={authDetails.email}
             onChangeText={(text) => handleAuthDetails('email', text)}
-            placeholder="Enter your email"
+            placeholder='Enter your email'
           />
           <Input
-            containerStyle={styles.inputPasswordCont}
+            containerStyle={styles.inputContainer}
             inputStyle={styles.input}
             labelStyle={styles.label}
-            labelText="Name"
+            labelText='Name'
             value={authDetails.name}
             onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder="Enter your name"
+            placeholder='Enter your name'
             secureTextEntry={true}
           />
           <Input
-            containerStyle={styles.inputPasswordCont}
+            containerStyle={styles.inputContainer}
             inputStyle={styles.input}
             labelStyle={styles.label}
-            labelText="Bio"
+            labelText='Bio'
             value={authDetails.bio}
             onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder="Enter your bio"
+            placeholder='Enter your bio'
             secureTextEntry={true}
           />
           <Input
-            containerStyle={styles.inputPasswordCont}
+            containerStyle={styles.inputContainer}
             inputStyle={styles.input}
             labelStyle={styles.label}
-            labelText="Location"
+            labelText='Location'
             value={authDetails.location}
             onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder="Enter your location"
+            placeholder='Enter your location'
             secureTextEntry={true}
           />
           <Input
-            containerStyle={styles.inputPasswordCont}
+            containerStyle={styles.inputContainer}
             inputStyle={styles.input}
             labelStyle={styles.label}
-            labelText="Password"
+            labelText='Password'
             value={authDetails.password}
             onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder="Enter your password"
+            placeholder='Enter your password'
             secureTextEntry={true}
           />
 
           <View style={styles.alignItem}>
             <Text>Already have an Account?</Text>
             <Button
-            title="Log In"
-            onPress={() => navigation.navigate('ManualAuthentication')}
-            coverStyle={{
-              backgroundColor: colors.greenDeep,
-              marginTop: '8%',
-              width: '20%',
-            }}
-            color={colors.white}
+              title='Log In'
+              onPress={() => navigation.navigate('ManualAuthentication')}
+              coverStyle={{
+                backgroundColor: colors.greenDeep,
+                marginTop: '8%',
+                width: '20%',
+              }}
+              color={colors.white}
             />
           </View>
           <Button
-            title="Sign Up"
+            title='Sign Up'
             onPress={() => console.log('joejoe')}
             coverStyle={{
               backgroundColor: colors.greenDeep,
@@ -98,8 +106,8 @@ export const Register = ({ navigation }) => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   parentContainer: {
@@ -126,8 +134,12 @@ const styles = StyleSheet.create({
   image: {
     marginTop: '25%',
   },
+  inputContainer: {
+    marginTop: 10,
+  },
   input: {
     borderBottomWidth: 1,
+    marginTop: 10,
     borderBottomColor: constants.colors.greyLight,
     paddingBottom: '2%',
   },
@@ -140,7 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: '5%',
-  }
-})
+  },
+});
 
-export default Register
+export default Register;
