@@ -20,15 +20,16 @@ const ManualAuth = ({ navigation }) => {
   };
 
   const temoparilyHandleSignIn = () => {
-    const valid =
-      authDetails.email === 'Testuser@tmail.com' &&
-      authDetails.password === 'test01!';
+    navigation.navigate('Onboarding');
+    // const valid =
+    //   authDetails.email === 'Testuser@tmail.com' &&
+    //   authDetails.password === 'test01!';
 
-    if (valid) {
-      setTimeout(() => {
-        navigation.navigate('Onboarding');
-      }, 500);
-    }
+    // if (valid) {
+    //   setTimeout(() => {
+    //     navigation.navigate('Onboarding');
+    //   }, 500);
+    // }
   };
 
   return (

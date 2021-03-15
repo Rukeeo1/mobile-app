@@ -31,16 +31,12 @@ const Input = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: '20%',
-  },
   labelText: {
     fontSize: 18,
     color: constants.colors.black,
     fontWeight: '600',
   },
   input: {
-    // marginTop: 10,
     fontSize: 18,
     color: constants.colors.black,
     fontWeight: '100',
