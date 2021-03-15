@@ -46,7 +46,7 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
     {
       name: 'profile',
       icon: (color) => (
-        <Ionicons name='md-person-outline' size={24} color={color} style={styles.icon} />
+        <Ionicons name='md-person-outline' size={24} color={color} />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -96,7 +96,7 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
   return (
     <SafeAreaView style={styles.tab}>
       <View style={styles.ellipse}>
-        <FontAwesome5 name='ellipsis-h' size={24} color={activeGradient[1]} />
+        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} />
       </View>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
@@ -173,9 +173,9 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
   },
-  icon:{
+  icon: {
     opacity: 0.5,
-  }
+  },
 });
 
 export default ProfileSideTab;
