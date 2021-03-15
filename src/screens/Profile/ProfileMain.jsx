@@ -1,4 +1,7 @@
+
 import React, { useState } from 'react';
+
+
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 

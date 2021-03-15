@@ -26,8 +26,6 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
   );
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // const [iconAnimation] = useState(new Animated.Value(0));
-
   const containerRef = React.useRef();
 
   const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
@@ -48,7 +46,7 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
     {
       name: 'profile',
       icon: (color) => (
-        <Ionicons name='md-person-outline' size={24} color={color} />
+        <Ionicons name='md-person-outline' size={24} color={color} style={styles.icon} />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -110,14 +108,6 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
         />
 
         {sideBarTabItems.map((item, index) => (
-          // <TouchableOpacity
-          //   style={[styles.tabIconWrapper]}
-          //   key={index}
-          //   ref={item.ref}
-          //   onPress={() => moveBall(index)}
-          // >
-          //   {item.icon()}
-          // </TouchableOpacity>
           <AnimatedTouchable
             style={[
               styles.tabIconWrapper,
@@ -130,7 +120,7 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
             key={index}
           >
             {item.icon(
-              activeIndex === index ? activeGradient[0] : activeGradient[1]
+              activeIndex === index ? activeGradient[0] : colors.white
             )}
           </AnimatedTouchable>
         ))}
@@ -183,6 +173,9 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
   },
+  icon:{
+    opacity: 0.5,
+  }
 });
 
 export default ProfileSideTab;
