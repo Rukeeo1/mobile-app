@@ -19,18 +19,49 @@ import constants from '../../constants/index';
 
 const { colors } = constants;
 
-const ProfileSideTab = ({ navigation }) => {
+const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
   const [coordinates, setCoordinates] = useState([]);
   const [roundBackgroundAnimation] = useState(
     new Animated.ValueXY({ x: -10, y: 102 })
   );
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const [iconAnimation] = useState(new Animated.Value(0));
-
+  // const [iconAnimation] = useState(new Animated.Value(0));
 
   const containerRef = React.useRef();
 
   const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+
+  const sideBarTabItems = [
+    {
+      name: 'notifications',
+      icon: (color) => <Feather name='bell' size={24} color={color} />,
+      ref: React.createRef(),
+      backgroundColor: [colors.purshBlue, colors.blueLigth],
+    },
+    {
+      name: 'create-post',
+      icon: (color) => <Entypo name='plus' size={30} color={color} />,
+      ref: React.createRef(),
+      backgroundColor: [colors.purshBlueDeep, colors.blue],
+    },
+    {
+      name: 'profile',
+      icon: (color) => (
+        <Ionicons name='md-person-outline' size={24} color={color} />
+      ),
+      ref: React.createRef(),
+      activeColor: colors.greenDeep,
+      backgroundColor: [colors.greenDeep, colors.green],
+    },
+    {
+      name: 'explore',
+      icon: (color) => <Octicons name='globe' size={34} color={color} />,
+      ref: React.createRef(),
+      activeColor: '#AD0048',
+      backgroundColor: ['#AD0048', '#E8357F'],
+    },
+  ];
 
   const moveBall = (itemPosition) => {
     const itemsCoordinates = coordinates[itemPosition];
@@ -39,32 +70,10 @@ const ProfileSideTab = ({ navigation }) => {
       toValue: { x: -10, y: itemsCoordinates?.y },
       useNativeDriver: false,
     }).start();
-  };
 
-  const sideBarTabItems = [
-    {
-      name: 'notifications',
-      icon: () => <Feather name='bell' size={24} color={colors.greenLight} />,
-      ref: React.createRef(),
-    },
-    {
-      name: 'create-post',
-      icon: () => <Entypo name='plus' size={30} color={colors.greenLight} />,
-      ref: React.createRef(),
-    },
-    {
-      name: 'profile',
-      icon: () => (
-        <Ionicons name='md-person-outline' size={24} color={colors.greenDeep} />
-      ),
-      ref: React.createRef(),
-    },
-    {
-      name: 'explore',
-      icon: () => <Octicons name='globe' size={34} color={colors.greenLight} />,
-      ref: React.createRef(),
-    },
-  ];
+    setActiveIndex(itemPosition);
+    setActiveGradient(sideBarTabItems[itemPosition]?.backgroundColor || []);
+  };
 
   useEffect(() => {
     const intialCoordinatesDetails = [];
@@ -89,7 +98,7 @@ const ProfileSideTab = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.tab}>
       <View style={styles.ellipse}>
-        <FontAwesome5 name='ellipsis-h' size={24} color={colors.greenLight} />
+        <FontAwesome5 name='ellipsis-h' size={24} color={activeGradient[1]} />
       </View>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
@@ -110,12 +119,19 @@ const ProfileSideTab = ({ navigation }) => {
           //   {item.icon()}
           // </TouchableOpacity>
           <AnimatedTouchable
-            style={[styles.tabIconWrapper]}
+            style={[
+              styles.tabIconWrapper,
+              activeIndex === index && {
+                left: -10,
+              },
+            ]}
             onPress={() => moveBall(index)}
             ref={item.ref}
             key={index}
           >
-            {item.icon()}
+            {item.icon(
+              activeIndex === index ? activeGradient[0] : activeGradient[1]
+            )}
           </AnimatedTouchable>
         ))}
       </ScrollView>

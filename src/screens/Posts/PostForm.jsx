@@ -133,7 +133,7 @@ const PostForm = ({ navigation }) => {
           />
         </View>
         <View style={styles.footer}>
-          {isValid && (
+          {values.isPublic && values.post && (
             <Button
               title='Share'
               gradient={[colors.green, colors.greenDeep]}
