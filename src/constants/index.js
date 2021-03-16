@@ -17,6 +17,7 @@ const colors = {
   textColor: '#1A1A1A',
   white: '#ffffff',
   red: '#E00000',
+  nearWhite: '#F7F7F7'
 };
 
 export default {
