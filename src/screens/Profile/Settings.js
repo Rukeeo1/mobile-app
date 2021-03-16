@@ -11,21 +11,36 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { Header, Input, GradientButton } from '../../components';
 
 import constants from '../../constants';
 
-const profileImage =
-  'https://images0.westend61.de/0001391125pw/smiling-woman-touching-white-flowers-growing-in-farm-LVVF00015.jpg';
+const { colors } = constants;
 
 const Settings = ({ navigation }) => {
-  const nameOfPerson = 'Garden_of_Riley';
   const [profile, setProfile] = useState({
-    name: nameOfPerson,
-    bio: '<User bio grow baby grow>',
-    location: '🇬🇧 Buckinghamshire',
-    profileImageUri: profileImage,
+    name: '',
+    bio: '',
+    location: '',
+    profileImageUri: '',
+  });
+
+  const ProfileSchema = Yup.object().shape({
+    email: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    bio: Yup.string()
+      .required('Required')
+      .min(3, 'Too Short!')
+      .max(100, 'Too Long!'),
+    location: Yup.string()
+      .required('Required')
+      .min(3, 'Too Short!')
+      .max(10000, 'Too Long!'),
   });
 
   // to refactor argument to take object instead
@@ -42,6 +57,7 @@ const Settings = ({ navigation }) => {
     }
   };
 
+  console.log(profile, 'RO: profile');
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -67,10 +83,28 @@ const Settings = ({ navigation }) => {
           onIconPress={() => navigation.goBack()}
         />
         <View style={styles.profileImageContainer}>
-          <Image
-            source={{ uri: profile.profileImageUri }}
-            style={styles.image}
-          />
+          {profile.profileImageUri ? (
+            <Image
+              source={{ uri: profile.profileImageUri }}
+              style={styles.image}
+            />
+          ) : (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                height: '100%',
+                backgroundColor: colors.grey100,
+              }}
+            >
+              <Ionicons
+                name='ios-person-outline'
+                size={45}
+                color={colors.white}
+              />
+            </View>
+          )}
           <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
             <Ionicons
               name='ios-camera-outline'
@@ -129,6 +163,7 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     height: '50%',
+    backgroundColor: colors.grey100,
   },
   image: { height: '100%', width: '100%' },
   cameraContainer: {

@@ -1,36 +1,53 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 import constants from '../../constants';
 import { Input, Button, Header } from '../../components';
 
 import growthLogo from '../../assets/growth_logo.png';
 
+
+const { colors } = constants;
+
 const ManualAuth = ({ navigation }) => {
-  const [authDetails, setAuthDetails] = useState({
-    email: '',
-    password: '',
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Email is not valid')
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    password: Yup.string()
+      .required('Required')
+      .min(6, 'Too Short!')
+      .max(100, 'Too Long!'),
   });
-  const { colors } = constants;
 
-  const handleAuthDetails = (name, value) => {
-    setAuthDetails((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const {
+    handleChange,
+    handleBlur,
+    values,
+    isValid,
+    errors,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
 
-  const temoparilyHandleSignIn = () => {
-    navigation.navigate('Onboarding');
-    // const valid =
-    //   authDetails.email === 'Testuser@tmail.com' &&
-    //   authDetails.password === 'test01!';
-
-    // if (valid) {
-    //   setTimeout(() => {
-    //     navigation.navigate('Onboarding');
-    //   }, 500);
-    // }
-  };
+    validationSchema: LoginSchema,
+    onSubmit: (values) => {
+      const valid =
+        values.email === 'Testuser@tmail.com' && values.password === 'test01!';
+      if (valid) {
+        setTimeout(() => {
+          navigation.navigate('Onboarding');
+        }, 500);
+      }
+    },
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,17 +58,20 @@ const ManualAuth = ({ navigation }) => {
           inputStyle={styles.inputStyle}
           labelStyle={styles.labelText}
           labelText='Email'
-          value={authDetails.email}
-          onChangeText={(text) => handleAuthDetails('email', text)}
+          value={values.email}
+          onBlur={handleBlur('email')}
+          onChangeText={handleChange('email')}
           placeholder='Enter your email'
+          errorMessage={errors.email}
         />
         <Input
           containerStyle={styles.inputPasswordCont}
           inputStyle={styles.inputStyle}
           labelStyle={styles.labelText}
           labelText='Password'
-          value={authDetails.password}
-          onChangeText={(text) => handleAuthDetails('password', text)}
+          value={values.password}
+          onBlur={handleBlur('password')}
+          onChangeText={handleChange('password')}
           placeholder='Enter your password'
           secureTextEntry={true}
         />
@@ -70,7 +90,7 @@ const ManualAuth = ({ navigation }) => {
         <View>
           <Button
             title='Log In'
-            onPress={temoparilyHandleSignIn}
+            onPress={handleSubmit}
             coverStyle={{
               backgroundColor: colors.greenDeep,
               marginTop: '8%',

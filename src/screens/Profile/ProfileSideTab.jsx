@@ -46,7 +46,12 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
     {
       name: 'profile',
       icon: (color) => (
-        <Ionicons name='md-person-outline' size={24} color={color} style={styles.icon} />
+        <Ionicons
+          name='md-person-outline'
+          size={24}
+          color={color}
+          style={styles.icon}
+        />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -174,9 +179,9 @@ const styles = StyleSheet.create({
     width: 60,
   },
 
-  icon:{
+  icon: {
     opacity: 0.5,
-  }
+  },
 });
 
 export default ProfileSideTab;
