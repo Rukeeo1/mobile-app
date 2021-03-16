@@ -1,4 +1,7 @@
-import React from 'react';
+
+import React, { useState } from 'react';
+
+
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -17,15 +20,20 @@ const Main = () => {
 };
 
 const MainProfile = ({ navigation }) => {
+  const [activeGradient, setActiveGradient] = useState([
+    colors.greenDeep,
+    colors.green,
+  ]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient
-        style={styles.container}
-        colors={[colors.greenDeep, colors.green]}
-      >
+      <LinearGradient style={styles.container} colors={activeGradient}>
         <View style={styles.safeArea}>
           <Main />
-          <ProfileSideTab navigation={navigation} />
+          <ProfileSideTab
+            navigation={navigation}
+            setActiveGradient={setActiveGradient}
+            activeGradient={activeGradient}
+          />
         </View>
       </LinearGradient>
     </SafeAreaView>

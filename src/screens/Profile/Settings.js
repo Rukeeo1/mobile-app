@@ -5,6 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  StatusBar,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -58,8 +60,8 @@ const Settings = ({ navigation }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: '5%' }}>
         <Header
           title='Profile Settings'
           onIconPress={() => navigation.goBack()}
@@ -111,12 +113,16 @@ const Settings = ({ navigation }) => {
             onPress={() => navigation.navigate('Main-Profile')}
           />
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: constants.colors.white,

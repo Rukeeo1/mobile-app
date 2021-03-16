@@ -16,9 +16,9 @@ const colors = {
   purshBlueDeep: '#002B55',
   textColor: '#1A1A1A',
   white: '#ffffff',
+  nearWhite: '#F7F7F7',
   red: '#FF4A95',
   redDeep: '#AD0048'
-
 };
 
 export default {
