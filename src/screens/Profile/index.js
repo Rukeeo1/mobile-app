@@ -1,9 +1,9 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-
-import ProfileSettings from './Settings';
-import ProfileMain from './ProfileMain';
+import React from 'react';
 import Following from './Following';
+import ProfileMain from './ProfileMain';
+import ProfileSettings from './Settings';
+
 
 const Stack = createStackNavigator();
 
