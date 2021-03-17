@@ -8,7 +8,6 @@ import { Input, Button, Header } from '../../components';
 
 import growthLogo from '../../assets/growth_logo.png';
 
-
 const { colors } = constants;
 
 const ManualAuth = ({ navigation }) => {
@@ -24,14 +23,7 @@ const ManualAuth = ({ navigation }) => {
       .max(100, 'Too Long!'),
   });
 
-  const {
-    handleChange,
-    handleBlur,
-    values,
-    isValid,
-    errors,
-    handleSubmit,
-  } = useFormik({
+  const { handleChange, handleBlur, values, errors, handleSubmit } = useFormik({
     initialValues: {
       email: '',
       password: '',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Image,
   SafeAreaView,
@@ -7,7 +7,9 @@ import {
   View,
   StatusBar,
   Platform,
+  Text,
 } from 'react-native';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
@@ -21,15 +23,8 @@ import constants from '../../constants';
 const { colors } = constants;
 
 const Settings = ({ navigation }) => {
-  const [profile, setProfile] = useState({
-    name: '',
-    bio: '',
-    location: '',
-    profileImageUri: '',
-  });
-
   const ProfileSchema = Yup.object().shape({
-    email: Yup.string()
+    name: Yup.string()
       .required('Required')
       .min(2, 'Too Short!')
       .max(1000, 'Too Long!'),
@@ -41,23 +36,37 @@ const Settings = ({ navigation }) => {
       .required('Required')
       .min(3, 'Too Short!')
       .max(10000, 'Too Long!'),
+    profileImageUri: Yup.string().required(),
   });
 
-  // to refactor argument to take object instead
-  const handleChange = (name, text) => {
-    setProfile((prevState) => ({
-      ...prevState,
-      [name]: text,
-    }));
-  };
+  const {
+    handleChange,
+    handleBlur,
+    values,
+    isValid,
+    errors,
+    setFieldValue,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      name: '',
+      bio: '',
+      location: '',
+      profileImageUri: '',
+    },
 
-  const handleBlur = (name) => {
-    if (!profile[name]) {
-      handleChange(name, nameOfPerson);
-    }
-  };
+    validationSchema: ProfileSchema,
+    onSubmit: (values) => {
+      const { bio, location, name } = values;
+      const user = {
+        bio,
+        location,
+        name,
+      };
+      AsyncStorage.setItem('user', user);
+    },
+  });
 
-  console.log(profile, 'RO: profile');
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -68,10 +77,8 @@ const Settings = ({ navigation }) => {
     });
 
     if (!result.cancelled) {
-      setProfile((prevState) => ({
-        ...prevState,
-        profileImageUri: result.uri,
-      }));
+      setFieldValue('profileImageUri', result.uri);
+      handleBlur('profileImageUri');
     }
   };
 
@@ -83,9 +90,9 @@ const Settings = ({ navigation }) => {
           onIconPress={() => navigation.goBack()}
         />
         <View style={styles.profileImageContainer}>
-          {profile.profileImageUri ? (
+          {values.profileImageUri ? (
             <Image
-              source={{ uri: profile.profileImageUri }}
+              source={{ uri: values.profileImageUri }}
               style={styles.image}
             />
           ) : (
@@ -113,35 +120,42 @@ const Settings = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
+        <View style={{ paddingLeft: '25%' }}>
+          <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
+        </View>
         <View style={styles.profileDetails}>
           <Input
-            value={profile.name}
+            value={values.name}
             placeholder='Enter your name'
-            onChangeText={(text) => handleChange('name', text)}
-            onBlur={() => handleBlur('name')}
+            onChangeText={handleChange('name')}
+            onBlur={handleBlur('name')}
             labelText='Name'
             labelStyle={styles.labelText}
+            errorMessage={errors.name}
           />
           <Input
-            value={profile.bio}
+            value={values.bio}
             placeholder='Enter your bio'
-            onChangeText={(text) => handleChange('bio', text)}
-            onBlur={() => handleBlur('bio')}
+            onChangeText={handleChange('bio')}
+            onBlur={handleBlur('bio')}
             labelText='Bio'
             labelStyle={styles.labelText}
             containerStyle={styles.input}
+            errorMessage={errors.bio}
           />
           <Input
-            value={profile.location}
+            value={values.location}
             placeholder='Enter your Location'
-            onChangeText={(text) => handleChange('location', text)}
-            onBlur={() => handleBlur('location')}
+            onChangeText={handleChange('location')}
+            onBlur={handleBlur('location')}
             labelText='Location'
             labelStyle={styles.labelText}
             containerStyle={styles.input}
+            errorMessage={errors.location}
           />
           <GradientButton
             title='Save'
+            onPress={handleSubmit}
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
             onPress={() => navigation.navigate('Main-Profile')}
@@ -183,7 +197,7 @@ const styles = StyleSheet.create({
     width: 60,
   },
   profileDetails: {
-    marginTop: '5%',
+    marginTop: '6%',
     paddingHorizontal: '5%',
   },
   labelText: {
