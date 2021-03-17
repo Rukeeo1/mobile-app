@@ -31,8 +31,7 @@ const ManualAuth = ({ navigation }) => {
 
     validationSchema: LoginSchema,
     onSubmit: (values) => {
-      const valid =
-        values.email === 'Testuser@tmail.com' && values.password === 'test01!';
+      const valid = values.email === 'Testuser@tmail.com' && values.password === 'test01!';
       if (valid) {
         setTimeout(() => {
           navigation.navigate('Onboarding');

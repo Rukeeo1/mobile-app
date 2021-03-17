@@ -1,45 +1,49 @@
-import React, { useState, useEffect } from 'react';
 import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-  Animated,
-} from 'react-native';
-import {
-  FontAwesome5,
-  Feather,
-  Ionicons,
   Entypo,
-  Octicons,
-} from '@expo/vector-icons';
+  Feather,
+  FontAwesome5,
+  Ionicons,
+  Octicons
+} from '@expo/vector-icons'
+import React, { useEffect, useState } from 'react'
+import {
+  Animated,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from 'react-native'
+import constants from '../../constants/index'
 
-import constants from '../../constants/index';
+const { colors } = constants
 
-const { colors } = constants;
-
-const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
-  const [coordinates, setCoordinates] = useState([]);
+const ProfileSideTab = ({
+  setActiveGradient,
+  activeGradient,
+  currentIndex,
+  setCurrentIndex,
+}) => {
+  const [coordinates, setCoordinates] = useState([])
   const [roundBackgroundAnimation] = useState(
-    new Animated.ValueXY({ x: -10, y: 102 })
-  );
-  const [activeIndex, setActiveIndex] = useState(0);
+    new Animated.ValueXY({ x: -10, y: 102 }),
+  )
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  const containerRef = React.useRef();
+  const containerRef = React.useRef()
 
-  const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+  const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
 
   const sideBarTabItems = [
     {
       name: 'notifications',
-      icon: (color) => <Feather name='bell' size={24} color={color} />,
+      icon: (color) => <Feather name="bell" size={24} color={color} />,
       ref: React.createRef(),
       backgroundColor: [colors.purshBlue, colors.blueLigth],
     },
     {
       name: 'create-post',
-      icon: (color) => <Entypo name='plus' size={30} color={color} />,
+      icon: (color) => <Entypo name="plus" size={30} color={color} />,
       ref: React.createRef(),
       backgroundColor: [colors.purshBlueDeep, colors.blue],
     },
@@ -59,27 +63,40 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
     },
     {
       name: 'explore',
-      icon: (color) => <Octicons name='globe' size={34} color={color} />,
+      icon: (color) => <Octicons name="globe" size={34} color={color} />,
       ref: React.createRef(),
       activeColor: '#AD0048',
       backgroundColor: ['#AD0048', '#E8357F'],
     },
-  ];
+    {
+      name: 'calendar',
+      icon: (color) =>  <Ionicons
+      name="md-calendar-outline"
+      size={24}
+      color={color}
+      style={styles.icon}
+    />,
+      ref: React.createRef(),
+      activeColor: colors.greenDeep,
+      backgroundColor: [colors.greenDeep, colors.green],
+    },
+  ]
 
   const moveBall = (itemPosition) => {
-    const itemsCoordinates = coordinates[itemPosition];
+    const itemsCoordinates = coordinates[itemPosition]
 
     Animated.spring(roundBackgroundAnimation, {
       toValue: { x: -10, y: itemsCoordinates?.y },
       useNativeDriver: false,
-    }).start();
+    }).start()
 
-    setActiveIndex(itemPosition);
-    setActiveGradient(sideBarTabItems[itemPosition]?.backgroundColor || []);
-  };
+    setCurrentIndex(itemPosition)
+    setActiveIndex(itemPosition)
+    setActiveGradient(sideBarTabItems[itemPosition]?.backgroundColor || [])
+  }
 
   useEffect(() => {
-    const intialCoordinatesDetails = [];
+    const intialCoordinatesDetails = []
     sideBarTabItems.forEach((item) => {
       item.ref.current?.measureLayout(
         containerRef.current,
@@ -90,13 +107,13 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
             width,
             height,
             item: item.name,
-          });
+          })
           intialCoordinatesDetails.length === sideBarTabItems.length &&
-            setCoordinates(intialCoordinatesDetails);
-        }
-      );
-    });
-  }, []);
+            setCoordinates(intialCoordinatesDetails)
+        },
+      )
+    })
+  }, [])
 
   return (
     <SafeAreaView style={styles.tab}>
@@ -125,14 +142,14 @@ const ProfileSideTab = ({ setActiveGradient, activeGradient }) => {
             key={index}
           >
             {item.icon(
-              activeIndex === index ? activeGradient[0] : colors.white
+              activeIndex === index ? activeGradient[0] : colors.white,
             )}
           </AnimatedTouchable>
         ))}
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -178,10 +195,9 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
   },
-
   icon: {
     opacity: 0.5,
   },
-});
+})
 
-export default ProfileSideTab;
+export default ProfileSideTab

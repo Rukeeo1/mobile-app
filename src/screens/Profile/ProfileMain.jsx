@@ -1,20 +1,31 @@
-
-import React, { useState } from 'react';
-
-
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-
-import ProfileSideTab from './ProfileSideTab';
-
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import constants from '../../constants/index';
+import Calendar from './AddToCalendar';
+import Explore from './Explore';
+import FirstView from './FirstView';
+import ProfileSideTab from './ProfileSideTab';
+// import CropSearch from "../Crops/CropSearch"
 
 const { colors } = constants;
 
-const Main = () => {
+const Main = ({ currentIndex }) => {
   return (
     <View style={styles.main}>
-      <Text></Text>
+      {currentIndex === 0 ? (
+        <View />
+      ) : currentIndex === 1 ? (
+        <View>
+          <Text>1</Text>
+        </View>
+      ) : currentIndex === 2 ? (
+        <FirstView />
+      ) : currentIndex === 3 ? (
+        <Explore />
+      ) : currentIndex === 4 ? (
+        <Calendar />
+      ) : null}
     </View>
   );
 };
@@ -24,15 +35,19 @@ const MainProfile = ({ navigation }) => {
     colors.greenDeep,
     colors.green,
   ]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient style={styles.container} colors={activeGradient}>
         <View style={styles.safeArea}>
-          <Main />
+          <Main currentIndex={currentIndex} />
           <ProfileSideTab
             navigation={navigation}
             setActiveGradient={setActiveGradient}
             activeGradient={activeGradient}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
           />
         </View>
       </LinearGradient>
@@ -52,7 +67,7 @@ const styles = StyleSheet.create({
   main: {
     backgroundColor: colors.white,
     width: '80%',
-    paddingTop: '10%',
+    overflow: 'hidden',
     flex: 1,
     borderTopRightRadius: 40,
   },
