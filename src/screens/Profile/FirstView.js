@@ -1,19 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View
-} from 'react-native'
-import { GradientButton } from '../../components/Button'
-import constants from '../../constants'
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import { GradientButton } from '../../components/Button';
 
-const { colors } = constants
+import ShareModal from './ShareModal';
+
+import constants from '../../constants';
+
+const { colors } = constants;
 
 const FirstView = () => {
-  const [isList, setIsList] = useState(true)
+  const [isList, setIsList] = useState(true);
+  const [showShare, setShowShare] = useState(false);
+
+  const toggleModal = () => setShowShare((prevState) => !prevState);
+
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
       <ScrollView
@@ -124,7 +132,9 @@ const FirstView = () => {
 
             <View style={[styles.postDateTime]}>
               <Text>23 July 2020</Text>
-              <Text>...</Text>
+              <TouchableOpacity onPress={toggleModal}>
+                <Text>...</Text>
+              </TouchableOpacity>
             </View>
 
             <View>
@@ -155,10 +165,11 @@ const FirstView = () => {
             </Text>
           </View>
         )}
+        <ShareModal showBottomSheet={showShare} setShowShare={toggleModal} />
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   profileImg: {
@@ -287,6 +298,6 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: 'bold',
   },
-})
+});
 
-export default FirstView
+export default FirstView;

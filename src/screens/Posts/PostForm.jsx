@@ -186,7 +186,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 22,
-    // flex: 1,
     justifyContent: 'flex-end',
     marginTop: 'auto',
   },

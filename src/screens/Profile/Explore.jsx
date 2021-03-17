@@ -1,11 +1,21 @@
-import { EvilIcons } from '@expo/vector-icons'
-import React from 'react'
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Input } from '../../components'
-import constants from '../../constants/'
+import { EvilIcons } from '@expo/vector-icons';
+import React, {useState} from 'react';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import { Input } from '../../components';
+import constants from '../../constants/';
 
-const { colors } = constants
+const { colors } = constants;
 const Explore = () => {
+  const [showShare, setShowShare] = useState(false);
+
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
       <ScrollView
@@ -15,7 +25,7 @@ const Explore = () => {
         }}
       >
         <View style={[styles.container]}>
-          <View style={[styles.searchContainer]}>
+          {/* <View style={[styles.searchContainer]}>
             <Input
               placeholder="Search"
               containerStyle={styles.searchInputContainer}
@@ -32,6 +42,27 @@ const Explore = () => {
                 }}
               />
             </Input>
+          </View> */}
+          <View style={styles.searchBarWrapper}>
+            <Input
+              placeholder='Search'
+              containerStyle={styles.searchInputContainer}
+              inputStyle={{ marginTop: -10, paddingRight: 10 }}
+            >
+              <EvilIcons
+                name='search'
+                size={24}
+                color={colors.blue}
+                style={{
+                  right: 10,
+                  top: '30%',
+                  position: 'absolute',
+                }}
+              />
+            </Input>
+            {/* <TouchableOpacity style={styles.cancelContainer}>
+              <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity> */}
           </View>
 
           <View style={[styles.flowercircle]}>
@@ -81,7 +112,9 @@ const Explore = () => {
 
             <View style={[styles.dateTime]}>
               <Text style={[styles.date]}>23 July 2020</Text>
-              <Text>...</Text>
+              <TouchableOpacity>
+                <Text>...</Text>
+              </TouchableOpacity>
             </View>
 
             <View style={[styles.postText]}>
@@ -92,25 +125,25 @@ const Explore = () => {
               </Text>
             </View>
           </View>
-        </View>
+        </View> 
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {},
-  searchInputContainer: {
-    backgroundColor: colors.grey,
-    justifyContent: 'center',
-    borderRadius: 20,
-    height: 46,
-    paddingLeft: 15,
-    paddingRight: 25,
-    paddingTop: 25,
-    paddingBottom: 25,
-    flex: 1,
-  },
+  // searchInputContainer: {
+  //   backgroundColor: colors.grey,
+  //   justifyContent: 'center',
+  //   borderRadius: 20,
+  //   height: 46,
+  //   paddingLeft: 15,
+  //   paddingRight: 25,
+  //   paddingTop: 25,
+  //   paddingBottom: 25,
+  //   flex: 1,
+  // },
   searchContainer: {
     marginTop: 55,
     marginHorizontal: 25,
@@ -160,6 +193,22 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: 'bold',
   },
-})
 
-export default Explore
+  /// search relate ===. to be pulled out
+  searchBarWrapper: {
+    paddingHorizontal: '5%',
+    paddingTop: 20,
+    flexDirection: 'row',
+  },
+  searchInputContainer: {
+    backgroundColor: colors.grey,
+    justifyContent: 'center',
+    borderRadius: 20,
+    height: 46,
+    paddingLeft: 15,
+    paddingRight: 25,
+    flex: 1,
+  },
+});
+
+export default Explore;

@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import constants from '../../constants';
 
+const { colors } = constants;
+
 const Input = ({
   containerStyle = {},
   value,
@@ -12,6 +14,7 @@ const Input = ({
   labelStyle = {},
   inputStyle = {},
   children,
+  errorMessage = '',
   ...props
 }) => {
   return (
@@ -26,6 +29,9 @@ const Input = ({
         {...props}
       />
       {children}
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : null}
     </View>
   );
 };
@@ -40,6 +46,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: constants.colors.black,
     fontWeight: '100',
+  },
+  errorMessage: {
+    color: colors.red,
+    marginTop: 5,
   },
 });
 

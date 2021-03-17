@@ -20,6 +20,17 @@ export const Register = ({ navigation }) => {
     password: '',
   });
 
+  const handleAuthDetails = (name, value) => {
+    setAuthDetails((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const submit = () => {
+    
+  }
+
   const { colors } = constants;
 
   return (

@@ -51,7 +51,7 @@ const ProfileSideTab = ({
       name: 'profile',
       icon: (color) => (
         <Ionicons
-          name="md-person-outline"
+          name='md-person-outline'
           size={24}
           color={color}
           style={styles.icon}
@@ -118,7 +118,7 @@ const ProfileSideTab = ({
   return (
     <SafeAreaView style={styles.tab}>
       <View style={styles.ellipse}>
-        <FontAwesome5 name="ellipsis-h" size={24} color={activeGradient[1]} />
+        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} />
       </View>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}

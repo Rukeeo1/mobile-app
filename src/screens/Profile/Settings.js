@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Image,
   SafeAreaView,
@@ -7,40 +7,65 @@ import {
   View,
   StatusBar,
   Platform,
+  Text,
 } from 'react-native';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { Header, Input, GradientButton } from '../../components';
 
 import constants from '../../constants';
 
-const profileImage =
-  'https://images0.westend61.de/0001391125pw/smiling-woman-touching-white-flowers-growing-in-farm-LVVF00015.jpg';
+const { colors } = constants;
 
 const Settings = ({ navigation }) => {
-  const nameOfPerson = 'Garden_of_Riley';
-  const [profile, setProfile] = useState({
-    name: nameOfPerson,
-    bio: '<User bio grow baby grow>',
-    location: '🇬🇧 Buckinghamshire',
-    profileImageUri: profileImage,
+  const ProfileSchema = Yup.object().shape({
+    name: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    bio: Yup.string()
+      .required('Required')
+      .min(3, 'Too Short!')
+      .max(100, 'Too Long!'),
+    location: Yup.string()
+      .required('Required')
+      .min(3, 'Too Short!')
+      .max(10000, 'Too Long!'),
+    profileImageUri: Yup.string().required(),
   });
 
-  // to refactor argument to take object instead
-  const handleChange = (name, text) => {
-    setProfile((prevState) => ({
-      ...prevState,
-      [name]: text,
-    }));
-  };
+  const {
+    handleChange,
+    handleBlur,
+    values,
+    isValid,
+    errors,
+    setFieldValue,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      name: '',
+      bio: '',
+      location: '',
+      profileImageUri: '',
+    },
 
-  const handleBlur = (name) => {
-    if (!profile[name]) {
-      handleChange(name, nameOfPerson);
-    }
-  };
+    validationSchema: ProfileSchema,
+    onSubmit: (values) => {
+      const { bio, location, name } = values;
+      const user = {
+        bio,
+        location,
+        name,
+      };
+      AsyncStorage.setItem('user', user);
+    },
+  });
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -52,10 +77,8 @@ const Settings = ({ navigation }) => {
     });
 
     if (!result.cancelled) {
-      setProfile((prevState) => ({
-        ...prevState,
-        profileImageUri: result.uri,
-      }));
+      setFieldValue('profileImageUri', result.uri);
+      handleBlur('profileImageUri');
     }
   };
 
@@ -67,10 +90,28 @@ const Settings = ({ navigation }) => {
           onIconPress={() => navigation.goBack()}
         />
         <View style={styles.profileImageContainer}>
-          <Image
-            source={{ uri: profile.profileImageUri }}
-            style={styles.image}
-          />
+          {values.profileImageUri ? (
+            <Image
+              source={{ uri: values.profileImageUri }}
+              style={styles.image}
+            />
+          ) : (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                height: '100%',
+                backgroundColor: colors.grey100,
+              }}
+            >
+              <Ionicons
+                name='ios-person-outline'
+                size={45}
+                color={colors.white}
+              />
+            </View>
+          )}
           <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
             <Ionicons
               name='ios-camera-outline'
@@ -79,35 +120,42 @@ const Settings = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
+        <View style={{ paddingLeft: '25%' }}>
+          <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
+        </View>
         <View style={styles.profileDetails}>
           <Input
-            value={profile.name}
+            value={values.name}
             placeholder='Enter your name'
-            onChangeText={(text) => handleChange('name', text)}
-            onBlur={() => handleBlur('name')}
+            onChangeText={handleChange('name')}
+            onBlur={handleBlur('name')}
             labelText='Name'
             labelStyle={styles.labelText}
+            errorMessage={errors.name}
           />
           <Input
-            value={profile.bio}
+            value={values.bio}
             placeholder='Enter your bio'
-            onChangeText={(text) => handleChange('bio', text)}
-            onBlur={() => handleBlur('bio')}
+            onChangeText={handleChange('bio')}
+            onBlur={handleBlur('bio')}
             labelText='Bio'
             labelStyle={styles.labelText}
             containerStyle={styles.input}
+            errorMessage={errors.bio}
           />
           <Input
-            value={profile.location}
+            value={values.location}
             placeholder='Enter your Location'
-            onChangeText={(text) => handleChange('location', text)}
-            onBlur={() => handleBlur('location')}
+            onChangeText={handleChange('location')}
+            onBlur={handleBlur('location')}
             labelText='Location'
             labelStyle={styles.labelText}
             containerStyle={styles.input}
+            errorMessage={errors.location}
           />
           <GradientButton
             title='Save'
+            onPress={handleSubmit}
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
             onPress={() => navigation.navigate('Main-Profile')}
@@ -129,6 +177,7 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     height: '50%',
+    backgroundColor: colors.grey100,
   },
   image: { height: '100%', width: '100%' },
   cameraContainer: {
@@ -148,7 +197,7 @@ const styles = StyleSheet.create({
     width: 60,
   },
   profileDetails: {
-    marginTop: '5%',
+    marginTop: '6%',
     paddingHorizontal: '5%',
   },
   labelText: {

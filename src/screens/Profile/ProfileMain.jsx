@@ -1,24 +1,24 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import constants from '../../constants/index'
-import Calendar from './AddToCalendar'
-import Explore from "./Explore"
-import FirstView from './FirstView'
-import ProfileSideTab from './ProfileSideTab'
-import CropSearch from "../Crops/CropSearch"
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import constants from '../../constants/index';
+import Calendar from './AddToCalendar';
+import Explore from './Explore';
+import FirstView from './FirstView';
+import ProfileSideTab from './ProfileSideTab';
+// import CropSearch from "../Crops/CropSearch"
 
-const { colors } = constants
+const { colors } = constants;
 
 const Main = ({ currentIndex }) => {
   return (
     <View style={styles.main}>
       {currentIndex === 0 ? (
-       <CropSearch />
+        <View />
       ) : currentIndex === 1 ? (
-        <>
+        <View>
           <Text>1</Text>
-        </>
+        </View>
       ) : currentIndex === 2 ? (
         <FirstView />
       ) : currentIndex === 3 ? (
@@ -27,16 +27,16 @@ const Main = ({ currentIndex }) => {
         <Calendar />
       ) : null}
     </View>
-  )
-}
+  );
+};
 
 const MainProfile = ({ navigation }) => {
   const [activeGradient, setActiveGradient] = useState([
     colors.greenDeep,
     colors.green,
-  ])
+  ]);
 
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient style={styles.container} colors={activeGradient}>
@@ -52,8 +52,8 @@ const MainProfile = ({ navigation }) => {
         </View>
       </LinearGradient>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopRightRadius: 40,
   },
-})
+});
 
-export default MainProfile
+export default MainProfile;
