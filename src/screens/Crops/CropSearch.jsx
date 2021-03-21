@@ -7,18 +7,18 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native'
+import RNPickerSelect from 'react-native-picker-select'
 import { Input } from '../../components/'
 import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
-import RNPickerSelect from 'react-native-picker-select'
 
 const { colors } = constants
 const CropSearch = () => {
   const [selectedValue, setSelectedValue] = useState('java')
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       <SafeAreaView>
         <ScrollView>
           <View>
@@ -165,17 +165,25 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   cropCardContainer: {
+    backgroundColor: colors.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '95%',
     borderRadius: 100 / 2,
-    borderColor: colors.greyDark,
-    borderWidth: 1,
-    borderColor: '#ddd',
     height: 70,
     paddingRight: 20,
     marginVertical: 3,
+    // shadow iOS
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0.5,
+      height: 0.4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    // shadow android
+    elevation: 15,
   },
   cropDetails: {
     flexDirection: 'row',
