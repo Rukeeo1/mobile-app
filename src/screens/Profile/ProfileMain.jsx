@@ -1,12 +1,13 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import constants from '../../constants/index';
+import { SafeAreaView, StyleSheet, Text, View, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+
 import Calendar from './AddToCalendar';
 import Explore from './Explore';
 import FirstView from './FirstView';
 import ProfileSideTab from './ProfileSideTab';
-// import CropSearch from "../Crops/CropSearch"
+
+import constants from '../../constants/index';
 
 const { colors } = constants;
 
@@ -38,9 +39,11 @@ const MainProfile = ({ navigation }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView
+      style={{ flex: 1, paddingTop: Platform.OS === 'android' ? 25 : 0 }}
+    >
       <LinearGradient style={styles.container} colors={activeGradient}>
-        <View style={styles.safeArea}>
+        <View style={styles.mainContainer}>
           <Main currentIndex={currentIndex} />
           <ProfileSideTab
             navigation={navigation}
@@ -56,10 +59,14 @@ const MainProfile = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+
   container: {
     flex: 1,
   },
-  safeArea: {
+  mainContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import * as Facebook from 'expo-facebook';
 
-import { Button } from '../../components';
+import { Button, Logo } from '../../components';
 
 import { firebaseConfig } from '../../config/firebase';
 
@@ -49,7 +49,7 @@ export const Login = ({ navigation }) => {
   ];
   return (
     <View style={styles.container}>
-      <Image source={growthLogo} style={styles.image} />
+      <Logo source={growthLogo} />
       <View style={styles.buttonsContainer}>
         {authButtons.map((button, index) => (
           <Button
@@ -71,10 +71,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     backgroundColor: '#ffffff',
-  },
-  image: {
-    margin: '25%',
-    marginTop: '40%',
   },
   buttonsContainer: {
     width: '80%',
