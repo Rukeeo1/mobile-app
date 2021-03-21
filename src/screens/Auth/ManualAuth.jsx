@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Platform } from 'react-native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import constants from '../../constants';
-import { Input, Button, Header } from '../../components';
+import { Input, Button, Header, Logo } from '../../components';
 
 import growthLogo from '../../assets/growth_logo.png';
+import { ScrollView } from 'react-native';
 
 const { colors } = constants;
 
@@ -31,81 +32,92 @@ const ManualAuth = ({ navigation }) => {
 
     validationSchema: LoginSchema,
     onSubmit: (values) => {
-      const valid = values.email === 'Testuser@tmail.com' && values.password === 'test01!';
-      if (valid) {
-        setTimeout(() => {
-          navigation.navigate('Onboarding');
-        }, 500);
-      }
+      // const valid =
+      // values.email === 'Testuser@tmail.com' && values.password === 'test01!';
+      // if (valid) {
+      // setTimeout(() => {
+      navigation.navigate('Onboarding');
+      // }, 500);
+      // }
     },
   });
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header onIconPress={() => navigation.goBack()} />
-      <Image source={growthLogo} style={styles.image} />
-      <View style={styles.authContainer}>
-        <Input
-          inputStyle={styles.inputStyle}
-          labelStyle={styles.labelText}
-          labelText='Email'
-          value={values.email}
-          onBlur={handleBlur('email')}
-          onChangeText={handleChange('email')}
-          placeholder='Enter your email'
-          errorMessage={errors.email}
+    <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
+      <SafeAreaView style={styles.container}>
+        <Header onIconPress={() => navigation.goBack()} />
+        <Logo
+          source={growthLogo}
+          logoStyles={{ marginTop: '10%', marginBottom: '10%' }}
         />
-        <Input
-          containerStyle={styles.inputPasswordCont}
-          inputStyle={styles.inputStyle}
-          labelStyle={styles.labelText}
-          labelText='Password'
-          value={values.password}
-          onBlur={handleBlur('password')}
-          onChangeText={handleChange('password')}
-          placeholder='Enter your password'
-          secureTextEntry={true}
-        />
-        <View style={styles.forgottenPasswordRow}>
-          <Text>Forgotten Password?</Text>
-          <Button
-            title='Sign up'
-            onPress={() => navigation.navigate('Register')}
-            coverStyle={{
-              backgroundColor: colors.greenDeep,
-              width: '30%',
-            }}
-            color={colors.white}
+        <View style={styles.authContainer}>
+          <Input
+            inputStyle={styles.inputStyle}
+            labelStyle={styles.labelText}
+            labelText="Email"
+            value={values.email}
+            onBlur={handleBlur('email')}
+            onChangeText={handleChange('email')}
+            placeholder="Enter your email"
+            errorMessage={errors.email}
           />
+          <Input
+            containerStyle={styles.inputPasswordCont}
+            inputStyle={styles.inputStyle}
+            labelStyle={styles.labelText}
+            labelText="Password"
+            value={values.password}
+            onBlur={handleBlur('password')}
+            onChangeText={handleChange('password')}
+            placeholder="Enter your password"
+            secureTextEntry={true}
+          />
+          <View style={styles.forgottenPasswordRow}>
+            <Text>Forgotten Password?</Text>
+            <Button
+              title="Sign up"
+              onPress={() => navigation.navigate('Register')}
+              coverStyle={{
+                backgroundColor: colors.greenDeep,
+                width: '30%',
+              }}
+              color={colors.white}
+            />
+          </View>
+          <View>
+            <Button
+              title="Log In"
+              onPress={handleSubmit}
+              coverStyle={{
+                backgroundColor: colors.greenDeep,
+                marginTop: '8%',
+              }}
+              color={colors.white}
+            />
+            <Button
+              title="Cancel"
+              coverStyle={{
+                backgroundColor: colors.greyDark,
+                marginTop: '8%',
+              }}
+              color={colors.white}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
         </View>
-        <View>
-          <Button
-            title='Log In'
-            onPress={handleSubmit}
-            coverStyle={{
-              backgroundColor: colors.greenDeep,
-              marginTop: '8%',
-            }}
-            color={colors.white}
-          />
-          <Button
-            title='Cancel'
-            coverStyle={{
-              backgroundColor: colors.greyDark,
-              marginTop: '8%',
-            }}
-            color={colors.white}
-            onPress={() => navigation.goBack()}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
+    paddingBottom: '5%',
+  },
+  scrollContainer: {
     alignItems: 'center',
     backgroundColor: '#ffffff',
   },

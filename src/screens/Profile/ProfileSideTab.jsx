@@ -1,38 +1,40 @@
-import {
-  Entypo,
-  Feather,
-  FontAwesome5,
-  Ionicons,
-  Octicons
-} from '@expo/vector-icons'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   Animated,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
-} from 'react-native'
-import constants from '../../constants/index'
+  View,
+} from 'react-native';
+import {
+  Entypo,
+  Feather,
+  FontAwesome5,
+  Ionicons,
+  Octicons,
+} from '@expo/vector-icons';
 
-const { colors } = constants
+import constants from '../../constants/index';
+
+const { colors } = constants;
 
 const ProfileSideTab = ({
   setActiveGradient,
   activeGradient,
-  currentIndex,
+  // currentIndex,
   setCurrentIndex,
 }) => {
-  const [coordinates, setCoordinates] = useState([])
+  const [coordinates, setCoordinates] = useState([]);
   const [roundBackgroundAnimation] = useState(
-    new Animated.ValueXY({ x: -10, y: 102 }),
-  )
-  const [activeIndex, setActiveIndex] = useState(0)
+    // new Animated.ValueXY({ x: -10, y: 102 })
+    new Animated.ValueXY({ x: -10, y: 84 })
+  );
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const containerRef = React.useRef()
+  const containerRef = React.useRef();
 
-  const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
+  const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
   const sideBarTabItems = [
     {
@@ -51,7 +53,7 @@ const ProfileSideTab = ({
       name: 'profile',
       icon: (color) => (
         <Ionicons
-          name='md-person-outline'
+          name="md-person-outline"
           size={24}
           color={color}
           style={styles.icon}
@@ -70,33 +72,35 @@ const ProfileSideTab = ({
     },
     {
       name: 'calendar',
-      icon: (color) =>  <Ionicons
-      name="md-calendar-outline"
-      size={24}
-      color={color}
-      style={styles.icon}
-    />,
+      icon: (color) => (
+        <Ionicons
+          name="md-calendar-outline"
+          size={24}
+          color={color}
+          style={styles.icon}
+        />
+      ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: [colors.greenDeep, colors.green],
     },
-  ]
+  ];
 
   const moveBall = (itemPosition) => {
-    const itemsCoordinates = coordinates[itemPosition]
+    const itemsCoordinates = coordinates[itemPosition];
 
     Animated.spring(roundBackgroundAnimation, {
       toValue: { x: -10, y: itemsCoordinates?.y },
       useNativeDriver: false,
-    }).start()
+    }).start();
 
-    setCurrentIndex(itemPosition)
-    setActiveIndex(itemPosition)
-    setActiveGradient(sideBarTabItems[itemPosition]?.backgroundColor || [])
-  }
+    setCurrentIndex(itemPosition);
+    setActiveIndex(itemPosition);
+    setActiveGradient(sideBarTabItems[itemPosition]?.backgroundColor || []);
+  };
 
   useEffect(() => {
-    const intialCoordinatesDetails = []
+    const intialCoordinatesDetails = [];
     sideBarTabItems.forEach((item) => {
       item.ref.current?.measureLayout(
         containerRef.current,
@@ -107,18 +111,18 @@ const ProfileSideTab = ({
             width,
             height,
             item: item.name,
-          })
+          });
           intialCoordinatesDetails.length === sideBarTabItems.length &&
-            setCoordinates(intialCoordinatesDetails)
-        },
-      )
-    })
-  }, [])
+            setCoordinates(intialCoordinatesDetails);
+        }
+      );
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.tab}>
       <View style={styles.ellipse}>
-        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} />
+        <FontAwesome5 name="ellipsis-h" size={24} color={colors.white} />
       </View>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
@@ -142,14 +146,14 @@ const ProfileSideTab = ({
             key={index}
           >
             {item.icon(
-              activeIndex === index ? activeGradient[0] : colors.white,
+              activeIndex === index ? activeGradient[0] : colors.white
             )}
           </AnimatedTouchable>
         ))}
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -173,16 +177,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabIconWrapper: {
-    marginVertical: 42,
+    // marginVertical: 42,
+    marginVertical: '35%',
     height: 60,
     width: 60,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 290323,
     elevation: 10,
-  }, // 12
+  },
   tabIconActive: {
-    top: 534,
+    // top: 534,
+    top: 450,
     zIndex: -9,
     backgroundColor: colors.white,
     borderRadius: 30,
@@ -198,6 +204,6 @@ const styles = StyleSheet.create({
   icon: {
     opacity: 0.5,
   },
-})
+});
 
-export default ProfileSideTab
+export default ProfileSideTab;

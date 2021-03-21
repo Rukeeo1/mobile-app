@@ -85,81 +85,87 @@ const Settings = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: '5%' }}>
-        <Header
-          title='Profile Settings'
-          onIconPress={() => navigation.goBack()}
-        />
-        <View style={styles.profileImageContainer}>
-          {values.profileImageUri ? (
-            <Image
-              source={{ uri: values.profileImageUri }}
-              style={styles.image}
-            />
-          ) : (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
-                height: '100%',
-                backgroundColor: colors.grey100,
-              }}
+        <View style={{flex: 1}}>
+          <Header
+            title="Profile Settings"
+            onIconPress={() => navigation.goBack()}
+          />
+
+          <View style={styles.profileImageContainer}>
+            {values.profileImageUri ? (
+              <Image
+                source={{ uri: values.profileImageUri }}
+                style={styles.image}
+              />
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flex: 1,
+                  height: '100%',
+                  backgroundColor: colors.grey100,
+                }}
+              >
+                <Ionicons
+                  name="ios-person-outline"
+                  size={45}
+                  color={colors.white}
+                />
+              </View>
+            )}
+            <TouchableOpacity
+              style={styles.cameraContainer}
+              onPress={pickImage}
             >
               <Ionicons
-                name='ios-person-outline'
-                size={45}
-                color={colors.white}
+                name="ios-camera-outline"
+                size={30}
+                color={constants.colors.green}
               />
-            </View>
-          )}
-          <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
-            <Ionicons
-              name='ios-camera-outline'
-              size={30}
-              color={constants.colors.green}
+            </TouchableOpacity>
+          </View>
+          <View style={{ paddingLeft: '25%' }}>
+            <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
+          </View>
+          <View style={styles.profileDetails}>
+            <Input
+              value={values.name}
+              placeholder="Enter your name"
+              onChangeText={handleChange('name')}
+              onBlur={handleBlur('name')}
+              labelText="Name"
+              labelStyle={styles.labelText}
+              errorMessage={errors.name}
             />
-          </TouchableOpacity>
-        </View>
-        <View style={{ paddingLeft: '25%' }}>
-          <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
-        </View>
-        <View style={styles.profileDetails}>
-          <Input
-            value={values.name}
-            placeholder='Enter your name'
-            onChangeText={handleChange('name')}
-            onBlur={handleBlur('name')}
-            labelText='Name'
-            labelStyle={styles.labelText}
-            errorMessage={errors.name}
-          />
-          <Input
-            value={values.bio}
-            placeholder='Enter your bio'
-            onChangeText={handleChange('bio')}
-            onBlur={handleBlur('bio')}
-            labelText='Bio'
-            labelStyle={styles.labelText}
-            containerStyle={styles.input}
-            errorMessage={errors.bio}
-          />
-          <Input
-            value={values.location}
-            placeholder='Enter your Location'
-            onChangeText={handleChange('location')}
-            onBlur={handleBlur('location')}
-            labelText='Location'
-            labelStyle={styles.labelText}
-            containerStyle={styles.input}
-            errorMessage={errors.location}
-          />
-          <GradientButton
-            title='Save'
-            onPress={handleSubmit}
-            gradient={[constants.colors.green, '#83B403']}
-            coverStyle={styles.button}
-            onPress={() => navigation.navigate('Main-Profile')}
-          />
+            <Input
+              value={values.bio}
+              placeholder="Enter your bio"
+              onChangeText={handleChange('bio')}
+              onBlur={handleBlur('bio')}
+              labelText="Bio"
+              labelStyle={styles.labelText}
+              containerStyle={styles.input}
+              errorMessage={errors.bio}
+            />
+            <Input
+              value={values.location}
+              placeholder="Enter your Location"
+              onChangeText={handleChange('location')}
+              onBlur={handleBlur('location')}
+              labelText="Location"
+              labelStyle={styles.labelText}
+              containerStyle={styles.input}
+              errorMessage={errors.location}
+            />
+            <GradientButton
+              title="Save"
+              onPress={handleSubmit}
+              gradient={[constants.colors.green, '#83B403']}
+              coverStyle={styles.button}
+              onPress={() => navigation.navigate('Main-Profile')}
+            />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
