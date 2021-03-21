@@ -18,113 +18,115 @@ const { colors } = constants
 const CropSearch = () => {
   const [selectedValue, setSelectedValue] = useState('java')
   return (
-    <SafeAreaView>
-      <View>
-        <View>
-          <LinearGradient
-            style={[styles.searchContainer]}
-            colors={[colors.green, colors.greenDeep]}
-          >
-            <View style={[styles.searchForm]}>
-              <Input
-                placeholder="Search"
-                containerStyle={styles.searchInputContainer}
-                inputStyle={{ marginTop: -10, paddingRight: 10 }}
-              >
-                <EvilIcons
-                  name="search"
-                  size={24}
-                  color={colors.blue}
-                  style={{
-                    right: 10,
-                    top: '30%',
-                    position: 'absolute',
-                  }}
-                />
-              </Input>
-              <Text style={[styles.cancelText]}>Cancel</Text>
-            </View>
-
-            <ScrollView horizontal style={[styles.scrollDate]}>
-              <Text style={[styles.clearFilter]}>clear filters</Text>
-              <View>
-                <RNPickerSelect
-                  onValueChange={(value) => console.log(value)}
-                  items={[
-                    { label: 'JavaScript', value: 'JavaScript' },
-                    { label: 'TypeStript', value: 'TypeStript' },
-                    { label: 'Python', value: 'Python' },
-                    { label: 'Java', value: 'Java' },
-                    { label: 'C++', value: 'C++' },
-                    { label: 'C', value: 'C' },
-                  ]}
-                />
+    <View style={{ flex: 1 }}>
+      <SafeAreaView>
+        <ScrollView>
+          <View>
+            <LinearGradient
+              style={[styles.searchContainer]}
+              colors={[colors.green, colors.greenDeep]}
+            >
+              <View style={[styles.searchForm]}>
+                <Input
+                  placeholder="Search"
+                  containerStyle={styles.searchInputContainer}
+                  inputStyle={{ marginTop: -10, paddingRight: 10 }}
+                >
+                  <EvilIcons
+                    name="search"
+                    size={24}
+                    color={colors.blue}
+                    style={{
+                      right: 10,
+                      top: '30%',
+                      position: 'absolute',
+                    }}
+                  />
+                </Input>
+                <Text style={[styles.cancelText]}>Cancel</Text>
               </View>
-            </ScrollView>
-          </LinearGradient>
-        </View>
 
-        <View style={[styles.cropSection]}>
-          {/* 
+              <ScrollView horizontal style={[styles.scrollDate]}>
+                <Text style={[styles.clearFilter]}>clear filters</Text>
+                <View>
+                  <RNPickerSelect
+                    onValueChange={(value) => console.log(value)}
+                    items={[
+                      { label: 'JavaScript', value: 'JavaScript' },
+                      { label: 'TypeStript', value: 'TypeStript' },
+                      { label: 'Python', value: 'Python' },
+                      { label: 'Java', value: 'Java' },
+                      { label: 'C++', value: 'C++' },
+                      { label: 'C', value: 'C' },
+                    ]}
+                  />
+                </View>
+              </ScrollView>
+            </LinearGradient>
+          </View>
+
+          <View style={[styles.cropSection]}>
+            {/* 
           carrd of crops 
         */}
 
-          <View style={[styles.cropCardContainer]}>
-            <View style={[styles.cropDetails]}>
-              <Image
-                style={[styles.cropAvatar]}
-                source={require('../../assets/avatarimg.png')}
-              />
-              <View style={[styles.cropText]}>
-                <Text style={[styles.cropName]}>Tomato</Text>
-                <Text>Intermediate</Text>
+            <View style={[styles.cropCardContainer]}>
+              <View style={[styles.cropDetails]}>
+                <Image
+                  style={[styles.cropAvatar]}
+                  source={require('../../assets/avatarimg.png')}
+                />
+                <View style={[styles.cropText]}>
+                  <Text style={[styles.cropName]}>Tomato</Text>
+                  <Text>Intermediate</Text>
+                </View>
               </View>
+              <AntDesign name="right" size={24} color={colors.green} />
             </View>
-            <AntDesign name="right" size={24} color={colors.green} />
-          </View>
-          <View style={[styles.cropCardContainer]}>
-            <View style={[styles.cropDetails]}>
-              <Image
-                style={[styles.cropAvatar]}
-                source={require('../../assets/avatarimg.png')}
-              />
-              <View style={[styles.cropText]}>
-                <Text style={[styles.cropName]}>Tomato</Text>
-                <Text>star Beginner</Text>
+            <View style={[styles.cropCardContainer]}>
+              <View style={[styles.cropDetails]}>
+                <Image
+                  style={[styles.cropAvatar]}
+                  source={require('../../assets/avatarimg.png')}
+                />
+                <View style={[styles.cropText]}>
+                  <Text style={[styles.cropName]}>Tomato</Text>
+                  <Text>star Beginner</Text>
+                </View>
               </View>
+              <AntDesign name="right" size={24} color={colors.green} />
             </View>
-            <AntDesign name="right" size={24} color={colors.green} />
-          </View>
-          <View style={[styles.cropCardContainer]}>
-            <View style={[styles.cropDetails]}>
-              <Image
-                style={[styles.cropAvatar]}
-                source={require('../../assets/avatarimg.png')}
-              />
-              <View style={[styles.cropText]}>
-                <Text style={[styles.cropName]}>Tomato</Text>
-                <Text>Intermediate</Text>
+            <View style={[styles.cropCardContainer]}>
+              <View style={[styles.cropDetails]}>
+                <Image
+                  style={[styles.cropAvatar]}
+                  source={require('../../assets/avatarimg.png')}
+                />
+                <View style={[styles.cropText]}>
+                  <Text style={[styles.cropName]}>Tomato</Text>
+                  <Text>Intermediate</Text>
+                </View>
               </View>
+              <AntDesign name="right" size={24} color={colors.green} />
             </View>
-            <AntDesign name="right" size={24} color={colors.green} />
           </View>
-        </View>
 
-        <View style={[styles.createNewCropBtn]}>
-          <GradientButton gradient={[colors.green, colors.greenDeep]}>
-            <View
-              style={{
-                alignItems: 'center',
-                width: '100%',
-                paddingHorizontal: 20,
-              }}
-            >
-              <Text style={[styles.btnText]}>Crete new crop</Text>
-            </View>
-          </GradientButton>
-        </View>
-      </View>
-    </SafeAreaView>
+          <View style={[styles.createNewCropBtn]}>
+            <GradientButton gradient={[colors.green, colors.greenDeep]}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  width: '100%',
+                  paddingHorizontal: 20,
+                }}
+              >
+                <Text style={[styles.btnText]}>Crete new crop</Text>
+              </View>
+            </GradientButton>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   )
 }
 
