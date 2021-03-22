@@ -22,12 +22,10 @@ const { colors } = constants;
 const ProfileSideTab = ({
   setActiveGradient,
   activeGradient,
-  // currentIndex,
   setCurrentIndex,
 }) => {
   const [coordinates, setCoordinates] = useState([]);
   const [roundBackgroundAnimation] = useState(
-    // new Animated.ValueXY({ x: -10, y: 102 })
     new Animated.ValueXY({ x: -10, y: 84 })
   );
   const [activeIndex, setActiveIndex] = useState(0);
@@ -39,13 +37,13 @@ const ProfileSideTab = ({
   const sideBarTabItems = [
     {
       name: 'notifications',
-      icon: (color) => <Feather name="bell" size={24} color={color} />,
+      icon: (color) => <Feather name='bell' size={24} color={color} />,
       ref: React.createRef(),
       backgroundColor: [colors.purshBlue, colors.blueLigth],
     },
     {
       name: 'create-post',
-      icon: (color) => <Entypo name="plus" size={30} color={color} />,
+      icon: (color) => <Entypo name='plus' size={30} color={color} />,
       ref: React.createRef(),
       backgroundColor: [colors.purshBlueDeep, colors.blue],
     },
@@ -53,7 +51,7 @@ const ProfileSideTab = ({
       name: 'profile',
       icon: (color) => (
         <Ionicons
-          name="md-person-outline"
+          name='md-person-outline'
           size={24}
           color={color}
           style={styles.icon}
@@ -65,7 +63,7 @@ const ProfileSideTab = ({
     },
     {
       name: 'explore',
-      icon: (color) => <Octicons name="globe" size={34} color={color} />,
+      icon: (color) => <Octicons name='globe' size={34} color={color} />,
       ref: React.createRef(),
       activeColor: '#AD0048',
       backgroundColor: ['#AD0048', '#E8357F'],
@@ -74,7 +72,7 @@ const ProfileSideTab = ({
       name: 'calendar',
       icon: (color) => (
         <Ionicons
-          name="md-calendar-outline"
+          name='md-calendar-outline'
           size={24}
           color={color}
           style={styles.icon}
@@ -122,7 +120,7 @@ const ProfileSideTab = ({
   return (
     <SafeAreaView style={styles.tab}>
       <View style={styles.ellipse}>
-        <FontAwesome5 name="ellipsis-h" size={24} color={colors.white} />
+        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} />
       </View>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}

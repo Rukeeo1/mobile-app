@@ -2,6 +2,7 @@ const colors = {
   black: '#000000',
   blue: '#002B55',
   blueLigth: '#085BAC',
+  blue100: '#4099EF',
   green: '#A6CB42',
   greenDeep: '#83B403',
   greenLight: '#dbfa88',
@@ -18,7 +19,7 @@ const colors = {
   white: '#ffffff',
   nearWhite: '#F7F7F7',
   red: '#FF4A95',
-  redDeep: '#AD0048'
+  redDeep: '#AD0048',
 };
 
 export default {
