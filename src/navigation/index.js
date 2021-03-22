@@ -22,8 +22,8 @@ const RootNavigator = () => (
         headerShown: false,
       }}
     >
-      <Screen name='Posts' component={PostsNavigator} />
       <Screen name='Grow-Crop' component={GrowCropNavigator} />
+      <Screen name='Posts' component={PostsNavigator} />
       <Screen name='Settings' component={ProfileNavigator} />
       <Screen name='AuthNavigator' component={AuthNavigator} />
       <Screen name='Onboarding' component={OnboardingLayout} />

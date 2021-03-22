@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
 
 import { SafeArea, GradientButton as Button } from '../../components';
-import Carousel from './Carousel';
+// import Carousel from './Carousel';
 
 import home from '../../assets/home-icon.png';
 import shovel from '../../assets/shovel.png';
@@ -257,7 +257,7 @@ const CropCard = () => {
               will grow your tomatoes.
             </Text>
           </View>
-          <Carousel />
+          {/* <Carousel /> */}
           <View style={{ marginTop: '4%' }}>
             <Video
               ref={video}
