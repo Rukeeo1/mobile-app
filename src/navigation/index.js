@@ -22,11 +22,11 @@ const RootNavigator = () => (
         headerShown: false,
       }}
     >
-      <Screen name="Grow-Crop" component={GrowCropNavigator} />
-      <Screen name="Settings" component={ProfileNavigator} />
-      <Screen name="AuthNavigator" component={AuthNavigator} />
-      <Screen name="Posts" component={PostsNavigator} />
-      <Screen name="Onboarding" component={OnboardingLayout} />
+      <Screen name='Posts' component={PostsNavigator} />
+      <Screen name='Grow-Crop' component={GrowCropNavigator} />
+      <Screen name='Settings' component={ProfileNavigator} />
+      <Screen name='AuthNavigator' component={AuthNavigator} />
+      <Screen name='Onboarding' component={OnboardingLayout} />
     </Navigator>
   </NavigationContainer>
 );
