@@ -1,6 +1,6 @@
 import { AntDesign, EvilIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Image,
   SafeAreaView,
@@ -9,16 +9,29 @@ import {
   Text,
   View
 } from 'react-native'
-import RNPickerSelect from 'react-native-picker-select'
+import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu'
 import { Input } from '../../components/'
 import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
 
 const { colors } = constants
 const CropSearch = () => {
-  const [selectedValue, setSelectedValue] = useState('java')
+  let _menu = null
+
+  setMenuRef = (ref) => {
+    _menu = ref
+  }
+
+  hideMenu = () => {
+    _menu.hide()
+  }
+
+  showMenu = () => {
+    _menu.show()
+  }
+
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
+    <View style={{ flex: 1, backgroundColor: '#fff'}}>
       <SafeAreaView>
         <ScrollView>
           <View>
@@ -49,26 +62,22 @@ const CropSearch = () => {
               <ScrollView horizontal style={[styles.scrollDate]}>
                 <Text style={[styles.clearFilter]}>clear filters</Text>
                 <View>
-                  <RNPickerSelect
-                    onValueChange={(value) => console.log(value)}
-                    items={[
-                      { label: 'JavaScript', value: 'JavaScript' },
-                      { label: 'TypeStript', value: 'TypeStript' },
-                      { label: 'Python', value: 'Python' },
-                      { label: 'Java', value: 'Java' },
-                      { label: 'C++', value: 'C++' },
-                      { label: 'C', value: 'C' },
-                    ]}
-                  />
+                  <Menu
+                    ref={setMenuRef}
+                    button={<Text onPress={showMenu}>Grow in month of</Text>}
+                  >
+                    <MenuItem onPress={hideMenu}>Jan</MenuItem>
+                    <MenuItem onPress={hideMenu}>Feb</MenuItem>
+                    <MenuItem onPress={hideMenu}>March</MenuItem>
+                    <MenuDivider />
+                    <MenuItem onPress={hideMenu}>April</MenuItem>
+                  </Menu>
                 </View>
               </ScrollView>
             </LinearGradient>
           </View>
 
           <View style={[styles.cropSection]}>
-            {/* 
-          carrd of crops 
-        */}
 
             <View style={[styles.cropCardContainer]}>
               <View style={[styles.cropDetails]}>
@@ -214,7 +223,7 @@ const styles = StyleSheet.create({
   createNewCropBtn: {
     padding: 20,
     flex: 1,
-    bottom: '-30%',
+    // bottom: '-30%',
   },
 })
 
