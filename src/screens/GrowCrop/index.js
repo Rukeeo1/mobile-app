@@ -15,8 +15,8 @@ const ProfileNavigator = () => {
         headerShown: false,
       }}
     >
-      <Screen name="Crop-Card" component={CropCard} />
-      <Screen name="Delete-Crop" component={DeleteCrop} />
+      <Screen name='Crop-Card' component={CropCard} />
+      <Screen name='Delete-Crop' component={DeleteCrop} />
     </Navigator>
   );
 };
