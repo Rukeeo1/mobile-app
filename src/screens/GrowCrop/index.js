@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import CropCard from './CropCard';
 import DeleteCrop from './DeleteCrop';
+import PostJournal from '../Posts/PostForm';
 
 const Stack = createStackNavigator();
 
@@ -15,8 +16,9 @@ const ProfileNavigator = () => {
         headerShown: false,
       }}
     >
-      <Screen name="Crop-Card" component={CropCard} />
-      <Screen name="Delete-Crop" component={DeleteCrop} />
+      <Screen name='Post' component={PostJournal} />
+      <Screen name='Delete-Crop' component={DeleteCrop} />
+      <Screen name='Crop-Card' component={CropCard} />
     </Navigator>
   );
 };
