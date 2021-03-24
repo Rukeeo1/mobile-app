@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabIconWrapper: {
-    // marginVertical: 42,
     marginVertical: '35%',
     height: 60,
     width: 60,
@@ -185,7 +184,6 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   tabIconActive: {
-    // top: 534,
     top: 450,
     zIndex: -9,
     backgroundColor: colors.white,

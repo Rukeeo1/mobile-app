@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Platform } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Calendar from './AddToCalendar';
