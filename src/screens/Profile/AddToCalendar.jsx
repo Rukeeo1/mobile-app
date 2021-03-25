@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons'
 import React from 'react'
 import {
   Image,
@@ -43,7 +44,6 @@ const AddToCalendar = () => {
           theme={{
             selectedDayBackgroundColor: '#A6CB42',
             selectedDayTextColor: '#FFF',
-
           }}
         />
       </>
@@ -75,10 +75,7 @@ const AddToCalendar = () => {
               }}
             >
               <Text style={[styles.btnText]}>Grow in February </Text>
-              <Image
-                style={{ width: 25, height: 25 }}
-                source={require('../../assets/search.png')}
-              />
+              <AntDesign name="search1" size={25} color={colors.white} />
             </View>
           </GradientButton>
           <GradientButton gradient={[colors.green, colors.greenDeep]}>
@@ -92,47 +89,53 @@ const AddToCalendar = () => {
               }}
             >
               <Text style={[styles.btnText]}>Jobs</Text>
-              <Image
-                style={{ width: 25, height: 25 }}
-                source={require('../../assets/plus.png')}
-              />
+              <AntDesign name="plus" size={25} color={colors.white} />
             </View>
           </GradientButton>
-
-                <View style={[styles.jobs]}>
-                  <View style={[styles.jobsChild]}>
-                    <Image source={require('../../assets/hang.png')} />
-                    <View style={[styles.jobsText]}>
-                      <Text>Sow Tomatoes</Text>
-                      <Text style={[styles.boldText]}>20 February</Text>
-                    </View>
-                  </View>
-                    <Image style={[styles.jobsImg]} source={require('../../assets/right-arrow-green.png')}/>
+          <View style={{marginTop: 30}}>
+            <View style={[styles.jobs]}>
+              <View style={[styles.jobsChild]}>
+                <Image source={require('../../assets/hang.png')} />
+                <View style={[styles.jobsText]}>
+                  <Text>Sow Tomatoes</Text>
+                  <Text style={[styles.boldText]}>20 February</Text>
                 </View>
-                <View style={[styles.jobs]}>
-                  <View style={[styles.jobsChild]}>
-                    <Image source={require('../../assets/flower.png')} />
-                    <View style={[styles.jobsText]}>
-                      <Text>Sow Tomatoes</Text>
-                      <Text style={[styles.boldText]}>20 February</Text>
-                    </View>
-                  </View>
-                    <Image style={[styles.jobsImg]} source={require('../../assets/right-arrow-green.png')}/>
+              </View>
+              <Image
+                style={[styles.jobsImg]}
+                source={require('../../assets/right-arrow-green.png')}
+              />
+            </View>
+            <View style={[styles.jobs]}>
+              <View style={[styles.jobsChild]}>
+                <Image source={require('../../assets/flower.png')} />
+                <View style={[styles.jobsText]}>
+                  <Text>Sow Tomatoes</Text>
+                  <Text style={[styles.boldText]}>20 February</Text>
                 </View>
-                <View style={[styles.jobs]}>
-                  <View style={[styles.jobsChild]}>
-                    <Image source={require('../../assets/circle.png')} />
-                    <View style={[styles.jobsText]}>
-                      <Text>Sow Tomatoes</Text>
-                      <Text style={[styles.boldText]}>20 February</Text>
-                    </View>
-                  </View>
-                    <Image style={[styles.jobsImg]} source={require('../../assets/right-arrow-green.png')}/>
+              </View>
+              <Image
+                style={[styles.jobsImg]}
+                source={require('../../assets/right-arrow-green.png')}
+              />
+            </View>
+            <View style={[styles.jobs]}>
+              <View style={[styles.jobsChild]}>
+                <Image source={require('../../assets/circle.png')} />
+                <View style={[styles.jobsText]}>
+                  <Text>Sow Tomatoes</Text>
+                  <Text style={[styles.boldText]}>20 February</Text>
                 </View>
-
-                <View>
-                  <Text style={[styles.viewMore]}>View more</Text>
-                </View>
+              </View>
+              <Image
+                style={[styles.jobsImg]}
+                source={require('../../assets/right-arrow-green.png')}
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={[styles.viewMore]}>View more</Text>
+          </View>
 
           <GradientButton gradient={[colors.blueLigth, colors.blue]}>
             <View
@@ -145,10 +148,7 @@ const AddToCalendar = () => {
               }}
             >
               <Text style={[styles.btnText]}>What you’re harvesting</Text>
-              <Image
-                style={{ width: 25, height: 25 }}
-                source={require('../../assets/information.png')}
-              />
+              <AntDesign name="info" size={28} color={colors.white} />
             </View>
           </GradientButton>
 
@@ -177,66 +177,73 @@ const AddToCalendar = () => {
 
           <View style={[styles.flowers]}>
             <View>
-            <Image style={[styles.flowerImg]} source={require('../../assets/avatarimg.png')}/>
+              <Image
+                style={[styles.flowerImg]}
+                source={require('../../assets/avatarimg.png')}
+              />
             </View>
 
             <View style={[styles.flowerText]}>
-              <Text>Chillies</Text>
+              <Text style={{fontSize: 20}}>Chillies</Text>
               <Text style={[styles.boldText]}>Intermediate</Text>
             </View>
           </View>
           <View style={[styles.flowers]}>
             <View>
-            <Image style={[styles.flowerImg]} source={require('../../assets/avatarimg.png')}/>
+              <Image
+                style={[styles.flowerImg]}
+                source={require('../../assets/avatarimg.png')}
+              />
             </View>
 
             <View style={[styles.flowerText]}>
-              <Text>Chillies</Text>
+              <Text style={{fontSize: 20}}>Chillies</Text>
               <Text style={[styles.boldText]}>Intermediate</Text>
             </View>
           </View>
           <View style={[styles.flowers]}>
             <View>
-            <Image style={[styles.flowerImg]} source={require('../../assets/avatarimg.png')}/>
+              <Image
+                style={[styles.flowerImg]}
+                source={require('../../assets/avatarimg.png')}
+              />
             </View>
 
             <View style={[styles.flowerText]}>
-              <Text>Chillies</Text>
+              <Text style={{fontSize: 20}}>Chillies</Text>
               <Text style={[styles.boldText]}>Intermediate</Text>
             </View>
           </View>
           <View style={[styles.flowers]}>
             <View>
-            <Image style={[styles.flowerImg]} source={require('../../assets/avatarimg.png')}/>
+              <Image
+                style={[styles.flowerImg]}
+                source={require('../../assets/avatarimg.png')}
+              />
             </View>
 
             <View style={[styles.flowerText]}>
-              <Text>Chillies</Text>
-              <Text style={[styles.boldText]}>Intermediate</Text>
+              <Text style={{fontSize: 20}}>Chillies</Text>
+              <Text>Intermediate</Text>
             </View>
           </View>
-         
-
 
           <View>
             <Text style={[styles.explore]}>Continue to explore</Text>
             <GradientButton gradient={[colors.red, colors.redDeep]}>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-                width: '100%',
-                paddingHorizontal: 20,
-              }}
-            >
-              <Text style={[styles.btnText]}>Grow in February</Text>
-              <Image
-                style={{ width: 25, height: 25 }}
-                source={require('../../assets/search.png')}
-              />
-            </View>
-          </GradientButton>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  width: '100%',
+                  paddingHorizontal: 20,
+                }}
+              >
+                <Text style={[styles.btnText]}>Grow in February</Text>
+                <AntDesign name="plus" size={25} color={colors.white} />
+              </View>
+            </GradientButton>
           </View>
         </View>
       </ScrollView>
@@ -256,41 +263,51 @@ const styles = StyleSheet.create({
     color: colors.green,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 5
+    marginTop: 5,
   },
   jobs: {
-   flexDirection: 'row',
-   alignItems: 'center',
-   justifyContent: 'space-between',
-   paddingVertical: 10,
-   paddingHorizontal: 20,
-   borderRadius: 50,
-   borderWidth: 2,
-   borderColor: colors.greyLight,
-   height: 78
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 5,
+    borderRadius: 50,
+    height: 78,
+    backgroundColor: colors.white,
+    // shadow iOS
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0.5,
+      height: 0.4,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    // shadow android
+    elevation: 10,
   },
   jobsChild: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   jobsText: {
-    marginLeft: 20
+    marginLeft: 20,
   },
   jobsImg: {
     width: 20,
-    height: 20
+    height: 20,
   },
   viewMore: {
     color: colors.green,
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 20,
-    fontSize: 18
+    fontSize: 18,
   },
   quote: {
     textAlign: 'center',
-    marginVertical: 10
+    marginVertical: 10,
   },
   calendarContainer: {
     marginTop: 60,
@@ -307,38 +324,46 @@ const styles = StyleSheet.create({
   favouriteText: {
     textAlign: 'center',
     color: colors.green,
-    fontWeight: 'bold',
     maxWidth: 222,
+    fontSize: 20
   },
   btnText: {
     color: colors.white,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   flowers: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.greyLight,
-    marginVertical: 5
+    marginVertical: 5,
+    backgroundColor: colors.white,
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0.5,
+      height: 0.4,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    // shadow android
+    elevation: 10,
   },
   flowerImg: {
     width: 70,
     height: 70,
-    borderRadius: 70/2
+    borderRadius: 70 / 2,
   },
   flowerText: {
-    marginLeft: 20
+    marginLeft: 20,
   },
   explore: {
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 8,
-    marginTop: 6
+    marginTop: 6,
   },
   boldText: {
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 })
 
 export default AddToCalendar
