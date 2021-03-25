@@ -5,14 +5,14 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity,
+
+  TouchableOpacity, View
 } from 'react-native';
 import { GradientButton } from '../../components/Button';
-
+import constants from '../../constants';
 import ShareModal from './ShareModal';
 
-import constants from '../../constants';
+
 
 const { colors } = constants;
 
@@ -29,6 +29,7 @@ const FirstView = () => {
         contentContainerStyle={{
           flexGrow: 1,
         }}
+        showsVerticalScrollIndicator={false}
       >
         <Image
           source={require('../../assets/profile.png')}
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 45,
     marginVertical: 10,
+    fontWeight: '100'
   },
   edit: {
     marginVertical: 15,

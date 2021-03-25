@@ -1,3 +1,10 @@
+import {
+  Entypo,
+  Feather,
+  FontAwesome5,
+  Ionicons,
+  Octicons,
+} from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
   Animated,
@@ -7,14 +14,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  Entypo,
-  Feather,
-  FontAwesome5,
-  Ionicons,
-  Octicons,
-} from '@expo/vector-icons';
-
 import constants from '../../constants/index';
 
 const { colors } = constants;
@@ -23,6 +22,7 @@ const ProfileSideTab = ({
   setActiveGradient,
   activeGradient,
   setCurrentIndex,
+  indexOfItemToShow,
 }) => {
   const [coordinates, setCoordinates] = useState([]);
   const [roundBackgroundAnimation] = useState(
@@ -39,7 +39,7 @@ const ProfileSideTab = ({
       name: 'notifications',
       icon: (color) => <Feather name='bell' size={24} color={color} />,
       ref: React.createRef(),
-      backgroundColor: [colors.purshBlue, colors.blueLigth],
+      backgroundColor: [colors.green, colors.greenDeep],
     },
     {
       name: 'create-post',
@@ -98,6 +98,7 @@ const ProfileSideTab = ({
   };
 
   useEffect(() => {
+    // get coordinates/positions of sidebar items/icons on the screen (basically x and y axis)
     const intialCoordinatesDetails = [];
     sideBarTabItems.forEach((item) => {
       item.ref.current?.measureLayout(
@@ -116,6 +117,13 @@ const ProfileSideTab = ({
       );
     });
   }, []);
+
+  useEffect(() => {
+    if (indexOfItemToShow && coordinates.length === 5) {
+      setCurrentIndex(indexOfItemToShow);
+      moveBall(indexOfItemToShow);
+    }
+  }, [coordinates.length]);
 
   return (
     <SafeAreaView style={styles.tab}>
@@ -175,7 +183,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabIconWrapper: {
-    // marginVertical: 42,
     marginVertical: '35%',
     height: 60,
     width: 60,
@@ -185,7 +192,6 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   tabIconActive: {
-    // top: 534,
     top: 450,
     zIndex: -9,
     backgroundColor: colors.white,

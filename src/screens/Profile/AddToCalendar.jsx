@@ -57,6 +57,7 @@ const AddToCalendar = () => {
         contentContainerStyle={{
           flexGrow: 1,
         }}
+        showsVerticalScrollIndicator={false}
       >
         <View style={[styles.calendarContainer]}>
           {renderCalendar()}

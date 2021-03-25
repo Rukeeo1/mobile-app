@@ -7,8 +7,11 @@ import {
   Text,
   View,
 } from 'react-native';
+
+import { Button, Header, Input, Logo } from '../../components';
+
 import growthLogo from '../../assets/growth_logo.png';
-import { Button, Header, Input } from '../../components';
+
 import constants from '../../constants';
 
 export const Register = ({ navigation }) => {
@@ -27,21 +30,22 @@ export const Register = ({ navigation }) => {
     }));
   };
 
-  const submit = () => {
-    
-  }
+  const submit = () => {};
 
   const { colors } = constants;
 
   return (
     <SafeAreaView style={styles.parentContainer}>
-      <Header onIconPress={() => navigation.goBack()} />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
-        <Image source={growthLogo} style={styles.image} />
+      <Header onIconPress={() => navigation.goBack()} />
+      <Logo
+        source={growthLogo}
+        logoStyles={{ marginTop: '10%', marginBottom: '10%' }}
+      />
         <View style={styles.container}>
           <Input
             inputStyle={styles.input}
@@ -134,13 +138,14 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: '20%',
-    width: '90%',
+    width: '100%',
     margin: 5,
     alignSelf: 'center',
     padding: 5,
   },
   container: {
     width: '100%',
+    paddingHorizontal:'5%'
   },
   image: {
     marginTop: '25%',

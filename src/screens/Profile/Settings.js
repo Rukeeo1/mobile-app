@@ -8,6 +8,7 @@ import {
   StatusBar,
   Platform,
   Text,
+  Dimensions,
 } from 'react-native';
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,7 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { Header, Input, GradientButton } from '../../components';
+import { Header, Input, GradientButton, SafeArea } from '../../components';
 
 import constants from '../../constants';
 
@@ -83,92 +84,93 @@ const Settings = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: '5%' }}>
-        <View style={{flex: 1}}>
-          <Header
-            title="Profile Settings"
-            onIconPress={() => navigation.goBack()}
-          />
-
-          <View style={styles.profileImageContainer}>
-            {values.profileImageUri ? (
-              <Image
-                source={{ uri: values.profileImageUri }}
-                style={styles.image}
-              />
-            ) : (
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flex: 1,
-                  height: '100%',
-                  backgroundColor: colors.grey100,
-                }}
-              >
-                <Ionicons
-                  name="ios-person-outline"
-                  size={45}
-                  color={colors.white}
-                />
-              </View>
-            )}
-            <TouchableOpacity
-              style={styles.cameraContainer}
-              onPress={pickImage}
+    <SafeArea>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Header
+          title='Profile Settings'
+          onIconPress={() => navigation.goBack()}
+        />
+        <View style={styles.profileImageContainer}>
+          {values.profileImageUri ? (
+            <Image
+              source={{ uri: values.profileImageUri }}
+              style={styles.image}
+            />
+          ) : (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                height: '100%',
+                backgroundColor: colors.grey100,
+              }}
             >
               <Ionicons
-                name="ios-camera-outline"
-                size={30}
-                color={constants.colors.green}
+                name='ios-person-outline'
+                size={45}
+                color={colors.white}
               />
-            </TouchableOpacity>
-          </View>
-          <View style={{ paddingLeft: '25%' }}>
-            <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
-          </View>
-          <View style={styles.profileDetails}>
-            <Input
-              value={values.name}
-              placeholder="Enter your name"
-              onChangeText={handleChange('name')}
-              onBlur={handleBlur('name')}
-              labelText="Name"
-              labelStyle={styles.labelText}
-              errorMessage={errors.name}
+            </View>
+          )}
+          <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
+            <Ionicons
+              name='ios-camera-outline'
+              size={30}
+              color={constants.colors.green}
             />
-            <Input
-              value={values.bio}
-              placeholder="Enter your bio"
-              onChangeText={handleChange('bio')}
-              onBlur={handleBlur('bio')}
-              labelText="Bio"
-              labelStyle={styles.labelText}
-              containerStyle={styles.input}
-              errorMessage={errors.bio}
-            />
-            <Input
-              value={values.location}
-              placeholder="Enter your Location"
-              onChangeText={handleChange('location')}
-              onBlur={handleBlur('location')}
-              labelText="Location"
-              labelStyle={styles.labelText}
-              containerStyle={styles.input}
-              errorMessage={errors.location}
-            />
-            <GradientButton
-              title="Save"
-              onPress={handleSubmit}
-              gradient={[constants.colors.green, '#83B403']}
-              coverStyle={styles.button}
-              onPress={() => navigation.navigate('Main-Profile')}
-            />
-          </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{ paddingLeft: '25%' }}>
+          <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
+        </View>
+
+        <View style={styles.profileDetails}>
+          <Input
+            value={values.name}
+            placeholder='Enter your name'
+            onChangeText={handleChange('name')}
+            onBlur={handleBlur('name')}
+            labelText='Name'
+            labelStyle={styles.labelText}
+            errorMessage={errors.name}
+          />
+          <Input
+            value={values.bio}
+            placeholder='Enter your bio'
+            onChangeText={handleChange('bio')}
+            onBlur={handleBlur('bio')}
+            labelText='Bio'
+            labelStyle={styles.labelText}
+            containerStyle={styles.input}
+            errorMessage={errors.bio}
+          />
+          <Input
+            value={values.location}
+            placeholder='Enter your Location'
+            onChangeText={handleChange('location')}
+            onBlur={handleBlur('location')}
+            labelText='Location'
+            labelStyle={styles.labelText}
+            containerStyle={styles.input}
+            errorMessage={errors.location}
+          />
+          <GradientButton
+            title='Save'
+            onPress={handleSubmit}
+            gradient={[constants.colors.green, '#83B403']}
+            coverStyle={styles.button}
+            onPress={() => navigation.navigate('Main-Profile', {
+              //this would be refactored later... when the sideBar component is refactored...
+              indexOfItemToShow: 2
+            })}
+          />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </SafeArea>
   );
 };
 
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: constants.colors.white,
   },
   profileImageContainer: {
-    height: '50%',
+    height: Dimensions.get('screen').height * 0.4,
     backgroundColor: colors.grey100,
   },
   image: { height: '100%', width: '100%' },
