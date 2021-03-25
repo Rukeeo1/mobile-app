@@ -1,19 +1,19 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
+  Platform, SafeAreaView,
   StyleSheet,
   Text,
-  View,
-  Platform,
+  View
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-
+import constants from '../../constants/index';
+import Notification from "../Notification/Notification";
 import Calendar from './AddToCalendar';
 import Explore from './Explore';
 import FirstView from './FirstView';
 import ProfileSideTab from './ProfileSideTab';
 
-import constants from '../../constants/index';
+
 
 const { colors } = constants;
 
@@ -21,7 +21,7 @@ const Main = ({ currentIndex }) => {
   return (
     <View style={styles.main}>
       {currentIndex === 0 ? (
-        <View />
+        <Notification />
       ) : currentIndex === 1 ? (
         <View>
           <Text>1</Text>
