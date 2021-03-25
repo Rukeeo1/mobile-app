@@ -1,3 +1,10 @@
+import {
+  Entypo,
+  Feather,
+  FontAwesome5,
+  Ionicons,
+  Octicons
+} from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
   Animated,
@@ -5,17 +12,10 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import {
-  Entypo,
-  Feather,
-  FontAwesome5,
-  Ionicons,
-  Octicons,
-} from '@expo/vector-icons';
-
 import constants from '../../constants/index';
+
 
 const { colors } = constants;
 
@@ -39,7 +39,7 @@ const ProfileSideTab = ({
       name: 'notifications',
       icon: (color) => <Feather name='bell' size={24} color={color} />,
       ref: React.createRef(),
-      backgroundColor: [colors.purshBlue, colors.blueLigth],
+      backgroundColor: [colors.green, colors.greenDeep],
     },
     {
       name: 'create-post',
