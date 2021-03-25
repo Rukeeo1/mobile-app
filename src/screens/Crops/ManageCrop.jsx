@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     textAlign: 'center',
+    fontWeight: '100'
   },
   growCalendarCard: {
     backgroundColor: colors.greenTransparent,
