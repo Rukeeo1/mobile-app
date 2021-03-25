@@ -1,19 +1,14 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import {
-  Platform, SafeAreaView,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-import constants from '../../constants/index';
-import Notification from "../Notification/Notification";
+import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+
+import Notification from '../Notification/Notification';
 import Calendar from './AddToCalendar';
 import Explore from './Explore';
 import FirstView from './FirstView';
 import ProfileSideTab from './ProfileSideTab';
 
-
+import constants from '../../constants/index';
 
 const { colors } = constants;
 
@@ -37,13 +32,18 @@ const Main = ({ currentIndex }) => {
   );
 };
 
-const MainProfile = ({ navigation }) => {
+const MainProfile = ({ navigation, route }) => {
   const [activeGradient, setActiveGradient] = useState([
     colors.greenDeep,
     colors.green,
   ]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const { indexOfItemToShow } = route.params;
+
+  //this sets the default sidebar item when comeing from another screen... we need to look for a way to clean it up...
+
   return (
     <SafeAreaView
       style={{ flex: 1, paddingTop: Platform.OS === 'android' ? 25 : 0 }}
@@ -57,6 +57,8 @@ const MainProfile = ({ navigation }) => {
             activeGradient={activeGradient}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
+            //indexofitemtoshow ==> should be refactored to take itemName instead
+            indexOfItemToShow={indexOfItemToShow}
           />
         </View>
       </LinearGradient>

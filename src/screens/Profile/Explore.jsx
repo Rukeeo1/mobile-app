@@ -23,6 +23,7 @@ const Explore = () => {
         contentContainerStyle={{
           flexGrow: 1,
         }}
+        showsVerticalScrollIndicator={false}
       >
         <View style={[styles.container]}>
           {/* <View style={[styles.searchContainer]}>

@@ -1,20 +1,20 @@
-import React from 'react'
+import React from 'react';
 import {
-    Image,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
-} from 'react-native'
-import constants from '../../constants'
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import constants from '../../constants';
 
-const { colors } = constants
+const { colors } = constants;
 const Notification = () => {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <View style={[styles.topSection]}>
               <Text style={[styles.title]}>Notifications</Text>
@@ -76,7 +76,8 @@ const Notification = () => {
                 </View>
                 <View style={[styles.cardText]}>
                   <Text style={[styles.text]}>
-                  Don’t forget to Sow/Plant It today! Update your crop card to tick off your job 🌱
+                    Don’t forget to Sow/Plant It today! Update your crop card to
+                    tick off your job 🌱
                   </Text>
                   <Text style={[styles.cardSubText]}>
                     06 December at 10:04am
@@ -87,7 +88,7 @@ const Notification = () => {
 
             <View style={[styles.Line]} />
 
-            <View style={[styles.sections, ]}>
+            <View style={[styles.sections]}>
               <Text style={[styles.sectionTitle]}>This week</Text>
 
               <View style={[styles.Card]}>
@@ -99,7 +100,8 @@ const Notification = () => {
                 </View>
                 <View style={[styles.cardText]}>
                   <Text style={[styles.text]}>
-                  Don’t forget to Sow/Plant It today! Update your crop card to tick off your job 🌱
+                    Don’t forget to Sow/Plant It today! Update your crop card to
+                    tick off your job 🌱
                   </Text>
                   <Text style={[styles.cardSubText]}>
                     06 December at 10:04am
@@ -115,7 +117,7 @@ const Notification = () => {
                 </View>
                 <View style={[styles.cardText]}>
                   <Text style={[styles.text]}>
-                  You have jobs to tick off today 🧤
+                    You have jobs to tick off today 🧤
                   </Text>
                   <Text style={[styles.cardSubText]}>
                     06 December at 10:04am
@@ -168,8 +170,8 @@ const Notification = () => {
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   screenContainer: {
@@ -206,7 +208,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   text: {
-      maxWidth: '90%'
+    maxWidth: '90%',
   },
   cardSubText: {
     color: colors.greyDark,
@@ -225,7 +227,7 @@ const styles = StyleSheet.create({
   },
   markAsRead: {
     color: colors.green,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   Line: {
     borderBottomColor: colors.grey100,
@@ -235,12 +237,12 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   sectionTitle: {
-      marginBottom: 10,
-      fontWeight: 'bold'
+    marginBottom: 10,
+    fontWeight: 'bold',
   },
   sections: {
-      paddingLeft: 25,
-      paddingRight: 25
-  }
-})
-export default Notification
+    paddingLeft: 25,
+    paddingRight: 25,
+  },
+});
+export default Notification;
