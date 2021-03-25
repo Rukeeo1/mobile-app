@@ -163,7 +163,10 @@ const Settings = ({ navigation }) => {
             onPress={handleSubmit}
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
-            onPress={() => navigation.navigate('Main-Profile')}
+            onPress={() => navigation.navigate('Main-Profile', {
+              //this would be refactored later... when the sideBar component is refactored...
+              indexOfItemToShow: 2
+            })}
           />
         </View>
       </ScrollView>
@@ -181,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: constants.colors.white,
   },
   profileImageContainer: {
-    height: Dimensions.get('screen').height * 0.5,
+    height: Dimensions.get('screen').height * 0.4,
     backgroundColor: colors.grey100,
   },
   image: { height: '100%', width: '100%' },

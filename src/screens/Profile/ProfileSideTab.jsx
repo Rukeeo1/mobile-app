@@ -3,7 +3,7 @@ import {
   Feather,
   FontAwesome5,
   Ionicons,
-  Octicons
+  Octicons,
 } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
@@ -12,10 +12,9 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import constants from '../../constants/index';
-
 
 const { colors } = constants;
 
@@ -23,6 +22,7 @@ const ProfileSideTab = ({
   setActiveGradient,
   activeGradient,
   setCurrentIndex,
+  indexOfItemToShow,
 }) => {
   const [coordinates, setCoordinates] = useState([]);
   const [roundBackgroundAnimation] = useState(
@@ -98,6 +98,7 @@ const ProfileSideTab = ({
   };
 
   useEffect(() => {
+    // get coordinates/positions of sidebar items/icons on the screen (basically x and y axis)
     const intialCoordinatesDetails = [];
     sideBarTabItems.forEach((item) => {
       item.ref.current?.measureLayout(
@@ -116,6 +117,13 @@ const ProfileSideTab = ({
       );
     });
   }, []);
+
+  useEffect(() => {
+    if (indexOfItemToShow && coordinates.length === 5) {
+      setCurrentIndex(indexOfItemToShow);
+      moveBall(indexOfItemToShow);
+    }
+  }, [coordinates.length]);
 
   return (
     <SafeAreaView style={styles.tab}>

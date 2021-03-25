@@ -29,6 +29,7 @@ const FirstView = () => {
         contentContainerStyle={{
           flexGrow: 1,
         }}
+        showsVerticalScrollIndicator={false}
       >
         <Image
           source={require('../../assets/profile.png')}

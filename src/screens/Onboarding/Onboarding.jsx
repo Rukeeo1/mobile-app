@@ -2,7 +2,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import Swiper from 'react-native-web-swiper';
-import { Button } from '../../components';
+
+import { Button, GradientButton } from '../../components';
+
 import constants from '../../constants';
 
 
@@ -75,7 +77,7 @@ const OnboardingLayout = ({navigation}) => {
               every step of the way.
             </Text>
 
-            <Button
+            <GradientButton
               gradient={[colors.green, colors.greenDeep]}
               coverStyle={{
                 margin: 20,
