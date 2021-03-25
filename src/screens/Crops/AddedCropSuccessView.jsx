@@ -20,11 +20,11 @@ const AddedSuccess = () => {
           justifyContent: 'flex-start',
         }}
       >
-        <Text style={{ textAlign: 'center', marginTop: '30%', fontSize: 60, color: colors.white
+        <Text style={{ textAlign: 'center', marginTop: '30%', fontSize: 60, color: colors.white, fontWeight: '100'
      }}>
           Great
         </Text>
-        <Text style={{ textAlign: 'center', fontSize: 60, color: colors.white}}>
+        <Text style={{ textAlign: 'center', fontSize: 60, color: colors.white, fontWeight: '100'}}>
           Choice!
         </Text>
         <Text style={{ textAlign: 'center', color: colors.white }}>Added to calendar</Text>

@@ -2,12 +2,12 @@ import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import {
-    Image,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native'
 import { Input } from '../../components/'
 import { GradientButton } from '../../components/Button'
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 42,
     color: colors.white,
     marginTop: 5,
+    fontWeight: '100'
   },
   titleTag: { flexDirection: 'row', alignItems: 'center', marginBottom: 30 },
   searchForm: {
