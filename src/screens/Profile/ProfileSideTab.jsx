@@ -14,6 +14,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+
 import constants from '../../constants/index';
 
 const { colors } = constants;
@@ -23,6 +25,11 @@ const ProfileSideTab = ({
   activeGradient,
   setCurrentIndex,
   indexOfItemToShow,
+  handleNavigation,
+  navigation,
+  setDefaultPostImage,
+  currentIndex,
+  onClickEllipse,
 }) => {
   const [coordinates, setCoordinates] = useState([]);
   const [roundBackgroundAnimation] = useState(
@@ -87,6 +94,10 @@ const ProfileSideTab = ({
   const moveBall = (itemPosition) => {
     const itemsCoordinates = coordinates[itemPosition];
 
+    if (sideBarTabItems[itemPosition].name === 'create-post') {
+      handleNavigation('Posts');
+    }
+
     Animated.spring(roundBackgroundAnimation, {
       toValue: { x: -10, y: itemsCoordinates?.y },
       useNativeDriver: false,
@@ -118,18 +129,28 @@ const ProfileSideTab = ({
     });
   }, []);
 
+  console.log(currentIndex, 'this is current index', indexOfItemToShow);
+
   useEffect(() => {
     if (indexOfItemToShow && coordinates.length === 5) {
+      //currentindex handles the Icon/Menu Item to display
       setCurrentIndex(indexOfItemToShow);
+
+      //move the active circle to the activeItem
       moveBall(indexOfItemToShow);
+
+      //clears the route params...so that indexOfItemToShow doesn't keep clashing with currentinde
+      navigation.setParams({
+        indexOfItemToShow: null,
+      });
     }
-  }, [coordinates.length]);
+  }, [coordinates.length, indexOfItemToShow, currentIndex]);
 
   return (
     <SafeAreaView style={styles.tab}>
-      <View style={styles.ellipse}>
+      <TouchableOpacity style={styles.ellipse} onPress={onClickEllipse}>
         <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} />
-      </View>
+      </TouchableOpacity>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
         ref={containerRef}
