@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+
 import { useFormik } from 'formik';
 import { Ionicons } from '@expo/vector-icons';
 import * as Yup from 'yup';
@@ -20,7 +21,12 @@ import constants from '../../constants/';
 
 const { colors } = constants;
 
-const PostForm = ({ navigation }) => {
+const PostForm = ({
+  navigation,
+  route,
+  defaultPostImage = '',
+  currentIndex,
+}) => {
   const PostSchema = Yup.object().shape({
     post: Yup.string()
       .required('Required')
@@ -35,15 +41,17 @@ const PostForm = ({ navigation }) => {
     setFieldValue,
     isValid,
     errors,
+    postImageUri,
   } = useFormik({
     initialValues: {
       post: '',
       plantName: '',
       plantVariety: '',
-      postImageUri: '',
+      postImageUri: defaultPostImage || '',
       isPublic: false,
     },
-    validationSchema: PostSchema,
+    // validationSchema: PostSchema,
+    // enableReinitialize: true,
   });
 
   const [post, setPost] = useState({
@@ -66,16 +74,38 @@ const PostForm = ({ navigation }) => {
     if (!result.cancelled) {
       setPost((prevState) => ({
         ...prevState,
-        postImageUri: result.uri,
+        postImageUri: result?.uri,
       }));
+      // setFieldValue('postImageUri', result?.uri);
     }
   };
+
+  React.useEffect(() => {
+    if (defaultPostImage) {
+      setFieldValue('postImageUri', defaultPostImage);
+      setPost((prevState) => ({
+        ...prevState,
+        postImageUri: defaultPostImage,
+      }));
+    }
+    pickImage();
+  }, [defaultPostImage, currentIndex]);
+
+  const goBack = () => {
+    navigation.navigate('Settings', {
+      screen: 'Main-Profile',
+      params: {
+        indexOfItemToShow: 3,
+      },
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps='never'>
         <Header
           title='Post'
-          onIconPress={() => navigation.goBack()}
+          onIconPress={() => goBack()}
           containerStyle={styles.headerStyle}
         />
         <View style={styles.postInput}>
@@ -128,18 +158,22 @@ const PostForm = ({ navigation }) => {
           <Text>Add to public profile</Text>
           <Switch
             trackColor={{ false: '#767577', true: colors.pink }}
-            value={values.isPublic}
-            onValueChange={(value) => setFieldValue('isPublic', value)}
+            value={post.isPublic}
+            onValueChange={(value) => {
+              setPost((prevState) => ({
+                ...prevState,
+                isPublic: value,
+              }));
+            }}
           />
         </View>
         <View style={styles.footer}>
-          {values.isPublic && values.post && (
-            <Button
-              title='Share'
-              gradient={[colors.green, colors.greenDeep]}
-              onPress={() => {}}
-            />
-          )}
+          <Button
+            title='Share'
+            gradient={[colors.green, colors.greenDeep]}
+            //the "settings title for this would be refactored to profile"
+            onPress={() => goBack()}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

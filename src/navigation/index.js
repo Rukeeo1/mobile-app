@@ -8,6 +8,7 @@ import {
   ProfileNavigator,
   PostsNavigator,
   GrowCropNavigator,
+  ArticleNavigator,
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const RootNavigator = () => (
       <Screen name='AuthNavigator' component={AuthNavigator} />
       <Screen name='Onboarding' component={OnboardingLayout} />
       <Screen name='Settings' component={ProfileNavigator} />
+      <Screen name='Article' component={ArticleNavigator} />
       <Screen name='Grow-Crop' component={GrowCropNavigator} />
       <Screen name='Posts' component={PostsNavigator} />
     </Navigator>
