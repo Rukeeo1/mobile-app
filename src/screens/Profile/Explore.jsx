@@ -1,5 +1,5 @@
 import { EvilIcons } from '@expo/vector-icons';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -26,24 +26,6 @@ const Explore = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.container]}>
-          {/* <View style={[styles.searchContainer]}>
-            <Input
-              placeholder="Search"
-              containerStyle={styles.searchInputContainer}
-              inputStyle={{ marginTop: -10, paddingRight: 10 }}
-            >
-              <EvilIcons
-                name="search"
-                size={24}
-                color={colors.blue}
-                style={{
-                  right: 10,
-                  top: '30%',
-                  position: 'absolute',
-                }}
-              />
-            </Input>
-          </View> */}
           <View style={styles.searchBarWrapper}>
             <Input
               placeholder='Search'
@@ -61,9 +43,6 @@ const Explore = () => {
                 }}
               />
             </Input>
-            {/* <TouchableOpacity style={styles.cancelContainer}>
-              <Text style={styles.cancelText}>Cancel</Text>
-            </TouchableOpacity> */}
           </View>
 
           <View style={[styles.flowercircle]}>
@@ -126,7 +105,7 @@ const Explore = () => {
               </Text>
             </View>
           </View>
-        </View> 
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -134,17 +113,7 @@ const Explore = () => {
 
 const styles = StyleSheet.create({
   container: {},
-  // searchInputContainer: {
-  //   backgroundColor: colors.grey,
-  //   justifyContent: 'center',
-  //   borderRadius: 20,
-  //   height: 46,
-  //   paddingLeft: 15,
-  //   paddingRight: 25,
-  //   paddingTop: 25,
-  //   paddingBottom: 25,
-  //   flex: 1,
-  // },
+
   searchContainer: {
     marginTop: 55,
     marginHorizontal: 25,
