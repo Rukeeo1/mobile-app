@@ -10,28 +10,27 @@ import {
   View
 } from 'react-native'
 import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu'
-import { Input } from '../../components/'
-import { GradientButton } from '../../components/Button'
+import { GradientButton, Input } from '../../components/'
 import constants from '../../constants'
 
 const { colors } = constants
 const CropSearch = () => {
   let _menu = null
 
-  setMenuRef = (ref) => {
+  let setMenuRef = (ref) => {
     _menu = ref
   }
 
-  hideMenu = () => {
+  let hideMenu = () => {
     _menu.hide()
   }
 
-  showMenu = () => {
+  let showMenu = () => {
     _menu.show()
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff'}}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <SafeAreaView>
         <ScrollView>
           <View>
@@ -60,25 +59,45 @@ const CropSearch = () => {
               </View>
 
               <ScrollView horizontal style={[styles.scrollDate]}>
-                <Text style={[styles.clearFilter]}>clear filters</Text>
-                <View>
-                  <Menu
-                    ref={setMenuRef}
-                    button={<Text onPress={showMenu}>Grow in month of</Text>}
+                <View style={[styles.optionsContainer, {borderTopLeftRadius: 100/2, borderTopRightRadius: 100/2}]}>
+                  <Text style={[styles.clearFilter]}>clear filters</Text>
+                  <GradientButton
+                    
+                    gradient={[colors.red, colors.redDeep]}
                   >
-                    <MenuItem onPress={hideMenu}>Jan</MenuItem>
-                    <MenuItem onPress={hideMenu}>Feb</MenuItem>
-                    <MenuItem onPress={hideMenu}>March</MenuItem>
-                    <MenuDivider />
-                    <MenuItem onPress={hideMenu}>April</MenuItem>
-                  </Menu>
+                    <Menu
+                      ref={setMenuRef}
+                      style={{width: 100}}
+                      
+                      button={<Text onPress={showMenu} style={{ color: colors.white, width: '100%'}}>Grow in February</Text>}
+                    >
+                      <ScrollView>
+                      <MenuItem style={{width: '100%'}} onPress={hideMenu}>Jan</MenuItem>
+                      <MenuItem onPress={hideMenu}>Feb</MenuItem>
+                      <MenuItem onPress={hideMenu}>March</MenuItem>
+                      <MenuDivider />
+                      <MenuItem onPress={hideMenu}>April</MenuItem>
+                      <MenuItem onPress={hideMenu}>May</MenuItem>
+                      <MenuItem onPress={hideMenu}>June</MenuItem>
+                      <MenuItem onPress={hideMenu}>March</MenuItem>
+                      <MenuDivider />
+                      <MenuItem onPress={hideMenu}>July</MenuItem>
+                      <MenuItem onPress={hideMenu}>August</MenuItem>
+                      <MenuItem onPress={hideMenu}>September</MenuItem>
+                      <MenuItem onPress={hideMenu}>October</MenuItem>
+                      <MenuDivider />
+                      <MenuItem onPress={hideMenu}>November</MenuItem>
+                      <MenuItem onPress={hideMenu}>December</MenuItem>
+                      </ScrollView>
+                    </Menu>
+                  </GradientButton>
+                  
                 </View>
               </ScrollView>
             </LinearGradient>
           </View>
 
           <View style={[styles.cropSection]}>
-
             <View style={[styles.cropCardContainer]}>
               <View style={[styles.cropDetails]}>
                 <Image
@@ -157,6 +176,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 50 / 2,
     width: '80%',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   cancelText: {
     color: colors.white,
