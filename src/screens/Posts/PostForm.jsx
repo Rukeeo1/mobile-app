@@ -91,14 +91,21 @@ const PostForm = ({
     pickImage();
   }, [defaultPostImage, currentIndex]);
 
-  console.log(route, 'POsts');
+  const goBack = () => {
+    navigation.navigate('Settings', {
+      screen: 'Main-Profile',
+      params: {
+        indexOfItemToShow: 3,
+      },
+    });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps='never'>
         <Header
           title='Post'
-          onIconPress={() => navigation.goBack()}
+          onIconPress={() => goBack()}
           containerStyle={styles.headerStyle}
         />
         <View style={styles.postInput}>
@@ -165,12 +172,7 @@ const PostForm = ({
             title='Share'
             gradient={[colors.green, colors.greenDeep]}
             //the "settings title for this would be refactored to profile"
-            onPress={() => navigation.navigate('Settings', {
-              screen: 'Main-Profile',
-              params: {
-                indexOfItemToShow: 3
-              }
-            })}
+            onPress={() => goBack()}
           />
         </View>
       </ScrollView>
