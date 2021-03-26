@@ -25,6 +25,7 @@ const ProfileSideTab = ({
   activeGradient,
   setCurrentIndex,
   indexOfItemToShow,
+
   handleNavigation,
   navigation,
   setDefaultPostImage,

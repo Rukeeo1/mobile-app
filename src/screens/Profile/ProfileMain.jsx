@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
+
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Notification from '../Notification/Notification';
@@ -78,11 +80,13 @@ const MainProfile = ({ navigation, route }) => {
             setCurrentIndex={setCurrentIndex}
             //indexofitemtoshow ==> should be refactored to take itemName instead
             indexOfItemToShow={indexOfItemToShow}
+
             navigation={navigation}
             setDefaultPostImage={setDefaultPostImage}
             currentIndex={currentIndex}
             handleNavigation={handleNavigation}
             onClickEllipse={toggleBottomSheetVisibility}
+
           />
         </View>
         <ProfileBtmSheet
