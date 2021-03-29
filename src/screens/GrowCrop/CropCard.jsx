@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -12,7 +12,11 @@ import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
 
-import { SafeArea, GradientButton as Button } from '../../components';
+import {
+  SafeArea,
+  GradientButton as Button,
+  GrowCalendar,
+} from '../../components';
 // import Carousel from './Carousel';
 
 import home from '../../assets/home-icon.png';
@@ -21,6 +25,7 @@ import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 
 import constants from '../../constants';
+import { Platform } from 'react-native';
 
 const { colors } = constants;
 
@@ -32,6 +37,9 @@ const getMonthStripItemWidth = () => {
 
   return itemWidth;
 };
+
+const screenHeight = Dimensions.get('screen').height;
+const screenWidth = Dimensions.get('screen').width;
 
 const CropCard = () => {
   const [activeScreen, setActiveScreen] = useState(0);
@@ -47,11 +55,11 @@ const CropCard = () => {
         style={[
           {
             alignItems: 'center',
-            width: 120,
-            borderTopLeftRadius: 80,
-            borderTopRightRadius: 80,
+            width: screenWidth * 0.28,
+            borderTopLeftRadius: screenWidth * 0.2,
+            borderTopRightRadius: screenWidth * 0.2,
             justifyContent: 'center',
-            height: 135,
+            height: screenHeight * 0.15,
             marginHorizontal: '6%',
           },
           activeScreen === index && { backgroundColor: colors.white },
@@ -65,9 +73,12 @@ const CropCard = () => {
                 : [colors.green, colors.greenDeep]
             }
             style={{
-              height: 80,
-              width: 80,
-              borderRadius: 40,
+              // height: 80,
+              // width: 80,
+              height: screenWidth * 0.2,
+              width: screenWidth * 0.2,
+              // borderRadius: 40,
+              borderRadius: (screenWidth * 0.2) / 2,
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -111,10 +122,10 @@ const CropCard = () => {
         <View
           style={[
             {
-              height: 20,
+              height: 25,
               width: 15,
               position: 'absolute',
-              bottom: 0,
+              bottom: -0.7,
               right: -15,
             },
             activeScreen === index && { backgroundColor: colors.white },
@@ -125,7 +136,7 @@ const CropCard = () => {
             style={{
               height: '100%',
               width: '100%',
-              borderBottomLeftRadius: 20,
+              borderBottomLeftRadius: 23,
               backgroundColor: colors.greenDeep,
             }}
           />
@@ -184,6 +195,9 @@ const CropCard = () => {
             {[1, 2, 3].map((item, index) => renderTab(index))}
           </View>
         </LinearGradient>
+        {/* <View style={{ marginTop: 32 }}>
+          <GrowCalendar />
+        </View> */}
         <View style={{ paddingHorizontal: '5%' }}>
           <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
           <View style={styles.skipStep}>
@@ -314,7 +328,10 @@ const styles = StyleSheet.create({
   scrollView: { flex: 1, backgroundColor: colors.white, paddingBottom: '10%' },
   top: {
     backgroundColor: 'green',
-    height: Dimensions.get('screen').height * 0.368,
+    height:
+      Platform.OS === 'ios'
+        ? Dimensions.get('screen').height * 0.37
+        : Dimensions.get('screen').height * 0.402,
   },
   skipStep: {
     flexDirection: 'row',
