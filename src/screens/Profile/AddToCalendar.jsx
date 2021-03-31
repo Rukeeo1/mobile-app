@@ -13,7 +13,7 @@ import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
 
 const { colors } = constants
-const AddToCalendar = () => {
+const AddToCalendar = ({navigation}) => {
   const renderCalendar = () => {
     return (
       <>
@@ -231,7 +231,7 @@ const AddToCalendar = () => {
 
           <View>
             <Text style={[styles.explore]}>Continue to explore</Text>
-            <GradientButton gradient={[colors.red, colors.redDeep]}>
+            <GradientButton gradient={[colors.red, colors.redDeep]} onPress={() => alert('hello woe ij on')}>
               <View
                 style={{
                   justifyContent: 'space-between',
