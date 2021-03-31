@@ -25,7 +25,7 @@ const Following = ({ navigation }) => {
   const dummData = [
     {
       url:
-        'https://images.unsplash.com/photo-1615224571979-b9271f79998b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80',
+        'https://images.pexels.com/photos/1924867/pexels-photo-1924867.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
       text: 'Garden_of_Riley',
     },
     {

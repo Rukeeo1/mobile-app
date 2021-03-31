@@ -9,7 +9,7 @@ import {
   PostsNavigator,
   GrowCropNavigator,
   ArticleNavigator,
-  EndHarvestNavigator
+  EndHarvestNavigator,
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -24,10 +24,10 @@ const RootNavigator = () => (
         headerShown: false,
       }}
     >
-      {/* <Screen name='AuthNavigator' component={AuthNavigator} /> */}
-      {/* <Screen name='Onboarding' component={OnboardingLayout} /> */}
-      {/* <Screen name='Settings' component={ProfileNavigator} /> */}
-      {/* <Screen name='Article' component={ArticleNavigator} /> */}
+      <Screen name='AuthNavigator' component={AuthNavigator} />
+      <Screen name='Onboarding' component={OnboardingLayout} />
+      <Screen name='Settings' component={ProfileNavigator} />
+      <Screen name='Article' component={ArticleNavigator} />
       <Screen name='End-Harvest' component={EndHarvestNavigator} />
       <Screen name='Grow-Crop' component={GrowCropNavigator} />
       <Screen name='Posts' component={PostsNavigator} />
