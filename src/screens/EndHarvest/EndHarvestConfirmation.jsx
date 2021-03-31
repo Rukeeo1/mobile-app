@@ -5,10 +5,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { GradientButton as Button } from '../../components';
 import constants from '../../constants';
 
-
 const { colors } = constants;
 
-const EndHarvestConfirmation = () => {
+const EndHarvestConfirmation = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -22,6 +21,7 @@ const EndHarvestConfirmation = () => {
           title='YES!'
           coverStyle={{ marginTop: '10%' }}
           gradient={[colors.pink, colors.pinkDeep]}
+          onPress={() => navigation.navigate('End-Harvest-Schedule')}
         />
         <TouchableOpacity>
           <Text style={styles.optOut}>No thanks</Text>

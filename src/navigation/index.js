@@ -25,14 +25,13 @@ const RootNavigator = () => (
         headerShown: false,
       }}
     >
-      {/* <Screen name='AuthNavigator' component={AuthNavigator} />
+      <Screen name='AuthNavigator' component={AuthNavigator} />
       <Screen name='Onboarding' component={OnboardingLayout} />
       <Screen name='Settings' component={ProfileNavigator} />
-      <Screen name='Article' component={ArticleNavigator} />
-      <Screen name='End-Harvest' component={EndHarvestNavigator} /> */}
-      <Screen name='Crop-Journal' component={CropJournalNavigator} />
-      <Screen name='Article' component={ArticleNavigator} />
       <Screen name='Grow-Crop' component={GrowCropNavigator} />
+      <Screen name='Crop-Journal' component={CropJournalNavigator} />
+      <Screen name='End-Harvest' component={EndHarvestNavigator} />
+      <Screen name='Article' component={ArticleNavigator} />
       <Screen name='Posts' component={PostsNavigator} />
     </Navigator>
   </NavigationContainer>

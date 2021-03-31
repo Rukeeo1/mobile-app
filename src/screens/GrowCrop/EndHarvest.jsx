@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { GradientButton as Button } from '../../components';
@@ -7,7 +7,7 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-const DeleteCrop = () => {
+const EndHarvest = ({navigation}) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -21,8 +21,13 @@ const DeleteCrop = () => {
           title='Yes please, delete'
           coverStyle={{ marginTop: '10%' }}
           gradient={[colors.pink, colors.pinkDeep]}
+          onPress={() =>navigation.navigate('') }
         />
-        <Text style={styles.optOut}>No that was a mistake. Take me back!</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.optOut}>
+            No that was a mistake. Take me back!
+          </Text>
+        </TouchableOpacity>
       </LinearGradient>
     </SafeAreaView>
   );
@@ -45,7 +50,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 30,
     fontWeight: '100',
-    textAlign:'center'
+    textAlign: 'center',
   },
   warning: {
     marginTop: '5%',
@@ -60,4 +65,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-export default DeleteCrop;
+export default EndHarvest;

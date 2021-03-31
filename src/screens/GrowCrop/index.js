@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import CropCard from './CropCard';
 import DeleteCrop from './DeleteCrop';
-import EndHarvest from './EndHarvest';
+import KilledCrop from './KilledCrop'
 
 const Stack = createStackNavigator();
 
@@ -17,8 +17,8 @@ const ProfileNavigator = () => {
       }}
     >
       <Screen name='Crop-Card' component={CropCard} />
-      <Screen name='End-Harvest' component={EndHarvest} />
-      {/* <Screen name='Delete-Crop' component={DeleteCrop} /> */}
+      <Screen name='Delete-Crop' component={DeleteCrop} />
+      <Screen name='Killed-Crop' component={KilledCrop} />
     </Navigator>
   );
 };

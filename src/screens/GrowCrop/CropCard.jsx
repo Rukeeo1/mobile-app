@@ -7,13 +7,14 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
-  Platform
+  Platform,
 } from 'react-native';
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
 
 import BookNavItem from './BookNavItem';
+import ActionSheet from './ActionSheet';
 
 import {
   SafeArea,
@@ -29,7 +30,6 @@ import growingSeed from '../../assets/growing-seed.png';
 import houseIcon from '../../assets/house-fill.png';
 
 import constants from '../../constants';
-
 
 const { colors } = constants;
 
@@ -47,11 +47,14 @@ const screenWidth = Dimensions.get('screen').width;
 
 const CropCard = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState(0);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
 
   const video = React.useRef(null);
 
   const images = [growingSeed, plant, shovel];
+
+  const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
   const renderTab = (index) => (
     <>
@@ -169,11 +172,13 @@ const CropCard = ({ navigation }) => {
             }}
           >
             <Image source={home} style={{ height: 37, width: 37 }} />
-            <Entypo
-              name='dots-three-horizontal'
-              size={24}
-              color={colors.white}
-            />
+            <TouchableOpacity onPress={() => toggleBtmSheet()}>
+              <Entypo
+                name='dots-three-horizontal'
+                size={24}
+                color={colors.white}
+              />
+            </TouchableOpacity>
           </View>
           <View style={{ alignItems: 'center', marginTop: '5%' }}>
             <Text
@@ -201,7 +206,16 @@ const CropCard = ({ navigation }) => {
           <GrowCalendar />
         </View> */}
         <View style={{ paddingHorizontal: '5%' }}>
-          <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          {activeScreen === 0 && (
+            <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          )}
+          {activeScreen === 2 && (
+            <Button
+              title='End Harvest'
+              gradient={[colors.blue100, colors.purshBlueDeep]}
+              onPress={() => navigation.navigate('End-Harvest')}
+            />
+          )}
           <View style={styles.skipStep}>
             <Text>Not starting from seed?</Text>
             <TouchableOpacity>
@@ -322,6 +336,7 @@ const CropCard = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      <ActionSheet onClose={toggleBtmSheet} showBottomSheet={showBottomSheet} />
     </SafeArea>
   );
 };

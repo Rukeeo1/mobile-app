@@ -3,33 +3,29 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { GradientButton as Button } from '../../components';
-
 import constants from '../../constants';
 
 const { colors } = constants;
 
-const EndHarvestSchedule = ({navigation}) => {
+const KilledCrop = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
       >
-        <Text style={styles.title}>End Harvest</Text>
-        <Text style={styles.question}>
-          Let’s get it scheduled in the grow calendar?
-        </Text>
-        <Text style={styles.suggest}>
-          Suggested date is predicted from this harvest
-        </Text>
-
+        <Text style={styles.title}>Crop killed</Text>
+        <Text style={styles.question}>Aw man!</Text>
+        <Text style={styles.warning}>Don’t give up, you can do this.</Text>
         <Button
-          title='Schedule it'
+          title='End crop'
           coverStyle={{ marginTop: '10%' }}
           gradient={[colors.pink, colors.pinkDeep]}
         />
-        <TouchableOpacity onPress={()  => navigation.navigate('Grow-Crop')}>
-          <Text style={styles.optOut}>Later</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.optOut}>
+            No that was a mistake. Take me back!
+          </Text>
         </TouchableOpacity>
       </LinearGradient>
     </SafeAreaView>
@@ -53,12 +49,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 30,
     fontWeight: '100',
-    textAlign: 'center',
-  },
-  suggest: {
-    fontSize: 16,
-    marginTop: '5%',
-    color: colors.white,
   },
   warning: {
     marginTop: '5%',
@@ -71,8 +61,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginTop: '10%',
     fontSize: 16,
-    textDecorationLine: 'underline',
-    fontWeight: 'bold',
+    textDecorationLine: 'underline'
   },
 });
-export default EndHarvestSchedule;
+export default KilledCrop;

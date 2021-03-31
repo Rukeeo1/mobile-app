@@ -1,5 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, SafeAreaView, View } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { GradientButton as Button } from '../../components';
@@ -8,7 +14,7 @@ import { Dimensions } from 'react-native';
 
 const { colors } = constants;
 
-const EndHarvestWarning = () => {
+const EndHarvestWarning = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -25,8 +31,15 @@ const EndHarvestWarning = () => {
           title='Yes please, end harvest!'
           coverStyle={{ marginTop: '10%' }}
           gradient={[colors.pink, colors.pinkDeep]}
+          onPress={() => navigation.navigate('End-Harvest-Confirmation')}
         />
-        <Text style={styles.optOut}>No that was a mistake. Take me back!</Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack('End-Harvest-Schedule')}
+        >
+          <Text style={styles.optOut}>
+            No that was a mistake. Take me back!
+          </Text>
+        </TouchableOpacity>
         <View style={styles.toolTip}>
           <Text style={styles.toolTipTitle}>Don’t forget!</Text>
           <Text style={styles.toolTipTitleContent}>
