@@ -4,6 +4,7 @@ import Search from "./CropSearch"
 import CropSelection from "./CropSelection"
 import ManageCrop from "./ManageCrop"
 import NewCrop from "./NewCrop"
+import Success from "./AddedCropSuccessView"
 
 const Stack = createStackNavigator()
 
@@ -20,6 +21,7 @@ const Crops = () => {
       <Screen name="Crop-selection" component={CropSelection} />
       <Screen name="Manage-crop" component={ManageCrop} />
       <Screen name="New-crop" component={NewCrop} />
+      <Screen name="Success" component={Success} />
     </Navigator>
   )
 }
