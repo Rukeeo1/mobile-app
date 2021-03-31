@@ -1,16 +1,19 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import React from 'react';
 import {
-  OnboardingLayout,
-  AuthNavigator,
-  ProfileNavigator,
-  PostsNavigator,
-  GrowCropNavigator,
-  ArticleNavigator,
-  EndHarvestNavigator,
+  ArticleNavigator, AuthNavigator,
+
+
+
+
+
+  Crops, EndHarvestNavigator, GrowCropNavigator, OnboardingLayout,
+
+
+  PostsNavigator, ProfileNavigator
 } from '../screens';
+
 
 const Stack = createStackNavigator();
 
@@ -29,6 +32,7 @@ const RootNavigator = () => (
       <Screen name='Settings' component={ProfileNavigator} />
       <Screen name='Article' component={ArticleNavigator} />
       <Screen name='End-Harvest' component={EndHarvestNavigator} />
+      <Screen name='Crops' component={Crops} />
       <Screen name='Grow-Crop' component={GrowCropNavigator} />
       <Screen name='Posts' component={PostsNavigator} />
     </Navigator>
