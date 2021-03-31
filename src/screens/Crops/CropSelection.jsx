@@ -14,7 +14,7 @@ import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
 
 const { colors } = constants
-const CropSelection = () => {
+const CropSelection = ({navigation}) => {
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <SafeAreaView>
@@ -24,7 +24,7 @@ const CropSelection = () => {
               style={[styles.searchContainer]}
               colors={[colors.green, colors.greenDeep]}
             >
-              <AntDesign name="left" size={24} color={colors.white} />
+              <AntDesign name="left" size={24} color={colors.white} onPress={() => navigation.goBack()}/>
               <View style={{ alignItems: 'center' }}>
                 <Text style={[styles.titleTop]}>Tomato</Text>
 

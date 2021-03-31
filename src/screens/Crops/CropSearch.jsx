@@ -7,14 +7,15 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+
+  TouchableOpacity, View
 } from 'react-native'
 import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu'
 import { GradientButton, Input } from '../../components/'
 import constants from '../../constants'
 
 const { colors } = constants
-const CropSearch = () => {
+const CropSearch = ({navigation}) => {
   let _menu = null
 
   let setMenuRef = (ref) => {
@@ -55,7 +56,7 @@ const CropSearch = () => {
                     }}
                   />
                 </Input>
-                <Text style={[styles.cancelText]}>Cancel</Text>
+                <Text style={[styles.cancelText]} onPress={() => navigation.goBack()}>Cancel</Text>
               </View>
 
               <ScrollView horizontal style={[styles.scrollDate]}>
@@ -98,7 +99,7 @@ const CropSearch = () => {
           </View>
 
           <View style={[styles.cropSection]}>
-            <View style={[styles.cropCardContainer]}>
+            <TouchableOpacity activeOpacity={0.9} style={[styles.cropCardContainer]} onPress={() => navigation.navigate("Crop-selection")}>
               <View style={[styles.cropDetails]}>
                 <Image
                   style={[styles.cropAvatar]}
@@ -110,8 +111,8 @@ const CropSearch = () => {
                 </View>
               </View>
               <AntDesign name="right" size={24} color={colors.green} />
-            </View>
-            <View style={[styles.cropCardContainer]}>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9}  style={[styles.cropCardContainer]}>
               <View style={[styles.cropDetails]}>
                 <Image
                   style={[styles.cropAvatar]}
@@ -123,8 +124,8 @@ const CropSearch = () => {
                 </View>
               </View>
               <AntDesign name="right" size={24} color={colors.green} />
-            </View>
-            <View style={[styles.cropCardContainer]}>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9}  style={[styles.cropCardContainer]}>
               <View style={[styles.cropDetails]}>
                 <Image
                   style={[styles.cropAvatar]}
@@ -136,11 +137,11 @@ const CropSearch = () => {
                 </View>
               </View>
               <AntDesign name="right" size={24} color={colors.green} />
-            </View>
+            </TouchableOpacity>
           </View>
 
           <View style={[styles.createNewCropBtn]}>
-            <GradientButton gradient={[colors.green, colors.greenDeep]}>
+            <GradientButton gradient={[colors.green, colors.greenDeep]} onPress={() => navigation.navigate("New-crop")}>
               <View
                 style={{
                   alignItems: 'center',
@@ -148,7 +149,7 @@ const CropSearch = () => {
                   paddingHorizontal: 20,
                 }}
               >
-                <Text style={[styles.btnText]}>Crete new crop</Text>
+                <Text style={[styles.btnText]}>Create new crop</Text>
               </View>
             </GradientButton>
           </View>
