@@ -6,7 +6,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 import { GradientButton } from '../../components/Button'
@@ -186,7 +187,7 @@ const AddToCalendar = () => {
               </View>
             </GradientButton>
             <View style={{ marginTop: 30 }}>
-              <View style={[styles.jobs]}>
+              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]} onPress={()=> navigation.navigate("Grow-Crop")}>
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/hang.png')} />
                   <View style={[styles.jobsText]}>
@@ -194,12 +195,10 @@ const AddToCalendar = () => {
                     <Text style={[styles.boldText]}>20 February</Text>
                   </View>
                 </View>
-                <Image
-                  style={[styles.jobsImg]}
-                  source={require('../../assets/right-arrow-green.png')}
-                />
-              </View>
-              <View style={[styles.jobs]}>
+               
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]} onPress={()=> navigation.navigate("Grow-Crop")}>
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/flower.png')} />
                   <View style={[styles.jobsText]}>
@@ -207,12 +206,9 @@ const AddToCalendar = () => {
                     <Text style={[styles.boldText]}>20 February</Text>
                   </View>
                 </View>
-                <Image
-                  style={[styles.jobsImg]}
-                  source={require('../../assets/right-arrow-green.png')}
-                />
-              </View>
-              <View style={[styles.jobs]}>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/circle.png')} />
                   <View style={[styles.jobsText]}>
@@ -220,11 +216,8 @@ const AddToCalendar = () => {
                     <Text style={[styles.boldText]}>20 February</Text>
                   </View>
                 </View>
-                <Image
-                  style={[styles.jobsImg]}
-                  source={require('../../assets/right-arrow-green.png')}
-                />
-              </View>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
             </View>
             <View>
               <Text style={[styles.viewMore]}>View more</Text>
