@@ -16,8 +16,8 @@ const ProfileNavigator = () => {
         headerShown: false,
       }}
     >
+      <Screen name='Crop-Card' component={CropCard} />
       <Screen name='End-Harvest' component={EndHarvest} />
-      {/* <Screen name='Crop-Card' component={CropCard} /> */}
       {/* <Screen name='Delete-Crop' component={DeleteCrop} /> */}
     </Navigator>
   );

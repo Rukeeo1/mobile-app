@@ -74,7 +74,7 @@ const ArticleViews = ({ navigation }) => {
             size={24}
             color={colors.white}
             style={{ marginTop: 30, marginLeft: 10 }}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Crop-Card')}
           />
         </View>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
