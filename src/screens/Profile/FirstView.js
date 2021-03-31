@@ -5,21 +5,22 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-
-  TouchableOpacity, View
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { GradientButton } from '../../components/Button';
 import constants from '../../constants';
 import ShareModal from './ShareModal';
 
-
-
 const { colors } = constants;
 
-const FirstView = () => {
+const FirstView = ({}) => {
   const [isList, setIsList] = useState(true);
   const [showShare, setShowShare] = useState(false);
 
+  const navigation = useNavigation();
+  
   const toggleModal = () => setShowShare((prevState) => !prevState);
 
   return (
@@ -45,11 +46,11 @@ const FirstView = () => {
           <Text style={[styles.edit]}>Edit profile</Text>
         </View>
 
-        <View style={[styles.detailsContainer, styles.follows]}>
+        <TouchableOpacity style={[styles.detailsContainer, styles.follows]} onPress={() => navigation.navigate('Following')}>
           <Text style={[styles.followsText]}>0 Following</Text>
           <Text>{'|'}</Text>
           <Text style={[styles.followsText]}>0 Followers</Text>
-        </View>
+        </TouchableOpacity>
 
         <View style={[styles.growList]}>
           {isList ? (
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 45,
     marginVertical: 10,
-    fontWeight: '100'
+    fontWeight: '100',
   },
   edit: {
     marginVertical: 15,

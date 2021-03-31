@@ -80,7 +80,6 @@ const MainProfile = ({ navigation, route }) => {
             setCurrentIndex={setCurrentIndex}
             //indexofitemtoshow ==> should be refactored to take itemName instead
             indexOfItemToShow={indexOfItemToShow}
-
             navigation={navigation}
             setDefaultPostImage={setDefaultPostImage}
             currentIndex={currentIndex}
