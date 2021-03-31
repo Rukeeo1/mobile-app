@@ -5,7 +5,7 @@ import { GradientButton, Input } from '../../components/'
 import constants from '../../constants'
 
 const { colors } = constants
-const NeCrop = () => {
+const NeCrop = ({navigation}) => {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView>
@@ -24,12 +24,8 @@ const NeCrop = () => {
               <View style={[styles.inputContainer]}>
                 <Input
                   placeholder="Enter your bio"
-                  //   onChangeText={handleChange('bio')}
-                  //   onBlur={handleBlur('bio')}
                   labelText="Name"
                   labelStyle={styles.labelText}
-                  //   containerStyle={styles.input}
-                  //   errorMessage={errors.bio}
                 />
               </View>
               <View style={[styles.inputContainer]}>
@@ -39,12 +35,7 @@ const NeCrop = () => {
                 <Text>You can find this on your seed pack</Text>
                 <Input
                   placeholder="Enter your variety"
-                  //   onChangeText={handleChange('bio')}
-                  //   onBlur={handleBlur('bio')}
-                  //   labelText="Enter the variety name"
                   labelStyle={styles.labelText}
-                  //   containerStyle={styles.input}
-                  //   errorMessage={errors.bio}
                 />
               </View>
               <View style={[styles.inputContainer]}>
@@ -57,10 +48,9 @@ const NeCrop = () => {
             <View style={{}}>
               <GradientButton
                 title="Grow It"
-                //   onPress={handleSubmit}
                 gradient={[colors.green, colors.greenDeep]}
                 coverStyle={styles.button}
-                //   onPress={() => navigation.navigate('Main-Profile')}
+                  onPress={() => navigation.navigate('Success')}
               />
             </View>
           </View>
