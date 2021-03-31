@@ -45,25 +45,20 @@ const ProfileSideTab = ({
   const sideBarTabItems = [
     {
       name: 'notifications',
-      icon: (color) => <Feather name='bell' size={24} color={color} />,
+      icon: (iconStyle) => <Feather name='bell' size={24} style={iconStyle} />,
       ref: React.createRef(),
       backgroundColor: [colors.green, colors.greenDeep],
     },
     {
       name: 'create-post',
-      icon: (color) => <Entypo name='plus' size={30} color={color} />,
+      icon: (iconStyle) => <Entypo name='plus' size={30} style={iconStyle} />,
       ref: React.createRef(),
       backgroundColor: [colors.purshBlueDeep, colors.blue],
     },
     {
       name: 'profile',
-      icon: (color) => (
-        <Ionicons
-          name='md-person-outline'
-          size={24}
-          color={color}
-          style={styles.icon}
-        />
+      icon: (iconStyle) => (
+        <Ionicons name='md-person-outline' size={24} style={iconStyle} />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -71,20 +66,17 @@ const ProfileSideTab = ({
     },
     {
       name: 'explore',
-      icon: (color) => <Octicons name='globe' size={34} color={color} />,
+      icon: (iconStyle) => (
+        <Octicons name='globe' size={34} style={iconStyle} />
+      ),
       ref: React.createRef(),
       activeColor: '#AD0048',
       backgroundColor: ['#AD0048', '#E8357F'],
     },
     {
       name: 'calendar',
-      icon: (color) => (
-        <Ionicons
-          name='md-calendar-outline'
-          size={24}
-          color={color}
-          style={styles.icon}
-        />
+      icon: (iconStyle) => (
+        <Ionicons name='md-calendar-outline' size={24} style={iconStyle} />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -154,6 +146,7 @@ const ProfileSideTab = ({
       </TouchableOpacity>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
+        style={{ overflow: 'visible' }}
         ref={containerRef}
       >
         <Animated.View
@@ -174,7 +167,9 @@ const ProfileSideTab = ({
             key={index}
           >
             {item.icon(
-              activeIndex === index ? activeGradient[0] : colors.white
+              activeIndex === index
+                ? { color: activeGradient[0] }
+                : { color: colors.white, opacity: 0.5 }
             )}
           </AnimatedTouchable>
         ))}
@@ -197,7 +192,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
   },
   tab: {
-    width: 65,
+    // width: 65,
   },
   ellipse: {
     marginTop: 50,
@@ -219,16 +214,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 30,
     elevation: 3,
-    left: -10,
+    // left: -10,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.26,
     shadowRadius: 10,
     height: 60,
     width: 60,
-  },
-  icon: {
-    opacity: 0.5,
+    position: 'absolute',
   },
 });
 
