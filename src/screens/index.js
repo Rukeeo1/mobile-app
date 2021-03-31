@@ -6,5 +6,7 @@ export { default as PostsNavigator } from './Posts';
 export { default as GrowCropNavigator } from './GrowCrop';
 export { default as ArticleNavigator } from './Articles';
 export { default as EndHarvestNavigator } from './EndHarvest';
+export { default as CropJournalNavigator } from './CropJournal';
 export { default as Crops } from './Crops';
+
 export * from './Profile';
