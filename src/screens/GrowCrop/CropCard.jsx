@@ -7,10 +7,14 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
+
+import BookNavItem from './BookNavItem';
+import ActionSheet from './ActionSheet';
 
 import {
   SafeArea,
@@ -23,9 +27,9 @@ import home from '../../assets/home-icon.png';
 import shovel from '../../assets/shovel.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
+import houseIcon from '../../assets/house-fill.png';
 
 import constants from '../../constants';
-import { Platform } from 'react-native';
 
 const { colors } = constants;
 
@@ -41,13 +45,16 @@ const getMonthStripItemWidth = () => {
 const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
 
-const CropCard = () => {
+const CropCard = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState(0);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
 
   const video = React.useRef(null);
 
   const images = [growingSeed, plant, shovel];
+
+  const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
   const renderTab = (index) => (
     <>
@@ -73,11 +80,8 @@ const CropCard = () => {
                 : [colors.green, colors.greenDeep]
             }
             style={{
-              // height: 80,
-              // width: 80,
               height: screenWidth * 0.2,
               width: screenWidth * 0.2,
-              // borderRadius: 40,
               borderRadius: (screenWidth * 0.2) / 2,
               justifyContent: 'center',
               alignItems: 'center',
@@ -148,6 +152,7 @@ const CropCard = () => {
 
   return (
     <SafeArea containerStyle={{ flex: 1 }}>
+      <BookNavItem onPress={() => navigation.navigate('Crop-Journal')} />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -167,11 +172,13 @@ const CropCard = () => {
             }}
           >
             <Image source={home} style={{ height: 37, width: 37 }} />
-            <Entypo
-              name='dots-three-horizontal'
-              size={24}
-              color={colors.white}
-            />
+            <TouchableOpacity onPress={() => toggleBtmSheet()}>
+              <Entypo
+                name='dots-three-horizontal'
+                size={24}
+                color={colors.white}
+              />
+            </TouchableOpacity>
           </View>
           <View style={{ alignItems: 'center', marginTop: '5%' }}>
             <Text
@@ -199,7 +206,16 @@ const CropCard = () => {
           <GrowCalendar />
         </View> */}
         <View style={{ paddingHorizontal: '5%' }}>
-          <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          {activeScreen === 0 && (
+            <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          )}
+          {activeScreen === 2 && (
+            <Button
+              title='End Harvest'
+              gradient={[colors.blue100, colors.purshBlueDeep]}
+              onPress={() => navigation.navigate('End-Harvest')}
+            />
+          )}
           <View style={styles.skipStep}>
             <Text>Not starting from seed?</Text>
             <TouchableOpacity>
@@ -320,12 +336,18 @@ const CropCard = () => {
           </View>
         </View>
       </ScrollView>
+      <ActionSheet onClose={toggleBtmSheet} showBottomSheet={showBottomSheet} />
     </SafeArea>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: { flex: 1, backgroundColor: colors.white, paddingBottom: '10%' },
+  scrollView: {
+    flex: 1,
+    backgroundColor: colors.white,
+    paddingBottom: '10%',
+    position: 'relative',
+  },
   top: {
     backgroundColor: 'green',
     height:

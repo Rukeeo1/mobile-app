@@ -16,8 +16,8 @@ const EndHarvestNavigator = () => {
         headerShown: false,
       }}
     >
-      {/* <Screen name='End-Harvest-Confirmation' component={EndHarvestConfirmation} /> */}
-      {/* <Screen name='End-Harvest' component={EndHarvestWarning} /> */}
+      <Screen name='End-Harvest' component={EndHarvestWarning} />
+      <Screen name='End-Harvest-Confirmation' component={EndHarvestConfirmation} />
       <Screen name='End-Harvest-Schedule' component={EndHarvestSchedule} />
     </Navigator>
   );
