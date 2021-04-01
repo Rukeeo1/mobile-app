@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import React from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, Text, View, TouchableOpacity } from 'react-native'
 import constant from '../../constants/'
 
 const { colors } = constant
@@ -12,7 +12,7 @@ const AddedSuccess = ({ navigation }) => {
         source={require('../../assets/bg.png')}
       />
 
-      <View
+      <TouchableOpacity
         style={{
           position: 'absolute',
           top: 0,
@@ -21,6 +21,7 @@ const AddedSuccess = ({ navigation }) => {
           right: 0,
           justifyContent: 'flex-start',
         }}
+        onPress={() => navigation.navigate('Grow-Crop')}
       >
         <MaterialIcons
           name="arrow-back-ios"
@@ -54,7 +55,7 @@ const AddedSuccess = ({ navigation }) => {
         <Text style={{ textAlign: 'center', color: colors.white }}>
           Added to calendar
         </Text>
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }
