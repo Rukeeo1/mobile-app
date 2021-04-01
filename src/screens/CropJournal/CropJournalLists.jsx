@@ -10,12 +10,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import {
-  AntDesign,
-  Entypo,
-  MaterialIcons,
-  FontAwesome5,
-} from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import { SafeArea, GradientButton as Button } from '../../components';
 
@@ -25,7 +20,7 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-const CropJournalLists = ({navigation}) => {
+const CropJournalLists = ({ navigation }) => {
   return (
     <SafeArea>
       <TouchableOpacity
@@ -42,8 +37,35 @@ const CropJournalLists = ({navigation}) => {
           zIndex: 423,
         }}
       >
-        <AntDesign name='plus' size={24} color={colors.blue} onPress={() => navigation.navigate('Create-Journal')} />
+        <AntDesign
+          name='plus'
+          size={24}
+          color={colors.blue}
+          onPress={() => navigation.navigate('Create-Journal')}
+        />
       </TouchableOpacity>
+      <View
+        style={{
+     
+          transform: [{ rotate: '-90deg' }],
+          position: 'absolute',
+          zIndex: 343,
+          height: 50,
+          alignItems: 'center',
+          justifyContent: 'center',
+          bottom: 200,
+          left: -35,
+        }}
+      >
+        <Text
+          style={{
+            color: colors.white,
+            overflow: 'visible',
+          }}
+        >
+          Add to Crop Journal
+        </Text>
+      </View>
       <LinearGradient
         style={styles.container}
         colors={[colors.purshBlue, colors.blue]}
@@ -64,24 +86,6 @@ const CropJournalLists = ({navigation}) => {
             style={{ marginTop: 30, marginLeft: 0 }}
             onPress={() => navigation.goBack()}
           />
-          <View
-            style={{
-              height: 100,
-              justifyContent: 'flex-end',
-              transform: [{ rotate: '-90deg' }],
-            }}
-          >
-            <Text
-              style={{
-                height: 50,
-
-                overflow: 'visible',
-                // marginBottom: 100,
-              }}
-            >
-              Add to Crop Journal
-            </Text>
-          </View>
         </View>
         {/* </View> */}
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
