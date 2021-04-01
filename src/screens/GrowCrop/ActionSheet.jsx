@@ -42,6 +42,7 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
             <TouchableOpacity
               style={styles.optionItem}
               onPress={handleClick(action.onClick)}
+              key={action.title}
             >
               <Text
                 style={{
