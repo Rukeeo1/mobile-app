@@ -28,21 +28,11 @@ const OnboardingLayout = ({ navigation }) => {
               </View>
               <View style={[styles.slideContainer, styles.slide2]}>
                 <LinearGradient
-                  colors={[colors.pink, colors.pinkDeep]}
-                  style={[styles.general]}
-                >
-                  <Text style={[styles.screenTitle]}>Manage Crops</Text>
-                  <Text style={[styles.screenDescription]}>
-                    See at a glance everything you are growing and where they
-                    are in the growing process
-                  </Text>
-                </LinearGradient>
-              </View>
-              <View style={[styles.slideContainer, styles.slide3]}>
-                <LinearGradient
                   colors={[colors.purshBlue, colors.purshBlueDeep]}
                   style={[styles.general]}
                 >
+                  
+
                   <Text style={[styles.screenTitle]}>Explore</Text>
                   <Text style={[styles.screenDescription]}>
                     A community where you can share your successes and failures,
@@ -51,16 +41,30 @@ const OnboardingLayout = ({ navigation }) => {
                   </Text>
                 </LinearGradient>
               </View>
-              <View style={[styles.slideContainer, styles.slide4]}>
+              <View style={[styles.slideContainer, styles.slide3]}>
                 <LinearGradient
-                  colors={[colors.purshBlue, colors.purshBlueDeep]}
-                  style={[styles.general, styles.space]}
+                  colors={[colors.green, colors.greenDeep]}
+                  style={[styles.general]}
                 >
-                  <Text style={[styles.screenTitle]}>Guides</Text>
+                 <Text style={[styles.screenTitle]}>Guided Growing</Text>
                   <Text style={[styles.screenDescription]}>
                     Never feel overwhelmed! We are here to prove that gardening
                     truly is for everyone. We have beginner crops and guides to
                     help you every step of the way.
+                  </Text>
+
+                </LinearGradient>
+              </View>
+              <View style={[styles.slideContainer, styles.slide4]}>
+                <LinearGradient
+                  colors={[colors.pink, colors.pinkDeep]}
+                  style={[styles.general, styles.space]}
+                >
+                 
+                  <Text style={[styles.screenTitle]}>Manage Crops</Text>
+                  <Text style={[styles.screenDescription]}>
+                    See at a glance everything you are growing and where they
+                    are in the growing process
                   </Text>
                 </LinearGradient>
               </View>
