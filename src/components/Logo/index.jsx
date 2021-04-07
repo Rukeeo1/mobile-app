@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, Platform } from 'react-native';
+import { Image, Platform, StyleSheet } from 'react-native';
 
 const Logo = ({ source, logoStyles }) => {
   return <Image source={source} style={[styles.image, logoStyles]} />;
@@ -7,8 +7,7 @@ const Logo = ({ source, logoStyles }) => {
 
 const styles = StyleSheet.create({
   image: {
-    marginTop: '40%',
-    marginBottom: '25%',
+    marginBottom: '10%',
     height: Platform.OS === 'android' ? 110 : 120,
     width: '80%',
   },
