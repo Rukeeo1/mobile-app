@@ -1,4 +1,5 @@
 import { AntDesign, Ionicons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import {
   Image,
@@ -6,13 +7,15 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  TouchableOpacity,
+  View,
 } from 'react-native'
 import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
 
 const { colors } = constants
 const ManageCrops = () => {
+  const navigation = useNavigation()
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <SafeAreaView>
@@ -21,72 +24,7 @@ const ManageCrops = () => {
             <Text style={[styles.title]}>Manage Crops</Text>
           </View>
 
-
-      <View style={{ paddingHorizontal: '8%'}}>
-         
-          <View>
-            <Text style={[styles.growingCrops]}>Current growing</Text>
-            <View style={[styles.cropCardContainer]}>
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name="right" size={24} color={colors.green} />
-            </View>
-            <View style={[styles.cropCardContainer]}>
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name="right" size={24} color={colors.green} />
-            </View>
-          </View>
-          <View>
-            <Text style={[styles.growingCrops]}>Past Harvest</Text>
-
-            <View style={[styles.cropCardContainer]}>
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name="right" size={24} color={colors.green} />
-            </View>
-            <View style={[styles.cropCardContainer]}>
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name="right" size={24} color={colors.green} />
-            </View>
-          </View>
-      </View>
-
-
-          <View style={{ paddingHorizontal: '8%' }}>
+          <View style={{ paddingHorizontal: '5%' }}>
             <View style={[styles.growCalendarCard]}>
               <Text style={[styles.growText]}>
                 You aren’t growing anything yet!
@@ -95,7 +33,10 @@ const ManageCrops = () => {
                 Add a crop to your <Text>Grow Calendar</Text> today
               </Text>
 
-              <GradientButton gradient={[colors.green, colors.greenDeep]}>
+              <GradientButton
+                gradient={[colors.green, colors.greenDeep]}
+                onPress={() => navigation.navigate('GrowItCalendar')}
+              >
                 <View
                   style={{
                     justifyContent: 'space-between',
@@ -111,6 +52,84 @@ const ManageCrops = () => {
               </GradientButton>
             </View>
           </View>
+
+          <View style={{ paddingHorizontal: '5%' }}>
+            <View>
+              <Text style={[styles.growingCrops]}>Current growing</Text>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/avatarimg.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/avatarimg.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text style={[styles.growingCrops]}>Past Harvest</Text>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/avatarimg.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/avatarimg.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -120,31 +139,31 @@ const ManageCrops = () => {
 const styles = StyleSheet.create({
   titleContainer: {
     marginTop: 70,
-    marginBottom: 30
+    marginBottom: 30,
   },
   title: {
     fontSize: 40,
     textAlign: 'center',
-    fontWeight: '100'
+    fontWeight: '100',
   },
   growCalendarCard: {
     backgroundColor: colors.greenTransparent,
     borderRadius: 50 / 2,
-    paddingTop: 30
+    paddingTop: 30,
   },
   growingCrops: {
     textAlign: 'center',
     marginBottom: 20,
     marginTop: 40,
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   cropCardContainer: {
     backgroundColor: colors.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '95%',
+    width: '98%',
     borderRadius: 100 / 2,
     height: 70,
     paddingRight: 20,
@@ -179,7 +198,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.green,
     marginVertical: 10,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   btnText: {
     color: colors.white,
