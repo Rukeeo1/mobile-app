@@ -30,6 +30,20 @@ const AddToCalendar = () => {
     'Nov',
     'Dec',
   ]
+  const monthsFull = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
   const currentMonthIndex = new Date().getMonth()
   const currentYear = new Date().getFullYear()
   const [m, setM] = useState(currentMonthIndex)
@@ -67,7 +81,6 @@ const AddToCalendar = () => {
               width: '100%',
               flexDirection: 'column',
               justifyContent: 'center',
-              alignItems: 'center',
             }}
           >
             <View
@@ -139,7 +152,7 @@ const AddToCalendar = () => {
               </TouchableOpacity>
             </View>
 
-            <Text style={{marginBottom: 30}}>Today</Text>
+            <Text style={{marginBottom: 30, textAlign: 'center', color: colors.green}}>Today</Text>
           </View>
 
           <View>
@@ -156,7 +169,7 @@ const AddToCalendar = () => {
                   paddingHorizontal: 20,
                 }}
               >
-                <Text style={[styles.btnText]}>Grow in February </Text>
+                <Text style={[styles.btnText]}>Grow in {monthsFull[m]} </Text>
                 <AntDesign name="search1" size={25} color={colors.white} />
               </View>
             </GradientButton>
