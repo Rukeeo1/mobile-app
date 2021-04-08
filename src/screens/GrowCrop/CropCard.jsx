@@ -16,12 +16,11 @@ import { Entypo } from '@expo/vector-icons';
 import BookNavItem from './BookNavItem';
 import ActionSheet from './ActionSheet';
 
-import {
-  SafeArea,
-  GradientButton as Button,
-  GrowCalendar,
-} from '../../components';
-// import Carousel from './Carousel';
+import { SafeArea, GradientButton as Button } from '../../components';
+
+import { GrowCropCalender } from './GrowCropCalendar';
+import { MyCarousel as Carousel } from './Carousel';
+
 
 import home from '../../assets/home-icon.png';
 import shovel from '../../assets/shovel.png';
@@ -202,9 +201,7 @@ const CropCard = ({ navigation }) => {
             {[1, 2, 3].map((item, index) => renderTab(index))}
           </View>
         </LinearGradient>
-        {/* <View style={{ marginTop: 32 }}>
-          <GrowCalendar />
-        </View> */}
+        <GrowCropCalender />
         <View style={{ paddingHorizontal: '5%' }}>
           {activeScreen === 0 && (
             <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
@@ -287,7 +284,7 @@ const CropCard = ({ navigation }) => {
               will grow your tomatoes.
             </Text>
           </View>
-          {/* <Carousel /> */}
+          <Carousel />
           <View style={{ marginTop: '4%' }}>
             <Video
               ref={video}
@@ -354,6 +351,7 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? Dimensions.get('screen').height * 0.37
         : Dimensions.get('screen').height * 0.402,
+    zIndex: 2323,
   },
   skipStep: {
     flexDirection: 'row',

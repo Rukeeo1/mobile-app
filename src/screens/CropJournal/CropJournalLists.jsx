@@ -139,7 +139,7 @@ const JournalCard = ({ uri }) => {
           paddingHorizontal: '5%',
         }}
       >
-        <Text style={{ color: colors.grey, fontStyle: 'italic' }}>
+        <Text style={{ color: colors.grey100, fontStyle: 'italic' }}>
           23 July 2020
         </Text>
         <AntDesign name='ellipsis1' size={24} color={colors.grey} />

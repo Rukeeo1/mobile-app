@@ -1,6 +1,6 @@
-import { AntDesign, MaterialIcons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
-import React, { useState } from 'react'
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -8,14 +8,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native'
-import { GradientButton } from '../../components/Button'
-import constants from '../../constants'
+  View,
+} from 'react-native';
+import { GradientButton } from '../../components/Button';
+import constants from '../../constants';
 
-const { colors } = constants
+const { colors } = constants;
 const AddToCalendar = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const months = [
     'Jan',
     'Feb',
@@ -29,7 +29,7 @@ const AddToCalendar = () => {
     'Oct',
     'Nov',
     'Dec',
-  ]
+  ];
   const monthsFull = [
     'January',
     'February',
@@ -43,27 +43,27 @@ const AddToCalendar = () => {
     'October',
     'November',
     'December',
-  ]
-  const currentMonthIndex = new Date().getMonth()
-  const currentYear = new Date().getFullYear()
-  const [m, setM] = useState(currentMonthIndex)
-  const [y, setY] = useState(currentYear)
+  ];
+  const currentMonthIndex = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  const [m, setM] = useState(currentMonthIndex);
+  const [y, setY] = useState(currentYear);
 
   const nextItem = () => {
-    console.log('bext', m)
-    setM(m)
-    setY(y + 1)
-  }
+    console.log('bext', m);
+    setM(m);
+    setY(y + 1);
+  };
 
   const prevYear = () => {
-    console.log('prev', m)
-    setM(m)
-    setY(y - 1)
-  }
+    console.log('prev', m);
+    setM(m);
+    setY(y - 1);
+  };
 
   const setMonth = (index) => {
-    setM(index)
-  }
+    setM(index);
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -113,7 +113,7 @@ const AddToCalendar = () => {
                   >
                     <Text style>{month}</Text>
                   </TouchableOpacity>
-                )
+                );
               })}
             </View>
             <View
@@ -127,7 +127,7 @@ const AddToCalendar = () => {
             >
               <TouchableOpacity onPress={prevYear}>
                 <MaterialIcons
-                  name="arrow-back-ios"
+                  name='arrow-back-ios'
                   size={24}
                   color={colors.green}
                 />
@@ -145,14 +145,22 @@ const AddToCalendar = () => {
               </View>
               <TouchableOpacity onPress={nextItem}>
                 <MaterialIcons
-                  name="arrow-forward-ios"
+                  name='arrow-forward-ios'
                   size={24}
                   color={colors.green}
                 />
               </TouchableOpacity>
             </View>
 
-            <Text style={{marginBottom: 30, textAlign: 'center', color: colors.green}}>Today</Text>
+            <Text
+              style={{
+                marginBottom: 30,
+                textAlign: 'center',
+                color: colors.green,
+              }}
+            >
+              Today
+            </Text>
           </View>
 
           <View>
@@ -170,7 +178,7 @@ const AddToCalendar = () => {
                 }}
               >
                 <Text style={[styles.btnText]}>Grow in {monthsFull[m]} </Text>
-                <AntDesign name="search1" size={25} color={colors.white} />
+                <AntDesign name='search1' size={25} color={colors.white} />
               </View>
             </GradientButton>
             <GradientButton gradient={[colors.green, colors.greenDeep]}>
@@ -184,7 +192,7 @@ const AddToCalendar = () => {
                 }}
               >
                 <Text style={[styles.btnText]}>Jobs</Text>
-                <AntDesign name="plus" size={25} color={colors.white} />
+                <AntDesign name='plus' size={25} color={colors.white} />
               </View>
             </GradientButton>
             <View style={{ marginTop: 30 }}>
@@ -201,7 +209,7 @@ const AddToCalendar = () => {
                   </View>
                 </View>
 
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -215,7 +223,7 @@ const AddToCalendar = () => {
                     <Text style={[styles.boldText]}>20 February</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
                 <View style={[styles.jobsChild]}>
@@ -225,7 +233,7 @@ const AddToCalendar = () => {
                     <Text style={[styles.boldText]}>20 February</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
             </View>
             <View>
@@ -243,7 +251,7 @@ const AddToCalendar = () => {
                 }}
               >
                 <Text style={[styles.btnText]}>What you’re harvesting</Text>
-                <AntDesign name="info" size={28} color={colors.white} />
+                <AntDesign name='info' size={28} color={colors.white} />
               </View>
             </GradientButton>
 
@@ -339,7 +347,7 @@ const AddToCalendar = () => {
                   }}
                 >
                   <Text style={[styles.btnText]}>Grow in February</Text>
-                  <AntDesign name="plus" size={25} color={colors.white} />
+                  <AntDesign name='plus' size={25} color={colors.white} />
                 </View>
               </GradientButton>
             </View>
@@ -347,8 +355,8 @@ const AddToCalendar = () => {
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   parent: {
@@ -463,6 +471,6 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
   },
-})
+});
 
-export default AddToCalendar
+export default AddToCalendar;
