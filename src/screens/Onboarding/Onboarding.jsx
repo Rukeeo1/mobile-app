@@ -99,7 +99,7 @@ const OnboardingLayout = ({ navigation }) => {
             </Text>
 
             <View style={[styles.TrialContainer]}>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]}>
+              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
                   style={[styles.general, styles.space]}
@@ -109,7 +109,7 @@ const OnboardingLayout = ({ navigation }) => {
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]}>
+              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
                   style={[styles.general, styles.space]}

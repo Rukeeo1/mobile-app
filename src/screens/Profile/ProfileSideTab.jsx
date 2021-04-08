@@ -13,6 +13,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Image
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -71,6 +72,16 @@ const ProfileSideTab = ({
       ),
       ref: React.createRef(),
       activeColor: '#AD0048',
+      backgroundColor: ['#AD0048', '#E8357F'],
+    },
+    {
+      name: 'manage-crops',
+      icon: (iconStyle) => (
+
+        <Image source={require('../../assets/managecrops.png')} style={{width: 24, height: 24}}/>
+      ),
+      ref: React.createRef(),
+      activeColor: colors.greenDeep,
       backgroundColor: ['#AD0048', '#E8357F'],
     },
     {

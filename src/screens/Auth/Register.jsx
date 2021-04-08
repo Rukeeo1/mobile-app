@@ -95,7 +95,7 @@ export const Register = ({ navigation }) => {
                 gradient={[colors.green, colors.greenDeep]}
                 coverStyle={{ marginBottom: 20, marginTop: 50 }}
                 title={'Register'}
-                onPress={() => console.log('joejoe')}
+                onPress={() => navigation.navigate('Onboarding')}
               />
               <Text
                 style={{ textAlign: 'center', color: 'white' }}
