@@ -1,59 +1,21 @@
-import { AntDesign } from '@expo/vector-icons'
-import React from 'react'
+import { AntDesign, MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+import React, { useState } from 'react'
 import {
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from 'react-native'
-import { Calendar } from 'react-native-calendars'
 import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
-import { useNavigation } from '@react-navigation/native';
 
 const { colors } = constants
 const AddToCalendar = () => {
-
-  const navigation = useNavigation();
-  const renderCalendar = () => {
-    return (
-      <>
-        <Calendar
-          showControls={true}
-          titleFormat={'MMMM YYYY'}
-          dayHeadings={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
-          monthNames={[
-            'jan',
-            'feb',
-            'mar',
-            'apr',
-            'may',
-            'jun',
-            'jul',
-            'aug',
-            'sep',
-            'oct',
-            'nov',
-            'dec',
-          ]}
-          prevButtonText={'Prev'}
-          nextButtonText={'Next'}
-          customStyle={{
-            day: { fontSize: 15, textAlign: 'center', color: '#4c4b4b' },
-          }}
-          weekStart={1}
-          theme={{
-            selectedDayBackgroundColor: '#A6CB42',
-            selectedDayTextColor: '#FFF',
-          }}
-        />
-      </>
-    )
-  }
-  
+  const navigation = useNavigation()
   const months = [
     'Jan',
     'Feb',
@@ -68,20 +30,26 @@ const AddToCalendar = () => {
     'Nov',
     'Dec',
   ]
-  // const currentMonthIndex = new Date().getMonth()
-  // const currentYear = new Date().getFullYear()
-  // const [m, setM] = useState(currentMonthIndex)
-  // const [y, setY] = useState(currentYear)
+  const currentMonthIndex = new Date().getMonth()
+  const currentYear = new Date().getFullYear()
+  const [m, setM] = useState(currentMonthIndex)
+  const [y, setY] = useState(currentYear)
 
-  // const nextItem = () => {
-  //   console.log('bext', m)
-  //   if (m > 11) {
-  //     setM(0)
-  //     setY(y + 1)
-  //   }
+  const nextItem = () => {
+    console.log('bext', m)
+    setM(m)
+    setY(y + 1)
+  }
 
-  //   setM(m + 1)
-  // }
+  const prevYear = () => {
+    console.log('prev', m)
+    setM(m)
+    setY(y - 1)
+  }
+
+  const setMonth = (index) => {
+    setM(index)
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -94,46 +62,44 @@ const AddToCalendar = () => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          <View style={[styles.calendarContainer]}>
-            {renderCalendar()}
-            <Text
-              style={[styles.dateText]}
-              
-            >
-              Today
-            </Text>
-          </View>
-
-          {/* <View
+          <View
             style={{
-              width: 300,
-              borderWidth: 2,
+              width: '100%',
               flexDirection: 'column',
               justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               {months.map((month, index) => {
                 return (
-                  <View
+                  <TouchableOpacity
+                    activeOpacity={0.9}
                     style={{
                       height: 46,
                       width: 46,
                       borderRadius: 46 / 2,
                       textAlign: 'center',
-                      // borderWidth: 2,
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginHorizontal: 10,
                       marginVertical: 10,
-                      backgroundColor: `${index === m ? 'dodgerblue' : ''}`,
+                      backgroundColor: `${index === m ? colors.green : ''}`,
+                      fontWeight: `${index === m ? 'bold' : ''}`,
                       color: `${index === m ? 'white' : 'black'}`,
                     }}
                     key={index}
-                    onPress={() => alert('hello')}
+                    onPress={() => setMonth(index)}
                   >
-                    <Text>{month}</Text>
-                  </View>
+                    <Text style>{month}</Text>
+                  </TouchableOpacity>
                 )
               })}
             </View>
@@ -141,24 +107,46 @@ const AddToCalendar = () => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginTop: 30,
-                marginBottom: 30,
+                alignItems: 'center',
+                marginTop: 15,
+                marginBottom: 10,
               }}
             >
-              <View>
-              <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
-              </View>
+              <TouchableOpacity onPress={prevYear}>
+                <MaterialIcons
+                  name="arrow-back-ios"
+                  size={24}
+                  color={colors.green}
+                />
+              </TouchableOpacity>
               <View style={{}}>
-                <Text>{months[m]} {y}</Text>
+                <Text
+                  style={{
+                    color: colors.green,
+                    fontSize: 40,
+                    fontWeight: '100',
+                  }}
+                >
+                  {months[m]} {y}
+                </Text>
               </View>
-              <View onPress={() => alert('call me')}>
-              <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-              </View>
+              <TouchableOpacity onPress={nextItem}>
+                <MaterialIcons
+                  name="arrow-forward-ios"
+                  size={24}
+                  color={colors.green}
+                />
+              </TouchableOpacity>
             </View>
-          </View> */}
+
+            <Text style={{marginBottom: 30}}>Today</Text>
+          </View>
 
           <View>
-            <GradientButton gradient={[colors.red, colors.redDeep]} onPress={() => navigation.navigate("Crops")}>
+            <GradientButton
+              gradient={[colors.red, colors.redDeep]}
+              onPress={() => navigation.navigate('Crops')}
+            >
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -187,7 +175,11 @@ const AddToCalendar = () => {
               </View>
             </GradientButton>
             <View style={{ marginTop: 30 }}>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]} onPress={()=> navigation.navigate("Grow-Crop")}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.jobs]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/hang.png')} />
                   <View style={[styles.jobsText]}>
@@ -195,10 +187,14 @@ const AddToCalendar = () => {
                     <Text style={[styles.boldText]}>20 February</Text>
                   </View>
                 </View>
-               
+
                 <AntDesign name="right" size={24} color={colors.green} />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]} onPress={()=> navigation.navigate("Grow-Crop")}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.jobs]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/flower.png')} />
                   <View style={[styles.jobsText]}>
@@ -317,18 +313,18 @@ const AddToCalendar = () => {
               </View>
             </View>
 
-          <View>
-            <Text style={[styles.explore]}>Continue to explore</Text>
-            <GradientButton gradient={[colors.red, colors.redDeep]}>
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  width: '100%',
-                  paddingHorizontal: 20,
-                }}
-              >
+            <View>
+              <Text style={[styles.explore]}>Continue to explore</Text>
+              <GradientButton gradient={[colors.red, colors.redDeep]}>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    width: '100%',
+                    paddingHorizontal: 20,
+                  }}
+                >
                   <Text style={[styles.btnText]}>Grow in February</Text>
                   <AntDesign name="plus" size={25} color={colors.white} />
                 </View>
