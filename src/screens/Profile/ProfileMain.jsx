@@ -11,6 +11,7 @@ import FirstView from './FirstView';
 import ProfileSideTab from './ProfileSideTab';
 import CreatePost from '../Posts/PostForm';
 import ProfileBtmSheet from './ProfileBtmSheet';
+import ManageCrops from '../Crops/ManageCrop';
 
 import constants from '../../constants/index';
 
@@ -31,6 +32,8 @@ const Main = ({ currentIndex, defaultPostImage }) => {
       ) : currentIndex === 3 ? (
         <Explore />
       ) : currentIndex === 4 ? (
+        <ManageCrops />
+      ) : currentIndex === 5 ? (
         <Calendar />
       ) : null}
     </View>
