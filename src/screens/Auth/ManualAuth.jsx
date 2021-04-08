@@ -1,15 +1,20 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Platform } from 'react-native';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { LinearGradient } from 'expo-linear-gradient'
+import { useFormik } from 'formik'
+import React from 'react'
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native'
+import * as Yup from 'yup'
+import growthLogo from '../../assets/growth_logo.png'
+import { GradientButton, Header, Input, Logo } from '../../components'
+import constants from '../../constants'
 
-import constants from '../../constants';
-import { Input, Button, Header, Logo } from '../../components';
-
-import growthLogo from '../../assets/growth_logo.png';
-import { ScrollView } from 'react-native';
-
-const { colors } = constants;
+const { colors } = constants
 
 const ManualAuth = ({ navigation }) => {
   const LoginSchema = Yup.object().shape({
@@ -22,7 +27,7 @@ const ManualAuth = ({ navigation }) => {
       .required('Required')
       .min(6, 'Too Short!')
       .max(100, 'Too Long!'),
-  });
+  })
 
   const { handleChange, handleBlur, values, errors, handleSubmit } = useFormik({
     initialValues: {
@@ -36,79 +41,115 @@ const ManualAuth = ({ navigation }) => {
       // values.email === 'Testuser@tmail.com' && values.password === 'test01!';
       // if (valid) {
       // setTimeout(() => {
-      navigation.navigate('Onboarding');
+      navigation.navigate('Onboarding')
       // }, 500);
       // }
     },
-  });
+  })
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
-      <SafeAreaView style={styles.container}>
-        <Header onIconPress={() => navigation.goBack()} />
-        <Logo
-          source={growthLogo}
-          logoStyles={{ marginTop: '10%', marginBottom: '10%' }}
-        />
-        <View style={styles.authContainer}>
-          <Input
-            inputStyle={styles.inputStyle}
-            labelStyle={styles.labelText}
-            labelText="Email"
-            value={values.email}
-            onBlur={handleBlur('email')}
-            onChangeText={handleChange('email')}
-            placeholder="Enter your email"
-            errorMessage={errors.email}
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
+      <ScrollView>
+        <SafeAreaView style={styles.container}>
+          <Header onIconPress={() => navigation.goBack()} />
+          <Logo
+            source={growthLogo}
+            logoStyles={{ marginTop: '10%', marginBottom: '10%' }}
           />
-          <Input
-            containerStyle={styles.inputPasswordCont}
-            inputStyle={styles.inputStyle}
-            labelStyle={styles.labelText}
-            labelText="Password"
-            value={values.password}
-            onBlur={handleBlur('password')}
-            onChangeText={handleChange('password')}
-            placeholder="Enter your password"
-            secureTextEntry={true}
-          />
-          <View style={styles.forgottenPasswordRow}>
-            <Text>Forgotten Password?</Text>
-            <Button
-              title="Sign up"
-              onPress={() => navigation.navigate('Register')}
-              coverStyle={{
-                backgroundColor: colors.greenDeep,
-                width: '30%',
-              }}
-              color={colors.white}
+          <View style={styles.authContainer}>
+            <Input
+              inputStyle={styles.inputStyle}
+              labelStyle={styles.labelText}
+              labelText="Email"
+              value={values.email}
+              onBlur={handleBlur('email')}
+              onChangeText={handleChange('email')}
+              placeholder="Enter your email"
+              errorMessage={errors.email}
             />
+            <Input
+              containerStyle={styles.inputPasswordCont}
+              inputStyle={styles.inputStyle}
+              labelStyle={styles.labelText}
+              labelText="Password"
+              value={values.password}
+              onBlur={handleBlur('password')}
+              onChangeText={handleChange('password')}
+              placeholder="Enter your password"
+              secureTextEntry={true}
+            />
+
+            <View style={{ marginTop: 25 }}>
+              <GradientButton
+                gradient={[colors.green, colors.greenDeep]}
+                coverStyle={{}}
+                title={'Register'}
+                onPress={handleSubmit}
+              />
+              <Text style={{ textAlign: 'center', marginTop: 25 }}>
+                Forgotten Password?
+              </Text>
+            </View>
           </View>
-          <View>
-            <Button
-              title="Log In"
-              onPress={handleSubmit}
-              coverStyle={{
-                backgroundColor: colors.greenDeep,
-                marginTop: '8%',
+
+          <View
+            style={[
+              {
+                width: '100%',
+                marginTop: 20,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                overflow: 'hidden',
+              },
+            ]}
+          >
+            <LinearGradient
+              style={{
+                width: '100%',
+                height: 305,
+                paddingLeft: '8%',
+                paddingRight: '8%',
               }}
-              color={colors.white}
-            />
-            <Button
-              title="Cancel"
-              coverStyle={{
-                backgroundColor: colors.greyDark,
-                marginTop: '8%',
-              }}
-              color={colors.white}
-              onPress={() => navigation.goBack()}
-            />
+              colors={[colors.blueLigth, colors.blue]}
+            >
+              <Text
+                style={{
+                  color: colors.white,
+                  textAlign: 'center',
+                  marginTop: 40,
+                  marginBottom: 10,
+                }}
+              >
+                Not got an account?
+              </Text>
+              <GradientButton
+                gradient={[colors.green, colors.greenDeep]}
+                coverStyle={{ marginBottom: 20 }}
+                title={'Register'}
+                onPress={() => navigation.navigate('Register')}
+              />
+
+              <Text
+                style={{
+                  position: 'absolute',
+                  bottom: 40,
+                  left: 0,
+                  right: 0,
+                  color: colors.white,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}
+                onPress={() => navigation.goBack()}
+              >
+                Cancel
+              </Text>
+            </LinearGradient>
           </View>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
-  );
-};
+        </SafeAreaView>
+      </ScrollView>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -122,15 +163,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   image: {
-    marginTop: '25%',
+    marginTop: '10%',
   },
   labelText: {
     color: constants.colors.blueLigth,
   },
   authContainer: {
-    width: '80%',
+    width: '85%',
     justifyContent: 'center',
-    marginTop: '10%',
+    marginTop: '5%',
   },
   inputPasswordCont: {
     marginTop: '10%',
@@ -147,6 +188,6 @@ const styles = StyleSheet.create({
     borderBottomColor: constants.colors.greyLight,
     paddingBottom: '2%',
   },
-});
+})
 
-export default ManualAuth;
+export default ManualAuth

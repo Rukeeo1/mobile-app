@@ -139,7 +139,7 @@ const FirstView = ({}) => {
               </TouchableOpacity>
             </View>
 
-            <View>
+            <View style={{marginLeft: 15}}>
               <Text>
                 <Text style={[styles.bold]}>Garden_of_Riley</Text> First handful
                 of tomatoes!! Well worth the wait!
@@ -282,6 +282,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
+    marginLeft: 15
   },
   postTitle: {
     fontWeight: 'bold',
@@ -297,6 +298,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     margin: 10,
+    marginLeft: 15
   },
   bold: {
     fontWeight: 'bold',

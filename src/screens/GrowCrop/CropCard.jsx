@@ -21,10 +21,12 @@ import { SafeArea, GradientButton as Button } from '../../components';
 import { GrowCropCalender } from './GrowCropCalendar';
 import { MyCarousel as Carousel } from './Carousel';
 
+
 import home from '../../assets/home-icon.png';
 import shovel from '../../assets/shovel.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
+import houseIcon from '../../assets/house-fill.png';
 
 import constants from '../../constants';
 
