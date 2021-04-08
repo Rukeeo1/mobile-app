@@ -1,6 +1,9 @@
 import React, {useEffect} from 'react'
 import { Image, TouchableOpacity } from 'react-native'
+import constants from "../../constants";
 
+
+const {colors} = constants;
 const SplashScreen = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
@@ -9,7 +12,7 @@ const SplashScreen = ({ navigation }) => {
     }, [])
 
   return (
-    <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, backgroundColor: 'dodgerblue' }} onPress={() => navigation.navigate('Settings')}>
+    <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, backgroundColor: colors.green }} onPress={() => navigation.navigate('Settings')}>
         <Image source={require("../../assets/splash.gif")}  style={{ flex: 1, resizeMode: 'cover', width: '100%' }}/>
       
     </TouchableOpacity>
