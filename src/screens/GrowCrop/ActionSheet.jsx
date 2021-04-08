@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { BottomSheet } from 'react-native-btr';
 import { useNavigation } from '@react-navigation/native';
-
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { BottomSheet } from 'react-native-btr';
 import constants from '../../constants/';
+
 
 const { colors } = constants;
 
