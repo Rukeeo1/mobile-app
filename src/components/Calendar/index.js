@@ -1,47 +1,12 @@
 import React from 'react';
+import SmoothPicker from 'react-native-smooth-picker';
 
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import constants from '../../constants';
 
 const { colors } = constants;
 
-// or any pure javascript modules available in npm
-import SmoothPicker from 'react-native-smooth-picker';
 
-const dataCity = [
-  'Paris',
-  'Berlin',
-  'Lisbonne',
-  'Budapest',
-  'Londres',
-  'Prague',
-  'Rome',
-  'Barcelone',
-  'Amsterdam',
-  'Dublin',
-  'Vienne',
-  'Madrid',
-  'Cracovie',
-  'Reykjavik',
-  'Istambul',
-  'Florence',
-  'Copenhague',
-  'Zagreb',
-  'Stockholm',
-  'Thessalonique',
-  'Marseille',
-  'Porto',
-  'Lugano',
-  'Bruxelles',
-  'Lyon',
-];
 
 const opacities = {
   0: 1,
@@ -49,9 +14,7 @@ const opacities = {
   2: 0,
   3: 0,
   4: 0,
-  // 2: 0.6,
-  // 3: 0.3,
-  // 4: 0.1,
+
 };
 const sizeText = {
   0: 16,

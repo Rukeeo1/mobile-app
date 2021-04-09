@@ -10,7 +10,7 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-export const SowItContainer = () => {
+export const SowItContainer = ({ buttonTitle }) => {
   const [showSowItButton, setShowSowItButton] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   const [showFullSelectedDate, setShowFullSelectedDate] = useState(false);
@@ -23,7 +23,7 @@ export const SowItContainer = () => {
     <View>
       {showSowItButton && (
         <Button
-          title='Sow It!'
+          title={buttonTitle}
           gradient={[colors.pink, colors.pinkDeep]}
           coverStyle={{ zIndex: 42 }}
           onPress={() => {
