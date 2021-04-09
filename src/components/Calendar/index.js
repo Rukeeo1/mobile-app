@@ -43,32 +43,18 @@ const dataCity = [
   'Lyon',
 ];
 
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 const opacities = {
   0: 1,
   1: 1,
-  2: 0.6,
-  3: 0.3,
-  4: 0.1,
+  2: 0,
+  3: 0,
+  4: 0,
+  // 2: 0.6,
+  // 3: 0.3,
+  // 4: 0.1,
 };
 const sizeText = {
-  // 0: 20,
   0: 16,
-  // 1: 15,
   1: 14,
   2: 10,
 };
@@ -90,26 +76,15 @@ const Item = React.memo(
           {
             opacity,
             borderColor: selected ? 'grey' : 'transparent',
-            backgroundColor: colors.white,
+            backgroundColor: 'transparent',
 
             width: vertical ? 'auto' : 'auto', // bad...left it like this for now...would fix
           },
-          selected
-            ? {
-                // shadow iOS
-                shadowColor: 'grey',
-                shadowOffset: {
-                  width: 0.5,
-                  height: 0.4,
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 4,
-                elevation: 15,
-              }
-            : null,
         ]}
       >
-        <Text style={{ fontSize, color: selected ? colors.pink : 'black' }}>{name}</Text>
+        <Text style={{ fontSize, color: selected ? colors.pink : 'black' }}>
+          {name}
+        </Text>
       </View>
     );
   }
@@ -146,11 +121,16 @@ const ItemToRender = (
   );
 };
 
-export const GrowCalendar = ({ data, activeItemContainerStyle }) => {
+export const GrowCalendar = ({
+  data,
+  activeItemContainerStyle,
+  onSelectItem,
+}) => {
   const [selected, setSelected] = React.useState(4);
 
-  function handleChange(index) {
+  function handleChange(index, item) {
     setSelected(index);
+    onSelectItem(item);
   }
   return (
     <React.Fragment>
@@ -162,7 +142,7 @@ export const GrowCalendar = ({ data, activeItemContainerStyle }) => {
           showsVerticalScrollIndicator={false}
           data={data}
           scrollAnimation
-          onSelected={({ item, index }) => handleChange(index)}
+          onSelected={({ item, index }) => handleChange(index, item)}
           renderItem={(option) =>
             ItemToRender(option, selected, true, activeItemContainerStyle)
           }
@@ -196,9 +176,6 @@ const styles = StyleSheet.create({
   wrapperVertical: {
     width: '30%',
     height: 350,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // margin: 'auto',
     color: 'black',
   },
   OptionWrapper: {
@@ -208,12 +185,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingTop: 10,
     paddingBottom: 10,
-    // paddingLeft: 30,
-    // paddingRight: 30,
     height: 50,
     width: '100%',
-    // borderWidth: 3,
-    // borderRadius: 10,
   },
 });
 

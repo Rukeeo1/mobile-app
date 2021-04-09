@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View,TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-import { GradientButton as Button, GrowCalendar } from '../../components';
+import { GrowCalendar } from '../../components';
 
 import constants from '../../constants';
 
@@ -66,10 +66,14 @@ const days = [
   30,
 ];
 
-
-export const GrowCropCalender = () => {
+export const GrowCropCalender = ({
+  handleDate,
+  handleMonth,
+  handleYear,
+  setSelectedDateItems,
+}) => {
   return (
-    <View style={{ flexDirection: 'row', height: 300, alignItems: 'center' }}>
+    <View style={{ flexDirection: 'row', height: 200, alignItems: 'center'}}>
       <View
         style={{
           marginTop: 32,
@@ -78,23 +82,35 @@ export const GrowCropCalender = () => {
           width: '85%',
         }}
       >
-        <GrowCalendar
-          type='days'
-          data={days}
-          activeItemContainerStyle={{
-            borderTopLeftRadius: 30,
-            borderBottomLeftRadius: 30,
+        <View
+          style={{
+            height: 50,
+            width: 50,
+            position: 'absolute',
+            backgroundColor: colors.white,
+            width: '90%',
+            top: '83.5%',
+            borderTopLeftRadius: 45,
+            borderTopRightRadius: 45,
+            borderBottomLeftRadius: 45,
+            borderBottomRightRadius: 45,
+            shadowColor: 'grey',
+            shadowOffset: {
+              width: 0.5,
+              height: 0.4,
+            },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 15,
           }}
         />
-        <GrowCalendar type='month' data={monthsForCalender} />
+        <GrowCalendar type='days' data={days} onSelectItem={handleDate} />
         <GrowCalendar
-          type='years'
-          data={years}
-          activeItemContainerStyle={{
-            borderTopRightRadius: 30,
-            borderBottomRightRadius: 30,
-          }}
+          type='month'
+          data={monthsForCalender}
+          onSelectItem={handleMonth}
         />
+        <GrowCalendar type='years' data={years} onSelectItem={handleYear} />
       </View>
       <View
         style={{
@@ -106,7 +122,7 @@ export const GrowCropCalender = () => {
         }}
       >
         <TouchableOpacity
-          onPress={() => alert('hello')}
+          onPress={setSelectedDateItems}
           style={{
             height: 50,
             width: 50,
