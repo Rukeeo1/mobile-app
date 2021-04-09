@@ -47,8 +47,8 @@ const opacities = {
   0: 1,
   1: 1,
   2: 0,
-  3:0,
-  4:0
+  3: 0,
+  4: 0,
   // 2: 0.6,
   // 3: 0.3,
   // 4: 0.1,
@@ -80,19 +80,6 @@ const Item = React.memo(
 
             width: vertical ? 'auto' : 'auto', // bad...left it like this for now...would fix
           },
-          // selected
-          //   ? {
-          //       // shadow iOS
-          //       shadowColor: 'grey',
-          //       shadowOffset: {
-          //         width: 0.5,
-          //         height: 0.4,
-          //       },
-          //       shadowOpacity: 0.3,
-          //       shadowRadius: 4,
-          //       elevation: 15,
-          //     }
-          //   : null,
         ]}
       >
         <Text style={{ fontSize, color: selected ? colors.pink : 'black' }}>
@@ -111,8 +98,6 @@ const ItemToRender = (
 ) => {
   const selected = index === indexSelected;
   const gap = Math.abs(index - indexSelected);
-
-  console.log(gap)
 
   let opacity = opacities[gap];
   if (gap > 3) {
@@ -142,7 +127,6 @@ export const GrowCalendar = ({
   onSelectItem,
 }) => {
   const [selected, setSelected] = React.useState(4);
-
 
   function handleChange(index, item) {
     setSelected(index);
@@ -192,9 +176,6 @@ const styles = StyleSheet.create({
   wrapperVertical: {
     width: '30%',
     height: 350,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // margin: 'auto',
     color: 'black',
   },
   OptionWrapper: {
@@ -204,12 +185,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingTop: 10,
     paddingBottom: 10,
-    // paddingLeft: 30,
-    // paddingRight: 30,
     height: 50,
     width: '100%',
-    // borderWidth: 3,
-    // borderRadius: 10,
   },
 });
 
