@@ -8,7 +8,7 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-const start = 1900;
+const start = 2000;
 
 const monthsForCalender = [
   'January',
@@ -30,8 +30,7 @@ const years = new Array(new Date().getFullYear() - start + 1)
   .map((_, i) => {
     const value = start + i;
     return value;
-  })
-  .reverse();
+  }).reverse()
 
 const days = [
   1,
@@ -119,6 +118,7 @@ export const GrowCropCalender = ({
           flex: '1',
           paddingHorizontal: '5%',
           marginRight: 20,
+          marginTop:'2%'
         }}
       >
         <TouchableOpacity

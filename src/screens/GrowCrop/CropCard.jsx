@@ -23,6 +23,7 @@ import { MyCarousel as Carousel } from './Carousel';
 import { SowItContainer } from './SowItContainer';
 
 import home from '../../assets/home-icon.png';
+import pencil from '../../assets/pencil_circle.png';
 import shovel from '../../assets/shovel.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
@@ -169,14 +170,16 @@ const CropCard = ({ navigation }) => {
               marginTop: '10%',
             }}
           >
-            <Image source={home} style={{ height: 37, width: 37 }} />
             <TouchableOpacity onPress={() => toggleBtmSheet()}>
+              <Image source={pencil} style={{ height: 37, width: 37 }} />
+            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() => toggleBtmSheet()}>
               <Entypo
                 name='dots-three-horizontal'
                 size={24}
                 color={colors.white}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={{ alignItems: 'center', marginTop: '5%' }}>
             <Text
@@ -201,13 +204,10 @@ const CropCard = ({ navigation }) => {
           </View>
         </LinearGradient>
         <View style={{ paddingHorizontal: '5%' }}>
-          {activeScreen === 0 && <SowItContainer />}
+          {activeScreen === 0 && <SowItContainer buttonTitle='Sow It!' />}
           {activeScreen === 1 && (
-            <Button
-              title='Plant It!'
-              gradient={[colors.pink, colors.pinkDeep]}
-              onPress={() => navigation.navigate('End-Harvest')}
-            />
+
+            <SowItContainer buttonTitle='Plant It!' />
           )}
           {activeScreen === 2 && (
             <Button
@@ -222,7 +222,13 @@ const CropCard = ({ navigation }) => {
               <Text style={styles.skipText}>Skip step ></Text>
             </TouchableOpacity>
           </View>
-          <View style={{ marginTop: 20, zIndex: 28983, backgroundColor: colors.white }}>
+          <View
+            style={{
+              marginTop: 20,
+              zIndex: 28983,
+              backgroundColor: colors.white,
+            }}
+          >
             <Text>When to sow guide</Text>
             <View style={styles.monthStrip}>
               {months.map((item, index) => (
@@ -361,7 +367,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: '3%',
     zIndex: 232,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   skipText: { color: colors.pink, fontSize: 15, fontWeight: 'bold' },
   monthStrip: {

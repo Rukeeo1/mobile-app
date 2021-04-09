@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Platform, SafeAreaView, StyleSheet, View } from 'react-native'
 import constants from '../../constants/index'
 import ManageCrops from '../Crops/ManageCrop'
