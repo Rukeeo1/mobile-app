@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import CropCard from './CropCard';
 import DeleteCrop from './DeleteCrop';
-import KilledCrop from './KilledCrop'
+import KilledCrop from './KilledCrop';
 
 const Stack = createStackNavigator();
 

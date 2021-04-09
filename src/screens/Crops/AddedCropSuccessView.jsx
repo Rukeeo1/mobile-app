@@ -23,7 +23,13 @@ const AddedSuccess = ({ navigation }) => {
         }}
         onPress={() => navigation.navigate('Grow-Crop')}
       >
-        
+        <MaterialIcons
+          name="arrow-back-ios"
+          size={24}
+          color="white"
+          onPress={() => navigation.navigate('Crop-search')}
+          style={{ marginTop: '15%', marginLeft: '7%' }}
+        />
 
         <Text
           style={{
