@@ -27,8 +27,8 @@ const RootNavigator = () => (
         headerShown: false,
       }}
     >
-      {/* <Screen name='AuthNavigator' component={AuthNavigator} />
-      <Screen name='Onboarding' component={OnboardingLayout} /> */}
+      <Screen name='AuthNavigator' component={AuthNavigator} />
+      <Screen name='Onboarding' component={OnboardingLayout} />
       <Screen name='Grow-Crop' component={GrowCropNavigator} />
       <Screen name='Crop-Journal' component={CropJournalNavigator} />
       <Screen name='End-Harvest' component={EndHarvestNavigator} />
