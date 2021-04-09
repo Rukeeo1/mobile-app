@@ -110,7 +110,7 @@ const CropSelection = ({ navigation }) => {
               <View style={[styles.cropDetails]}>
                 <Image
                   style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
+                  source={require('../../assets/tomatoe1.png')}
                 />
                 <View style={[styles.cropText]}>
                   <Text style={[styles.cropName]}>Tomato</Text>
@@ -169,7 +169,7 @@ const CropSelection = ({ navigation }) => {
               <View style={[styles.cropDetails]}>
                 <Image
                   style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
+                  source={require('../../assets/tomatoe.png')}
                 />
                 <View style={[styles.cropText]}>
                   <Text style={[styles.cropName]}>Tomato</Text>
@@ -182,20 +182,7 @@ const CropSelection = ({ navigation }) => {
               <View style={[styles.cropDetails]}>
                 <Image
                   style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name='right' size={24} color={colors.green} />
-            </View>
-            <View style={[styles.cropCardContainer]}>
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/avatarimg.png')}
+                  source={require('../../assets/tomatoe2.png')}
                 />
                 <View style={[styles.cropText]}>
                   <Text style={[styles.cropName]}>Tomato</Text>
@@ -250,7 +237,7 @@ const styles = StyleSheet.create({
     borderRadius: 100 / 2,
     height: 70,
     paddingRight: 20,
-    marginVertical: 5,
+    marginVertical: 6,
     // shadow iOS
     shadowColor: 'grey',
     shadowOffset: {
