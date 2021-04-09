@@ -1,25 +1,29 @@
-import React from 'react';
-import {
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  StatusBar,
-  Platform,
-  Text,
-  Dimensions,
-} from 'react-native';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
-import { ScrollView } from 'react-native-gesture-handler';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
+import React from 'react';
+import {
+  Dimensions, Image,
+
+
+
+
+
+  Platform, StatusBar, StyleSheet,
+
+
+
+
+  Text, TouchableOpacity,
+  View
+} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
-
-import { Header, Input, GradientButton, SafeArea } from '../../components';
-
+import { GradientButton, Header, Input, SafeArea } from '../../components';
 import constants from '../../constants';
+
+
 
 const { colors } = constants;
 
