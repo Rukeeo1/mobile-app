@@ -4,26 +4,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React from 'react';
 import {
-  Dimensions, Image,
-
-
-
-
-
-  Platform, StatusBar, StyleSheet,
-
-
-
-
-  Text, TouchableOpacity,
-  View
+  Dimensions,
+  Image,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 import { GradientButton, Header, Input, SafeArea } from '../../components';
 import constants from '../../constants';
-
-
 
 const { colors } = constants;
 
@@ -167,10 +160,12 @@ const Settings = ({ navigation }) => {
             onPress={handleSubmit}
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
-            onPress={() => navigation.navigate('Main-Profile', {
-              //this would be refactored later... when the sideBar component is refactored...
-              indexOfItemToShow: 2
-            })}
+            onPress={() =>
+              navigation.navigate('Main-Profile', {
+                //this would be refactored later... when the sideBar component is refactored...
+                indexOfItemToShow: 2,
+              })
+            }
           />
         </View>
       </ScrollView>

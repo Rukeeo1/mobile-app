@@ -1,10 +1,3 @@
-import {
-  Entypo,
-  Feather,
-  FontAwesome5,
-  Ionicons,
-  Octicons,
-} from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
   Animated,
@@ -13,20 +6,25 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  Image
+  Image,
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import {
+  Entypo,
+  Feather,
+  FontAwesome5,
+  Ionicons,
+  Octicons,
+} from '@expo/vector-icons';
 
 import constants from '../../constants/index';
 
-const { colors } = constants;
+const { colors, screenHeight, screenWidth } = constants;
 
 const ProfileSideTab = ({
   setActiveGradient,
   activeGradient,
   setCurrentIndex,
   indexOfItemToShow,
-
   handleNavigation,
   navigation,
   setDefaultPostImage,
@@ -49,12 +47,14 @@ const ProfileSideTab = ({
       icon: (iconStyle) => <Feather name='bell' size={24} style={iconStyle} />,
       ref: React.createRef(),
       backgroundColor: [colors.green, colors.greenDeep],
+      style: styles.iconsAboveWhiteLineTopSpacing,
     },
     {
       name: 'create-post',
       icon: (iconStyle) => <Entypo name='plus' size={30} style={iconStyle} />,
       ref: React.createRef(),
       backgroundColor: [colors.purshBlueDeep, colors.blue],
+      styles: { marginTop: 40 },
     },
     {
       name: 'profile',
@@ -64,6 +64,7 @@ const ProfileSideTab = ({
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: [colors.greenDeep, colors.green],
+      styles: { marginTop: 40 },
     },
     {
       name: 'explore',
@@ -73,16 +74,20 @@ const ProfileSideTab = ({
       ref: React.createRef(),
       activeColor: '#AD0048',
       backgroundColor: ['#AD0048', '#E8357F'],
+      styles: { marginTop: 40 },
     },
     {
       name: 'manage-crops',
       icon: (iconStyle) => (
-
-        <Image source={require('../../assets/managecrops.png')} style={{width: 24, height: 24}}/>
+        <Image
+          source={require('../../assets/managecrops.png')}
+          style={{ width: 24, height: 24 }}
+        />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: ['#AD0048', '#E8357F'],
+      styles: { marginTop: 60 },
     },
     {
       name: 'calendar',
@@ -92,6 +97,7 @@ const ProfileSideTab = ({
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: [colors.greenDeep, colors.green],
+      styles: { marginTop: 40 },
     },
   ];
 
@@ -113,9 +119,10 @@ const ProfileSideTab = ({
   };
 
   useEffect(() => {
-    // get coordinates/positions of sidebar items/icons on the screen (basically x and y axis)
+    // get the positions of sidebar items/icons on the screen (basically their x and y coordinates)
     const intialCoordinatesDetails = [];
     sideBarTabItems.forEach((item) => {
+      //for each item on the side bar loop through and get their position
       item.ref.current?.measureLayout(
         containerRef.current,
         (x, y, width, height) => {
@@ -127,7 +134,7 @@ const ProfileSideTab = ({
             item: item.name,
           });
           intialCoordinatesDetails.length === sideBarTabItems.length &&
-            setCoordinates(intialCoordinatesDetails);
+            setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
         }
       );
     });
@@ -136,7 +143,19 @@ const ProfileSideTab = ({
   console.log(currentIndex, 'this is current index', indexOfItemToShow);
 
   useEffect(() => {
-    if (indexOfItemToShow && coordinates.length === 5) {
+    /**
+     * @indexOfItemToShow: is used to set the active sidebar item, when comming from another screen. for example notification, being the firstItem has and index of 0. create post has and index of 1 etc.
+     *
+     * if i wanted Create post which is the plus icon to be active by default when comming from a different page, i pass in a indexOfItemToShow through navigation params...
+     *
+     * The codde below works as follows:
+       
+     (1) indexOfItemToShow checks if there's an item you want to make default and if the property is passed with the parent
+     (2) coordinates.length === sideBarTabItems.length checks that the coordinate of all the sidebar icons have been measured and the coordinate state item updated
+      
+     */
+
+    if (indexOfItemToShow && coordinates.length === sideBarTabItems.length) {
       //currentindex handles the Icon/Menu Item to display
       setCurrentIndex(indexOfItemToShow);
 
@@ -153,7 +172,7 @@ const ProfileSideTab = ({
   return (
     <SafeAreaView style={styles.tab}>
       <TouchableOpacity style={styles.ellipse} onPress={onClickEllipse}>
-        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} />
+        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} style={{opacity: 0.5}} />
       </TouchableOpacity>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
@@ -169,6 +188,7 @@ const ProfileSideTab = ({
           <AnimatedTouchable
             style={[
               styles.tabIconWrapper,
+              item.styles,
               activeIndex === index && {
                 left: -10,
               },
@@ -185,6 +205,16 @@ const ProfileSideTab = ({
           </AnimatedTouchable>
         ))}
       </ScrollView>
+      <View
+        style={{
+          position: 'absolute',
+          height: 1,
+          backgroundColor: colors.white,
+          top: screenHeight * 0.58,
+          width: 100,
+          opacity: 0.5,
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -211,7 +241,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabIconWrapper: {
-    marginVertical: '35%',
+    // marginVertical: '35%',
+    marginTop: '35%',
     height: 60,
     width: 60,
     justifyContent: 'center',
@@ -225,7 +256,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 30,
     elevation: 3,
-    // left: -10,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.26,
@@ -233,6 +263,9 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     position: 'absolute',
+  },
+  iconsAboveWhiteLineTopSpacing: {
+    marginTop: screenHeight * 0.4,
   },
 });
 
