@@ -172,7 +172,7 @@ const ProfileSideTab = ({
   return (
     <SafeAreaView style={styles.tab}>
       <TouchableOpacity style={styles.ellipse} onPress={onClickEllipse}>
-        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} />
+        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} style={{opacity: 0.5}} />
       </TouchableOpacity>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
@@ -210,7 +210,7 @@ const ProfileSideTab = ({
           position: 'absolute',
           height: 1,
           backgroundColor: colors.white,
-          top: screenHeight * 0.55,
+          top: screenHeight * 0.58,
           width: 100,
           opacity: 0.5,
         }}
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   },
   tabIconWrapper: {
     // marginVertical: '35%',
-    // marginTop: '35%',
+    marginTop: '35%',
     height: 60,
     width: 60,
     justifyContent: 'center',
