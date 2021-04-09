@@ -140,7 +140,7 @@ const CropSearch = ({ navigation }) => {
                 <View style={[styles.cropDetails]}>
                   <Image
                     style={[styles.cropAvatar]}
-                    source={require('../../assets/avatarimg.png')}
+                    source={require('../../assets/tomatoe.png')}
                   />
                   <View style={[styles.cropText]}>
                     <Text style={[styles.cropName]}>Tomato</Text>
@@ -156,7 +156,7 @@ const CropSearch = ({ navigation }) => {
                 <View style={[styles.cropDetails]}>
                   <Image
                     style={[styles.cropAvatar]}
-                    source={require('../../assets/avatarimg.png')}
+                    source={require('../../assets/tomatoe1.png')}
                   />
                   <View style={[styles.cropText]}>
                     <Text style={[styles.cropName]}>Tomato</Text>
@@ -172,7 +172,39 @@ const CropSearch = ({ navigation }) => {
                 <View style={[styles.cropDetails]}>
                   <Image
                     style={[styles.cropAvatar]}
-                    source={require('../../assets/avatarimg.png')}
+                    source={require('../../assets/tomatoe2.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/tomatoe3.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name="right" size={24} color={colors.green} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/tomatoe4.png')}
                   />
                   <View style={[styles.cropText]}>
                     <Text style={[styles.cropName]}>Tomato</Text>
@@ -253,7 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 100 / 2,
     height: 70,
     paddingRight: 20,
-    marginVertical: 3,
+    marginVertical: 10,
     // shadow iOS
     shadowColor: 'grey',
     shadowOffset: {
