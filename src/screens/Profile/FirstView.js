@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Image,
   SafeAreaView,
@@ -7,21 +7,21 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { GradientButton } from '../../components/Button';
-import constants from '../../constants';
-import ShareModal from './ShareModal';
+} from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { GradientButton } from '../../components/Button'
+import constants from '../../constants'
+import ShareModal from './ShareModal'
 
-const { colors } = constants;
+const { colors } = constants
 
 const FirstView = ({}) => {
-  const [isList, setIsList] = useState(true);
-  const [showShare, setShowShare] = useState(false);
+  const [isList, setIsList] = useState(true)
+  const [showShare, setShowShare] = useState(false)
 
-  const navigation = useNavigation();
-  
-  const toggleModal = () => setShowShare((prevState) => !prevState);
+  const navigation = useNavigation()
+
+  const toggleModal = () => setShowShare((prevState) => !prevState)
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
@@ -46,11 +46,21 @@ const FirstView = ({}) => {
           <Text style={[styles.edit]}>Edit profile</Text>
         </View>
 
-        <TouchableOpacity style={[styles.detailsContainer, styles.follows]} onPress={() => navigation.navigate('Following')}>
-          <Text style={[styles.followsText]}>0 Following</Text>
+        <View style={[styles.detailsContainer, styles.follows]}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('Following')}
+          >
+            <Text style={[styles.followsText]}>0 Following</Text>
+          </TouchableOpacity>
           <Text>{'|'}</Text>
-          <Text style={[styles.followsText]}>0 Followers</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('Followers')}
+          >
+            <Text style={[styles.followsText]}>0 Followers</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={[styles.growList]}>
           {isList ? (
@@ -139,7 +149,7 @@ const FirstView = ({}) => {
               </TouchableOpacity>
             </View>
 
-            <View>
+            <View style={{ marginLeft: 15 }}>
               <Text>
                 <Text style={[styles.bold]}>Garden_of_Riley</Text> First handful
                 of tomatoes!! Well worth the wait!
@@ -170,8 +180,8 @@ const FirstView = ({}) => {
         <ShareModal showBottomSheet={showShare} setShowShare={toggleModal} />
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   profileImg: {
@@ -282,6 +292,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
+    marginLeft: 15,
   },
   postTitle: {
     fontWeight: 'bold',
@@ -297,10 +308,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     margin: 10,
+    marginLeft: 15,
   },
   bold: {
     fontWeight: 'bold',
   },
-});
+})
 
-export default FirstView;
+export default FirstView

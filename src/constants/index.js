@@ -1,3 +1,5 @@
+import { Dimensions } from 'react-native';
+
 const colors = {
   black: '#000000',
   blue: '#002B55',
@@ -23,6 +25,11 @@ const colors = {
   redDeep: '#AD0048',
 };
 
+const screenHeight = Dimensions.get('screen').height;
+const screenWidth = Dimensions.get('screen').width;
+
 export default {
   colors,
+  screenHeight,
+  screenWidth,
 };

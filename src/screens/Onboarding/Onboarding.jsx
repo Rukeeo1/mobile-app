@@ -1,100 +1,161 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import Swiper from 'react-native-web-swiper';
+import { LinearGradient } from 'expo-linear-gradient'
+import React from 'react'
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Swiper from 'react-native-swiper'
+import growthLogo from '../../assets/growth_logo.png'
+import { Logo } from '../../components'
+import constants from '../../constants'
 
-import { Button, GradientButton } from '../../components';
-
-import constants from '../../constants';
-
-
-const OnboardingLayout = ({navigation}) => {
-  const { colors } = constants;
+const { colors } = constants
+const OnboardingLayout = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Swiper controlsEnabled={false}>
-        <View style={[styles.slideContainer, styles.slide1]}>
-          <LinearGradient
-            colors={[colors.green, colors.greenDeep]}
-            style={[styles.general]}
-          >
-            <Image
-              source={require('../../assets/slideone.png')}
-              style={[styles.imageContainer]}
-            />
-            <Text style={[styles.screenTitle]}>Grow Calendar</Text>
-            <Text style={[styles.screenDescription]}>
-              Plan and schedule your growing year with an intuitive calendar
-              that grows with you!
+      <SafeAreaView>
+        <ScrollView>
+          <View style={{ height: 335 }}>
+            <Swiper controlsEnabled={false} loop={false} activeDotStyle={{backgroundColor: 'white'}}>
+              <View style={[styles.slideContainer, styles.slide1]}>
+                <LinearGradient
+                  colors={[colors.green, colors.greenDeep]}
+                  style={[styles.general]}
+                >
+                  <Text style={[styles.screenTitle]}>Grow Calendar</Text>
+                  <Text style={[styles.screenDescription]}>
+                    Plan and schedule your growing year with an intuitive
+                    calendar that grows with you!
+                  </Text>
+                </LinearGradient>
+              </View>
+              <View style={[styles.slideContainer, styles.slide2]}>
+                <LinearGradient
+                  colors={[colors.purshBlue, colors.purshBlueDeep]}
+                  style={[styles.general]}
+                >
+                  
+
+                  <Text style={[styles.screenTitle]}>Explore</Text>
+                  <Text style={[styles.screenDescription]}>
+                    A community where you can share your successes and failures,
+                    get inspired, learn from others, and enjoy a new way to
+                    learn
+                  </Text>
+                </LinearGradient>
+              </View>
+              <View style={[styles.slideContainer, styles.slide3]}>
+                <LinearGradient
+                  colors={[colors.green, colors.greenDeep]}
+                  style={[styles.general]}
+                >
+                 <Text style={[styles.screenTitle]}>Guided Growing</Text>
+                  <Text style={[styles.screenDescription]}>
+                    Never feel overwhelmed! We are here to prove that gardening
+                    truly is for everyone. We have beginner crops and guides to
+                    help you every step of the way.
+                  </Text>
+
+                </LinearGradient>
+              </View>
+              <View style={[styles.slideContainer, styles.slide4]}>
+                <LinearGradient
+                  colors={[colors.pink, colors.pinkDeep]}
+                  style={[styles.general, styles.space]}
+                >
+                 
+                  <Text style={[styles.screenTitle]}>Manage Crops</Text>
+                  <Text style={[styles.screenDescription]}>
+                    See at a glance everything you are growing and where they
+                    are in the growing process
+                  </Text>
+                </LinearGradient>
+              </View>
+            </Swiper>
+          </View>
+          <View style={{ padding: 20 }}>
+            <View style={{ alignItems: 'center', }}>
+              <Logo
+                source={growthLogo}
+                logoStyles={{
+                  marginTop: '10%',
+                  marginBottom: '10%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  width: '100%'
+                }}
+              />
+            </View>
+            <Text style={{ textAlign: 'center', fontSize: 20, paddingTop: 15, paddingLeft: 30, paddingRight: 30 }}>
+              Choose your subscription plan below to start your{' '}
             </Text>
-          </LinearGradient>
-        </View>
-        <View style={[styles.slideContainer, styles.slide2]}>
-          <LinearGradient
-            colors={[colors.pink, colors.pinkDeep]}
-            style={[styles.general]}
-          >
-            <Image
-              source={require('../../assets/slide2.png')}
-              style={[styles.imageContainer]}
-            />
-            <Text style={[styles.screenTitle]}>Manage Crops</Text>
-            <Text style={[styles.screenDescription]}>
-              See at a glance everything you are growing and where they are in
-              the growing process
-            </Text>
-          </LinearGradient>
-        </View>
-        <View style={[styles.slideContainer, styles.slide3]}>
-          <LinearGradient
-            colors={[colors.purshBlue, colors.purshBlueDeep]}
-            style={[styles.general]}
-          >
-            <Image
-              source={require('../../assets/slide3.png')}
-              style={[styles.imageContainer]}
-            />
-            <Text style={[styles.screenTitle]}>Explore</Text>
-            <Text style={[styles.screenDescription]}>
-              A community where you can share your successes and failures, get
-              inspired, learn from others, and enjoy a new way to learn
-            </Text>
-          </LinearGradient>
-        </View>
-        <View style={[styles.slideContainer, styles.slide4]}>
-          <LinearGradient
-            colors={[colors.purshBlue, colors.purshBlueDeep]}
-            style={[styles.general, styles.space]}
-          >
-            <Image
-              source={require('../../assets/slide4.png')}
-              style={[styles.imageContainer]}
-            />
-            <Text style={[styles.screenTitle]}>Guides</Text>
-            <Text style={[styles.screenDescription]}>
-              Never feel overwhelmed! We are here to prove that gardening truly
-              is for everyone. We have beginner crops and guides to help you
-              every step of the way.
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 25,
+                color: colors.green,
+                fontWeight: 'bold',
+                paddingBottom: 50
+              }}
+            >
+              30 day FREE trial
             </Text>
 
-            <GradientButton
-              gradient={[colors.green, colors.greenDeep]}
-              coverStyle={{
-                margin: 20,
+            <View style={[styles.TrialContainer]}>
+              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
+                <LinearGradient
+                  colors={[colors.green, colors.greenDeep]}
+                  style={[styles.general, styles.space]}
+                >
+                  <Text style={[styles.trialText]}>
+                    30 day free trial £2.99 per month
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
+                <LinearGradient
+                  colors={[colors.green, colors.greenDeep]}
+                  style={[styles.general, styles.space]}
+                >
+                  <Text style={[styles.trialText]}>
+                    30 day free trial £29.99 per year
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+
+            <Text
+              style={{
+                textAlign: 'right',
+                color: colors.green,
+                fontWeight: 'bold',
+                paddingRight: 15,
+                paddingTop: 10
               }}
-              title={'Got It!'}
-              onPress={() => navigation.navigate('Settings')}
-            />
-          </LinearGradient>
-        </View>
-      </Swiper>
+            >
+              Save £5.89 (17%)
+            </Text>
+
+            <View></View>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 13,
+                marginTop: 70,
+                justifyContent: 'center',
+              }}
+            >
+              Subscription automatically renews after the 30 day free trial. You
+              can cancel at any time.
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.white,
   },
   slideContainer: {
     flex: 1,
@@ -102,16 +163,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   slide1: {
-    backgroundColor: 'rgba(20,20,200,0.3)',
+    // backgroundColor: 'rgba(20,20,200,0.3)',
   },
   slide2: {
-    backgroundColor: 'rgba(20,200,20,0.3)',
+    // backgroundColor: 'rgba(20,200,20,0.3)',
   },
   slide3: {
-    backgroundColor: 'rgba(200,20,20,0.3)',
+    // backgroundColor: 'rgba(200,20,20,0.3)',
   },
   slide4: {
-    backgroundColor: 'rgba(200,20,20,0.3)',
+    // backgroundColor: 'rgba(200,20,20,0.3)',
   },
 
   imageContainer: {
@@ -120,21 +181,22 @@ const styles = StyleSheet.create({
   },
   screenTitle: {
     textAlign: 'center',
-    marginTop: 36,
-    marginBottom: 28,
     fontSize: 42,
+    fontWeight: '100',
     color: '#FFFFFF',
+    marginTop: 70,
   },
   screenDescription: {
     textAlign: 'center',
-    paddingHorizontal: 20 ,
+    paddingHorizontal: 30,
+    fontSize: 18,
     color: '#FFFFFF',
+    marginTop: 30,
   },
 
   general: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
     position: 'absolute',
     left: 0,
     right: 0,
@@ -144,6 +206,24 @@ const styles = StyleSheet.create({
   space: {
     padding: 20,
   },
-});
+  TrialContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  trial: {
+    width: '48%',
+    height: 80,
+    borderTopLeftRadius: 7,
+    borderTopRightRadius: 7,
+    borderBottomLeftRadius: 7,
+    borderBottomRightRadius: 7,
+    overflow: 'hidden',
+  },
+  trialText: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+})
 
-export default OnboardingLayout;
+export default OnboardingLayout

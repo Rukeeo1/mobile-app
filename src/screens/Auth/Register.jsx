@@ -1,18 +1,9 @@
-import React, { useState } from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-
-import { Button, Header, Input, Logo } from '../../components';
-
-import growthLogo from '../../assets/growth_logo.png';
-
-import constants from '../../constants';
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useState } from 'react'
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import growthLogo from '../../assets/growth_logo.png'
+import { GradientButton, Input, Logo } from '../../components'
+import constants from '../../constants'
 
 export const Register = ({ navigation }) => {
   const [authDetails, setAuthDetails] = useState({
@@ -21,131 +12,131 @@ export const Register = ({ navigation }) => {
     bio: '',
     location: '',
     password: '',
-  });
+  })
 
   const handleAuthDetails = (name, value) => {
     setAuthDetails((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
-  const submit = () => {};
+  const submit = () => {}
 
-  const { colors } = constants;
+  const { colors } = constants
 
   return (
-    <SafeAreaView style={styles.parentContainer}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
-      <Header onIconPress={() => navigation.goBack()} />
-      <Logo
-        source={growthLogo}
-        logoStyles={{ marginTop: '10%', marginBottom: '10%' }}
-      />
-        <View style={styles.container}>
-          <Input
-            inputStyle={styles.input}
-            labelStyle={styles.label}
-            labelText='Email'
-            value={authDetails.email}
-            onChangeText={(text) => handleAuthDetails('email', text)}
-            placeholder='Enter your email'
-          />
-          <Input
-            containerStyle={styles.inputContainer}
-            inputStyle={styles.input}
-            labelStyle={styles.label}
-            labelText='Name'
-            value={authDetails.name}
-            onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder='Enter your name'
-            secureTextEntry={true}
-          />
-          <Input
-            containerStyle={styles.inputContainer}
-            inputStyle={styles.input}
-            labelStyle={styles.label}
-            labelText='Bio'
-            value={authDetails.bio}
-            onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder='Enter your bio'
-            secureTextEntry={true}
-          />
-          <Input
-            containerStyle={styles.inputContainer}
-            inputStyle={styles.input}
-            labelStyle={styles.label}
-            labelText='Location'
-            value={authDetails.location}
-            onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder='Enter your location'
-            secureTextEntry={true}
-          />
-          <Input
-            containerStyle={styles.inputContainer}
-            inputStyle={styles.input}
-            labelStyle={styles.label}
-            labelText='Password'
-            value={authDetails.password}
-            onChangeText={(text) => handleAuthDetails('password', text)}
-            placeholder='Enter your password'
-            secureTextEntry={true}
-          />
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
+      <SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={false}>
 
-          <View style={styles.alignItem}>
-            <Text>Already have an Account?</Text>
-            <Button
-              title='Log In'
-              onPress={() => navigation.navigate('ManualAuthentication')}
-              coverStyle={{
-                backgroundColor: colors.greenDeep,
-                marginTop: '8%',
-                width: '20%',
+          <View style={{ alignItems: 'center' }}>
+            <Logo
+              source={growthLogo}
+              logoStyles={{
+                marginTop: '20%',
+                marginBottom: '10%',
+                display: 'flex',
+                justifyContent: 'center',
               }}
-              color={colors.white}
             />
           </View>
-          <Button
-            title='Sign Up'
-            onPress={() => console.log('joejoe')}
-            coverStyle={{
-              backgroundColor: colors.greenDeep,
-              marginTop: '8%',
-            }}
-            color={colors.white}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+
+          <View style={styles.container}>
+            <LinearGradient
+              style={{
+                width: '100%',
+                paddingLeft: '5%',
+                paddingRight: '5%',
+                flex: 1,
+                paddingBottom: 30,
+                paddingTop: 50,
+              }}
+              colors={[colors.blueLigth, colors.blue]}
+            >
+              <Input
+                inputStyle={styles.input}
+                labelStyle={styles.label}
+                labelText="Email"
+                value={authDetails.email}
+                onChangeText={(text) => handleAuthDetails('email', text)}
+                placeholder="Enter your email"
+              />
+              <Input
+                containerStyle={styles.inputContainer}
+                inputStyle={styles.input}
+                labelStyle={styles.label}
+                labelText="Name"
+                value={authDetails.name}
+                onChangeText={(text) => handleAuthDetails('name', text)}
+                placeholder="Enter your name"
+              />
+              <Input
+                containerStyle={styles.inputContainer}
+                inputStyle={styles.input}
+                labelStyle={styles.label}
+                labelText="Location"
+                value={authDetails.location}
+                onChangeText={(text) => handleAuthDetails('location', text)}
+                placeholder="Enter your location"
+              />
+              <Input
+                containerStyle={styles.inputContainer}
+                inputStyle={styles.input}
+                labelStyle={styles.label}
+                labelText="Password"
+                value={authDetails.password}
+                onChangeText={(text) => handleAuthDetails('password', text)}
+                placeholder="Enter your password"
+                secureTextEntry={true}
+              />
+
+              <GradientButton
+                gradient={[colors.green, colors.greenDeep]}
+                coverStyle={{ marginBottom: 20, marginTop: 50 }}
+                title={'Register'}
+                onPress={() => navigation.navigate('Onboarding')}
+              />
+              <Text
+                style={{ textAlign: 'center', color: 'white' }}
+                onPress={() => navigation.navigate('ManualAuthentication')}
+              >
+                Already have an Account? Log in
+              </Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: 'white',
+                  textAlign: 'center',
+                  marginTop: '30%',
+                }}
+                onPress={() => navigation.navigate("Login")}
+              >
+                Cancel
+              </Text>
+            </LinearGradient>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
-  parentContainer: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
+  parentContainer: {},
   contentContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: constants.colors.white,
-    paddingBottom: 50,
   },
   scrollView: {
-    height: '20%',
     width: '100%',
-    margin: 5,
     alignSelf: 'center',
-    padding: 5,
   },
   container: {
-    width: '100%',
-    paddingHorizontal:'5%'
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    overflow: 'hidden',
   },
   image: {
     marginTop: '25%',
@@ -158,9 +149,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderBottomColor: constants.colors.greyLight,
     paddingBottom: '2%',
+    color: constants.colors.white,
   },
   label: {
-    color: constants.colors.blueLigth,
+    color: constants.colors.white,
   },
   alignItem: {
     display: 'flex',
@@ -169,6 +161,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: '5%',
   },
-});
+})
 
-export default Register;
+export default Register

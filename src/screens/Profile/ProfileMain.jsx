@@ -1,22 +1,28 @@
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useState } from 'react'
+import { Platform, SafeAreaView, StyleSheet, View } from 'react-native'
+import constants from '../../constants/index'
+import ManageCrops from '../Crops/ManageCrop'
+import Notification from '../Notification/Notification'
+import CreatePost from '../Posts/PostForm'
+import Calendar from './AddToCalendar'
+import Explore from './Explore'
+import FirstView from './FirstView'
+import ProfileBtmSheet from './ProfileBtmSheet'
+import ProfileSideTab from './ProfileSideTab'
+import { useRoute } from '@react-navigation/native'
 
-import React, { useState } from 'react';
-import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
-
-import { LinearGradient } from 'expo-linear-gradient';
-
-import Notification from '../Notification/Notification';
-import Calendar from './AddToCalendar';
-import Explore from './Explore';
-import FirstView from './FirstView';
-import ProfileSideTab from './ProfileSideTab';
-import CreatePost from '../Posts/PostForm';
-import ProfileBtmSheet from './ProfileBtmSheet';
-
-import constants from '../../constants/index';
-
-const { colors } = constants;
+const { colors } = constants
 
 const Main = ({ currentIndex, defaultPostImage }) => {
+  
+  const { params } = useRoute()
+
+  if (params.indexOfItemToShow) {
+    currentIndex = params.indexOfItemToShow
+    params.indexOfItemToShow = null
+  }
+
   return (
     <View style={styles.main}>
       {currentIndex === 0 ? (
@@ -31,36 +37,37 @@ const Main = ({ currentIndex, defaultPostImage }) => {
       ) : currentIndex === 3 ? (
         <Explore />
       ) : currentIndex === 4 ? (
+        <ManageCrops />
+      ) : currentIndex === 5 ? (
         <Calendar />
       ) : null}
     </View>
-  );
-};
+  )
+}
 
 const MainProfile = ({ navigation, route }) => {
   const [activeGradient, setActiveGradient] = useState([
     colors.greenDeep,
     colors.green,
-  ]);
+  ])
 
-  const [defaultPostImage, setDefaultPostImage] = useState('');
+  const [defaultPostImage, setDefaultPostImage] = useState('')
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0)
 
-  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [showBottomSheet, setShowBottomSheet] = useState(false)
 
-  const { indexOfItemToShow } = route.params;
+  const { indexOfItemToShow } = route.params
 
   //this sets the default sidebar item when comeing from another screen... we need to look for a way to clean it up...
   const handleNavigation = (destination) => {
     navigation.navigate(destination, {
       screen: 'posts-form',
       params: { indexToGoBackTo: currentIndex },
-    });
-  };
+    })
+  }
 
-  const toggleBottomSheetVisibility = () =>
-    setShowBottomSheet(!showBottomSheet);
+  const toggleBottomSheetVisibility = () => setShowBottomSheet(!showBottomSheet)
 
   return (
     <SafeAreaView
@@ -85,7 +92,6 @@ const MainProfile = ({ navigation, route }) => {
             currentIndex={currentIndex}
             handleNavigation={handleNavigation}
             onClickEllipse={toggleBottomSheetVisibility}
-
           />
         </View>
         <ProfileBtmSheet
@@ -94,8 +100,8 @@ const MainProfile = ({ navigation, route }) => {
         />
       </LinearGradient>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -117,6 +123,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopRightRadius: 40,
   },
-});
+})
 
-export default MainProfile;
+export default MainProfile

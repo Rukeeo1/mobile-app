@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   Image,
   Platform,
 } from 'react-native';
+
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
@@ -16,18 +17,16 @@ import { Entypo } from '@expo/vector-icons';
 import BookNavItem from './BookNavItem';
 import ActionSheet from './ActionSheet';
 
-import {
-  SafeArea,
-  GradientButton as Button,
-  GrowCalendar,
-} from '../../components';
-// import Carousel from './Carousel';
+import { SafeArea, GradientButton as Button } from '../../components';
+
+import { MyCarousel as Carousel } from './Carousel';
+import { SowItContainer } from './SowItContainer';
 
 import home from '../../assets/home-icon.png';
+import pencil from '../../assets/pencil_circle.png';
 import shovel from '../../assets/shovel.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
-import houseIcon from '../../assets/house-fill.png';
 
 import constants from '../../constants';
 
@@ -171,14 +170,16 @@ const CropCard = ({ navigation }) => {
               marginTop: '10%',
             }}
           >
-            <Image source={home} style={{ height: 37, width: 37 }} />
             <TouchableOpacity onPress={() => toggleBtmSheet()}>
+              <Image source={pencil} style={{ height: 37, width: 37 }} />
+            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() => toggleBtmSheet()}>
               <Entypo
                 name='dots-three-horizontal'
                 size={24}
                 color={colors.white}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={{ alignItems: 'center', marginTop: '5%' }}>
             <Text
@@ -202,12 +203,11 @@ const CropCard = ({ navigation }) => {
             {[1, 2, 3].map((item, index) => renderTab(index))}
           </View>
         </LinearGradient>
-        {/* <View style={{ marginTop: 32 }}>
-          <GrowCalendar />
-        </View> */}
         <View style={{ paddingHorizontal: '5%' }}>
-          {activeScreen === 0 && (
-            <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          {activeScreen === 0 && <SowItContainer buttonTitle='Sow It!' />}
+          {activeScreen === 1 && (
+
+            <SowItContainer buttonTitle='Plant It!' />
           )}
           {activeScreen === 2 && (
             <Button
@@ -222,7 +222,13 @@ const CropCard = ({ navigation }) => {
               <Text style={styles.skipText}>Skip step ></Text>
             </TouchableOpacity>
           </View>
-          <View style={{ marginTop: 20 }}>
+          <View
+            style={{
+              marginTop: 20,
+              zIndex: 28983,
+              backgroundColor: colors.white,
+            }}
+          >
             <Text>When to sow guide</Text>
             <View style={styles.monthStrip}>
               {months.map((item, index) => (
@@ -287,7 +293,7 @@ const CropCard = ({ navigation }) => {
               will grow your tomatoes.
             </Text>
           </View>
-          {/* <Carousel /> */}
+          <Carousel />
           <View style={{ marginTop: '4%' }}>
             <Video
               ref={video}
@@ -354,11 +360,14 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? Dimensions.get('screen').height * 0.37
         : Dimensions.get('screen').height * 0.402,
+    zIndex: 2323,
   },
   skipStep: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: '3%',
+    zIndex: 232,
+    backgroundColor: colors.white,
   },
   skipText: { color: colors.pink, fontSize: 15, fontWeight: 'bold' },
   monthStrip: {
