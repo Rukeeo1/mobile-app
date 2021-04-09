@@ -83,7 +83,7 @@ const ManualAuth = ({ navigation }) => {
               <GradientButton
                 gradient={[colors.green, colors.greenDeep]}
                 coverStyle={{}}
-                title={'Register'}
+                title={'Log in'}
                 onPress={handleSubmit}
               />
               <Text style={{ textAlign: 'center', marginTop: 25 }}>

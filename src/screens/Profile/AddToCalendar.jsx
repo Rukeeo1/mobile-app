@@ -50,10 +50,9 @@ const AddToCalendar = () => {
   const [y, setY] = useState(currentYear);
 
   const nextItem = () => {
-    console.log('bext', m);
-    setM(m);
-    setY(y + 1);
-  };
+    setM(m)
+    setY(y + 1)
+  }
 
   const prevYear = () => {
     console.log('prev', m);
@@ -104,8 +103,8 @@ const AddToCalendar = () => {
                       justifyContent: 'center',
                       marginHorizontal: 10,
                       marginVertical: 10,
-                      backgroundColor: `${index === m ? colors.green : ''}`,
-                      fontWeight: `${index === m ? 'bold' : ''}`,
+                      backgroundColor: `${index === m ? colors.green : 'white'}`,
+                      fontWeight: `${index === m ? 'bold' : 'normal'}`,
                       color: `${index === m ? 'white' : 'black'}`,
                     }}
                     key={index}
