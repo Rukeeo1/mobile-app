@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   Image,
   Platform,
 } from 'react-native';
+
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
@@ -18,15 +19,13 @@ import ActionSheet from './ActionSheet';
 
 import { SafeArea, GradientButton as Button } from '../../components';
 
-import { GrowCropCalender } from './GrowCropCalendar';
 import { MyCarousel as Carousel } from './Carousel';
-
+import { SowItContainer } from './SowItContainer';
 
 import home from '../../assets/home-icon.png';
 import shovel from '../../assets/shovel.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
-import houseIcon from '../../assets/house-fill.png';
 
 import constants from '../../constants';
 
@@ -201,10 +200,14 @@ const CropCard = ({ navigation }) => {
             {[1, 2, 3].map((item, index) => renderTab(index))}
           </View>
         </LinearGradient>
-        <GrowCropCalender />
         <View style={{ paddingHorizontal: '5%' }}>
-          {activeScreen === 0 && (
-            <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          {activeScreen === 0 && <SowItContainer />}
+          {activeScreen === 1 && (
+            <Button
+              title='Plant It!'
+              gradient={[colors.pink, colors.pinkDeep]}
+              onPress={() => navigation.navigate('End-Harvest')}
+            />
           )}
           {activeScreen === 2 && (
             <Button
@@ -219,7 +222,7 @@ const CropCard = ({ navigation }) => {
               <Text style={styles.skipText}>Skip step ></Text>
             </TouchableOpacity>
           </View>
-          <View style={{ marginTop: 20 }}>
+          <View style={{ marginTop: 20, zIndex: 28983, backgroundColor: colors.white }}>
             <Text>When to sow guide</Text>
             <View style={styles.monthStrip}>
               {months.map((item, index) => (
@@ -357,6 +360,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: '3%',
+    zIndex: 232,
+    backgroundColor: colors.white
   },
   skipText: { color: colors.pink, fontSize: 15, fontWeight: 'bold' },
   monthStrip: {

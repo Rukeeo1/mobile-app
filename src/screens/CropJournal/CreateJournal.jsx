@@ -49,7 +49,10 @@ const CreateJournal = ({ navigation }) => {
 
   return (
     <SafeArea>
-      <ScrollView>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ justifyContent: 'space-between' }}
+      >
         <Header
           title='Journal entry'
           onIconPress={() => navigation.goBack()}
@@ -100,14 +103,14 @@ const CreateJournal = ({ navigation }) => {
             }}
           />
         </View>
-        <View style={styles.footer}>
-          <Button
-            title='Share'
-            gradient={[colors.green, colors.greenDeep]}
-            onPress={() => navigation.navigate('Crop-Journal')}
-          />
-        </View>
       </ScrollView>
+      <View style={styles.footer}>
+        <Button
+          title='Share'
+          gradient={[colors.green, colors.greenDeep]}
+          onPress={() => navigation.navigate('Crop-Journal')}
+        />
+      </View>
     </SafeArea>
   );
 };
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
   footer: {
     padding: 22,
     justifyContent: 'flex-end',
-    marginTop: '35%',
+    marginBottom:"5%"
   },
 });
 
