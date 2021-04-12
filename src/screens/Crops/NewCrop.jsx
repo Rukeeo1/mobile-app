@@ -1,11 +1,13 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { GradientButton, Input } from '../../components/'
 import constants from '../../constants'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const { colors } = constants
-const NeCrop = ({navigation}) => {
+const NeCrop = ({ navigation }) => {
+  const [state, setState] = useState(false)
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView>
@@ -19,7 +21,7 @@ const NeCrop = ({navigation}) => {
             </View>
           </LinearGradient>
 
-          <View style={{padding: 22, flexDirection: 'column'}}>
+          <View style={{ padding: 22, flexDirection: 'column' }}>
             <View>
               <View style={[styles.inputContainer]}>
                 <Input
@@ -29,9 +31,7 @@ const NeCrop = ({navigation}) => {
                 />
               </View>
               <View style={[styles.inputContainer]}>
-                <Text style={styles.labelText}>
-                  Enter the variety name
-                </Text>
+                <Text style={styles.labelText}>Enter the variety name</Text>
                 <Text>You can find this on your seed pack</Text>
                 <Input
                   placeholder="Enter your variety"
@@ -39,9 +39,28 @@ const NeCrop = ({navigation}) => {
                 />
               </View>
               <View style={[styles.inputContainer]}>
-              
                 <Text>Select crop category</Text>
-                
+                <DropDownPicker
+                  items={[
+                    {
+                      label: 'Vetegable',
+                      value: 'vetegable',
+                    },
+                   
+                  ]}
+                  // defaultValue={this.state.country}
+                  containerStyle={{ height: 40 }}
+                  style={{ backgroundColor: '#fafafa' }}
+                  itemStyle={{
+                    justifyContent: 'flex-start',
+                  }}
+                  dropDownStyle={{ backgroundColor: '#fafafa' }}
+                  onChangeItem={(item) =>
+                    setState({
+                      country: item.value,
+                    })
+                  }
+                />
               </View>
             </View>
 
@@ -50,7 +69,7 @@ const NeCrop = ({navigation}) => {
                 title="Grow It"
                 gradient={[colors.green, colors.greenDeep]}
                 coverStyle={styles.button}
-                  onPress={() => navigation.navigate('Success')}
+                onPress={() => navigation.navigate('Success')}
               />
             </View>
           </View>
@@ -77,11 +96,11 @@ const styles = StyleSheet.create({
   labelText: {
     color: colors.green,
     fontWeight: 'normal',
-    fontSize: 16
+    fontSize: 16,
   },
   inputContainer: {
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 })
 
 export default NeCrop
