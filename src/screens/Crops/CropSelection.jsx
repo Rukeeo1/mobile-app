@@ -1,6 +1,6 @@
-import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useState } from 'react'
 import {
   Image,
   SafeAreaView,
@@ -9,15 +9,15 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Input } from '../../components/';
-import { GradientButton } from '../../components/Button';
-import constants from '../../constants';
+} from 'react-native'
+import { Input } from '../../components/'
+import { GradientButton } from '../../components/Button'
+import constants from '../../constants'
 
-const { colors } = constants;
+const { colors } = constants
 const CropSelection = ({ navigation }) => {
-  const [show, setShow] = useState(false);
-  const [search, setSearch] = useState('');
+  const [show, setShow] = useState(false)
+  const [search, setSearch] = useState('')
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <SafeAreaView>
@@ -28,7 +28,7 @@ const CropSelection = ({ navigation }) => {
               colors={[colors.green, colors.greenDeep]}
             >
               <AntDesign
-                name='left'
+                name="left"
                 size={24}
                 color={colors.white}
                 onPress={() => navigation.goBack()}
@@ -37,15 +37,15 @@ const CropSelection = ({ navigation }) => {
                 <Text style={[styles.titleTop]}>Tomato</Text>
 
                 <View style={[styles.titleTag]}>
-                  <MaterialIcons name='star' size={20} color={colors.white} />
+                  <MaterialIcons name="star" size={20} color={colors.white} />
                   <Text style={{ color: colors.white, marginHorizontal: 4 }}>
-                    Begginer star
+                    Begginer crop
                   </Text>
                 </View>
               </View>
               <View>
                 <Input
-                  placeholder='Search'
+                  placeholder="enter your variety here"
                   containerStyle={styles.searchInputContainer}
                   inputStyle={{ marginTop: -10, paddingRight: 10 }}
                   onChangeText={(text) => setSearch(text)}
@@ -56,10 +56,11 @@ const CropSelection = ({ navigation }) => {
                 <Text style={{ color: colors.white, marginVertical: 4 }}>
                   You can find this on your seed pack
                 </Text>
-
-                <Text style={{ fontWeight: 'bold', color: colors.white }}>
-                  What type is the variety you have chosen
-                </Text>
+                {search.length > 2 && (
+                  <Text style={{ fontWeight: 'bold', color: colors.white }}>
+                    What type is the variety you have chosen
+                  </Text>
+                )}
               </View>
               {search.length > 2 && (
                 <View>
@@ -117,7 +118,7 @@ const CropSelection = ({ navigation }) => {
                   <Text>Intermediate</Text>
                 </View>
               </View>
-              <AntDesign name='right' size={24} color={colors.green} />
+              <AntDesign name="right" size={24} color={colors.green} />
             </TouchableOpacity>
 
             {show && (
@@ -156,7 +157,7 @@ const CropSelection = ({ navigation }) => {
                   >
                     <Text style={[styles.btnText]}>Buy seed</Text>
                     <Entypo
-                      name='shopping-cart'
+                      name="shopping-cart"
                       size={24}
                       color={colors.white}
                     />
@@ -176,7 +177,7 @@ const CropSelection = ({ navigation }) => {
                   <Text>Intermediate</Text>
                 </View>
               </View>
-              <AntDesign name='right' size={24} color={colors.green} />
+              <AntDesign name="right" size={24} color={colors.green} />
             </View>
             <View style={[styles.cropCardContainer]}>
               <View style={[styles.cropDetails]}>
@@ -189,14 +190,14 @@ const CropSelection = ({ navigation }) => {
                   <Text>Intermediate</Text>
                 </View>
               </View>
-              <AntDesign name='right' size={24} color={colors.green} />
+              <AntDesign name="right" size={24} color={colors.green} />
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   searchContainer: {
@@ -268,6 +269,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: 'bold',
   },
-});
+})
 
-export default CropSelection;
+export default CropSelection
