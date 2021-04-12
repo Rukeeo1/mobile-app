@@ -71,7 +71,7 @@ const OnboardingLayout = ({ navigation }) => {
             </Swiper>
           </View>
           <View style={{ padding: 20 }}>
-            <View style={{ alignItems: 'center', }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Logo
                 source={growthLogo}
                 logoStyles={{
@@ -79,7 +79,8 @@ const OnboardingLayout = ({ navigation }) => {
                   marginBottom: '10%',
                   display: 'flex',
                   justifyContent: 'center',
-                  width: '100%'
+                  width: '80%',
+                  // height: 'auto'
                 }}
               />
             </View>
