@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu'
 import { GradientButton, Input } from '../../components/'
@@ -42,7 +42,7 @@ const CropSearch = ({ navigation }) => {
             >
               <View style={[styles.searchForm]}>
                 <Input
-                  placeholder="Search"
+                  placeholder="Search crops"
                   containerStyle={styles.searchInputContainer}
                   inputStyle={{ marginTop: -10, paddingRight: 10 }}
                   onChangeText={(text) => setSearch(text)}
