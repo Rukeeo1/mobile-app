@@ -10,24 +10,26 @@ import {
 } from 'react-native';
 import {
   Entypo,
-  Feather,
   FontAwesome5,
   Ionicons,
-  Octicons,
 } from '@expo/vector-icons';
 
 import constants from '../../constants/index';
+import notificationIcon from '../../assets/notification.png';
+import notificationActive from '../../assets/notification-active.png';
+import manageCropsInactive from '../../assets/managecropswhite.png';
+import manageCrops from '../../assets/managecrops.png';
+import exploreInactive from '../../assets/exploreinactive.png';
+import exploreActive from '../../assets/exploreActive.png';
 
 const { colors, screenHeight, screenWidth } = constants;
 
 const ProfileSideTab = ({
   setActiveGradient,
-  activeGradient,
   setCurrentIndex,
   indexOfItemToShow,
   handleNavigation,
   navigation,
-  setDefaultPostImage,
   currentIndex,
   onClickEllipse,
 }) => {
@@ -44,22 +46,42 @@ const ProfileSideTab = ({
   const sideBarTabItems = [
     {
       name: 'notifications',
-      icon: (iconStyle) => <Feather name='bell' size={24} style={iconStyle} />,
+      // icon: (iconStyle) => <Feather name='bell' size={24} style={iconStyle} />,
+      icon: (active) => (
+        <Image
+          source={active ? notificationActive : notificationIcon}
+          style={{ opacity: active ? 1 : 0.5 }}
+        />
+      ),
       ref: React.createRef(),
       backgroundColor: [colors.green, colors.greenDeep],
       style: styles.iconsAboveWhiteLineTopSpacing,
     },
     {
       name: 'create-post',
-      icon: (iconStyle) => <Entypo name='plus' size={30} style={iconStyle} />,
+      icon: (active) => (
+        <Entypo
+          name='plus'
+          size={30}
+          color={colors.white}
+          style={{ opacity: active ? 1 : 0.5 }}
+        />
+      ),
       ref: React.createRef(),
       backgroundColor: [colors.purshBlueDeep, colors.blue],
       styles: { marginTop: 40 },
     },
     {
       name: 'profile',
-      icon: (iconStyle) => (
-        <Ionicons name='md-person-outline' size={24} style={iconStyle} />
+      icon: (active) => (
+        <Ionicons
+          name='md-person-outline'
+          size={24}
+          style={{
+            color: active ? colors.greenDeep : colors.white,
+            opacity: active ? 1 : 0.5,
+          }}
+        />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -68,31 +90,31 @@ const ProfileSideTab = ({
     },
     {
       name: 'explore',
-      icon: (iconStyle) => (
-        <Octicons name='globe' size={34} style={iconStyle} />
+      icon: (active) => (
+        <Image source={active ? exploreActive : exploreInactive} />
       ),
       ref: React.createRef(),
       activeColor: '#AD0048',
-      backgroundColor: ['#AD0048', '#E8357F'],
+      backgroundColor: [colors.blue, colors.purshBlueDeep],
       styles: { marginTop: 40 },
     },
     {
       name: 'manage-crops',
-      icon: (iconStyle) => (
+      icon: (active) => (
         <Image
-          source={require('../../assets/managecrops.png')}
-          style={{ width: 24, height: 24 }}
+          source={active ? manageCrops : manageCropsInactive}
+          style={{ width: 32, height: 32, opacity: active ? 1 : 0.5,  }}
         />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: ['#AD0048', '#E8357F'],
-      styles: { marginTop: 60 },
+      styles: { marginTop: 100 },
     },
     {
       name: 'calendar',
-      icon: (iconStyle) => (
-        <Ionicons name='md-calendar-outline' size={24} style={iconStyle} />
+      icon: (active) => (
+        <Ionicons name='md-calendar-outline' size={24} color={colors.white} style={{color: active? colors.greenDeep : colors.white, opacity: active? 1 : 0.5}} />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -140,8 +162,6 @@ const ProfileSideTab = ({
     });
   }, []);
 
-  console.log(currentIndex, 'this is current index', indexOfItemToShow);
-
   useEffect(() => {
     /**
      * @indexOfItemToShow: is used to set the active sidebar item, when comming from another screen. for example notification, being the firstItem has and index of 0. create post has and index of 1 etc.
@@ -172,7 +192,12 @@ const ProfileSideTab = ({
   return (
     <SafeAreaView style={styles.tab}>
       <TouchableOpacity style={styles.ellipse} onPress={onClickEllipse}>
-        <FontAwesome5 name='ellipsis-h' size={24} color={colors.white} style={{opacity: 0.5}} />
+        <FontAwesome5
+          name='ellipsis-h'
+          size={24}
+          color={colors.white}
+          style={{ opacity: 0.5 }}
+        />
       </TouchableOpacity>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
@@ -199,8 +224,8 @@ const ProfileSideTab = ({
           >
             {item.icon(
               activeIndex === index
-                ? { color: activeGradient[0] }
-                : { color: colors.white, opacity: 0.5 }
+              // ? { color: activeGradient[0] }
+              // : { color: colors.white, opacity: 0.5 }
             )}
           </AnimatedTouchable>
         ))}
@@ -241,7 +266,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabIconWrapper: {
-    // marginVertical: '35%',
     marginTop: '35%',
     height: 60,
     width: 60,

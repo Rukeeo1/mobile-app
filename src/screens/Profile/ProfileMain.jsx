@@ -16,12 +16,12 @@ const { colors } = constants
 
 const Main = ({ currentIndex, defaultPostImage }) => {
   
-  const { params } = useRoute()
+  // const { params } = useRoute()
 
-  if (params.indexOfItemToShow) {
-    currentIndex = params.indexOfItemToShow
-    params.indexOfItemToShow = null
-  }
+  // if (params.indexOfItemToShow) {
+  //   currentIndex = params.indexOfItemToShow
+  //   params.indexOfItemToShow = null
+  // }
 
   return (
     <View style={styles.main}>

@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 
 const { Navigator, Screen } = Stack;
 
-const ProfileNavigator = () => {
+const GrowCropNavigator = () => {
   return (
     <Navigator
       screenOptions={{
@@ -23,4 +23,4 @@ const ProfileNavigator = () => {
   );
 };
 
-export default ProfileNavigator;
+export default GrowCropNavigator;

@@ -34,7 +34,6 @@ const RootNavigator = () => (
       <Screen name='End-Harvest' component={EndHarvestNavigator} />
       <Screen name='Splash' component={SplashScreen} />
       <Screen name='Settings' component={ProfileNavigator} />
-
       <Screen name='Article' component={ArticleNavigator} />
       <Screen name='Posts' component={PostsNavigator} />
       <Screen name='Crops' component={Crops} />
