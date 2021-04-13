@@ -45,10 +45,13 @@ export const GradientButton = ({
   title,
   gradient = ['#000000', '#000000'],
   coverStyle,
-  onPress
+  onPress,
 }) => {
   return (
-    <TouchableOpacity style={[styles.defaultBtnContainer, coverStyle]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.defaultBtnContainer, coverStyle]}
+      onPress={onPress}
+    >
       <LinearGradient
         colors={gradient}
         style={{ ...styles.defaultLinearGradient }}
@@ -64,10 +67,13 @@ export const SmallGradientButton = ({
   title,
   gradient = ['#000000', '#000000'],
   coverStyle,
-  onPress
+  onPress,
 }) => {
   return (
-    <TouchableOpacity style={[smallStyles.defaultBtnContainer, coverStyle]} onPress={onPress}>
+    <TouchableOpacity
+      style={[smallStyles.defaultBtnContainer, coverStyle]}
+      onPress={onPress}
+    >
       <LinearGradient
         colors={gradient}
         style={{ ...smallStyles.defaultLinearGradient }}
@@ -94,7 +100,11 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: 'green',
   },
-  defaultText: { color: '#ffffff', fontWeight: '600' },
+  defaultText: {
+    color: '#ffffff',
+    fontWeight: '600',
+    fontFamily: 'Hero-New-Regular-Italic',
+  },
 });
 
 const smallStyles = StyleSheet.create({

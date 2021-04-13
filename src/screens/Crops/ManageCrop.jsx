@@ -26,16 +26,19 @@ const ManageCrops = () => {
 
           <View style={{ paddingHorizontal: '5%' }}>
             <View style={[styles.growCalendarCard]}>
-              <Text style={[styles.growText]}>
+              <Text style={[styles.growText, {paddingRight: 80, paddingLeft: 80, fontWeight: 'light', fontSize: 18}]}>
                 You aren’t growing anything yet!
               </Text>
-              <Text style={[styles.growText]}>
-                Add a crop to your <Text>Grow Calendar</Text> today
+              <Text style={[styles.growText, {paddingRight: 70, paddingLeft: 70, fontWeight: 'light', fontSize: 18}]}>
+                Add a crop to your <Text style={{fontWeight: 'bold'}}>Grow Calendar</Text> today
               </Text>
 
               <GradientButton
                 gradient={[colors.green, colors.greenDeep]}
-                onPress={() => navigation.navigate('GrowItCalendar')}
+                onPress={() => navigation.navigate('Main-Profile', {
+                  //this would be refactored later... when the sideBar component is refactored...
+                  indexOfItemToShow: 5,
+                })}
               >
                 <View
                   style={{

@@ -7,7 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity,
 } from 'react-native'
 import * as Yup from 'yup'
 import growthLogo from '../../assets/growth_logo.png'
@@ -86,9 +87,14 @@ const ManualAuth = ({ navigation }) => {
                 title={'Log in'}
                 onPress={handleSubmit}
               />
-              <Text style={{ textAlign: 'center', marginTop: 25 }}>
-                Forgotten Password?
-              </Text>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate('Forgot-password')}
+              >
+                <Text style={{ textAlign: 'center', marginTop: 25 }}>
+                  Forgotten Password?
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 

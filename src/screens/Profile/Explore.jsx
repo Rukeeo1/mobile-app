@@ -1,5 +1,5 @@
-import { EvilIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { EvilIcons } from '@expo/vector-icons'
+import React, { useState } from 'react'
 import {
   Image,
   SafeAreaView,
@@ -8,13 +8,36 @@ import {
   Text,
   View,
   TouchableOpacity,
-} from 'react-native';
-import { Input } from '../../components';
-import constants from '../../constants/';
+  Animated,
+  Easing,
+} from 'react-native'
+import { Input } from '../../components'
+import constants from '../../constants/'
 
-const { colors } = constants;
+const { colors } = constants
 const Explore = () => {
   const [showShare, setShowShare] = useState(false);
+  const [spinner,setSpinnner] = useState(true);
+
+  let spinValue = new Animated.Value(0)
+
+  // First set up animation
+  Animated.timing(spinValue, {
+    toValue: 1,
+    duration: 3000,
+    easing: Easing.linear, // Easing is an additional import from react-native
+    useNativeDriver: true, // To make use of native driver for performance
+  }).start()
+
+  // Next, interpolate beginning and end values (in this case 0 and 1)
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  })
+
+  setTimeout(() => {
+    setSpinnner(false)
+  }, 1000);
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
@@ -28,12 +51,12 @@ const Explore = () => {
         <View style={[styles.container]}>
           <View style={styles.searchBarWrapper}>
             <Input
-              placeholder='Search'
+              placeholder="Find"
               containerStyle={styles.searchInputContainer}
               inputStyle={{ marginTop: -10, paddingRight: 10 }}
             >
               <EvilIcons
-                name='search'
+                name="search"
                 size={24}
                 color={colors.blue}
                 style={{
@@ -46,7 +69,11 @@ const Explore = () => {
           </View>
 
           <View style={[styles.flowercircle]}>
-            <Image source={require('../../assets/flowercircle.png')} />
+            {spinner && <Animated.Image
+              style={{ transform: [{ rotate: spin }] }}
+              source={require('../../assets/flowercircle.png')}
+            />}
+            
           </View>
 
           <View style={[styles.postCard]}>
@@ -108,8 +135,8 @@ const Explore = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {},
@@ -121,7 +148,7 @@ const styles = StyleSheet.create({
   flowercircle: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 30,
+    marginVertical: 10,
   },
   postCard: {
     marginVertical: 10,
@@ -179,6 +206,6 @@ const styles = StyleSheet.create({
     paddingRight: 25,
     flex: 1,
   },
-});
+})
 
-export default Explore;
+export default Explore

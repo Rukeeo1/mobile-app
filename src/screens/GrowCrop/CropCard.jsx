@@ -12,10 +12,9 @@ import {
 
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo } from '@expo/vector-icons';
 
-import BookNavItem from './BookNavItem';
 import ActionSheet from './ActionSheet';
+import SideMenuOverlay from './SideMenuOverlay';
 
 import { SafeArea, GradientButton as Button } from '../../components';
 
@@ -29,6 +28,7 @@ import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 
 import constants from '../../constants';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const { colors } = constants;
 
@@ -47,6 +47,7 @@ const screenWidth = Dimensions.get('screen').width;
 const CropCard = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState(0);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [showSideMenu, setShowSideMenu] = useState(false);
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
 
   const video = React.useRef(null);
@@ -125,10 +126,10 @@ const CropCard = ({ navigation }) => {
         <View
           style={[
             {
-              height: 25,
+              height: 26,
               width: 15,
               position: 'absolute',
-              bottom: -0.7,
+              bottom: -0.75,
               right: -15,
             },
             activeScreen === index && { backgroundColor: colors.white },
@@ -151,7 +152,26 @@ const CropCard = ({ navigation }) => {
 
   return (
     <SafeArea containerStyle={{ flex: 1 }}>
-      <BookNavItem onPress={() => navigation.navigate('Crop-Journal')} />
+      {/* <BookNavItem onPress={() => navigation.navigate('Crop-Journal')} /> */}
+      {!showSideMenu && (
+        <TouchableOpacity
+          style={{ position: 'absolute', zIndex: 23, bottom: 100, right: 30 }}
+          onPress={() => setShowSideMenu(true)}
+        >
+          <LinearGradient
+            colors={[colors.greenDeep, colors.green]}
+            style={{
+              height: 60,
+              width: 60,
+              borderRadius: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image source={home} />
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -205,14 +225,11 @@ const CropCard = ({ navigation }) => {
         </LinearGradient>
         <View style={{ paddingHorizontal: '5%' }}>
           {activeScreen === 0 && <SowItContainer buttonTitle='Sow It!' />}
-          {activeScreen === 1 && (
-
-            <SowItContainer buttonTitle='Plant It!' />
-          )}
+          {activeScreen === 1 && <SowItContainer buttonTitle='Plant It!' />}
           {activeScreen === 2 && (
             <Button
               title='End Harvest'
-              gradient={[colors.blue100, colors.purshBlueDeep]}
+              gradient={[colors.pink, colors.pinkDeep]}
               onPress={() => navigation.navigate('End-Harvest')}
             />
           )}
@@ -251,29 +268,35 @@ const CropCard = ({ navigation }) => {
                 </View>
               ))}
             </View>
+
             <View style={{ flexDirection: 'row', marginTop: 5 }}>
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: colors.blue,
-                  }}
-                >
-                  Sow Under Cover
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ marginLeft: 20 }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: colors.blue100,
-                  }}
-                >
-                  Sow Direct Outside
-                </Text>
-              </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: colors.blue,
+                }}
+              >
+                Sow Under Cover
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: colors.blue100,
+                }}
+                style={{ marginLeft: 20 }}
+              >
+                Sow Direct Outside
+              </Text>
+            </View>
+            <View style={{ marginVertical: 20 }}>
+              <Button
+                gradient={[colors.purshBlue, colors.blue]}
+                title='Add to Journal'
+                onPress={() => navigation.navigate('Crop-Journal')}
+              />
             </View>
           </View>
           <View style={{ marginTop: '7%' }}>
@@ -343,6 +366,9 @@ const CropCard = ({ navigation }) => {
         </View>
       </ScrollView>
       <ActionSheet onClose={toggleBtmSheet} showBottomSheet={showBottomSheet} />
+      {showSideMenu && (
+        <SideMenuOverlay toggleSideMenu={() => setShowSideMenu(false)} />
+      )}
     </SafeArea>
   );
 };

@@ -12,11 +12,12 @@ import { useNavigation } from '@react-navigation/native'
 import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
 import ShareModal from './ShareModal'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const { colors } = constants
 
 const FirstView = ({}) => {
-  const [isList, setIsList] = useState(true)
+  const [isList, setIsList] = useState(false)
   const [showShare, setShowShare] = useState(false)
 
   const navigation = useNavigation()
@@ -63,7 +64,7 @@ const FirstView = ({}) => {
         </View>
 
         <View style={[styles.growList]}>
-          {isList ? (
+          {true ? (
             <>
               <Text style={[styles.growTitle]}>Current grow list</Text>
               <ScrollView horizontal={true}>
@@ -104,7 +105,15 @@ const FirstView = ({}) => {
               <Text style={[styles.growTitle]}>
                 You aren’t growing anything!
               </Text>
-              <GradientButton gradient={[colors.green, colors.greenDeep]}>
+              <GradientButton
+                gradient={[colors.green, colors.greenDeep]}
+                onPress={() =>
+                  navigation.navigate('Main-Profile', {
+                    screen: 'Main-Profile',
+                    indexOfItemToShow: 5,
+                  })
+                }
+              >
                 <View
                   style={{
                     justifyContent: 'space-between',
@@ -165,12 +174,15 @@ const FirstView = ({}) => {
                 style={[styles.growMovementImg]}
                 source={require('../../assets/grow-movement.png')}
               />
-              <View style={[styles.growMoveTextContainer]}>
+              <LinearGradient
+                colors={[colors.purshBlue, colors.blue]}
+                style={[styles.growMoveTextContainer]}
+              >
                 <Text style={[styles.growMoveText]}>
                   You joined the Grow It movement!
                 </Text>
-                <Text style={{ color: '#fff', marginTop: 20 }}>Feb 2020</Text>
-              </View>
+                <Text style={{ color: '#fff', marginTop: 7 }}>Feb 2020</Text>
+              </LinearGradient>
             </View>
             <Text style={[styles.growMoveFooterText]}>
               Click the ‘+’ in the side bar to create your first post!
@@ -219,6 +231,7 @@ const styles = StyleSheet.create({
   growList: {
     backgroundColor: colors.nearWhite,
     padding: 20,
+    paddingRight:5,
     alignItems: 'center',
   },
   btnText: {
@@ -230,7 +243,6 @@ const styles = StyleSheet.create({
   },
   growTitle: {
     textAlign: 'center',
-    fontWeight: 'bold',
     marginBottom: 15,
   },
   growText: {
@@ -260,8 +272,6 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 160 / 2,
-    borderWidth: 2,
-    borderColor: '#000',
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
@@ -271,7 +281,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 16,
     marginHorizontal: 5,
+    maxWidth: 90
   },
   growMoveFooterText: {
     textAlign: 'center',

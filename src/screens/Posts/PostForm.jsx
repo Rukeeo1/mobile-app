@@ -1,23 +1,25 @@
+import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
+  Image, SafeAreaView,
+
+
+
+
+
+  ScrollView, StyleSheet,
+
   Switch,
-  Text,
-  Image,
-  ScrollView,
+  Text, TouchableOpacity, View
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-
-import { useFormik } from 'formik';
-import { Ionicons } from '@expo/vector-icons';
 import * as Yup from 'yup';
-
-import { Header, Input, GradientButton as Button } from '../../components/';
-
+import { GradientButton as Button, Header, Input } from '../../components/';
 import constants from '../../constants/';
+
+
+
 
 const { colors } = constants;
 
@@ -169,7 +171,7 @@ const PostForm = ({
         </View>
         <View style={styles.footer}>
           <Button
-            title='Share'
+            title='Share,'
             gradient={[colors.green, colors.greenDeep]}
             //the "settings title for this would be refactored to profile"
             onPress={() => goBack()}
