@@ -64,7 +64,7 @@ const FirstView = ({}) => {
         </View>
 
         <View style={[styles.growList]}>
-          {isList ? (
+          {true ? (
             <>
               <Text style={[styles.growTitle]}>Current grow list</Text>
               <ScrollView horizontal={true}>
@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
   growList: {
     backgroundColor: colors.nearWhite,
     padding: 20,
+    paddingRight:5,
     alignItems: 'center',
   },
   btnText: {
