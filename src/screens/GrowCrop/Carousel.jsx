@@ -1,19 +1,11 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  Dimensions,
+import React from 'react'
+import { View, Text, ScrollView, Image, Dimensions } from 'react-native'
 
-} from 'react-native';
+import { GradientButton as Button } from '../../components'
 
+import constants from '../../constants'
 
-import { GradientButton as Button } from '../../components';
-
-import constants from '../../constants';
-
-const { colors } = constants;
+const { colors } = constants
 
 export const MyCarousel = () => {
   return (
@@ -42,7 +34,7 @@ export const MyCarousel = () => {
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
           }}
-          resizeMode='cover'
+          resizeMode="cover"
         />
         <View
           style={{
@@ -52,7 +44,7 @@ export const MyCarousel = () => {
             marginTop: '3%',
           }}
         >
-          <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          <Button title="Sow It!" gradient={[colors.pink, colors.pinkDeep]} />
           <Text style={{ textAlign: 'center', fontSize: 16 }}>
             In a seed tray or individual pots add lightly damp compost{' '}
           </Text>
@@ -78,7 +70,7 @@ export const MyCarousel = () => {
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
           }}
-          resizeMode='cover'
+          resizeMode="cover"
         />
         <View
           style={{
@@ -88,7 +80,7 @@ export const MyCarousel = () => {
             marginTop: '2%',
           }}
         >
-          <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          <Button title="Sow It!" gradient={[colors.pink, colors.pinkDeep]} />
           <Text style={{ textAlign: 'center', fontSize: 16 }}>
             In a seed tray or individual pots add lightly damp compost{' '}
           </Text>
@@ -114,7 +106,7 @@ export const MyCarousel = () => {
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
           }}
-          resizeMode='cover'
+          resizeMode="cover"
         />
         <View
           style={{
@@ -124,14 +116,14 @@ export const MyCarousel = () => {
             marginTop: '3%',
           }}
         >
-          <Button title='Sow It!' gradient={[colors.pink, colors.pinkDeep]} />
+          <Button title="Sow It!" gradient={[colors.pink, colors.pinkDeep]} />
           <Text style={{ textAlign: 'center', fontSize: 16 }}>
             In a seed tray or individual pots add lightly damp compost{' '}
           </Text>
         </View>
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
-export default MyCarousel;
+export default MyCarousel

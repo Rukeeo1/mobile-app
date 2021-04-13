@@ -45,10 +45,12 @@ const CropSelection = ({ navigation }) => {
               </View>
               <View>
                 <Input
-                  placeholder="enter your variety here"
+                  placeholder="Enter your variety name here"
                   containerStyle={styles.searchInputContainer}
-                  inputStyle={{ marginTop: -10, paddingRight: 10 }}
+                  inputStyle={{ marginTop: -10, paddingRight: 10, color: 'red' }}
                   onChangeText={(text) => setSearch(text)}
+                  isCenter={true}
+                  placeholderText="red"
                 ></Input>
               </View>
 

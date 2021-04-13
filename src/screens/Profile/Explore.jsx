@@ -51,7 +51,7 @@ const Explore = () => {
         <View style={[styles.container]}>
           <View style={styles.searchBarWrapper}>
             <Input
-              placeholder="Search"
+              placeholder="Find"
               containerStyle={styles.searchInputContainer}
               inputStyle={{ marginTop: -10, paddingRight: 10 }}
             >

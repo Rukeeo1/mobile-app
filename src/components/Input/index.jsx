@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import constants from '../../constants';
 
 const { colors } = constants;
@@ -13,6 +13,8 @@ const Input = ({
   labelText = '',
   labelStyle = {},
   inputStyle = {},
+  isCenter,
+  placeholderText,
   children,
   errorMessage = '',
   ...props
@@ -22,9 +24,10 @@ const Input = ({
       <Text style={{ ...styles.labelText, ...labelStyle }}>{labelText}</Text>
       <TextInput
         placeholder={placeholder}
-        style={{ ...styles.input, ...inputStyle }}
+        style={{ ...styles.input, textAlign: `${isCenter ? 'center' : 'left'}`, ...inputStyle }}
         value={value}
         onChangeText={onChangeText}
+        placeholderTextColor={`${placeholderText || 'default'}`}
         onBlur={onBlur}
         {...props}
       />
@@ -45,7 +48,9 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 18,
     color: constants.colors.black,
-    fontWeight: '100',
+    fontWeight: '300',
+    paddingHorizontal: 8,
+    paddingBottom: 5
   },
   errorMessage: {
     color: colors.red,

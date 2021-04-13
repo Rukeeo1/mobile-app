@@ -9,7 +9,7 @@ const AddedSuccess = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <Image
         style={{ flex: 1, resizeMode: 'cover', width: '100%' }}
-        source={require('../../assets/bg.png')}
+        source={require('../../assets/great.gif')}
       />
 
       <TouchableOpacity
@@ -23,18 +23,11 @@ const AddedSuccess = ({ navigation }) => {
         }}
         onPress={() => navigation.navigate('Grow-Crop')}
       >
-        <MaterialIcons
-          name="arrow-back-ios"
-          size={24}
-          color="white"
-          onPress={() => navigation.navigate('Crop-search')}
-          style={{ marginTop: '15%', marginLeft: '7%' }}
-        />
 
         <Text
           style={{
             textAlign: 'center',
-            marginTop: '10%',
+            marginTop: '30%',
             fontSize: 60,
             color: colors.white,
             fontWeight: '100',
