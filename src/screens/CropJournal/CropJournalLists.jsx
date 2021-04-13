@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   View,
   Text,
@@ -7,18 +7,18 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+} from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons'
 
-import { SafeArea, GradientButton as Button } from '../../components';
+import { SafeArea, GradientButton as Button } from '../../components'
 
-import globe from '../../assets/globe.png';
+import globe from '../../assets/globe.png'
 
-import constants from '../../constants';
+import constants from '../../constants'
 
-const { colors } = constants;
+const { colors } = constants
 
 const CropJournalLists = ({ navigation }) => {
   return (
@@ -38,7 +38,7 @@ const CropJournalLists = ({ navigation }) => {
         }}
       >
         <AntDesign
-          name='plus'
+          name="plus"
           size={24}
           color={colors.blue}
           onPress={() => navigation.navigate('Create-Journal')}
@@ -46,7 +46,6 @@ const CropJournalLists = ({ navigation }) => {
       </TouchableOpacity>
       <View
         style={{
-     
           transform: [{ rotate: '-90deg' }],
           position: 'absolute',
           zIndex: 343,
@@ -80,7 +79,7 @@ const CropJournalLists = ({ navigation }) => {
           }}
         >
           <AntDesign
-            name='left'
+            name="left"
             size={24}
             color={colors.white}
             style={{ marginTop: 30, marginLeft: 0 }}
@@ -89,15 +88,15 @@ const CropJournalLists = ({ navigation }) => {
         </View>
         {/* </View> */}
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <JournalCard uri='https://images.pexels.com/photos/1030913/pexels-photo-1030913.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
-          <JournalCard uri='https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
-          <JournalCard uri='https://images.pexels.com/photos/4503732/pexels-photo-4503732.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
+          <JournalCard uri="https://images.pexels.com/photos/1030913/pexels-photo-1030913.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+          <JournalCard uri="https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+          <JournalCard uri="https://images.pexels.com/photos/4503732/pexels-photo-4503732.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
           <View style={{ height: 50, backgroundColor: colors.white }} />
         </ScrollView>
       </LinearGradient>
     </SafeArea>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -113,17 +112,22 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     overflow: 'visible',
   },
-});
+})
 
 const JournalCard = ({ uri }) => {
   return (
     <View style={{ marginVertical: 10 }}>
       <View style={{ alignItems: 'flex-end', paddingHorizontal: '5%' }}>
-        <Button
-          title='Jul 2020'
-          coverStyle={{ width: 120 }}
-          gradient={[colors.purshBlue, colors.blue]}
-        />
+        <LinearGradient
+          style={{ width: 96, padding: 14, borderRadius: 23 }}
+          colors={[colors.purshBlue, colors.blue]}
+        >
+          <Text
+            style={{ fontSize: 14, textAlign: 'center', color: colors.white }}
+          >
+            Jul 2020
+          </Text>
+        </LinearGradient>
       </View>
       <Image
         source={{
@@ -139,10 +143,10 @@ const JournalCard = ({ uri }) => {
           paddingHorizontal: '5%',
         }}
       >
-        <Text style={{ color: colors.grey100, fontStyle: 'italic' }}>
+        <Text style={{ color: colors.greyDark, fontStyle: 'italic' }}>
           23 July 2020
         </Text>
-        <AntDesign name='ellipsis1' size={24} color={colors.grey} />
+        <AntDesign name="ellipsis1" size={24} color={'#9B9B9B'} />
       </View>
       <View
         style={{
@@ -162,7 +166,7 @@ const JournalCard = ({ uri }) => {
         </Text>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default CropJournalLists;
+export default CropJournalLists
