@@ -327,7 +327,7 @@ const AddToCalendar = () => {
 
               <GradientButton
                 gradient={[colors.green, colors.greenDeep]}
-                onPress={() => alert('hello worl')}
+                onPress={() => console.log('hello worl')}
               >
                 <Text style={[styles.btnText]}>Grow It</Text>
               </GradientButton>
@@ -386,7 +386,7 @@ const AddToCalendar = () => {
               </View>
             </View>
 
-            <View style={{ marginBottom: 30 }}>
+            <View style={{ marginBottom: 50 }}>
               <Text style={[styles.explore]}>Continue to explore</Text>
               <GradientButton gradient={[colors.red, colors.redDeep]}>
                 <View
