@@ -13,11 +13,14 @@ import {
 } from 'react-native'
 import { Input } from '../../components'
 import constants from '../../constants/'
+import { MaterialIcons } from '@expo/vector-icons'; 
+import { useNavigation } from '@react-navigation/native'
 
 const { colors } = constants
 const Explore = () => {
-  const [showShare, setShowShare] = useState(false);
-  const [spinner,setSpinnner] = useState(true);
+  const navigation = useNavigation()
+  const [showShare, setShowShare] = useState(false)
+  const [spinner, setSpinnner] = useState(true)
 
   let spinValue = new Animated.Value(0)
 
@@ -37,7 +40,7 @@ const Explore = () => {
 
   setTimeout(() => {
     setSpinnner(false)
-  }, 1000);
+  }, 1000)
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
@@ -69,12 +72,45 @@ const Explore = () => {
           </View>
 
           <View style={[styles.flowercircle]}>
-            {spinner && <Animated.Image
-              style={{ transform: [{ rotate: spin }] }}
-              source={require('../../assets/flowercircle.png')}
-            />}
-            
+            {spinner && (
+              <Animated.Image
+                style={{ transform: [{ rotate: spin }] }}
+                source={require('../../assets/flowercircle.png')}
+              />
+            )}
           </View>
+
+          <TouchableOpacity activeOpacity={0.8}
+            style={{
+              backgroundColor: '#002B55',
+              height: 88,
+              alignItems: 'center',
+              paddingLeft: 19,
+              flexDirection: 'row',
+              marginTop: 10,
+              marginBottom: 10
+
+            }}
+            onPress={() => navigation.navigate("Article-guide")}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={require('../../assets/book-w.png')} />
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: 'white',
+                  marginRight: 20,
+                  width: 210,
+                  paddingLeft: 25
+                }}
+              >
+                Explore the latest Grow It guides and articles
+              </Text>
+            </View>
+            <View>
+            <MaterialIcons name="keyboard-arrow-right" size={24} color="white" />
+            </View>
+          </TouchableOpacity>
 
           <View style={[styles.postCard]}>
             <View style={[styles.userDetail]}>
