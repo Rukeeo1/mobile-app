@@ -1,22 +1,20 @@
-import React from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-
 import { AntDesign } from '@expo/vector-icons'
-
-import { SafeArea, GradientButton as Button } from '../../components'
-
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useState } from 'react'
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import globe from '../../assets/globe.png'
-
+import { SafeArea } from '../../components'
 import constants from '../../constants'
+import ModalSheet from './ModalSheet'
+import DeleteModal from './DeleteModal'
 
 const { colors } = constants
 
@@ -115,6 +113,21 @@ const styles = StyleSheet.create({
 })
 
 const JournalCard = ({ uri }) => {
+  const [show, setShow] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const open = () => {
+    setShow(false)
+  }
+
+  const opeDeletModal = () => {
+    setDeleteModal(false);
+  }
+
+  const openDelete = () => {
+    setShow(false);
+    setDeleteModal(true)
+  }
+
   return (
     <View style={{ marginVertical: 10 }}>
       <View style={{ alignItems: 'flex-end', paddingHorizontal: '5%' }}>
@@ -146,7 +159,9 @@ const JournalCard = ({ uri }) => {
         <Text style={{ color: colors.greyDark, fontStyle: 'italic' }}>
           23 July 2020
         </Text>
-        <AntDesign name="ellipsis1" size={24} color={'#9B9B9B'} />
+        <TouchableOpacity activeOpacity={0.8} onPress={() => setShow(!show)}>
+          <AntDesign name="ellipsis1" size={24} color={'#9B9B9B'} />
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -165,6 +180,8 @@ const JournalCard = ({ uri }) => {
           Tomatoes - ‘Sungold’
         </Text>
       </View>
+      <ModalSheet showBottomSheet={show} onClose={open} showDelete={openDelete}></ModalSheet>
+      <DeleteModal showBottomSheet={deleteModal} onClose={opeDeletModal} />
     </View>
   )
 }

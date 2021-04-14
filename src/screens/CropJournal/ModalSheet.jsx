@@ -6,31 +6,32 @@ import constants from '../../constants/'
 
 const { colors } = constants
 
-const ProfileBtmSheet = ({ showBottomSheet, onClose }) => {
+const ModalSheet = ({ showBottomSheet, onClose, showDelete }) => {
   return (
-    <BottomSheet visible={showBottomSheet} onBackdropPress={onClose}>
-      <View style={styles.bottomSheetItemWrapper}>
-        <View style={styles.optionsContainer}>
-          <View style={styles.optionItem}>
-            <Text style={{fontSize: 17}}>Share to...</Text>
+    <>
+      <BottomSheet visible={showBottomSheet} onBackdropPress={onClose}>
+        <View style={styles.bottomSheetItemWrapper}>
+          <View style={styles.optionsContainer}>
+            <View style={styles.optionItem}>
+              <Text style={{ fontSize: 17 }}>Share to...</Text>
+            </View>
+            <View style={styles.optionItem}>
+              <Text style={{ fontSize: 17 }}>Edit Post</Text>
+            </View>
+            <TouchableOpacity activeOpacity={0.9} style={styles.optionItem} onPress={showDelete}>
+              <Text style={{ fontSize: 17, color: 'red' }}>Delete post</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.optionItem}>
-            <Text style={{fontSize: 17}}>Edit Profile</Text>
-          </View>
-          <View style={styles.optionItem}>
-            <Text style={{ fontSize: 17 }}>
-              About Grow It
-            </Text>
-          </View>
-          <View style={styles.optionItem}>
-            <Text style={{fontSize: 17}}>Logout</Text>
-          </View>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            style={styles.cancelBottomSheet}
+            onPress={onClose}
+          >
+            <Text style={{ fontSize: 17 }}>Cancel</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity activeOpacity={0.6} style={styles.cancelBottomSheet}  onPress={onClose}>
-          <Text style={{fontSize: 17}}>Cancel</Text>
-        </TouchableOpacity>
-      </View>
-    </BottomSheet>
+      </BottomSheet>
+    </>
   )
 }
 
@@ -71,4 +72,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ProfileBtmSheet
+export default ModalSheet

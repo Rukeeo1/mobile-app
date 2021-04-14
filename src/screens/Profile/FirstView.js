@@ -134,7 +134,7 @@ const FirstView = ({}) => {
           )}
         </View>
 
-        {isList ? (
+        {true ? (
           <View style={[styles.postCard]}>
             <View style={[styles.postAvatarContainer]}>
               <Image

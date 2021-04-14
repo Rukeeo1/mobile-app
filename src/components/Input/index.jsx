@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     color: constants.colors.black,
     fontWeight: '300',
     paddingHorizontal: 8,
-    paddingBottom: 5
+    paddingBottom: 3
   },
   errorMessage: {
     color: colors.red,

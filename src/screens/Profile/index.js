@@ -5,6 +5,8 @@ import Followers from './Followers';
 import ProfileMain from './ProfileMain';
 import ProfileSettings from './Settings';
 import GrowItCalendar from './AddToCalendar'
+import Articles from "../Articles/ArticleGuide";
+import UserDetails from "./UserDetails";
 
 
 const Stack = createStackNavigator();
@@ -23,6 +25,8 @@ const ProfileNavigator = () => {
       <Screen name='Following' component={Following} />
       <Screen name='Followers' component={Followers} />
       <Screen name='GrowItCalendar' component={GrowItCalendar} />
+      <Screen name='Article-guide' component={Articles} />
+      <Screen name='User-details' component={UserDetails} />
     </Navigator>
   );
 };

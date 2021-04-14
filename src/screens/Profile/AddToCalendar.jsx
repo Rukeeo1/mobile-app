@@ -1,6 +1,6 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   Image,
   SafeAreaView,
@@ -48,6 +48,7 @@ const AddToCalendar = () => {
   const currentYear = new Date().getFullYear()
   const [m, setM] = useState(currentMonthIndex)
   const [y, setY] = useState(currentYear)
+  const scrollRef = useRef();
 
   const [jobs, setJobs] = useState(false)
   const [rest, setRest] = useState(false)
@@ -74,7 +75,12 @@ const AddToCalendar = () => {
     setM(index)
   }
 
-  
+  const onFabPress = () => {
+    scrollRef.current.scrollTo({
+        y : 0,
+        animated : true
+    });
+}
 
   return (
     <View style={{ flex: 1 }}>
@@ -86,6 +92,7 @@ const AddToCalendar = () => {
             flexGrow: 1,
           }}
           showsVerticalScrollIndicator={false}
+          ref={scrollRef}
         >
           <View
             style={{
@@ -200,7 +207,10 @@ const AddToCalendar = () => {
                 <AntDesign name="search1" size={25} color={colors.white} />
               </View>
             </GradientButton>
-            <GradientButton gradient={[colors.green, colors.greenDeep]} onPress={() => setJobs(!jobs)}>
+            <GradientButton
+              gradient={[colors.green, colors.greenDeep]}
+              onPress={() => setJobs(!jobs)}
+            >
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -216,10 +226,14 @@ const AddToCalendar = () => {
             </GradientButton>
 
             {jobs && (
-              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]} onPress={() => {
-                    setRest(true)
-                    setJobs(false)
-              }}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.jobs]}
+                onPress={() => {
+                  setRest(true)
+                  setJobs(false)
+                }}
+              >
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/circle.png')} />
                   <View style={[styles.jobsText]}>
@@ -388,7 +402,10 @@ const AddToCalendar = () => {
 
             <View style={{ marginBottom: 50 }}>
               <Text style={[styles.explore]}>Continue to explore</Text>
-              <GradientButton gradient={[colors.red, colors.redDeep]}>
+              <GradientButton
+                gradient={[colors.red, colors.redDeep]}
+                onPress={onFabPress}
+              >
                 <View
                   style={{
                     justifyContent: 'space-between',

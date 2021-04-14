@@ -1,8 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import React from 'react';
 import ArticleView from './ArticleViews';
+
 
 const Stack = createStackNavigator();
 
@@ -16,6 +15,7 @@ const Article = () => {
       }}
     >
       <Screen name='Article' component={ArticleView} />
+      
     </Navigator>
   );
 };

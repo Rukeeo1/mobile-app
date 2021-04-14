@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react'
 import {
   View,
   StyleSheet,
@@ -8,53 +8,54 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-} from 'react-native';
+} from 'react-native'
 
-import { Video } from 'expo-av';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Video } from 'expo-av'
+import { LinearGradient } from 'expo-linear-gradient'
 
-import ActionSheet from './ActionSheet';
-import SideMenuOverlay from './SideMenuOverlay';
+import ActionSheet from './ActionSheet'
+import SideMenuOverlay from './SideMenuOverlay'
 
-import { SafeArea, GradientButton as Button } from '../../components';
+import { SafeArea, GradientButton as Button } from '../../components'
 
-import { MyCarousel as Carousel } from './Carousel';
-import { SowItContainer } from './SowItContainer';
+import { MyCarousel as Carousel } from './Carousel'
+import { SowItContainer } from './SowItContainer'
 
-import home from '../../assets/home-icon.png';
-import pencil from '../../assets/pencil_circle.png';
-import shovel from '../../assets/shovel.png';
-import plant from '../../assets/plant.png';
-import growingSeed from '../../assets/growing-seed.png';
+import home from '../../assets/home-icon.png'
+import pencil from '../../assets/pencil_circle.png'
+import shovel from '../../assets/shovel.png'
+import plant from '../../assets/plant.png'
+import growingSeed from '../../assets/growing-seed.png'
 
-import constants from '../../constants';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import constants from '../../constants'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { Tooltip } from 'react-native-elements'
 
-const { colors } = constants;
+const { colors } = constants
 
-const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
 
 const getMonthStripItemWidth = () => {
-  const screenWidth = Dimensions.get('screen').width;
-  const itemWidth = (screenWidth * 0.9) / 12;
+  const screenWidth = Dimensions.get('screen').width
+  const itemWidth = (screenWidth * 0.9) / 12
 
-  return itemWidth;
-};
+  return itemWidth
+}
 
-const screenHeight = Dimensions.get('screen').height;
-const screenWidth = Dimensions.get('screen').width;
+const screenHeight = Dimensions.get('screen').height
+const screenWidth = Dimensions.get('screen').width
 
 const CropCard = ({ navigation }) => {
-  const [activeScreen, setActiveScreen] = useState(0);
-  const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const [showSideMenu, setShowSideMenu] = useState(false);
+  const [activeScreen, setActiveScreen] = useState(0)
+  const [showBottomSheet, setShowBottomSheet] = useState(false)
+  const [showSideMenu, setShowSideMenu] = useState(false)
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
 
-  const video = React.useRef(null);
+  const video = React.useRef(null)
 
-  const images = [growingSeed, plant, shovel];
+  const images = [growingSeed, plant, shovel]
 
-  const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
+  const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState)
 
   const renderTab = (index) => (
     <>
@@ -148,7 +149,7 @@ const CropCard = ({ navigation }) => {
         <View />
       </View>
     </>
-  );
+  )
 
   return (
     <SafeArea containerStyle={{ flex: 1 }}>
@@ -224,11 +225,11 @@ const CropCard = ({ navigation }) => {
           </View>
         </LinearGradient>
         <View style={{ paddingHorizontal: '5%' }}>
-          {activeScreen === 0 && <SowItContainer buttonTitle='Sow It!' />}
-          {activeScreen === 1 && <SowItContainer buttonTitle='Plant It!' />}
+          {activeScreen === 0 && <SowItContainer buttonTitle="Sow It!" />}
+          {activeScreen === 1 && <SowItContainer buttonTitle="Plant It!" />}
           {activeScreen === 2 && (
             <Button
-              title='End Harvest'
+              title="End Harvest"
               gradient={[colors.pink, colors.pinkDeep]}
               onPress={() => navigation.navigate('End-Harvest')}
             />
@@ -292,11 +293,13 @@ const CropCard = ({ navigation }) => {
               </Text>
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Button
-                gradient={[colors.purshBlue, colors.blue]}
-                title='Add to Journal'
-                onPress={() => navigation.navigate('Crop-Journal')}
-              />
+              <Tooltip popover={<Text>Info here</Text>}>
+                <Button
+                  gradient={[colors.purshBlue, colors.blue]}
+                  title="Add to Journal"
+                  onPress={() => navigation.navigate('Crop-Journal')}
+                />
+              </Tooltip>
             </View>
           </View>
           <View style={{ marginTop: '7%' }}>
@@ -325,7 +328,7 @@ const CropCard = ({ navigation }) => {
                 uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
               }}
               useNativeControls
-              resizeMode='contain'
+              resizeMode="contain"
               isLooping
               onPlaybackStatusUpdate={(status) => {}}
             />
@@ -370,8 +373,8 @@ const CropCard = ({ navigation }) => {
         <SideMenuOverlay toggleSideMenu={() => setShowSideMenu(false)} />
       )}
     </SafeArea>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -461,6 +464,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '200',
   },
-});
+})
 
-export default CropCard;
+export default CropCard

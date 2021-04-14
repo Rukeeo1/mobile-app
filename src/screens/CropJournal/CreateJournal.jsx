@@ -27,6 +27,7 @@ const CreateJournal = ({ navigation }) => {
   const [journalEntry, setJournalEntry] = useState({
     entry: '',
     isPublic: false,
+    isPublic1: false,
     journalUri: '',
   });
 
@@ -91,7 +92,7 @@ const CreateJournal = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.switchContainer}>
-          <Text>Add to public profile</Text>
+          <Text style={{fontSize: 16}}>Add to public profile</Text>
           <Switch
             trackColor={{ false: '#767577', true: colors.pink }}
             value={journalEntry.isPublic}
@@ -99,6 +100,19 @@ const CreateJournal = ({ navigation }) => {
               setJournalEntry((prevState) => ({
                 ...prevState,
                 isPublic: value,
+              }));
+            }}
+          />
+        </View>
+        <View style={styles.switchContainer}>
+          <Text style={{fontSize: 16}}>Make crop cover image</Text>
+          <Switch
+            trackColor={{ false: '#767577', true: colors.pink }}
+            value={journalEntry.isPublic1}
+            onValueChange={(value) => {
+              setJournalEntry((prevState) => ({
+                ...prevState,
+                isPublic1: value,
               }));
             }}
           />

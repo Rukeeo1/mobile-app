@@ -1,5 +1,5 @@
 import { EvilIcons } from '@expo/vector-icons'
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import {
   Image,
   SafeAreaView,
@@ -10,17 +10,31 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
+  RefreshControl,
 } from 'react-native'
 import { Input } from '../../components'
 import constants from '../../constants/'
+import { MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 const { colors } = constants
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout))
+}
+
 const Explore = () => {
-  const [showShare, setShowShare] = useState(false);
-  const [spinner,setSpinnner] = useState(true);
+  const navigation = useNavigation()
+  const [showShare, setShowShare] = useState(false)
+  const [spinner, setSpinnner] = useState(true)
+  const [refreshing, setRefreshing] = React.useState(false)
+  const [text, setText] = useState(false)
 
   let spinValue = new Animated.Value(0)
-
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
   // First set up animation
   Animated.timing(spinValue, {
     toValue: 1,
@@ -37,7 +51,7 @@ const Explore = () => {
 
   setTimeout(() => {
     setSpinnner(false)
-  }, 1000);
+  }, 1000)
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
@@ -47,6 +61,9 @@ const Explore = () => {
           flexGrow: 1,
         }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View style={[styles.container]}>
           <View style={styles.searchBarWrapper}>
@@ -69,59 +86,121 @@ const Explore = () => {
           </View>
 
           <View style={[styles.flowercircle]}>
-            {spinner && <Animated.Image
-              style={{ transform: [{ rotate: spin }] }}
-              source={require('../../assets/flowercircle.png')}
-            />}
-            
+            {spinner && (
+              <Animated.Image
+                style={{ transform: [{ rotate: spin }] }}
+                source={require('../../assets/flowercircle.png')}
+              />
+            )}
           </View>
 
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={{
+              backgroundColor: '#002B55',
+              height: 88,
+              alignItems: 'center',
+              paddingLeft: 19,
+              flexDirection: 'row',
+              marginTop: 10,
+              marginBottom: 10,
+            }}
+            onPress={() => navigation.navigate('Article-guide')}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={require('../../assets/book-w.png')} />
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: 'white',
+                  marginRight: 20,
+                  width: 210,
+                  paddingLeft: 25,
+                }}
+              >
+                Explore the latest Grow It guides and articles
+              </Text>
+            </View>
+            <View>
+              <MaterialIcons
+                name="keyboard-arrow-right"
+                size={24}
+                color="white"
+              />
+            </View>
+          </TouchableOpacity>
+
           <View style={[styles.postCard]}>
-            <View style={[styles.userDetail]}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={[styles.userDetail]}
+              onPress={() => navigation.navigate('User-details')}
+            >
               <Image
                 style={[styles.imgAvatar]}
                 source={require('../../assets/avatarimg.png')}
               />
               <Text style={[styles.imgText]}>Harriet_loves_to_grow_it</Text>
-            </View>
+            </TouchableOpacity>
 
-            <Image
-              style={[styles.postImg]}
-              source={require('../../assets/profile.png')}
-            />
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('User-details')}
+            >
+              <Image
+                style={[styles.postImg]}
+                source={require('../../assets/profile.png')}
+              />
+            </TouchableOpacity>
 
             <View style={[styles.dateTime]}>
               <Text style={[styles.date]}>23 July 2020</Text>
-              <Text>...</Text>
+              {/* <Text>...</Text> */}
             </View>
 
             <View style={[styles.postText]}>
-              <Text style={[styles.boldContainer]}>
+              <Text style={[styles.boldContainer, {}]}>
                 {' '}
                 <Text style={[styles.bold]}>Harriet_loves_to_grow_it</Text>{' '}
                 First handful of tomatoes!! Well worth the wait!
+                {!text && (
+                  <Text
+                    style={{ color: 'blue' }}
+                    onPress={() => setText(!text)}
+                  >
+                    ...more
+                  </Text>
+                )}
+                {text && <Text> yes, patient is golden any time!</Text>}
               </Text>
             </View>
           </View>
           <View style={[styles.postCard]}>
-            <View style={[styles.userDetail]}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={[styles.userDetail]}
+              onPress={() => navigation.navigate('User-details')}
+            >
               <Image
                 style={[styles.imgAvatar]}
                 source={require('../../assets/avatarimg.png')}
               />
               <Text style={[styles.imgText]}>Harriet_loves_to_grow_it</Text>
-            </View>
+            </TouchableOpacity>
 
-            <Image
-              style={[styles.postImg]}
-              source={require('../../assets/profile.png')}
-            />
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('User-details')}
+            >
+              <Image
+                style={[styles.postImg]}
+                source={require('../../assets/profile.png')}
+              />
+            </TouchableOpacity>
 
             <View style={[styles.dateTime]}>
               <Text style={[styles.date]}>23 July 2020</Text>
-              <TouchableOpacity>
-                <Text>...</Text>
-              </TouchableOpacity>
+              {/* <Text>...</Text> */}
             </View>
 
             <View style={[styles.postText]}>
