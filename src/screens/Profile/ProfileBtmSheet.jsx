@@ -1,59 +1,38 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { BottomSheet } from 'react-native-btr';
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { BottomSheet } from 'react-native-btr'
 
-import constants from '../../constants/';
+import constants from '../../constants/'
 
-const { colors } = constants;
+const { colors } = constants
 
 const ProfileBtmSheet = ({ showBottomSheet, onClose }) => {
   return (
-    <BottomSheet
-      visible={showBottomSheet}
-      onBackdropPress={onClose}
-    >
+    <BottomSheet visible={showBottomSheet} onBackdropPress={onClose}>
       <View style={styles.bottomSheetItemWrapper}>
         <View style={styles.optionsContainer}>
-        <View style={styles.optionItem}>
-          <Text>Share to...</Text>
+          <View style={styles.optionItem}>
+            <Text style={{fontSize: 17}}>Share to...</Text>
+          </View>
+          <View style={styles.optionItem}>
+            <Text style={{fontSize: 17}}>Edit Profile</Text>
+          </View>
+          <View style={styles.optionItem}>
+            <Text style={{ fontSize: 17 }}>
+              About Grow It
+            </Text>
+          </View>
+          <View style={styles.optionItem}>
+            <Text style={{fontSize: 17}}>Logout</Text>
+          </View>
         </View>
-        <View style={styles.optionItem}>
-          <Text>Edit Post</Text>
-        </View>
-        <View style={styles.optionItem}>
-          <Text style={{ color: colors.red, fontWeight: '500' }}>
-            Delete Post
-          </Text>
-        </View>
-      </View>
-      <TouchableOpacity style={styles.cancelBottomSheet}>
-        <Text>Cancel</Text>
-      </TouchableOpacity>
-        {/* <View style={styles.deleteConfirmation}>
-          <Text>Are you sure you want to delete your post</Text>
-        </View> */}
-        {/* <View style={styles.deleteConfirmationOptions}>
-          <TouchableOpacity
-            style={{ ...styles.cancelBottomSheet, ...{ flex: 1 } }}
-          >
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              ...styles.cancelBottomSheet,
-              ...{
-                flex: 1,
-                marginLeft: 5,
-              },
-            }}
-          >
-            <Text style={{ color: colors.red, fontWeight: '500' }}>Delete</Text>
-          </TouchableOpacity>
-        </View> */}
+        <TouchableOpacity activeOpacity={0.6} style={styles.cancelBottomSheet}  onPress={onClose}>
+          <Text style={{fontSize: 17}}>Cancel</Text>
+        </TouchableOpacity>
       </View>
     </BottomSheet>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   bottomSheetItemWrapper: {
@@ -90,6 +69,6 @@ const styles = StyleSheet.create({
   deleteConfirmationOptions: {
     flexDirection: 'row',
   },
-});
+})
 
-export default ProfileBtmSheet;
+export default ProfileBtmSheet
