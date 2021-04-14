@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
-
 import constants from '../../constants';
+
 
 const { colors } = constants;
 
@@ -28,31 +28,10 @@ export const ShareModal = ({ showBottomSheet, setShowShare }) => {
         </View>
         <TouchableOpacity
           style={styles.cancelBottomSheet}
-          onPress={setShowShare}
+          onPress={() => setShowShare(false)}
         >
           <Text>Cancel</Text>
         </TouchableOpacity>
-        {/* <View style={styles.deleteConfirmation}>
-          <Text>Are you sure you want to delete your post</Text>
-        </View>
-        <View style={styles.deleteConfirmationOptions}>
-          <TouchableOpacity
-            style={{ ...styles.cancelBottomSheet, ...{ flex: 1 } }}
-          >
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              ...styles.cancelBottomSheet,
-              ...{
-                flex: 1,
-                marginLeft: 5,
-              },
-            }}
-          >
-            <Text style={{ color: colors.red, fontWeight: '500' }}>Delete</Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </BottomSheet>
   );
