@@ -3,10 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { BottomSheet } from 'react-native-btr'
 
 import constants from '../../constants/'
+import { useNavigation } from '@react-navigation/native'
 
 const { colors } = constants
 
 const ProfileBtmSheet = ({ showBottomSheet, onClose }) => {
+  const navigation = useNavigation()
   return (
     <BottomSheet visible={showBottomSheet} onBackdropPress={onClose}>
       <View style={styles.bottomSheetItemWrapper}>
@@ -22,9 +24,14 @@ const ProfileBtmSheet = ({ showBottomSheet, onClose }) => {
               About Grow It
             </Text>
           </View>
-          <View style={styles.optionItem}>
-            <Text style={{fontSize: 17}}>Logout</Text>
-          </View>
+          <TouchableOpacity activeOpacity={0.9} style={styles.optionItem} onPress={() =>{
+            onClose(false);
+            setTimeout(() => {
+              navigation.navigate('Logout')
+            }, 500)
+          }}>
+            <Text style={{fontSize: 17}}>Logout </Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity activeOpacity={0.6} style={styles.cancelBottomSheet}  onPress={onClose}>
           <Text style={{fontSize: 17}}>Cancel</Text>
