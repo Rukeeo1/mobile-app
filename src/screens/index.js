@@ -9,5 +9,7 @@ export { default as ArticleNavigator } from './Articles';
 export { default as EndHarvestNavigator } from './EndHarvest';
 export { default as CropJournalNavigator } from './CropJournal';
 export { default as Crops } from './Crops';
+export { default as Articles } from './Articles';
+
 
 export * from './Profile';
