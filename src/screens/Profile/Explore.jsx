@@ -165,7 +165,7 @@ const Explore = () => {
                 First handful of tomatoes!! Well worth the wait!
                 {!text && (
                   <Text
-                    style={{ color: 'blue' }}
+                    style={{ color: '#085BAC' }}
                     onPress={() => setText(!text)}
                   >
                     ...more
