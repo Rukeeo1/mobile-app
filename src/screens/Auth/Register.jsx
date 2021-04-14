@@ -109,6 +109,7 @@ export const Register = ({ navigation }) => {
                   color: 'white',
                   textAlign: 'center',
                   marginTop: '30%',
+                  fontSize: 16
                 }}
                 onPress={() => navigation.navigate("Login")}
               >
