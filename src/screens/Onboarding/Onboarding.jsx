@@ -1,6 +1,13 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import Swiper from 'react-native-swiper'
 import growthLogo from '../../assets/growth_logo.png'
 import { Logo } from '../../components'
@@ -13,7 +20,11 @@ const OnboardingLayout = ({ navigation }) => {
       <SafeAreaView>
         <ScrollView>
           <View style={{ height: 335 }}>
-            <Swiper controlsEnabled={false} loop={false} activeDotStyle={{backgroundColor: 'white'}}>
+            <Swiper
+              controlsEnabled={false}
+              loop={false}
+              activeDotStyle={{ backgroundColor: 'white' }}
+            >
               <View style={[styles.slideContainer, styles.slide1]}>
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
@@ -31,8 +42,6 @@ const OnboardingLayout = ({ navigation }) => {
                   colors={[colors.purshBlue, colors.purshBlueDeep]}
                   style={[styles.general]}
                 >
-                  
-
                   <Text style={[styles.screenTitle]}>Explore</Text>
                   <Text style={[styles.screenDescription]}>
                     A community where you can share your successes and failures,
@@ -46,13 +55,12 @@ const OnboardingLayout = ({ navigation }) => {
                   colors={[colors.green, colors.greenDeep]}
                   style={[styles.general]}
                 >
-                 <Text style={[styles.screenTitle]}>Guided Growing</Text>
+                  <Text style={[styles.screenTitle]}>Guided Growing</Text>
                   <Text style={[styles.screenDescription]}>
                     Never feel overwhelmed! We are here to prove that gardening
                     truly is for everyone. We have beginner crops and guides to
                     help you every step of the way.
                   </Text>
-
                 </LinearGradient>
               </View>
               <View style={[styles.slideContainer, styles.slide4]}>
@@ -60,7 +68,6 @@ const OnboardingLayout = ({ navigation }) => {
                   colors={[colors.pink, colors.pinkDeep]}
                   style={[styles.general, styles.space]}
                 >
-                 
                   <Text style={[styles.screenTitle]}>Manage Crops</Text>
                   <Text style={[styles.screenDescription]}>
                     See at a glance everything you are growing and where they
@@ -84,23 +91,37 @@ const OnboardingLayout = ({ navigation }) => {
                 }}
               />
             </View>
-            <Text style={{ textAlign: 'center', fontSize: 20, paddingTop: 15, paddingLeft: 30, paddingRight: 30 }}>
-              Choose your subscription plan below to start your{' '}
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 22,
+                fontWeight: '300',
+                paddingTop: 15,
+                paddingLeft: 30,
+                paddingRight: 30,
+                lineHeight: 31
+              }}
+            >
+              Choose your subscription plan below to start your
             </Text>
             <Text
               style={{
                 textAlign: 'center',
                 fontSize: 25,
                 color: colors.green,
-                fontWeight: 'bold',
-                paddingBottom: 50
+                fontWeight: '500',
+                paddingBottom: 50,
               }}
             >
               30 day FREE trial
             </Text>
 
             <View style={[styles.TrialContainer]}>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.trial]}
+                onPress={() => navigation.navigate('Splash')}
+              >
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
                   style={[styles.general, styles.space]}
@@ -110,7 +131,11 @@ const OnboardingLayout = ({ navigation }) => {
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.trial]}
+                onPress={() => navigation.navigate('Splash')}
+              >
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
                   style={[styles.general, styles.space]}
@@ -128,7 +153,9 @@ const OnboardingLayout = ({ navigation }) => {
                 color: colors.green,
                 fontWeight: 'bold',
                 paddingRight: 15,
-                paddingTop: 10
+                paddingTop: 8,
+                fontSize: 16,
+                lineHeight: 23
               }}
             >
               Save £5.89 (17%)
@@ -138,7 +165,8 @@ const OnboardingLayout = ({ navigation }) => {
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: 13,
+                fontSize: 14,
+                lineHeight: 20,
                 marginTop: 70,
                 justifyContent: 'center',
               }}
@@ -193,6 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
     marginTop: 30,
+    lineHeight: 25
   },
 
   general: {
@@ -205,7 +234,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   space: {
-    padding: 20,
+    padding: 15,
   },
   TrialContainer: {
     flexDirection: 'row',
@@ -213,7 +242,7 @@ const styles = StyleSheet.create({
   },
   trial: {
     width: '48%',
-    height: 80,
+    height: 70,
     borderTopLeftRadius: 7,
     borderTopRightRadius: 7,
     borderBottomLeftRadius: 7,
@@ -222,7 +251,7 @@ const styles = StyleSheet.create({
   },
   trialText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: '700',
     fontSize: 15,
   },
 })

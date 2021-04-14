@@ -7,8 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity,
+
+  TouchableOpacity, View
 } from 'react-native'
 import * as Yup from 'yup'
 import growthLogo from '../../assets/growth_logo.png'
@@ -91,7 +91,7 @@ const ManualAuth = ({ navigation }) => {
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('Forgot-password')}
               >
-                <Text style={{ textAlign: 'center', marginTop: 25 }}>
+                <Text style={{ textAlign: 'center', marginTop: 20, marginBottom: 32, fontSize: 14 }}>
                   Forgotten Password?
                 </Text>
               </TouchableOpacity>
@@ -102,7 +102,6 @@ const ManualAuth = ({ navigation }) => {
             style={[
               {
                 width: '100%',
-                marginTop: 20,
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
                 overflow: 'hidden',
@@ -144,6 +143,7 @@ const ManualAuth = ({ navigation }) => {
                   color: colors.white,
                   fontWeight: 'bold',
                   textAlign: 'center',
+                  fontSize: 16
                 }}
                 onPress={() => navigation.goBack()}
               >
