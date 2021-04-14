@@ -7,6 +7,7 @@ import ProfileSettings from './Settings';
 import GrowItCalendar from './AddToCalendar'
 import Articles from "../Articles/ArticleGuide";
 import UserDetails from "./UserDetails";
+import Logout from "./Logout";
 
 
 const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ const ProfileNavigator = () => {
       <Screen name='GrowItCalendar' component={GrowItCalendar} />
       <Screen name='Article-guide' component={Articles} />
       <Screen name='User-details' component={UserDetails} />
+      <Screen name='Logout' component={Logout} />
     </Navigator>
   );
 };
