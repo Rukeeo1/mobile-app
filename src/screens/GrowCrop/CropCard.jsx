@@ -28,7 +28,6 @@ import plant from '../../assets/plant.png'
 import growingSeed from '../../assets/growing-seed.png'
 
 import constants from '../../constants'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { Tooltip } from 'react-native-elements'
 
 const { colors } = constants
@@ -194,13 +193,7 @@ const CropCard = ({ navigation }) => {
             <TouchableOpacity onPress={() => toggleBtmSheet()}>
               <Image source={pencil} style={{ height: 37, width: 37 }} />
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={() => toggleBtmSheet()}>
-              <Entypo
-                name='dots-three-horizontal'
-                size={24}
-                color={colors.white}
-              />
-            </TouchableOpacity> */}
+   
           </View>
           <View style={{ alignItems: 'center', marginTop: '5%' }}>
             <Text
