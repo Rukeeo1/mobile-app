@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tabIconWrapper: {
-    marginTop: '35%',
+    marginTop: screenHeight * 0.030,
     height: 60,
     width: 60,
     justifyContent: 'center',

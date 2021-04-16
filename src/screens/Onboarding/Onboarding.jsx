@@ -1,19 +1,21 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native'
-import Swiper from 'react-native-swiper'
-import growthLogo from '../../assets/growth_logo.png'
-import { Logo } from '../../components'
-import constants from '../../constants'
+  View,
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Swiper from 'react-native-swiper';
 
-const { colors } = constants
+import growthLogo from '../../assets/growth_logo.png';
+import { Logo } from '../../components';
+import constants from '../../constants';
+
+const { colors } = constants;
+
 const OnboardingLayout = ({ navigation }) => {
   return (
     <View style={styles.container}>
@@ -99,7 +101,7 @@ const OnboardingLayout = ({ navigation }) => {
                 paddingTop: 15,
                 paddingLeft: 30,
                 paddingRight: 30,
-                lineHeight: 31
+                lineHeight: 31,
               }}
             >
               Choose your subscription plan below to start your
@@ -155,7 +157,7 @@ const OnboardingLayout = ({ navigation }) => {
                 paddingRight: 15,
                 paddingTop: 8,
                 fontSize: 16,
-                lineHeight: 23
+                lineHeight: 23,
               }}
             >
               Save £5.89 (17%)
@@ -178,8 +180,8 @@ const OnboardingLayout = ({ navigation }) => {
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
     marginTop: 30,
-    lineHeight: 25
+    lineHeight: 25,
   },
 
   general: {
@@ -254,6 +256,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 15,
   },
-})
+});
 
-export default OnboardingLayout
+export default OnboardingLayout;

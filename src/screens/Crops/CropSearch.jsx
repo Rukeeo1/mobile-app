@@ -1,6 +1,6 @@
-import { AntDesign, EvilIcons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import { AntDesign, EvilIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -8,28 +8,33 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native'
-import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu'
-import { GradientButton, Input } from '../../components/'
-import constants from '../../constants'
+  View,
+} from 'react-native';
 
-const { colors } = constants
+import { GradientButton, Input } from '../../components/';
+import { FilterItemDropDown } from './FilterItemDropDown';
+
+import constants from '../../constants';
+
+const { colors, months } = constants;
+
 const CropSearch = ({ navigation }) => {
-  const [search, setSearch] = useState('')
-  let _menu = null
+  const [search, setSearch] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('February');
+
+  let _menu = null;
 
   let setMenuRef = (ref) => {
-    _menu = ref
-  }
+    _menu = ref;
+  };
 
   let hideMenu = () => {
-    _menu.hide()
-  }
+    _menu.hide();
+  };
 
   let showMenu = () => {
-    _menu.show()
-  }
+    _menu.show();
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -42,13 +47,13 @@ const CropSearch = ({ navigation }) => {
             >
               <View style={[styles.searchForm]}>
                 <Input
-                  placeholder="Search crops"
+                  placeholder='Search crops'
                   containerStyle={styles.searchInputContainer}
                   inputStyle={{ marginTop: -10, paddingRight: 10 }}
                   onChangeText={(text) => setSearch(text)}
                 >
                   <EvilIcons
-                    name="search"
+                    name='search'
                     size={24}
                     color={colors.blue}
                     style={{
@@ -66,53 +71,52 @@ const CropSearch = ({ navigation }) => {
                 </Text>
               </View>
 
-              <ScrollView horizontal style={[styles.scrollDate]}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  width: '100%',
+                  alignItems: 'center',
+                  flex: 1,
+                }}
+              >
                 <View
-                  style={[
-                    styles.optionsContainer,
-                    {
-                      borderTopLeftRadius: 100 / 2,
-                      borderTopRightRadius: 100 / 2,
-                    },
-                  ]}
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: 16,
+                    marginLeft: 30,
+                  }}
                 >
-                  <Text style={[styles.clearFilter]}>clear filters</Text>
-                  <GradientButton gradient={[colors.red, colors.redDeep]}>
-                    <Menu
-                      ref={setMenuRef}
-                      style={{ width: 100 }}
-                      button={
-                        <Text
-                          onPress={showMenu}
-                          style={{ color: colors.white, width: '100%' }}
-                        >
-                          Grow in February
-                        </Text>
-                      }
-                    >
-                      <ScrollView>
-                        <MenuItem style={{ width: '100%' }} onPress={hideMenu}>
-                          Jan
-                        </MenuItem>
-                        <MenuItem onPress={hideMenu}>Feb</MenuItem>
-                        <MenuItem onPress={hideMenu}>March</MenuItem>
-                        <MenuDivider />
-                        <MenuItem onPress={hideMenu}>April</MenuItem>
-                        <MenuItem onPress={hideMenu}>May</MenuItem>
-                        <MenuItem onPress={hideMenu}>June</MenuItem>
-                        <MenuItem onPress={hideMenu}>March</MenuItem>
-                        <MenuDivider />
-                        <MenuItem onPress={hideMenu}>July</MenuItem>
-                        <MenuItem onPress={hideMenu}>August</MenuItem>
-                        <MenuItem onPress={hideMenu}>September</MenuItem>
-                        <MenuItem onPress={hideMenu}>October</MenuItem>
-                        <MenuDivider />
-                        <MenuItem onPress={hideMenu}>November</MenuItem>
-                        <MenuItem onPress={hideMenu}>December</MenuItem>
-                      </ScrollView>
-                    </Menu>
-                  </GradientButton>
+                  <Text
+                    style={{
+                      color: colors.white,
+                      fontWeight: '500',
+                      textDecorationLine: 'underline',
+                    }}
+                  >
+                    Clear filters
+                  </Text>
                 </View>
+                <FilterItemDropDown
+                  items={months}
+                  activeItem={`Grow in ${selectedMonth}`}
+                  onSelect={setSelectedMonth}
+                />
+                <FilterItemDropDown
+                  items={['Beginner', 'Intermediate', 'Advance']}
+                  activeItem={`Grow in ${selectedMonth}`}
+                  onSelect={setSelectedMonth}
+                />
+                <FilterItemDropDown items={months} />
+                <View
+                  style={{
+                    marginRight: 20,
+                    width: 200,
+                    height: 100,
+                    backgroundColor: 'red',
+                  }}
+                />
               </ScrollView>
             </LinearGradient>
           </View>
@@ -147,7 +151,7 @@ const CropSearch = ({ navigation }) => {
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -163,7 +167,7 @@ const CropSearch = ({ navigation }) => {
                     <Text>star Beginner</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -179,7 +183,7 @@ const CropSearch = ({ navigation }) => {
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -195,7 +199,7 @@ const CropSearch = ({ navigation }) => {
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -211,7 +215,7 @@ const CropSearch = ({ navigation }) => {
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
             </View>
           )}
@@ -235,19 +239,20 @@ const CropSearch = ({ navigation }) => {
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   searchContainer: {
     paddingTop: '20%',
     paddingBottom: '10%',
-    paddingHorizontal: 25,
+    // paddingHorizontal: 25,
   },
   searchForm: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    paddingHorizontal: 25,
   },
   searchInputContainer: {
     backgroundColor: colors.white,
@@ -266,7 +271,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   scrollDate: {
-    padding: 10,
+    // padding: 10,
+    // paddingRight: '10%'
   },
   clearFilter: {
     color: colors.white,
@@ -328,6 +334,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // bottom: '-30%',
   },
-})
+});
 
-export default CropSearch
+export default CropSearch;
