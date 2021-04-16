@@ -91,7 +91,7 @@ const ManualAuth = ({ navigation }) => {
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('Forgot-password')}
               >
-                <Text style={{ textAlign: 'center', marginTop: 20, marginBottom: 32, fontSize: 14 }}>
+                <Text style={{ textAlign: 'center', marginTop: 20, marginBottom: 32, fontSize: 14, fontFamily: 'Hero-New-Light' }}>
                   Forgotten Password?
                 </Text>
               </TouchableOpacity>

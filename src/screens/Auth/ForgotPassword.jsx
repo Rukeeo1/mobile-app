@@ -1,6 +1,8 @@
+import { FontDisplay } from 'expo-font'
 import { LinearGradient } from 'expo-linear-gradient'
+import { Form } from 'formik'
 import React, { useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, View,  Dimensions } from 'react-native'
 import growthLogo from '../../assets/growth_logo.png'
 import { GradientButton, Input, Logo } from '../../components'
 import constants from '../../constants'
@@ -51,6 +53,7 @@ export const ForgotPassword = ({ navigation }) => {
                 flex: 1,
                 paddingBottom: 30,
                 paddingTop: 50,
+                height: Dimensions.get("window").height - (0.35*Dimensions.get("window").height),
               }}
               colors={[colors.blueLigth, colors.blue]}
             >
@@ -61,6 +64,7 @@ export const ForgotPassword = ({ navigation }) => {
                 value={authDetails.email}
                 onChangeText={(text) => handleAuthDetails('email', text)}
                 placeholder="Enter your email"
+                placeholderTextColor="#fff"
               />
              
 
@@ -71,7 +75,8 @@ export const ForgotPassword = ({ navigation }) => {
                 onPress={() => navigation.navigate('Onboarding')}
               />
               <Text
-                style={{ textAlign: 'center', color: 'white' }}
+                style={{ textAlign: 'center', color: 'white', 
+                fontFamily: 'Hero-New-Medium', }}
                 onPress={() => navigation.navigate('ManualAuthentication')}
               >
                 Already have an Account? Log in
@@ -81,7 +86,12 @@ export const ForgotPassword = ({ navigation }) => {
                   fontWeight: 'bold',
                   color: 'white',
                   textAlign: 'center',
-                  marginTop: '30%',
+                  bottom: 42,
+                  left: 0,
+                  right: 0,
+                  position: 'absolute',
+                  fontFamily: 'Hero-New-Medium',
+                  fontSize: 16,
                 }}
                 onPress={() => navigation.navigate("Login")}
               >
@@ -123,9 +133,14 @@ const styles = StyleSheet.create({
     borderBottomColor: constants.colors.greyLight,
     paddingBottom: '2%',
     color: constants.colors.white,
+    paddingLeft: 0,
+    fontFamily: 'Hero-New-Light',
+    fontSize: 16,
+    letterSpacing: 0,
   },
   label: {
     color: constants.colors.white,
+    fontFamily: 'Hero-New-Medium',
   },
   alignItem: {
     display: 'flex',

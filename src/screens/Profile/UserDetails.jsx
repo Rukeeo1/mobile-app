@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
     lineHeight: 45,
     marginVertical: 10,
     fontWeight: '100',
+    fontFamily: 'Hero-New-Light',
   },
   edit: {
     marginVertical: 15,

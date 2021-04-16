@@ -12,8 +12,12 @@ import store from './src/redux';
 // initializeFirebase();
 
 const customFonts = {
-  'Hero-New-Regular': require('./src/assets/fonts/Hero-New-Regular-Italic.otf'),
-  'Hero-New-Regular-Italic': require('./src/assets/fonts/Hero-New-Regular.otf'),
+  'Hero-New-Regular-Italic': require('./src/assets/fonts/Hero-New-Regular-Italic.otf'),
+  'Hero-New-Regular': require('./src/assets/fonts/Hero-New-Regular.otf'),
+  'Hero-New-Medium': require('./src/assets/fonts/Hero-New-Medium.otf'),
+  'Hero-New-Light': require('./src/assets/fonts/Hero-New-Light.otf'),
+  'Hero-New-Thin': require('./src/assets/fonts/Hero-New-Thin.otf'),
+  'Hero-New-Light-Italic': require('./src/assets/fonts/Hero-New-Light-Italic.otf'),
 };
 
 export default function App() {

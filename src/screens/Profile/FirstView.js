@@ -40,10 +40,10 @@ const FirstView = ({}) => {
 
         <View style={[styles.detailsContainer, styles.detaileText]}>
           <Text style={[styles.title]}>Garden_of_Riley</Text>
-          <Text>
+          <Text style={{fontFamily: 'Hero-New-Light', fontSize: 14,}}>
             {'<'}User bio grow baby grow{'>'}
           </Text>
-          <Text>🇬🇧 Buckinghamshire</Text>
+          <Text style={{fontFamily: 'Hero-New-Light', fontSize: 14,}}>🇬🇧 Buckinghamshire</Text>
           <Text style={[styles.edit]}>Edit profile</Text>
         </View>
 
@@ -66,7 +66,7 @@ const FirstView = ({}) => {
         <View style={[styles.growList]}>
           {true ? (
             <>
-              <Text style={[styles.growTitle]}>Current grow list</Text>
+              <Text style={[styles.growTitle]}>Current Grow It List</Text>
               <ScrollView horizontal={true}>
                 <View style={[styles.growCard]}>
                   <Image source={require('../../assets/growavatar.png')} />
@@ -102,7 +102,7 @@ const FirstView = ({}) => {
             </>
           ) : (
             <View>
-              <Text style={[styles.growTitle]}>
+              <Text style={[styles.growTitle2]}>
                 You aren’t growing anything!
               </Text>
               <GradientButton
@@ -152,19 +152,19 @@ const FirstView = ({}) => {
             </View>
 
             <View style={[styles.postDateTime]}>
-              <Text>23 July 2020</Text>
+              <Text style={{fontFamily: 'Hero-New-Light-Italic', color: '#9B9B9B'}}>23 July 2020</Text>
               <TouchableOpacity onPress={toggleModal}>
                 <Text>...</Text>
               </TouchableOpacity>
             </View>
 
             <View style={{ marginLeft: 15 }}>
-              <Text>
-                <Text style={[styles.bold]}>Garden_of_Riley</Text> First handful
+              <Text style={{fontFamily: 'Hero-New-Light'}}>
+                <Text style={{fontFamily: 'Hero-New-Medium'}}>Garden_of_Riley</Text> First handful
                 of tomatoes!! Well worth the wait!
               </Text>
 
-              <Text style={[styles.bold]}>Tomatoes - ‘Sungold’</Text>
+              <Text style={{fontFamily: 'Hero-New-Medium'}}>Tomatoes - ‘Sungold’</Text>
             </View>
           </View>
         ) : (
@@ -210,11 +210,12 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 45,
     marginVertical: 10,
-    fontWeight: '100',
+    fontFamily: 'Hero-New-Thin',
   },
   edit: {
     marginVertical: 15,
     fontWeight: 'bold',
+    fontFamily: 'Hero-New-Medium',
   },
   follows: {
     width: 200,
@@ -224,6 +225,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 20,
+    fontFamily: 'Hero-New-Medium',
   },
   followsText: {
     fontWeight: 'bold',
@@ -233,6 +235,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingRight:5,
     alignItems: 'center',
+    fontFamily: 'Hero-New-Light',
   },
   btnText: {
     color: colors.white,
@@ -244,10 +247,19 @@ const styles = StyleSheet.create({
   growTitle: {
     textAlign: 'center',
     marginBottom: 15,
+    fontFamily: 'Hero-New-Medium',
+  },
+  growTitle2: {
+    textAlign: 'center',
+    marginBottom: 15,
+    fontFamily: 'Hero-New-Light',
   },
   growText: {
     maxWidth: 120,
     textAlign: 'center',
+    fontFamily: 'Hero-New-Light',
+    fontSize: 11,
+    maxWidth: 100,
   },
   btnText: {
     color: colors.white,
@@ -310,6 +322,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
     fontSize: 14,
+    fontFamily: 'Hero-New-Medium',
   },
   postImg: {
     width: '100%',
@@ -321,6 +334,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10,
     marginLeft: 15,
+    fontFamily: 'Hero-New-Light-Italic',
   },
   bold: {
     fontWeight: 'bold',

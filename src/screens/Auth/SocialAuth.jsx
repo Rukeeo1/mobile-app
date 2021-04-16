@@ -1,6 +1,6 @@
 import * as Facebook from 'expo-facebook'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import growthLogo from '../../assets/growth_logo.png'
 import { Button, Logo, SmallGradientButton } from '../../components'
 import { firebaseConfig } from '../../config/firebase'
@@ -50,13 +50,14 @@ export const Login = ({ navigation }) => {
       <Logo source={growthLogo} />
       <View style={styles.buttonsContainer}>
         {authButtons.map((button, index) => (
-          <Button
-            key={index}
-            title={button.title}
-            coverStyle={{ ...styles.genericBtnStyles, ...button.coverStyle }}
-            onPress={button.onPress}
-            color={'white'}
-          />
+            
+          <TouchableOpacity 
+          key={index} 
+          onPress={button.onPress} 
+          style={{ ...styles.genericBtnStyles,  ...button.coverStyle}}>
+              <Text style={{fontSize:18, color: 'white', fontFamily: 'Hero-New-Regular'}}>{button.title}</Text>
+          </TouchableOpacity>
+                      
         ))}
 
         <SmallGradientButton
@@ -83,8 +84,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   genericBtnStyles: {
-    height: 40,
-    borderRadius: 20,
+    borderRadius: 50,
+    width: '100%',
+        height: 50,
+        marginTop: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    
   },
   appleButton: {
     color: '#ffffff',

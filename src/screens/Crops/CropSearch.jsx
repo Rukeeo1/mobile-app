@@ -1,5 +1,3 @@
-import { AntDesign, EvilIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
   Image,
@@ -10,6 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { AntDesign, EvilIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { GradientButton, Input } from '../../components/';
 import { FilterItemDropDown } from './FilterItemDropDown';

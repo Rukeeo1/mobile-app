@@ -26,6 +26,22 @@ const OnboardingLayout = ({ navigation }) => {
               controlsEnabled={false}
               loop={false}
               activeDotStyle={{ backgroundColor: 'white' }}
+              controlsEnabled={false}
+              loop={false}
+              dotStyle={{
+                backgroundColor: 'rgba(225,225,225,.2)',
+                marginLeft: 12,
+                marginRight: 12,
+                width: 14,
+                height: 14,
+                borderRadius: 14,
+              }}
+              activeDotStyle={{
+                backgroundColor: 'white',
+                width: 14,
+                height: 14,
+                borderRadius: 14,
+              }}
             >
               <View style={[styles.slideContainer, styles.slide1]}>
                 <LinearGradient
@@ -244,7 +260,7 @@ const styles = StyleSheet.create({
   },
   trial: {
     width: '48%',
-    height: 70,
+    height: 75,
     borderTopLeftRadius: 7,
     borderTopRightRadius: 7,
     borderBottomLeftRadius: 7,
