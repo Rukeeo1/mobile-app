@@ -25,6 +25,8 @@ const RootNavigator = () => (
       screenOptions={{
         // would extract screen options to a seperate file depending on how it grows
         headerShown: false,
+      headerTransparent: true,
+      headerTitle: false,
       }}
     >
       <Screen name='AuthNavigator' component={AuthNavigator} />

@@ -91,7 +91,7 @@ const ManualAuth = ({ navigation }) => {
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('Forgot-password')}
               >
-                <Text style={{ textAlign: 'center', marginTop: 25 }}>
+                <Text style={{ textAlign: 'center', marginTop: 25, fontFamily: 'Hero-New-Light' }}>
                   Forgotten Password?
                 </Text>
               </TouchableOpacity>
@@ -124,6 +124,8 @@ const ManualAuth = ({ navigation }) => {
                   textAlign: 'center',
                   marginTop: 40,
                   marginBottom: 10,
+                  fontFamily: 'Hero-New-Light',
+                  fontSize: 16,
                 }}
               >
                 Not got an account?
@@ -162,7 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingTop: Platform.OS === 'android' ? 25 : 0,
-    paddingBottom: '5%',
+    paddingBottom: 0,
   },
   scrollContainer: {
     alignItems: 'center',
@@ -173,6 +175,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     color: constants.colors.blueLigth,
+    fontFamily: 'Hero-New-Medium',
   },
   authContainer: {
     width: '85%',

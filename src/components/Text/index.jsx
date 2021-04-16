@@ -7,13 +7,14 @@ const textStyles = {
   fontSize: 14,
   lineHeight: 14 * 1.5,
   color: textColor,
+  fontFamily: 'Hero-New-Regular',
 }
 
 const Text = ({ style, children, ...props }) => {
   return (
     <NativeText
       style={{
-        fontFamily: 'Avenir-Regular',
+        fontFamily: 'Hero-New-Regular',
         ...textStyles,
         ...style,
       }}
@@ -30,7 +31,7 @@ export const LightText = ({ style, children, ...props }) => {
   return (
     <NativeText
       style={{
-        fontFamily: 'Avenir-Light',
+        fontFamily: 'Hero-New-Light',
         ...textStyles,
         ...style,
       }}
@@ -45,7 +46,7 @@ export const BoldText = ({ style, children, ...props }) => {
   return (
     <NativeText
       style={{
-        fontFamily: 'Avenir-Medium',
+        fontFamily: 'Hero-New-Regular',
         ...textStyles,
         ...style,
       }}
@@ -60,7 +61,8 @@ export const VeryBoldText = ({ style, children, ...props }) => {
   return (
     <NativeText
       style={{
-        fontFamily: 'Avenir-Bold',
+        fontFamily: 'Hero-New-Regular',
+        fontWeight: 'bold',
         ...textStyles,
         ...style,
       }}

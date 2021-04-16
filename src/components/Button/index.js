@@ -103,14 +103,15 @@ const styles = StyleSheet.create({
   defaultText: {
     color: '#ffffff',
     fontWeight: '600',
-    fontFamily: 'Hero-New-Regular-Italic',
+    fontFamily: 'Hero-New-Medium',
+    fontSize: 18,
   },
 });
 
 const smallStyles = StyleSheet.create({
   defaultBtnContainer: {
     width: '100%',
-    height: 40,
+    height: 50,
     marginTop: 15,
     borderRadius: 25,
   },
@@ -120,7 +121,7 @@ const smallStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    borderRadius: 20,
+    borderRadius: 25,
     backgroundColor: 'green',
   },
   defaultText: { color: '#ffffff', fontWeight: '600' },

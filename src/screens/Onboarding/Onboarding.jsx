@@ -10,10 +10,11 @@ const { colors } = constants
 const OnboardingLayout = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         <ScrollView>
+
           <View style={{ height: 335 }}>
-            <Swiper controlsEnabled={false} loop={false} activeDotStyle={{backgroundColor: 'white'}}>
+            <Swiper controlsEnabled={false} loop={false} dotStyle={{backgroundColor:'rgba(225,225,225,.2)', marginLeft: 12, marginRight: 12, width: 14, height: 14, borderRadius: 14}} activeDotStyle={{backgroundColor: 'white', width: 14, height: 14, borderRadius: 14}}>
               <View style={[styles.slideContainer, styles.slide1]}>
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
@@ -70,13 +71,13 @@ const OnboardingLayout = ({ navigation }) => {
               </View>
             </Swiper>
           </View>
-          <View style={{ padding: 20 }}>
+          <View style={{ paddingLeft: 20, paddingRight: 20, backgroundColor: '#ffffff'}}>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Logo
                 source={growthLogo}
                 logoStyles={{
-                  marginTop: '10%',
-                  marginBottom: '10%',
+                  marginTop: 10,
+                  marginBottom: 0,
                   display: 'flex',
                   justifyContent: 'center',
                   width: '80%',
@@ -84,7 +85,8 @@ const OnboardingLayout = ({ navigation }) => {
                 }}
               />
             </View>
-            <Text style={{ textAlign: 'center', fontSize: 20, paddingTop: 15, paddingLeft: 30, paddingRight: 30 }}>
+            <Text style={{ textAlign: 'center', fontSize: 22, paddingTop: 15, paddingLeft: 30, paddingRight: 30, 
+            marginLeft: 'auto', marginRight: 'auto', marginBottom: 10, fontFamily: 'Hero-New-Light', maxWidth: 350 }}>
               Choose your subscription plan below to start your{' '}
             </Text>
             <Text
@@ -92,6 +94,7 @@ const OnboardingLayout = ({ navigation }) => {
                 textAlign: 'center',
                 fontSize: 25,
                 color: colors.green,
+                fontFamily: 'Hero-New-Medium',
                 fontWeight: 'bold',
                 paddingBottom: 50
               }}
@@ -103,20 +106,26 @@ const OnboardingLayout = ({ navigation }) => {
               <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
-                  style={[styles.general, styles.space]}
+                  style={[styles.general, styles.spaceReduced]}
                 >
-                  <Text style={[styles.trialText]}>
-                    30 day free trial £2.99 per month
+                  <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20, fontWeight: 'bold'}}>
+                  30 day free trial
+                </Text>
+                  <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20,}}>
+                    £2.99 per month
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
-                  style={[styles.general, styles.space]}
+                  style={[styles.general, styles.spaceReduced]}
                 >
-                  <Text style={[styles.trialText]}>
-                    30 day free trial £29.99 per year
+                <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20, fontWeight: 'bold'}}>
+                  30 day free trial
+                </Text>
+                  <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20,}}>
+                    £29.99 per year
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -125,22 +134,29 @@ const OnboardingLayout = ({ navigation }) => {
             <Text
               style={{
                 textAlign: 'right',
-                color: colors.green,
+                color: '#668D00',
                 fontWeight: 'bold',
                 paddingRight: 15,
-                paddingTop: 10
+                paddingTop: 10,
+                fontFamily: 'Hero-New-Medium',
+                fontWeight: 'bold',
+                fontSize: 16,
               }}
             >
               Save £5.89 (17%)
             </Text>
 
-            <View></View>
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: 13,
-                marginTop: 70,
+                fontSize: 14,
+                marginTop: 20,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                maxWidth: 300,
                 justifyContent: 'center',
+                display: 'flex',
+                fontFamily: 'Hero-New-Light',
               }}
             >
               Subscription automatically renews after the 30 day free trial. You
@@ -185,14 +201,15 @@ const styles = StyleSheet.create({
     fontSize: 42,
     fontWeight: '100',
     color: '#FFFFFF',
-    marginTop: 70,
+    marginTop: 50,
   },
   screenDescription: {
     textAlign: 'center',
     paddingHorizontal: 30,
     fontSize: 18,
     color: '#FFFFFF',
-    marginTop: 30,
+    marginTop: 20,
+    fontFamily: 'Hero-New-Medium',
   },
 
   general: {
@@ -207,13 +224,19 @@ const styles = StyleSheet.create({
   space: {
     padding: 20,
   },
+  spaceReduced: {
+    paddingTop: 10,
+    paddingLeft: 1,
+    paddingRight: 1,
+    paddingBottom: 10,
+  },
   TrialContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   trial: {
     width: '48%',
-    height: 80,
+    height: 75,
     borderTopLeftRadius: 7,
     borderTopRightRadius: 7,
     borderBottomLeftRadius: 7,

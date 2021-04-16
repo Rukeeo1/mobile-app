@@ -27,7 +27,6 @@ const Input = ({
         style={{ ...styles.input, textAlign: `${isCenter ? 'center' : 'left'}`, ...inputStyle }}
         value={value}
         onChangeText={onChangeText}
-        placeholderTextColor={`${placeholderText || 'default'}`}
         onBlur={onBlur}
         {...props}
       />

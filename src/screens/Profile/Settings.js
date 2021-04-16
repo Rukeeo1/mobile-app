@@ -209,9 +209,12 @@ const styles = StyleSheet.create({
   },
   labelText: {
     color: constants.colors.blueLigth,
+    fontFamily: 'Hero-New-Regular',
   },
   input: {
     marginTop: '8%',
+    marginLeft: 0,
+    paddingLeft: 0,
   },
   button: {
     marginTop: '10%',
