@@ -8,22 +8,22 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu';
+import Menu, { MenuItem } from 'react-native-material-menu';
 
-import { GradientButton, Input } from '../../components/';
+import { GradientButton } from '../../components/';
 
 import constants from '../../constants';
 
-const { colors, months, screenWidth } = constants;
+const { colors, screenWidth } = constants;
 
-export const FilterItemDropDown = () => {
+export const FilterItemDropDown = ({ items, activeItem, onSelect }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [showDropDownItems] = useState(false);
   const [menuToGrowButtonStyle, setMenuToGrowButtonStyle] = useState({
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
   });
-  const [selectedItems, setSelectedItems] = useState('');
+  const [selectedItems, setSelectedItems] = useState(activeItem);
 
   let _menu = null;
 
@@ -38,7 +38,6 @@ export const FilterItemDropDown = () => {
       borderBottomLeftRadius: 25,
       borderBottomRightRadius: 25,
     });
-
   };
 
   let showMenu = () => {
@@ -56,14 +55,15 @@ export const FilterItemDropDown = () => {
   const handleSelectedItem = (item) => {
     hideMenu();
     setSelectedItems(item);
+    onSelect(item);
   };
 
   return (
-    <View>
+    <View style={{ marginHorizontal: 10 }}>
       {!showDropDown && (
         <GradientButton
           gradient={[colors.red, colors.redDeep]}
-          title='Grow in February'
+          title={activeItem}
           onPress={() => setShowDropDown(!showDropDown)}
         />
       )}
@@ -117,7 +117,7 @@ export const FilterItemDropDown = () => {
                 backgroundColor: 'transparent',
               }}
             >
-              {months.map((month) => (
+              {items.map((month) => (
                 <MenuItem
                   style={{ marginLeft: screenWidth * 0.045, color: 'red' }}
                   key={month}

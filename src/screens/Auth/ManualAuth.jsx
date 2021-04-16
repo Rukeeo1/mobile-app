@@ -7,8 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity,
+
+  TouchableOpacity, View
 } from 'react-native'
 import * as Yup from 'yup'
 import growthLogo from '../../assets/growth_logo.png'
@@ -91,7 +91,7 @@ const ManualAuth = ({ navigation }) => {
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('Forgot-password')}
               >
-                <Text style={{ textAlign: 'center', marginTop: 25, fontFamily: 'Hero-New-Light' }}>
+                <Text style={{ textAlign: 'center', marginTop: 20, marginBottom: 32, fontSize: 14, fontFamily: 'Hero-New-Light' }}>
                   Forgotten Password?
                 </Text>
               </TouchableOpacity>
@@ -102,7 +102,6 @@ const ManualAuth = ({ navigation }) => {
             style={[
               {
                 width: '100%',
-                marginTop: 20,
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
                 overflow: 'hidden',
@@ -124,8 +123,6 @@ const ManualAuth = ({ navigation }) => {
                   textAlign: 'center',
                   marginTop: 40,
                   marginBottom: 10,
-                  fontFamily: 'Hero-New-Light',
-                  fontSize: 16,
                 }}
               >
                 Not got an account?
@@ -146,6 +143,7 @@ const ManualAuth = ({ navigation }) => {
                   color: colors.white,
                   fontWeight: 'bold',
                   textAlign: 'center',
+                  fontSize: 16
                 }}
                 onPress={() => navigation.goBack()}
               >
@@ -164,7 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingTop: Platform.OS === 'android' ? 25 : 0,
-    paddingBottom: 0,
+    paddingBottom: '5%',
   },
   scrollContainer: {
     alignItems: 'center',
@@ -175,7 +173,6 @@ const styles = StyleSheet.create({
   },
   labelText: {
     color: constants.colors.blueLigth,
-    fontFamily: 'Hero-New-Medium',
   },
   authContainer: {
     width: '85%',

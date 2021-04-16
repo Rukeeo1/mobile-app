@@ -5704,6 +5704,11 @@ react-native-material-menu@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-material-menu/-/react-native-material-menu-1.2.0.tgz#07fac14ccc6e1cd7b995016340efbfbddc6a7a58"
 
+react-native-material-menu@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-material-menu/-/react-native-material-menu-1.2.0.tgz#07fac14ccc6e1cd7b995016340efbfbddc6a7a58"
+  integrity sha512-1XbzJP8Uo09YjW0G8xuKcL2BD76BL/IYOq1KQuQ2yGMuwqBvfU/+AKvhvHWuckQK+bhcDSUgTWbH8qv1mRAX6w==
+
 react-native-modal@^11.5.3:
   version "11.7.0"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.7.0.tgz#6637d757eeac6eda85f7017a9dfdee0c0fe3a34c"
