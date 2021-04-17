@@ -1,74 +1,42 @@
-import React from 'react'
-import { Text as NativeText } from 'react-native'
+import React from 'react';
+import { Text as NativeText } from 'react-native';
 
-import { textColor } from '../../config/colors'
+import constants from '../../constants';
+
+const { colors } = constants;
+
+export const Text = ({ style, children, fontType, ...props }) => {
+  const getFontFamily = (type) => {
+    switch (type) {
+      case 'light':
+        return 'Hero-New-Light';
+      case 'bold':
+        return 'Hero-New-Bold';
+      default:
+        return 'Hero-New-Regular';
+    }
+  };
+
+  return (
+    <NativeText
+      style={{
+        fontFamily: getFontFamily(fontType),
+        ...textStyles,
+        ...style,
+      }}
+      {...props}
+    >
+      {children}
+    </NativeText>
+  );
+};
+
 
 const textStyles = {
   fontSize: 14,
   lineHeight: 14 * 1.5,
-  color: textColor,
-  fontFamily: 'Hero-New-Regular',
-}
+  color: colors.black,
+};
 
-const Text = ({ style, children, ...props }) => {
-  return (
-    <NativeText
-      style={{
-        fontFamily: 'Hero-New-Regular',
-        ...textStyles,
-        ...style,
-      }}
-      {...props}
-    >
-      {children}
-    </NativeText>
-  )
-}
 
-export default Text
-
-export const LightText = ({ style, children, ...props }) => {
-  return (
-    <NativeText
-      style={{
-        fontFamily: 'Hero-New-Light',
-        ...textStyles,
-        ...style,
-      }}
-      {...props}
-    >
-      {children}
-    </NativeText>
-  )
-}
-
-export const BoldText = ({ style, children, ...props }) => {
-  return (
-    <NativeText
-      style={{
-        fontFamily: 'Hero-New-Regular',
-        ...textStyles,
-        ...style,
-      }}
-      {...props}
-    >
-      {children}
-    </NativeText>
-  )
-}
-
-export const VeryBoldText = ({ style, children, ...props }) => {
-  return (
-    <NativeText
-      style={{
-        fontFamily: 'Hero-New-Regular',
-        fontWeight: 'bold',
-        ...textStyles,
-        ...style,
-      }}
-      {...props}
-    >
-      {children}
-    </NativeText>
-  )
-}
+export default Text;
