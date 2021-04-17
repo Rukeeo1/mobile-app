@@ -1,21 +1,20 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import { useFormik } from 'formik'
-import React from 'react'
+import { LinearGradient } from 'expo-linear-gradient';
+import { useFormik } from 'formik';
+import React from 'react';
 import {
   Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import * as Yup from 'yup';
+import growthLogo from '../../assets/growth_logo.png';
+import { GradientButton, Header, Input, Logo, Text  } from '../../components';
+import constants from '../../constants';
 
-  TouchableOpacity, View
-} from 'react-native'
-import * as Yup from 'yup'
-import growthLogo from '../../assets/growth_logo.png'
-import { GradientButton, Header, Input, Logo } from '../../components'
-import constants from '../../constants'
-
-const { colors } = constants
+const { colors } = constants;
 
 const ManualAuth = ({ navigation }) => {
   const LoginSchema = Yup.object().shape({
@@ -28,7 +27,7 @@ const ManualAuth = ({ navigation }) => {
       .required('Required')
       .min(6, 'Too Short!')
       .max(100, 'Too Long!'),
-  })
+  });
 
   const { handleChange, handleBlur, values, errors, handleSubmit } = useFormik({
     initialValues: {
@@ -42,11 +41,11 @@ const ManualAuth = ({ navigation }) => {
       // values.email === 'Testuser@tmail.com' && values.password === 'test01!';
       // if (valid) {
       // setTimeout(() => {
-      navigation.navigate('Onboarding')
+      navigation.navigate('Onboarding');
       // }, 500);
       // }
     },
-  })
+  });
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
@@ -61,22 +60,22 @@ const ManualAuth = ({ navigation }) => {
             <Input
               inputStyle={styles.inputStyle}
               labelStyle={styles.labelText}
-              labelText="Email"
+              labelText='Email'
               value={values.email}
               onBlur={handleBlur('email')}
               onChangeText={handleChange('email')}
-              placeholder="Enter your email"
+              placeholder='Enter your email'
               errorMessage={errors.email}
             />
             <Input
               containerStyle={styles.inputPasswordCont}
               inputStyle={styles.inputStyle}
               labelStyle={styles.labelText}
-              labelText="Password"
+              labelText='Password'
               value={values.password}
               onBlur={handleBlur('password')}
               onChangeText={handleChange('password')}
-              placeholder="Enter your password"
+              placeholder='Enter your password'
               secureTextEntry={true}
             />
 
@@ -91,7 +90,15 @@ const ManualAuth = ({ navigation }) => {
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('Forgot-password')}
               >
-                <Text style={{ textAlign: 'center', marginTop: 20, marginBottom: 32, fontSize: 14, fontFamily: 'Hero-New-Light' }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    marginTop: 20,
+                    marginBottom: 32,
+                    fontSize: 14,
+                    fontFamily: 'Hero-New-Light',
+                  }}
+                >
                   Forgotten Password?
                 </Text>
               </TouchableOpacity>
@@ -143,9 +150,10 @@ const ManualAuth = ({ navigation }) => {
                   color: colors.white,
                   fontWeight: 'bold',
                   textAlign: 'center',
-                  fontSize: 16
+                  fontSize: 16,
                 }}
                 onPress={() => navigation.goBack()}
+                fontType="bold"
               >
                 Cancel
               </Text>
@@ -154,8 +162,8 @@ const ManualAuth = ({ navigation }) => {
         </SafeAreaView>
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -194,6 +202,6 @@ const styles = StyleSheet.create({
     borderBottomColor: constants.colors.greyLight,
     paddingBottom: '2%',
   },
-})
+});
 
-export default ManualAuth
+export default ManualAuth;

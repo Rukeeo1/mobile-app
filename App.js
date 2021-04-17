@@ -18,6 +18,8 @@ const customFonts = {
   'Hero-New-Light': require('./src/assets/fonts/Hero-New-Light.otf'),
   'Hero-New-Thin': require('./src/assets/fonts/Hero-New-Thin.otf'),
   'Hero-New-Light-Italic': require('./src/assets/fonts/Hero-New-Light-Italic.otf'),
+  'Hero-New-Bold-Italic': require('./src/assets/fonts/Hero-New-Bold-Italic.otf'),
+  'Hero-New-Bold': require('./src/assets/fonts/Hero-New-Bold.otf'),
 };
 
 export default function App() {
