@@ -1,16 +1,19 @@
 import React from 'react';
 import {
-  Text,
   StyleSheet,
   SafeAreaView,
   View,
   TouchableOpacity,
+  Dimensions,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { GradientButton as Button } from '../../components';
+import { GradientButton as Button, Text } from '../../components';
+
+import manageCropsIcons from '../../assets/managecrops.png';
+
 import constants from '../../constants';
-import { Dimensions } from 'react-native';
 
 const { colors } = constants;
 
@@ -21,9 +24,13 @@ const EndHarvestWarning = ({ navigation }) => {
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
       >
-        <Text style={styles.title}>End Harvest</Text>
-        <Text style={styles.question}>Are you sure?</Text>
-        <Text style={styles.warning}>
+        <Text style={styles.title} fontType='bold'>
+          End Harvest
+        </Text>
+        <Text style={styles.question} fontType='light'>
+          Are you sure?
+        </Text>
+        <Text style={styles.warning} fontType='bold'>
           You can’t undo this action. Once harvest has ended you can’t make any
           edits to this crop.
         </Text>
@@ -36,12 +43,17 @@ const EndHarvestWarning = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.goBack('End-Harvest-Schedule')}
         >
-          <Text style={styles.optOut}>
+          <Text style={styles.optOut} fontType='bold'>
             No that was a mistake. Take me back!
           </Text>
         </TouchableOpacity>
         <View style={styles.toolTip}>
-          <Text style={styles.toolTipTitle}>Don’t forget!</Text>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Image source={manageCropsIcons} />
+          </View>
+          <Text style={styles.toolTipTitle} fontType='bold'>
+            Don’t forget!
+          </Text>
           <Text style={styles.toolTipTitleContent}>
             You can view this crop even once finished in the manage crops area.
           </Text>
@@ -67,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: '10%',
     color: colors.white,
     fontSize: 30,
-    fontWeight: '100',
+    fontWeight: 'normal',
     textAlign: 'center',
   },
   warning: {
@@ -81,6 +93,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginTop: '10%',
     fontSize: 16,
+    textDecorationLine: 'underline',
   },
   toolTip: {
     marginTop: '10%',
@@ -96,11 +109,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.green,
     fontWeight: 'bold',
+    marginTop: '3%'
   },
   toolTipTitleContent: {
     textAlign: 'center',
     fontSize: 16,
-    marginTop: '5%',
+    marginTop: '2%',
     fontWeight: '200',
   },
 });
