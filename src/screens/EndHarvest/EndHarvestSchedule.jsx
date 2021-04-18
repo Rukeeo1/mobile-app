@@ -3,12 +3,17 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { GradientButton as Button } from '../../components';
+import { GrowCropCalender } from '../GrowCrop/GrowCropCalendar';
 
 import constants from '../../constants';
 
 const { colors } = constants;
 
-const EndHarvestSchedule = ({navigation}) => {
+const EndHarvestSchedule = ({ navigation }) => {
+  const handleNavigation = (destination, params) => () => {
+    navigation.navigate(destination, params);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -22,13 +27,24 @@ const EndHarvestSchedule = ({navigation}) => {
         <Text style={styles.suggest}>
           Suggested date is predicted from this harvest
         </Text>
+        <GrowCropCalender
+          activeItemsContainerStyle={{ top: '80%' }}
+          calenderWrapperStyle={{ width: '95%' }}
+          textColor={colors.white}
+        />
 
         <Button
           title='Schedule it'
           coverStyle={{ marginTop: '10%' }}
           gradient={[colors.pink, colors.pinkDeep]}
+          onPress={handleNavigation('Settings', {
+            screen: 'Main-Profile',
+            params: {
+              indexOfItemToShow: 5,
+            },
+          })}
         />
-        <TouchableOpacity onPress={()  => navigation.navigate('Grow-Crop')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Grow-Crop')}>
           <Text style={styles.optOut}>Later</Text>
         </TouchableOpacity>
       </LinearGradient>
