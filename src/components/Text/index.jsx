@@ -12,6 +12,8 @@ export const Text = ({ style, children, fontType, ...props }) => {
         return 'Hero-New-Light';
       case 'bold':
         return 'Hero-New-Bold';
+      case 'italic':
+        return 'Hero-New-Regular-Italic';
       default:
         return 'Hero-New-Regular';
     }
@@ -31,12 +33,10 @@ export const Text = ({ style, children, fontType, ...props }) => {
   );
 };
 
-
 const textStyles = {
   fontSize: 14,
-  lineHeight: 14 * 1.5,
+  // lineHeight: 14 * 1.5,
   color: colors.black,
 };
-
 
 export default Text;

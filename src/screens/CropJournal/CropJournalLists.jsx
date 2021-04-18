@@ -1,6 +1,6 @@
-import { AntDesign } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import { AntDesign } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -9,34 +9,21 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native'
-import globe from '../../assets/globe.png'
-import { SafeArea } from '../../components'
-import constants from '../../constants'
-import ModalSheet from './ModalSheet'
-import DeleteModal from './DeleteModal'
+} from 'react-native';
+import globe from '../../assets/globe.png';
+import { SafeArea } from '../../components';
+import constants from '../../constants';
+import ModalSheet from './ModalSheet';
+import DeleteModal from './DeleteModal';
 
-const { colors } = constants
+const { colors } = constants;
 
 const CropJournalLists = ({ navigation }) => {
   return (
     <SafeArea>
-      <TouchableOpacity
-        style={{
-          backgroundColor: colors.white,
-          height: 60,
-          width: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 30,
-          bottom: 85,
-          left: 20,
-          position: 'absolute',
-          zIndex: 423,
-        }}
-      >
+      <TouchableOpacity style={styles.plusButtonContainer}>
         <AntDesign
-          name="plus"
+          name='plus'
           size={24}
           color={colors.blue}
           onPress={() => navigation.navigate('Create-Journal')}
@@ -77,24 +64,24 @@ const CropJournalLists = ({ navigation }) => {
           }}
         >
           <AntDesign
-            name="left"
+            name='left'
             size={24}
             color={colors.white}
             style={{ marginTop: 30, marginLeft: 0 }}
             onPress={() => navigation.goBack()}
           />
         </View>
-        {/* </View> */}
+
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <JournalCard uri="https://images.pexels.com/photos/1030913/pexels-photo-1030913.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
-          <JournalCard uri="https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
-          <JournalCard uri="https://images.pexels.com/photos/4503732/pexels-photo-4503732.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+          <JournalCard uri='https://images.pexels.com/photos/1030913/pexels-photo-1030913.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
+          <JournalCard uri='https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
+          <JournalCard uri='https://images.pexels.com/photos/4503732/pexels-photo-4503732.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
           <View style={{ height: 50, backgroundColor: colors.white }} />
         </ScrollView>
       </LinearGradient>
     </SafeArea>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -108,25 +95,36 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     width: Dimensions.get('screen').width * 0.8,
     paddingBottom: 50,
-    overflow: 'visible',
   },
-})
+  plusButtonContainer: {
+    backgroundColor: colors.white,
+    height: 60,
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    bottom: 85,
+    left: 20,
+    position: 'absolute',
+    zIndex: 423,
+  },
+});
 
 const JournalCard = ({ uri }) => {
-  const [show, setShow] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
+  const [show, setShow] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const open = () => {
-    setShow(false)
-  }
+    setShow(false);
+  };
 
   const opeDeletModal = () => {
     setDeleteModal(false);
-  }
+  };
 
   const openDelete = () => {
     setShow(false);
-    setDeleteModal(true)
-  }
+    setDeleteModal(true);
+  };
 
   return (
     <View style={{ marginVertical: 10 }}>
@@ -160,7 +158,7 @@ const JournalCard = ({ uri }) => {
           23 July 2020
         </Text>
         <TouchableOpacity activeOpacity={0.8} onPress={() => setShow(!show)}>
-          <AntDesign name="ellipsis1" size={24} color={'#9B9B9B'} />
+          <AntDesign name='ellipsis1' size={24} color={'#9B9B9B'} />
         </TouchableOpacity>
       </View>
       <View
@@ -180,10 +178,14 @@ const JournalCard = ({ uri }) => {
           Tomatoes - ‘Sungold’
         </Text>
       </View>
-      <ModalSheet showBottomSheet={show} onClose={open} showDelete={openDelete}></ModalSheet>
+      <ModalSheet
+        showBottomSheet={show}
+        onClose={open}
+        showDelete={openDelete}
+      ></ModalSheet>
       <DeleteModal showBottomSheet={deleteModal} onClose={opeDeletModal} />
     </View>
-  )
-}
+  );
+};
 
-export default CropJournalLists
+export default CropJournalLists;
