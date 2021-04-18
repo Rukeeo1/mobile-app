@@ -1,25 +1,22 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import {
-  Image, SafeAreaView,
-
-
-
-
-
-  ScrollView, StyleSheet,
-
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
   Switch,
-  Text, TouchableOpacity, View
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFormik } from 'formik';
+import * as ImagePicker from 'expo-image-picker';
 import * as Yup from 'yup';
+
 import { GradientButton as Button, Header, Input } from '../../components/';
+
 import constants from '../../constants/';
-
-
-
 
 const { colors } = constants;
 
