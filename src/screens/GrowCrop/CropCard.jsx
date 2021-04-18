@@ -360,6 +360,8 @@ const CropCard = ({ navigation }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   flexWrap: 'wrap',
+                  elevation: 0,
+                  shadowOpacity: 0,
                 }}
                 childrenWrapperStyle={{ width: '80%' }}
                 backgroundColor='transparent'
