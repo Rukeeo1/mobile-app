@@ -1,12 +1,12 @@
 import React from 'react';
 import SmoothPicker from 'react-native-smooth-picker';
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text } from '../../components';
+
 import constants from '../../constants';
 
 const { colors } = constants;
-
-
 
 const opacities = {
   0: 1,
@@ -14,7 +14,6 @@ const opacities = {
   2: 0,
   3: 0,
   4: 0,
-
 };
 const sizeText = {
   0: 16,
@@ -30,6 +29,8 @@ const Item = React.memo(
     fontSize,
     name,
     activeItemContainerStyle = {},
+    textColor = colors.black,
+    activeTextColor = colors.pink,
   }) => {
     return (
       <View
@@ -40,12 +41,14 @@ const Item = React.memo(
             opacity,
             borderColor: selected ? 'grey' : 'transparent',
             backgroundColor: 'transparent',
-
-            width: vertical ? 'auto' : 'auto', // bad...left it like this for now...would fix
+            width: 'auto',
           },
         ]}
       >
-        <Text style={{ fontSize, color: selected ? colors.pink : 'black' }}>
+        <Text
+          style={{ fontSize, color: selected ? activeTextColor : textColor }}
+          fontType={selected ? 'bold' : 'thin'}
+        >
           {name}
         </Text>
       </View>
@@ -57,7 +60,9 @@ const ItemToRender = (
   { item, index },
   indexSelected,
   vertical,
-  activeItemContainerStyle
+  activeItemContainerStyle,
+  activeTextColor,
+  textColor
 ) => {
   const selected = index === indexSelected;
   const gap = Math.abs(index - indexSelected);
@@ -80,6 +85,7 @@ const ItemToRender = (
       name={item}
       index={indexSelected}
       activeItemContainerStyle={activeItemContainerStyle}
+      textColor={textColor}
     />
   );
 };
@@ -88,6 +94,8 @@ export const GrowCalendar = ({
   data,
   activeItemContainerStyle,
   onSelectItem,
+  activeTextColor,
+  textColor,
 }) => {
   const [selected, setSelected] = React.useState(4);
 
@@ -107,7 +115,14 @@ export const GrowCalendar = ({
           scrollAnimation
           onSelected={({ item, index }) => handleChange(index, item)}
           renderItem={(option) =>
-            ItemToRender(option, selected, true, activeItemContainerStyle)
+            ItemToRender(
+              option,
+              selected,
+              true,
+              activeItemContainerStyle,
+              activeTextColor,
+              textColor
+            )
           }
           magnet
           selectOnPress

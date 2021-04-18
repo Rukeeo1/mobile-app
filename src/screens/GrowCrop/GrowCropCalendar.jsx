@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 import { GrowCalendar } from '../../components';
@@ -30,7 +30,8 @@ const years = new Array(new Date().getFullYear() - start + 1)
   .map((_, i) => {
     const value = start + i;
     return value;
-  }).reverse()
+  })
+  .reverse();
 
 const days = [
   1,
@@ -66,77 +67,75 @@ const days = [
 ];
 
 export const GrowCropCalender = ({
-  handleDate,
-  handleMonth,
-  handleYear,
+  handleDate = () => {},
+  handleMonth = () => {},
+  handleYear = () => {},
   setSelectedDateItems,
+  activeItemsContainerStyle = {},
+  calenderWrapperStyle = {},
+  textColor,
+  renderIcon = () => {},
 }) => {
+  const confirmCallback = () => {
+    setSelectedDateItems?.();
+  };
+
   return (
-    <View style={{ flexDirection: 'row', height: 200, alignItems: 'center'}}>
-      <View
-        style={{
-          marginTop: 32,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          width: '85%',
-        }}
-      >
+    <View style={{ flexDirection: 'row', height: 200, alignItems: 'center' }}>
+      <View style={[styles.calenderWrapper, calenderWrapperStyle]}>
         <View
-          style={{
-            height: 50,
-            width: 50,
-            position: 'absolute',
-            backgroundColor: colors.white,
-            width: '90%',
-            top: '83.5%',
-            borderTopLeftRadius: 45,
-            borderTopRightRadius: 45,
-            borderBottomLeftRadius: 45,
-            borderBottomRightRadius: 45,
-            shadowColor: 'grey',
-            shadowOffset: {
-              width: 0.5,
-              height: 0.4,
-            },
-            shadowOpacity: 0.3,
-            shadowRadius: 4,
-            elevation: 15,
-          }}
+          style={[styles.activeItemsIndicator, activeItemsContainerStyle]}
         />
-        <GrowCalendar type='days' data={days} onSelectItem={handleDate} />
+        <GrowCalendar
+          type='days'
+          data={days}
+          onSelectItem={handleDate}
+          textColor={textColor}
+        />
         <GrowCalendar
           type='month'
           data={monthsForCalender}
           onSelectItem={handleMonth}
+          textColor={textColor}
         />
-        <GrowCalendar type='years' data={years} onSelectItem={handleYear} />
+        <GrowCalendar
+          type='years'
+          data={years}
+          onSelectItem={handleYear}
+          textColor={textColor}
+        />
       </View>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          flex: '1',
-          paddingHorizontal: '5%',
-          marginRight: 20,
-          marginTop:'2%'
-        }}
-      >
-        <TouchableOpacity
-          onPress={setSelectedDateItems}
-          style={{
-            height: 50,
-            width: 50,
-            borderRadius: 25,
-            backgroundColor: colors.pink,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <AntDesign name='right' size={29} color={colors.white} />
-        </TouchableOpacity>
-      </View>
+      {renderIcon(confirmCallback)}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  calenderWrapper: {
+    marginTop: 32,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '85%',
+  },
+  activeItemsIndicator: {
+    height: 50,
+    position: 'absolute',
+    backgroundColor: colors.white,
+    width: '90%',
+    top: '83.5%',
+    borderTopLeftRadius: 45,
+    borderTopRightRadius: 45,
+    borderBottomLeftRadius: 45,
+    borderBottomRightRadius: 45,
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0.5,
+      height: 0.4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 15,
+  },
+});
 
 export default GrowCropCalender;

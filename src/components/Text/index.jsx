@@ -14,6 +14,8 @@ export const Text = ({ style, children, fontType, ...props }) => {
         return 'Hero-New-Bold';
       case 'italic':
         return 'Hero-New-Regular-Italic';
+      case 'thin':
+        return 'Hero-New-Thin';
       default:
         return 'Hero-New-Regular';
     }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { View, TouchableOpacity } from 'react-native';
+import { Feather, AntDesign } from '@expo/vector-icons';
 
-import { GradientButton as Button } from '../../components';
+import { GradientButton as Button, Text } from '../../components';
 
 import { GrowCropCalender } from './GrowCropCalendar';
 
@@ -10,7 +10,7 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-export const SowItContainer = ({ buttonTitle }) => {
+export const SowItContainer = ({ buttonTitle, tip }) => {
   const [showSowItButton, setShowSowItButton] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   const [showFullSelectedDate, setShowFullSelectedDate] = useState(false);
@@ -18,6 +18,35 @@ export const SowItContainer = ({ buttonTitle }) => {
   const [selectedDate, setSelectedDate] = useState('18');
   const [selectedMonth, setSelectedMonth] = useState('February');
   const [selectedYear, setSelectedYear] = useState('2021');
+
+  const renderConfirmIcon = (callBack) => {
+    return (
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: '1',
+          paddingHorizontal: '5%',
+          marginRight: 20,
+          marginTop: '2%',
+        }}
+      >
+        <TouchableOpacity
+          onPress={callBack}
+          style={{
+            height: 50,
+            width: 50,
+            borderRadius: 25,
+            backgroundColor: colors.pink,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <AntDesign name='right' size={29} color={colors.white} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View>
@@ -34,6 +63,12 @@ export const SowItContainer = ({ buttonTitle }) => {
       )}
       {showCalender && (
         <View style={{ marginVertical: 10 }}>
+          <Text
+            fontType='bold'
+            style={{ backgroundColor: colors.white, marginTop: 5 }}
+          >
+            {tip}
+          </Text>
           <GrowCropCalender
             handleDate={setSelectedDate}
             handleMonth={setSelectedMonth}
@@ -43,6 +78,7 @@ export const SowItContainer = ({ buttonTitle }) => {
               setShowSowItButton(false);
               setShowFullSelectedDate(true);
             }}
+            renderIcon={renderConfirmIcon}
           />
         </View>
       )}
@@ -65,7 +101,7 @@ export const SowItContainer = ({ buttonTitle }) => {
               borderBottomRightRadius: 45,
               backgroundColor: 'white',
               width: '80%',
-              height: 60,
+              // height: 60,
               shadowColor: 'grey',
               shadowOffset: {
                 width: 0.5,
@@ -74,7 +110,8 @@ export const SowItContainer = ({ buttonTitle }) => {
               shadowOpacity: 0.3,
               shadowRadius: 4,
               elevation: 15,
-              paddingVertical: '5%',
+              // paddingVertical: '5%',
+              paddingVertical: '3%',
             }}
           >
             <Text>Reminder to sow</Text>

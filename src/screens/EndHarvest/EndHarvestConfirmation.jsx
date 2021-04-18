@@ -1,30 +1,49 @@
 import React from 'react';
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { GradientButton as Button } from '../../components';
+import { GradientButton as Button, Text } from '../../components';
+import { GrowCropCalender } from '../GrowCrop/GrowCropCalendar';
+
 import constants from '../../constants';
 
 const { colors } = constants;
 
 const EndHarvestConfirmation = ({ navigation }) => {
+  const handleNavigation = (destination, params) => () => {
+    navigation.navigate(destination, params);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
       >
-        <Text style={styles.title}>End Harvest</Text>
-        <Text style={styles.question}>Do you want to grow this again?</Text>
-
+        <Text style={styles.title} fontType='bold'>
+          End Harvest
+        </Text>
+        <Text style={styles.question} fontType='thin'>
+          Do you want to grow this again?
+        </Text>
+       
         <Button
           title='YES!'
           coverStyle={{ marginTop: '10%' }}
           gradient={[colors.pink, colors.pinkDeep]}
-          onPress={() => navigation.navigate('End-Harvest-Schedule')}
+          onPress={handleNavigation('End-Harvest-Schedule')}
         />
-        <TouchableOpacity>
-          <Text style={styles.optOut}>No thanks</Text>
+        <TouchableOpacity
+          onPress={handleNavigation('Settings', {
+            screen: 'Main-Profile',
+            params: {
+              indexOfItemToShow: 5,
+            },
+          })}
+        >
+          <Text style={styles.optOut} fontType='bold'>
+            No thanks
+          </Text>
         </TouchableOpacity>
       </LinearGradient>
     </SafeAreaView>

@@ -155,6 +155,35 @@ const CropCard = ({ navigation }) => {
     </>
   );
 
+  const renderCalenderConfirmIcon = (setSelectedDateItems) => {
+    return (
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: '1',
+          paddingHorizontal: '5%',
+          marginRight: 20,
+          marginTop: '2%',
+        }}
+      >
+        <TouchableOpacity
+          onPress={setSelectedDateItems}
+          style={{
+            height: 50,
+            width: 50,
+            borderRadius: 25,
+            backgroundColor: colors.pink,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <AntDesign name='right' size={29} color={colors.white} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <SafeArea containerStyle={{ flex: 1 }}>
       {!showSideMenu && (
@@ -216,9 +245,32 @@ const CropCard = ({ navigation }) => {
           </View>
         </LinearGradient>
         <View style={{ paddingHorizontal: '5%' }}>
-          {activeScreen === 0 && <SowItContainer buttonTitle='Sow It!' />}
-          {activeScreen === 1 && <SowItContainer buttonTitle='Plant It!' />}
+          {activeScreen === 0 && (
+            <SowItContainer
+              buttonTitle='Sow It!'
+              renderIcon={(itemToConfirm) =>
+                renderCalenderConfirmIcon(itemToConfirm)
+              }
+              tip='Enter the date you plan to sow your seeds'
+            />
+          )}
+          {activeScreen === 1 && (
+            <SowItContainer
+              buttonTitle='Plant It!'
+              tip='When do you want to plant?'
+              renderIcon={(itemToConfirm) =>
+                renderCalenderConfirmIcon(itemToConfirm)
+              }
+            />
+          )}
           {activeScreen === 2 && (
+            // <SowItContainer
+            //   buttonTitle='Harvest it!'
+            //   tip='Enter the date harvest started'
+            //   renderIcon={(itemToConfirm) =>
+            //     renderCalenderConfirmIcon(itemToConfirm)
+            //   }
+            // />
             <Button
               title='End Harvest'
               gradient={[colors.pink, colors.pinkDeep]}
@@ -308,6 +360,8 @@ const CropCard = ({ navigation }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   flexWrap: 'wrap',
+                  elevation: 0,
+                  shadowOpacity: 0,
                 }}
                 childrenWrapperStyle={{ width: '80%' }}
                 backgroundColor='transparent'
