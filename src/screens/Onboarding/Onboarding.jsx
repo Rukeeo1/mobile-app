@@ -1,20 +1,48 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Swiper from 'react-native-swiper'
-import growthLogo from '../../assets/growth_logo.png'
-import { Logo } from '../../components'
-import constants from '../../constants'
+import React from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Swiper from 'react-native-swiper';
 
-const { colors } = constants
+import growthLogo from '../../assets/growth_logo.png';
+import { Logo } from '../../components';
+import constants from '../../constants';
+
+const { colors } = constants;
+
 const OnboardingLayout = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView>
         <ScrollView>
-
           <View style={{ height: 335 }}>
-            <Swiper controlsEnabled={false} loop={false} dotStyle={{backgroundColor:'rgba(225,225,225,.2)', marginLeft: 12, marginRight: 12, width: 14, height: 14, borderRadius: 14}} activeDotStyle={{backgroundColor: 'white', width: 14, height: 14, borderRadius: 14}}>
+            <Swiper
+              controlsEnabled={false}
+              loop={false}
+              activeDotStyle={{ backgroundColor: 'white' }}
+              controlsEnabled={false}
+              loop={false}
+              dotStyle={{
+                backgroundColor: 'rgba(225,225,225,.2)',
+                marginLeft: 12,
+                marginRight: 12,
+                width: 14,
+                height: 14,
+                borderRadius: 14,
+              }}
+              activeDotStyle={{
+                backgroundColor: 'white',
+                width: 14,
+                height: 14,
+                borderRadius: 14,
+              }}
+            >
               <View style={[styles.slideContainer, styles.slide1]}>
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
@@ -32,8 +60,6 @@ const OnboardingLayout = ({ navigation }) => {
                   colors={[colors.purshBlue, colors.purshBlueDeep]}
                   style={[styles.general]}
                 >
-                  
-
                   <Text style={[styles.screenTitle]}>Explore</Text>
                   <Text style={[styles.screenDescription]}>
                     A community where you can share your successes and failures,
@@ -47,13 +73,12 @@ const OnboardingLayout = ({ navigation }) => {
                   colors={[colors.green, colors.greenDeep]}
                   style={[styles.general]}
                 >
-                 <Text style={[styles.screenTitle]}>Guided Growing</Text>
+                  <Text style={[styles.screenTitle]}>Guided Growing</Text>
                   <Text style={[styles.screenDescription]}>
                     Never feel overwhelmed! We are here to prove that gardening
                     truly is for everyone. We have beginner crops and guides to
                     help you every step of the way.
                   </Text>
-
                 </LinearGradient>
               </View>
               <View style={[styles.slideContainer, styles.slide4]}>
@@ -61,7 +86,6 @@ const OnboardingLayout = ({ navigation }) => {
                   colors={[colors.pink, colors.pinkDeep]}
                   style={[styles.general, styles.space]}
                 >
-                 
                   <Text style={[styles.screenTitle]}>Manage Crops</Text>
                   <Text style={[styles.screenDescription]}>
                     See at a glance everything you are growing and where they
@@ -71,13 +95,13 @@ const OnboardingLayout = ({ navigation }) => {
               </View>
             </Swiper>
           </View>
-          <View style={{ paddingLeft: 20, paddingRight: 20, backgroundColor: '#ffffff'}}>
+          <View style={{ padding: 20 }}>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Logo
                 source={growthLogo}
                 logoStyles={{
-                  marginTop: 10,
-                  marginBottom: 0,
+                  marginTop: '10%',
+                  marginBottom: '10%',
                   display: 'flex',
                   justifyContent: 'center',
                   width: '80%',
@@ -85,47 +109,57 @@ const OnboardingLayout = ({ navigation }) => {
                 }}
               />
             </View>
-            <Text style={{ textAlign: 'center', fontSize: 22, paddingTop: 15, paddingLeft: 30, paddingRight: 30, 
-            marginLeft: 'auto', marginRight: 'auto', marginBottom: 10, fontFamily: 'Hero-New-Light', maxWidth: 350 }}>
-              Choose your subscription plan below to start your{' '}
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 22,
+                fontWeight: '300',
+                paddingTop: 15,
+                paddingLeft: 30,
+                paddingRight: 30,
+                lineHeight: 31,
+              }}
+            >
+              Choose your subscription plan below to start your
             </Text>
             <Text
               style={{
                 textAlign: 'center',
                 fontSize: 25,
                 color: colors.green,
-                fontFamily: 'Hero-New-Medium',
-                fontWeight: 'bold',
-                paddingBottom: 50
+                fontWeight: '500',
+                paddingBottom: 50,
               }}
             >
               30 day FREE trial
             </Text>
 
             <View style={[styles.TrialContainer]}>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.trial]}
+                onPress={() => navigation.navigate('Splash')}
+              >
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
-                  style={[styles.general, styles.spaceReduced]}
+                  style={[styles.general, styles.space]}
                 >
-                  <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20, fontWeight: 'bold'}}>
-                  30 day free trial
-                </Text>
-                  <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20,}}>
-                    £2.99 per month
+                  <Text style={[styles.trialText]}>
+                    30 day free trial £2.99 per month
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.9} style={[styles.trial]} onPress={() =>navigation.navigate("Splash") }>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.trial]}
+                onPress={() => navigation.navigate('Splash')}
+              >
                 <LinearGradient
                   colors={[colors.green, colors.greenDeep]}
-                  style={[styles.general, styles.spaceReduced]}
+                  style={[styles.general, styles.space]}
                 >
-                <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20, fontWeight: 'bold'}}>
-                  30 day free trial
-                </Text>
-                  <Text style={{fontFamily: 'Hero-New-Medium', color: '#ffffff', fontSize: 20,}}>
-                    £29.99 per year
+                  <Text style={[styles.trialText]}>
+                    30 day free trial £29.99 per year
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -134,29 +168,25 @@ const OnboardingLayout = ({ navigation }) => {
             <Text
               style={{
                 textAlign: 'right',
-                color: '#668D00',
+                color: colors.green,
                 fontWeight: 'bold',
                 paddingRight: 15,
-                paddingTop: 10,
-                fontFamily: 'Hero-New-Medium',
-                fontWeight: 'bold',
+                paddingTop: 8,
                 fontSize: 16,
+                lineHeight: 23,
               }}
             >
               Save £5.89 (17%)
             </Text>
 
+            <View></View>
             <Text
               style={{
                 textAlign: 'center',
                 fontSize: 14,
-                marginTop: 20,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                maxWidth: 300,
+                lineHeight: 20,
+                marginTop: 70,
                 justifyContent: 'center',
-                display: 'flex',
-                fontFamily: 'Hero-New-Light',
               }}
             >
               Subscription automatically renews after the 30 day free trial. You
@@ -166,8 +196,8 @@ const OnboardingLayout = ({ navigation }) => {
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -201,15 +231,15 @@ const styles = StyleSheet.create({
     fontSize: 42,
     fontWeight: '100',
     color: '#FFFFFF',
-    marginTop: 50,
+    marginTop: 70,
   },
   screenDescription: {
     textAlign: 'center',
     paddingHorizontal: 30,
     fontSize: 18,
     color: '#FFFFFF',
-    marginTop: 20,
-    fontFamily: 'Hero-New-Medium',
+    marginTop: 30,
+    lineHeight: 25,
   },
 
   general: {
@@ -222,13 +252,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   space: {
-    padding: 20,
-  },
-  spaceReduced: {
-    paddingTop: 10,
-    paddingLeft: 1,
-    paddingRight: 1,
-    paddingBottom: 10,
+    padding: 15,
   },
   TrialContainer: {
     flexDirection: 'row',
@@ -245,9 +269,9 @@ const styles = StyleSheet.create({
   },
   trialText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: '700',
     fontSize: 15,
   },
-})
+});
 
-export default OnboardingLayout
+export default OnboardingLayout;

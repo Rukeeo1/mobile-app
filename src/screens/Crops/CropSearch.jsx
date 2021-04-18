@@ -1,5 +1,3 @@
-import { AntDesign, EvilIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
   Image,
@@ -10,13 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu';
+import { AntDesign, EvilIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+
 import { GradientButton, Input } from '../../components/';
 import { FilterItemDropDown } from './FilterItemDropDown';
 
 import constants from '../../constants';
 
-const { colors } = constants;
+const { colors, months } = constants;
 
 const CropSearch = ({ navigation }) => {
   const [search, setSearch] = useState('');
@@ -73,12 +73,50 @@ const CropSearch = ({ navigation }) => {
 
               <ScrollView
                 horizontal
-                style={[styles.scrollDate]}
                 showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  width: '100%',
+                  alignItems: 'center',
+                  flex: 1,
+                }}
               >
-                <FilterItemDropDown />
-                <FilterItemDropDown />
-                <FilterItemDropDown />
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: 16,
+                    marginLeft: 30,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: colors.white,
+                      fontWeight: '500',
+                      textDecorationLine: 'underline',
+                    }}
+                  >
+                    Clear filters
+                  </Text>
+                </View>
+                <FilterItemDropDown
+                  items={months}
+                  activeItem={`Grow in ${selectedMonth}`}
+                  onSelect={setSelectedMonth}
+                />
+                <FilterItemDropDown
+                  items={['Beginner', 'Intermediate', 'Advance']}
+                  activeItem={`Grow in ${selectedMonth}`}
+                  onSelect={setSelectedMonth}
+                />
+                <FilterItemDropDown items={months} />
+                <View
+                  style={{
+                    marginRight: 20,
+                    width: 200,
+                    height: 100,
+                    backgroundColor: 'red',
+                  }}
+                />
               </ScrollView>
             </LinearGradient>
           </View>
@@ -208,12 +246,13 @@ const styles = StyleSheet.create({
   searchContainer: {
     paddingTop: '20%',
     paddingBottom: '10%',
-    paddingHorizontal: 25,
+    // paddingHorizontal: 25,
   },
   searchForm: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    paddingHorizontal: 25,
   },
   searchInputContainer: {
     backgroundColor: colors.white,
@@ -232,7 +271,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   scrollDate: {
-    padding: 10,
+    // padding: 10,
+    // paddingRight: '10%'
   },
   clearFilter: {
     color: colors.white,

@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import growthLogo from '../../assets/growth_logo.png'
 import { GradientButton, Input, Logo } from '../../components'
 import constants from '../../constants'
@@ -27,7 +27,7 @@ export const Register = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
-      <SafeAreaView style={styles.safeH}>
+      <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}>
 
           <View style={{ alignItems: 'center' }}>
@@ -49,8 +49,8 @@ export const Register = ({ navigation }) => {
                 paddingLeft: '5%',
                 paddingRight: '5%',
                 flex: 1,
+                paddingBottom: 30,
                 paddingTop: 50,
-                height: Dimensions.get("window").height - (0.35*Dimensions.get("window").height),
               }}
               colors={[colors.blueLigth, colors.blue]}
             >
@@ -61,7 +61,6 @@ export const Register = ({ navigation }) => {
                 value={authDetails.email}
                 onChangeText={(text) => handleAuthDetails('email', text)}
                 placeholder="Enter your email"
-                placeholderTextColor="#fff"
               />
               <Input
                 containerStyle={styles.inputContainer}
@@ -71,7 +70,6 @@ export const Register = ({ navigation }) => {
                 value={authDetails.name}
                 onChangeText={(text) => handleAuthDetails('name', text)}
                 placeholder="Enter your name"
-                placeholderTextColor="#fff"
               />
               <Input
                 containerStyle={styles.inputContainer}
@@ -81,7 +79,6 @@ export const Register = ({ navigation }) => {
                 value={authDetails.location}
                 onChangeText={(text) => handleAuthDetails('location', text)}
                 placeholder="Enter your location"
-                placeholderTextColor="#fff"
               />
               <Input
                 containerStyle={styles.inputContainer}
@@ -91,7 +88,6 @@ export const Register = ({ navigation }) => {
                 value={authDetails.password}
                 onChangeText={(text) => handleAuthDetails('password', text)}
                 placeholder="Enter your password"
-                placeholderTextColor="#fff"
                 secureTextEntry={true}
               />
 
@@ -112,12 +108,8 @@ export const Register = ({ navigation }) => {
                   fontWeight: 'bold',
                   color: 'white',
                   textAlign: 'center',
-                  bottom: 42,
-                  left: 0,
-                  right: 0,
-                  position: 'absolute',
-                  fontFamily: 'Hero-New-Medium',
-                  fontSize: 16,
+                  marginTop: '30%',
+                  fontSize: 16
                 }}
                 onPress={() => navigation.navigate("Login")}
               >
@@ -133,9 +125,6 @@ export const Register = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   parentContainer: {},
-  safeH: {
-    height: Dimensions.get("window").height,
-  },
   contentContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -144,13 +133,11 @@ const styles = StyleSheet.create({
   scrollView: {
     width: '100%',
     alignSelf: 'center',
-    flex: 1,
   },
   container: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     overflow: 'hidden',
-    flex: 1,
   },
   image: {
     marginTop: '25%',
@@ -161,19 +148,12 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     marginTop: 10,
-    marginLeft: 0,
     borderBottomColor: constants.colors.greyLight,
     paddingBottom: '2%',
-    paddingLeft: 0,
     color: constants.colors.white,
-    fontFamily: 'Hero-New-Light',
-    fontSize: 16,
-    letterSpacing: 0,
-
   },
   label: {
     color: constants.colors.white,
-    fontFamily: 'Hero-New-Medium',
   },
   alignItem: {
     display: 'flex',
@@ -181,7 +161,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: '5%',
-    marginBottom: '5%',
   },
 })
 
