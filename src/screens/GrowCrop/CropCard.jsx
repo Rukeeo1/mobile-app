@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  Text,
   Dimensions,
   TouchableOpacity,
   Image,
@@ -11,12 +10,12 @@ import {
 
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Tooltip } from 'react-native-elements';
+import Tooltip from 'react-native-walkthrough-tooltip';
 
 import ActionSheet from './ActionSheet';
 import SideMenuOverlay from './SideMenuOverlay';
 
-import { SafeArea, GradientButton as Button } from '../../components';
+import { SafeArea, GradientButton as Button, Text } from '../../components';
 
 import { MyCarousel as Carousel } from './Carousel';
 import { EditableTitle } from './Title';
@@ -48,6 +47,7 @@ const CropCard = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState(0);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
+  const [toolTipIsVisible, setToolTipIsVisible] = useState(true);
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
 
   const video = React.useRef(null);
@@ -99,10 +99,10 @@ const CropCard = ({ navigation }) => {
           </LinearGradient>
         </TouchableOpacity>
         <Text
-          style={[
-            { color: colors.white, marginTop: '6%' },
-            activeScreen === index && { color: colors.black },
-          ]}
+          style={{
+            color: activeScreen === index ? colors.black : colors.white,
+            marginTop: '6%',
+          }}
         >
           20 Feb
         </Text>
@@ -159,7 +159,12 @@ const CropCard = ({ navigation }) => {
     <SafeArea containerStyle={{ flex: 1 }}>
       {!showSideMenu && (
         <TouchableOpacity
-          style={{ position: 'absolute', zIndex: 23, bottom: 100, right: 30 }}
+          style={{
+            position: 'absolute',
+            zIndex: 989889233,
+            bottom: 100,
+            right: 30,
+          }}
           onPress={() => setShowSideMenu(true)}
         >
           <LinearGradient
@@ -251,7 +256,7 @@ const CropCard = ({ navigation }) => {
                   ]}
                   key={index}
                 >
-                  <Text style={[{ color: colors.white }]}>{item}</Text>
+                  <Text style={{ color: colors.white }}>{item}</Text>
                 </View>
               ))}
             </View>
@@ -278,8 +283,43 @@ const CropCard = ({ navigation }) => {
                 Sow Direct Outside
               </Text>
             </View>
-            <View style={{ marginVertical: 20 }}>
-              <Tooltip popover={<Text>Info here</Text>}>
+            <View>
+              <Tooltip
+                animated={true}
+                isVisible={toolTipIsVisible}
+                content={
+                  <View>
+                    <Text
+                      style={{
+                        color: colors.white,
+                        flexWrap: 'wrap',
+                      }}
+                      fontType='light'
+                    >
+                      Your first step is complete! Add a journal entry to track
+                      your
+                    </Text>
+                  </View>
+                }
+                contentStyle={{
+                  backgroundColor: colors.blueLigth,
+                  paddingHorizontal: '5%',
+                  paddingVertical: '5%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}
+                childrenWrapperStyle={{ width: '80%' }}
+                backgroundColor='transparent'
+                placement='bottom'
+                arrowSize={{
+                  width: 24,
+                  height: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onClose={() => setToolTipIsVisible(false)}
+              >
                 <Button
                   gradient={[colors.purshBlue, colors.blue]}
                   title='Add to Journal'
@@ -288,11 +328,12 @@ const CropCard = ({ navigation }) => {
               </Tooltip>
             </View>
           </View>
-          <View style={{ marginTop: '7%' }}>
+          <View>
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: 32,
+                fontSize: 24,
+                marginVertical: 10,
                 fontWeight: '100',
               }}
             >
@@ -371,7 +412,6 @@ const styles = StyleSheet.create({
   },
   top: {
     backgroundColor: 'green',
-    // height: '19%',
     zIndex: 2323,
   },
   skipStep: {
