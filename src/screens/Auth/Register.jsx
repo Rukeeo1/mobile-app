@@ -1,7 +1,7 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import growthLogo from '../../assets/growth_logo.png';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   GradientButton,
   Input,
@@ -9,16 +9,25 @@ import {
   KeyboardAvoiding,
   SafeArea,
 } from '../../components';
+
+import { register } from '../../redux/actions/authActions';
+
 import constants from '../../constants';
+
+import growthLogo from '../../assets/growth_logo.png';
 
 export const Register = ({ navigation }) => {
   const [authDetails, setAuthDetails] = useState({
     email: '',
     name: '',
+    username: '',
     bio: '',
     location: '',
     password: '',
   });
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.loading);
 
   const handleAuthDetails = (name, value) => {
     setAuthDetails((prevState) => ({
@@ -27,7 +36,9 @@ export const Register = ({ navigation }) => {
     }));
   };
 
-  const submit = () => {};
+  const submit = () => {
+    dispatch(register(authDetails, navigation));
+  };
 
   const { colors } = constants;
 
@@ -70,6 +81,7 @@ export const Register = ({ navigation }) => {
                 onChangeText={(text) => handleAuthDetails('email', text)}
                 placeholder='Enter your email'
                 placeholderTextColor={colors.white}
+                autoCapitalize='none'
               />
               <Input
                 containerStyle={styles.inputContainer}
@@ -85,12 +97,22 @@ export const Register = ({ navigation }) => {
                 containerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 labelStyle={styles.label}
-                labelText='Location'
+                labelText='Username'
+                value={authDetails.username}
+                onChangeText={(text) => handleAuthDetails('username', text)}
+                placeholder='Enter your username'
+                autoCapitalize='none'
+              />
+              {/* <Input
+                containerStyle={styles.inputContainer}
+                inputStyle={styles.input}
+                labelStyle={styles.label}
+                labelText="Location"
                 value={authDetails.location}
                 onChangeText={(text) => handleAuthDetails('location', text)}
-                placeholder='Enter your location'
-                placeholderTextColor={colors.white}
-              />
+                placeholder="Enter your location"
+              /> */}
+
               <Input
                 containerStyle={styles.inputContainer}
                 inputStyle={styles.input}
@@ -107,7 +129,9 @@ export const Register = ({ navigation }) => {
                 gradient={[colors.green, colors.greenDeep]}
                 coverStyle={{ marginBottom: 20, marginTop: 50 }}
                 title={'Register'}
-                onPress={() => navigation.navigate('Onboarding')}
+                // onPress={() => navigation.navigate('Onboarding')}
+                onPress={submit}
+                loading={loading}
               />
               <Text
                 style={{ textAlign: 'center', color: 'white' }}

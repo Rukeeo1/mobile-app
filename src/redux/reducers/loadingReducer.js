@@ -1,14 +1,15 @@
 import { LOADING } from '../types';
+
 const initialState = {
   loading: false,
 };
 
-const loadingReducer = (state = initialState, { type }) => {
+const loadingReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case LOADING:
       return {
         ...state,
-        loading: !state.loading,
+        loading: payload ?? !state.loading,
       };
 
     default:

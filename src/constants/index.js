@@ -49,3 +49,5 @@ export default {
   screenWidth,
   months,
 };
+
+export const API_URL = 'http://api.growit-app.co.uk:3000/api/v1'

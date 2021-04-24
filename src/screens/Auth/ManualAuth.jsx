@@ -19,6 +19,10 @@ import {
   SafeArea,
 } from '../../components';
 
+import { useSelector, useDispatch } from 'react-redux';
+
+import { login } from '../../redux/actions/authActions';
+
 import growthLogo from '../../assets/growth_logo.png';
 
 import constants from '../../constants';
@@ -26,6 +30,9 @@ import constants from '../../constants';
 const { colors } = constants;
 
 const ManualAuth = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.loading);
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Email is not valid')
@@ -50,9 +57,10 @@ const ManualAuth = ({ navigation }) => {
       // values.email === 'Testuser@tmail.com' && values.password === 'test01!';
       // if (valid) {
       // setTimeout(() => {
-      navigation.navigate('Onboarding');
+      // navigation.navigate('Onboarding');
       // }, 500);
       // }
+      dispatch(login(values, navigation));
     },
   });
 
@@ -84,6 +92,7 @@ const ManualAuth = ({ navigation }) => {
               onChangeText={handleChange('email')}
               placeholder='Enter your email'
               errorMessage={errors.email}
+              autoCapitalize='none'
             />
             <Input
               containerStyle={styles.inputPasswordCont}
@@ -103,6 +112,7 @@ const ManualAuth = ({ navigation }) => {
                 coverStyle={{}}
                 title={'Log in'}
                 onPress={handleSubmit}
+                loading={loading}
               />
               <TouchableOpacity
                 activeOpacity={0.9}
