@@ -1,13 +1,20 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  GradientButton,
+  Input,
+  Logo,
+  KeyboardAvoiding,
+  SafeArea,
+} from '../../components';
 
-import { register } from '../../redux/actions/authActions'
+import { register } from '../../redux/actions/authActions';
 
-import growthLogo from '../../assets/growth_logo.png'
-import { GradientButton, Input, Logo } from '../../components'
-import constants from '../../constants'
+import constants from '../../constants';
+
+import growthLogo from '../../assets/growth_logo.png';
 
 export const Register = ({ navigation }) => {
   const [authDetails, setAuthDetails] = useState({
@@ -17,29 +24,31 @@ export const Register = ({ navigation }) => {
     bio: '',
     location: '',
     password: '',
-  })
+  });
 
-  const dispatch = useDispatch()
-  const { loading } = useSelector((state) => state.loading)
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.loading);
 
   const handleAuthDetails = (name, value) => {
     setAuthDetails((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const submit = () => {
-    dispatch(register(authDetails, navigation))
-  }
+    dispatch(register(authDetails, navigation));
+  };
 
-  const { colors } = constants
+  const { colors } = constants;
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
-      <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
-
+    <KeyboardAvoiding>
+      <SafeArea>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ backgroundColor: colors.white }}
+        >
           <View style={{ alignItems: 'center' }}>
             <Logo
               source={growthLogo}
@@ -67,30 +76,32 @@ export const Register = ({ navigation }) => {
               <Input
                 inputStyle={styles.input}
                 labelStyle={styles.label}
-                labelText="Email"
+                labelText='Email'
                 value={authDetails.email}
                 onChangeText={(text) => handleAuthDetails('email', text)}
-                placeholder="Enter your email"
-                autoCapitalize="none"
+                placeholder='Enter your email'
+                placeholderTextColor={colors.white}
+                autoCapitalize='none'
               />
               <Input
                 containerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 labelStyle={styles.label}
-                labelText="Name"
+                labelText='Name'
                 value={authDetails.name}
                 onChangeText={(text) => handleAuthDetails('name', text)}
-                placeholder="Enter your name"
+                placeholder='Enter your name'
+                placeholderTextColor={colors.white}
               />
               <Input
                 containerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 labelStyle={styles.label}
-                labelText="Username"
+                labelText='Username'
                 value={authDetails.username}
                 onChangeText={(text) => handleAuthDetails('username', text)}
-                placeholder="Enter your username"
-                autoCapitalize="none"
+                placeholder='Enter your username'
+                autoCapitalize='none'
               />
               {/* <Input
                 containerStyle={styles.inputContainer}
@@ -101,15 +112,17 @@ export const Register = ({ navigation }) => {
                 onChangeText={(text) => handleAuthDetails('location', text)}
                 placeholder="Enter your location"
               /> */}
+
               <Input
                 containerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 labelStyle={styles.label}
-                labelText="Password"
+                labelText='Password'
                 value={authDetails.password}
                 onChangeText={(text) => handleAuthDetails('password', text)}
-                placeholder="Enter your password"
+                placeholder='Enter your password'
                 secureTextEntry={true}
+                placeholderTextColor={colors.white}
               />
 
               <GradientButton
@@ -132,19 +145,19 @@ export const Register = ({ navigation }) => {
                   color: 'white',
                   textAlign: 'center',
                   marginTop: '30%',
-                  fontSize: 16
+                  fontSize: 16,
                 }}
-                onPress={() => navigation.navigate("Login")}
+                onPress={() => navigation.navigate('Login')}
               >
                 Cancel
               </Text>
             </LinearGradient>
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </View>
-  )
-}
+      </SafeArea>
+    </KeyboardAvoiding>
+  );
+};
 
 const styles = StyleSheet.create({
   parentContainer: {},
@@ -161,16 +174,17 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     overflow: 'hidden',
+    flex: 1,
   },
   image: {
     marginTop: '25%',
   },
   inputContainer: {
-    marginTop: 10,
+    marginTop: '5%',
   },
   input: {
     borderBottomWidth: 1,
-    marginTop: 10,
+    marginTop: '3%',
     borderBottomColor: constants.colors.greyLight,
     paddingBottom: '2%',
     color: constants.colors.white,
@@ -185,6 +199,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: '5%',
   },
-})
+});
 
-export default Register
+export default Register;
