@@ -3,15 +3,24 @@ import { useFormik } from 'formik';
 import React from 'react';
 import {
   Platform,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
 } from 'react-native';
 import * as Yup from 'yup';
+
+import {
+  GradientButton,
+  Header,
+  Input,
+  Logo,
+  Text,
+  SafeArea,
+} from '../../components';
+
 import growthLogo from '../../assets/growth_logo.png';
-import { GradientButton, Header, Input, Logo, Text  } from '../../components';
+
 import constants from '../../constants';
 
 const { colors } = constants;
@@ -48,9 +57,18 @@ const ManualAuth = ({ navigation }) => {
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
-      <ScrollView>
-        <SafeAreaView style={styles.container}>
+    <SafeArea containerStyle={{ backgroundColor: colors.white }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            backgroundColor: colors.white,
+          }}
+        >
           <Header onIconPress={() => navigation.goBack()} />
           <Logo
             source={growthLogo}
@@ -93,7 +111,7 @@ const ManualAuth = ({ navigation }) => {
                 <Text
                   style={{
                     textAlign: 'center',
-                    marginTop: 20,
+                    marginTop: '6%',
                     marginBottom: 32,
                     fontSize: 14,
                     fontFamily: 'Hero-New-Light',
@@ -136,7 +154,7 @@ const ManualAuth = ({ navigation }) => {
               </Text>
               <GradientButton
                 gradient={[colors.green, colors.greenDeep]}
-                coverStyle={{ marginBottom: 20 }}
+                coverStyle={{ marginBottom: '10%' }}
                 title={'Register'}
                 onPress={() => navigation.navigate('Register')}
               />
@@ -144,7 +162,7 @@ const ManualAuth = ({ navigation }) => {
               <Text
                 style={{
                   position: 'absolute',
-                  bottom: 40,
+                  bottom: '35%',
                   left: 0,
                   right: 0,
                   color: colors.white,
@@ -153,15 +171,15 @@ const ManualAuth = ({ navigation }) => {
                   fontSize: 16,
                 }}
                 onPress={() => navigation.goBack()}
-                fontType="bold"
+                fontType='bold'
               >
                 Cancel
               </Text>
             </LinearGradient>
           </View>
-        </SafeAreaView>
-      </ScrollView>
-    </View>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeArea>
   );
 };
 

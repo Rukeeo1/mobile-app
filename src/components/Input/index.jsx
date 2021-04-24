@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: constants.colors.black,
     fontWeight: '300',
-    paddingHorizontal: 8,
+    // paddingHorizontal: 8,
     paddingBottom: 3
   },
   errorMessage: {
