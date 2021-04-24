@@ -1,6 +1,7 @@
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 // todo: cater for props.children in cases where button needs to be wrapped around other components
 /**
@@ -46,6 +47,7 @@ export const GradientButton = ({
   gradient = ['#000000', '#000000'],
   coverStyle,
   onPress,
+  loading = false
 }) => {
   return (
     <TouchableOpacity
@@ -56,7 +58,16 @@ export const GradientButton = ({
         colors={gradient}
         style={{ ...styles.defaultLinearGradient }}
       >
-        {children ? children : <Text style={styles.defaultText}>{title}</Text>}
+        {children
+          ? children
+          : loading
+            ? (
+              <ActivityIndicator
+                color="#fff"
+                size="small"
+                animating
+              />
+            ) : <Text style={styles.defaultText}>{title}</Text>}
       </LinearGradient>
     </TouchableOpacity>
   );
