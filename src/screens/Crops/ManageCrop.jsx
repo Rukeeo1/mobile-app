@@ -1,5 +1,3 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import {
   Image,
@@ -10,10 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { AntDesign, Ionicons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+
 import { GradientButton } from '../../components/Button'
+
 import constants from '../../constants'
 
 const { colors } = constants
+
 const ManageCrops = () => {
   const navigation = useNavigation()
   return (
@@ -29,7 +32,7 @@ const ManageCrops = () => {
               <Text style={[styles.growText, {paddingRight: 80, paddingLeft: 80, fontWeight: 'light', fontSize: 18}]}>
                 You aren’t growing anything yet!
               </Text>
-              <Text style={[styles.growText, {paddingRight: 70, paddingLeft: 70, fontWeight: 'light', fontSize: 18}]}>
+              <Text style={[styles.growText, {paddingRight: 70, paddingLeft: 70, fontSize: 18}]}>
                 Add a crop to your <Text style={{fontWeight: 'bold'}}>Grow Calendar</Text> today
               </Text>
 

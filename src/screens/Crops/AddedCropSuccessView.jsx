@@ -1,10 +1,17 @@
-import { MaterialIcons } from '@expo/vector-icons'
-import React from 'react'
-import { Image, Text, View, TouchableOpacity } from 'react-native'
-import constant from '../../constants/'
+import React, { useEffect } from 'react';
+import { Image, Text, View, TouchableOpacity } from 'react-native';
 
-const { colors } = constant
+import constant from '../../constants/';
+
+const { colors } = constant;
+
 const AddedSuccess = ({ navigation }) => {
+  useEffect(() => {}, [
+    setTimeout(() => {
+      navigation.navigate('Grow-Crop');
+    }, 1000),
+  ]);
+
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -23,7 +30,6 @@ const AddedSuccess = ({ navigation }) => {
         }}
         onPress={() => navigation.navigate('Grow-Crop')}
       >
-
         <Text
           style={{
             textAlign: 'center',
@@ -50,7 +56,7 @@ const AddedSuccess = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default AddedSuccess
+export default AddedSuccess;
