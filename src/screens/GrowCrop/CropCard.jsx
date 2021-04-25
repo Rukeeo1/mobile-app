@@ -244,7 +244,9 @@ const CropCard = ({ navigation }) => {
               marginTop: '4%',
             }}
           >
-            {[1, 2, 3].map((item, index) => renderTab(index))}
+            {[1, 2, 3].map((item, index) => (
+              <React.Fragment key={index}>{renderTab(index)}</React.Fragment>
+            ))}
           </View>
         </LinearGradient>
         <View style={{ paddingHorizontal: '5%' }}>
@@ -403,7 +405,6 @@ const CropCard = ({ navigation }) => {
               will grow your tomatoes.
             </Text>
           </View>
-          <Carousel />
           <View style={{ marginTop: '4%' }}>
             <Video
               ref={video}
@@ -417,6 +418,7 @@ const CropCard = ({ navigation }) => {
               onPlaybackStatusUpdate={(status) => {}}
             />
           </View>
+          <Carousel />
           <LinearGradient
             style={styles.toolTip}
             colors={[colors.green, colors.greenDeep]}
