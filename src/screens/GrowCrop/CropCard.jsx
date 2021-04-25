@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -23,6 +24,7 @@ import { SowItContainer } from './SowItContainer';
 
 import home from '../../assets/home-icon.png';
 import pencil from '../../assets/pencil_circle.png';
+
 import shovel from '../../assets/shovel.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
@@ -155,6 +157,7 @@ const CropCard = ({ navigation }) => {
     </>
   );
 
+  //small right pink arrow...
   const renderCalenderConfirmIcon = (setSelectedDateItems) => {
     return (
       <View
@@ -252,6 +255,7 @@ const CropCard = ({ navigation }) => {
                 renderCalenderConfirmIcon(itemToConfirm)
               }
               tip='Enter the date you plan to sow your seeds'
+              reminderText='Sown'
             />
           )}
           {activeScreen === 1 && (
@@ -261,20 +265,19 @@ const CropCard = ({ navigation }) => {
               renderIcon={(itemToConfirm) =>
                 renderCalenderConfirmIcon(itemToConfirm)
               }
+              reminderText='Reminder to plant'
             />
           )}
           {activeScreen === 2 && (
-            // <SowItContainer
-            //   buttonTitle='Harvest it!'
-            //   tip='Enter the date harvest started'
-            //   renderIcon={(itemToConfirm) =>
-            //     renderCalenderConfirmIcon(itemToConfirm)
-            //   }
-            // />
-            <Button
-              title='End Harvest'
-              gradient={[colors.pink, colors.pinkDeep]}
-              onPress={() => navigation.navigate('End-Harvest')}
+            <SowItContainer
+              buttonTitle='Harvest it!'
+              tip='Enter the date harvest started'
+              renderIcon={(itemToConfirm) =>
+                renderCalenderConfirmIcon(itemToConfirm)
+              }
+              reminderText='Harvest started'
+              showHoriazontalButtonAfterDateIsSelected
+              onPressOfHorizontalBtn={() => navigation.navigate('End-Harvest')}
             />
           )}
           <View style={styles.skipStep}>
