@@ -20,6 +20,7 @@ const customFonts = {
   'Hero-New-Light-Italic': require('./src/assets/fonts/Hero-New-Light-Italic.otf'),
   'Hero-New-Bold-Italic': require('./src/assets/fonts/Hero-New-Bold-Italic.otf'),
   'Hero-New-Bold': require('./src/assets/fonts/Hero-New-Bold.otf'),
+  "Frame-Work-7": require('./src/assets/fonts/Framework-7-Icons-Regular.ttf')
 };
 
 export default function App() {
