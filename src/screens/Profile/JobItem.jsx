@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import { Text } from '../../components';
 
@@ -27,6 +28,8 @@ const getIcon = (jobType) => {
 };
 
 export const JobItem = ({ job }) => {
+  const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       activeOpacity={0.9}
