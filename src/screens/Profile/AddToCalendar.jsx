@@ -13,7 +13,7 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 import { JobItem } from './JobItem';
 
-import { GradientButton } from '../../components/Button';
+import { GradientButton, Input } from '../../components';
 
 import constants from '../../constants';
 
@@ -91,6 +91,7 @@ const AddToCalendar = () => {
   const [jobs, setJobs] = useState(false);
   const [rest, setRest] = useState(false);
   const [viewingMore, setViewingMore] = useState(false);
+  const [jobTitle, setJobTitle] = useState('');
 
   const nextItem = () => {
     if (m > months.length - 2) {
@@ -120,6 +121,15 @@ const AddToCalendar = () => {
       animated: true,
     });
   };
+
+  const addJob = () => {
+    setRest(true);
+    setJobs(false);
+  };
+
+  const handleJobTextChange = (text) => setJobTitle(text);
+
+  const jobDate = new Date().getDate();
 
   return (
     <View style={{ flex: 1 }}>
@@ -268,19 +278,32 @@ const AddToCalendar = () => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={[styles.jobs]}
-                onPress={() => {
-                  setRest(true);
-                  setJobs(false);
-                }}
+                // onPress={() => {
+                //   // setRest(true);
+                //   // setJobs(false);
+                // }}
               >
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/circle.png')} />
                   <View style={[styles.jobsText]}>
-                    <Text>|</Text>
-                    <Text style={[styles.boldText]}>20 {months[m]}</Text>
+                    <Input
+                      inputStyle={{ width: screenWidth * 0.4, fontSize: 16 }}
+                      onChangeText={handleJobTextChange}
+                      value={jobTitle}
+                      placeholder='Enter Job...'
+                      placeholderTextColor={colors.grey}
+                    />
+                    <Text style={[styles.boldText]}>
+                      {jobDate} {months[m]}
+                    </Text>
                   </View>
                 </View>
-                <AntDesign name='right' size={24} color={colors.green} />
+                <AntDesign
+                  name='right'
+                  size={24}
+                  color={colors.green}
+                  onPress={addJob}
+                />
               </TouchableOpacity>
             )}
 

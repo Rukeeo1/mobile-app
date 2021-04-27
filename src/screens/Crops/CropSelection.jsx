@@ -1,23 +1,25 @@
-import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
-} from 'react-native'
-import { Input } from '../../components/'
-import { GradientButton } from '../../components/Button'
-import constants from '../../constants'
+} from 'react-native';
+import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const { colors } = constants
+import { Input, GradientButton } from '../../components/';
+import { CropItem } from './CropItem';
+
+import constants from '../../constants';
+
+const { colors } = constants;
+
 const CropSelection = ({ navigation }) => {
-  const [show, setShow] = useState(false)
-  const [search, setSearch] = useState('')
+  const [show, setShow] = useState(false);
+  const [search, setSearch] = useState('');
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <SafeAreaView>
@@ -28,7 +30,7 @@ const CropSelection = ({ navigation }) => {
               colors={[colors.green, colors.greenDeep]}
             >
               <AntDesign
-                name="left"
+                name='left'
                 size={24}
                 color={colors.white}
                 onPress={() => navigation.goBack()}
@@ -37,7 +39,7 @@ const CropSelection = ({ navigation }) => {
                 <Text style={[styles.titleTop]}>Tomato</Text>
 
                 <View style={[styles.titleTag]}>
-                  <MaterialIcons name="star" size={20} color={colors.white} />
+                  <MaterialIcons name='star' size={20} color={colors.white} />
                   <Text style={{ color: colors.white, marginHorizontal: 4 }}>
                     Begginer crop
                   </Text>
@@ -45,12 +47,16 @@ const CropSelection = ({ navigation }) => {
               </View>
               <View>
                 <Input
-                  placeholder="Enter your variety name here"
+                  placeholder='Enter your variety name here'
                   containerStyle={styles.searchInputContainer}
-                  inputStyle={{ marginTop: -10, paddingRight: 10, color: 'red' }}
+                  inputStyle={{
+                    marginTop: -10,
+                    paddingRight: 10,
+                    color: 'red',
+                  }}
                   onChangeText={(text) => setSearch(text)}
                   isCenter={true}
-                  placeholderText="red"
+                  placeholderText='red'
                 ></Input>
               </View>
 
@@ -105,68 +111,9 @@ const CropSelection = ({ navigation }) => {
           </View>
 
           <View style={[styles.cropSection]}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              style={[styles.cropCardContainer]}
-              onPress={() => setShow(!show)}
-            >
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/tomatoe1.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name="right" size={24} color={colors.green} />
-            </TouchableOpacity>
-
-            {show && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: 200,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                }}
-              >
-                <GradientButton
-                  gradient={[colors.blueLigth, colors.blue]}
-                  onPress={() => navigation.navigate('Success')}
-                >
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      width: '100%',
-                      paddingHorizontal: 20,
-                    }}
-                  >
-                    <Text style={[styles.btnText]}>Grow It</Text>
-                  </View>
-                </GradientButton>
-                <GradientButton gradient={[colors.blueLigth, colors.blue]}>
-                  <View
-                    style={{
-                      width: '100%',
-                      flexDirection: 'row',
-                      justifyContent: 'space-around',
-                      alignItems: 'center',
-                      paddingHorizontal: 20,
-                    }}
-                  >
-                    <Text style={[styles.btnText]}>Buy seed</Text>
-                    <Entypo
-                      name="shopping-cart"
-                      size={24}
-                      color={colors.white}
-                    />
-                  </View>
-                </GradientButton>
-              </View>
-            )}
+            <CropItem />
+            <CropItem />
+            <CropItem />
 
             <View style={[styles.cropCardContainer]}>
               <View style={[styles.cropDetails]}>
@@ -179,7 +126,7 @@ const CropSelection = ({ navigation }) => {
                   <Text>Intermediate</Text>
                 </View>
               </View>
-              <AntDesign name="right" size={24} color={colors.green} />
+              <AntDesign name='right' size={24} color={colors.green} />
             </View>
             <View style={[styles.cropCardContainer]}>
               <View style={[styles.cropDetails]}>
@@ -192,14 +139,14 @@ const CropSelection = ({ navigation }) => {
                   <Text>Intermediate</Text>
                 </View>
               </View>
-              <AntDesign name="right" size={24} color={colors.green} />
+              <AntDesign name='right' size={24} color={colors.green} />
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   searchContainer: {
@@ -271,6 +218,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: 'bold',
   },
-})
+});
 
-export default CropSelection
+export default CropSelection;
