@@ -4,3 +4,8 @@
     <circle id="Ellipse_39" data-name="Ellipse 39" cx="2.5" cy="2.5" r="2.5" transform="translate(380 328.5)" fill="#fff"/>
   </g>
 </svg>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" width="61" height="32" viewBox="0 0 61 32">
+  <text id="house_fill" fill="#dbfa87" font-size="30" font-family="Framework7-Icons, Framework7 Icons"><tspan x="15.5" y="27">plus</tspan></text>
+</svg>

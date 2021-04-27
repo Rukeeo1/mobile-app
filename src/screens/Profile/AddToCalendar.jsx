@@ -1,6 +1,4 @@
-import { AntDesign, MaterialIcons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -9,13 +7,20 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native'
-import { GradientButton } from '../../components/Button'
-import constants from '../../constants'
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
-const { colors } = constants
+import { JobItem } from './JobItem';
+
+import { GradientButton } from '../../components/Button';
+
+import constants from '../../constants';
+
+const { colors, screenHeight, screenWidth } = constants;
+
 const AddToCalendar = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const months = [
     'Jan',
     'Feb',
@@ -29,7 +34,7 @@ const AddToCalendar = () => {
     'Oct',
     'Nov',
     'Dec',
-  ]
+  ];
   const monthsFull = [
     'January',
     'February',
@@ -43,44 +48,78 @@ const AddToCalendar = () => {
     'October',
     'November',
     'December',
-  ]
-  const currentMonthIndex = new Date().getMonth()
-  const currentYear = new Date().getFullYear()
-  const [m, setM] = useState(currentMonthIndex)
-  const [y, setY] = useState(currentYear)
+  ];
+
+  const dummyJobs = [
+    {
+      type: 'sow',
+      title: 'Sow Tomatoes',
+      status: 'about to start',
+    },
+    {
+      type: 'plant',
+      title: 'Plant Pepper',
+      status: 'about to start',
+    },
+    {
+      type: 'water',
+      title: 'Water House Plants',
+      status: 'in progress',
+    },
+    {
+      type: 'harvest',
+      title: 'Harvest Leeks',
+      status: 'done',
+    },
+    {
+      type: 'plant',
+      title: 'Plant Pepper',
+      status: 'about to start',
+    },
+    {
+      type: 'water',
+      title: 'Water House Plants',
+      status: 'in progress',
+    },
+  ];
+  const currentMonthIndex = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  const [m, setM] = useState(currentMonthIndex);
+  const [y, setY] = useState(currentYear);
   const scrollRef = useRef();
 
-  const [jobs, setJobs] = useState(false)
-  const [rest, setRest] = useState(false)
+  const [jobs, setJobs] = useState(false);
+  const [rest, setRest] = useState(false);
+  const [viewingMore, setViewingMore] = useState(false);
 
   const nextItem = () => {
     if (m > months.length - 2) {
-      setM(0)
-      setY(y + 1)
-      return
+      setM(0);
+      setY(y + 1);
+      return;
     }
-    setM(m + 1)
-  }
+    setM(m + 1);
+  };
 
   const prevYear = () => {
     if (m === 0) {
-      setM(11)
-      setY(y - 1)
-      return
+      setM(11);
+      setY(y - 1);
+      return;
     }
-    setM(m - 1)
-  }
+    setM(m - 1);
+  };
 
   const setMonth = (index) => {
-    setM(index)
-  }
+    setM(index);
+  };
 
   const onFabPress = () => {
     scrollRef.current.scrollTo({
-        y : 0,
-        animated : true
+      y: 0,
+      animated: true,
     });
-}
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -139,7 +178,7 @@ const AddToCalendar = () => {
                       {month}
                     </Text>
                   </TouchableOpacity>
-                )
+                );
               })}
             </View>
             <View
@@ -153,7 +192,7 @@ const AddToCalendar = () => {
             >
               <TouchableOpacity onPress={prevYear}>
                 <MaterialIcons
-                  name="arrow-back-ios"
+                  name='arrow-back-ios'
                   size={24}
                   color={colors.green}
                 />
@@ -171,7 +210,7 @@ const AddToCalendar = () => {
               </View>
               <TouchableOpacity onPress={nextItem}>
                 <MaterialIcons
-                  name="arrow-forward-ios"
+                  name='arrow-forward-ios'
                   size={24}
                   color={colors.green}
                 />
@@ -204,7 +243,7 @@ const AddToCalendar = () => {
                 }}
               >
                 <Text style={[styles.btnText]}>Grow in {monthsFull[m]} </Text>
-                <AntDesign name="search1" size={25} color={colors.white} />
+                <AntDesign name='search1' size={25} color={colors.white} />
               </View>
             </GradientButton>
             <GradientButton
@@ -221,7 +260,7 @@ const AddToCalendar = () => {
                 }}
               >
                 <Text style={[styles.btnText]}>Jobs</Text>
-                <AntDesign name="plus" size={25} color={colors.white} />
+                <AntDesign name='plus' size={25} color={colors.white} />
               </View>
             </GradientButton>
 
@@ -230,8 +269,8 @@ const AddToCalendar = () => {
                 activeOpacity={0.9}
                 style={[styles.jobs]}
                 onPress={() => {
-                  setRest(true)
-                  setJobs(false)
+                  setRest(true);
+                  setJobs(false);
                 }}
               >
                 <View style={[styles.jobsChild]}>
@@ -241,54 +280,25 @@ const AddToCalendar = () => {
                     <Text style={[styles.boldText]}>20 {months[m]}</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
             )}
 
             {rest ? (
               <View style={{ marginTop: 30 }}>
-                <TouchableOpacity
-                  activeOpacity={0.9}
-                  style={[styles.jobs]}
-                  onPress={() => navigation.navigate('Grow-Crop')}
-                >
-                  <View style={[styles.jobsChild]}>
-                    <Image source={require('../../assets/hang.png')} />
-                    <View style={[styles.jobsText]}>
-                      <Text>Sow Tomatoes</Text>
-                      <Text style={[styles.boldText]}>20 February</Text>
-                    </View>
-                  </View>
+                {dummyJobs
+                  .slice(0, viewingMore ? dummyJobs.length : 3)
+                  .map((job, index) => (
+                    <React.Fragment key={index}>
+                      <JobItem job={job} />
+                    </React.Fragment>
+                  ))}
 
-                  <AntDesign name="right" size={24} color={colors.green} />
+                <TouchableOpacity onPress={() => setViewingMore(!viewingMore)}>
+                  <Text style={[styles.viewMore]}>
+                    {viewingMore ? 'Hide jobs' : 'View more'}
+                  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={0.9}
-                  style={[styles.jobs]}
-                  onPress={() => navigation.navigate('Grow-Crop')}
-                >
-                  <View style={[styles.jobsChild]}>
-                    <Image source={require('../../assets/flower.png')} />
-                    <View style={[styles.jobsText]}>
-                      <Text>Sow Tomatoes</Text>
-                      <Text style={[styles.boldText]}>20 February</Text>
-                    </View>
-                  </View>
-                  <AntDesign name="right" size={24} color={colors.green} />
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
-                  <View style={[styles.jobsChild]}>
-                    <Image source={require('../../assets/circle.png')} />
-                    <View style={[styles.jobsText]}>
-                      <Text>Sow Tomatoes</Text>
-                      <Text style={[styles.boldText]}>20 February</Text>
-                    </View>
-                  </View>
-                  <AntDesign name="right" size={24} color={colors.green} />
-                </TouchableOpacity>
-                <View>
-                  <Text style={[styles.viewMore]}>View more</Text>
-                </View>
               </View>
             ) : (
               <View></View>
@@ -305,7 +315,7 @@ const AddToCalendar = () => {
                 }}
               >
                 <Text style={[styles.btnText]}>What you’re harvesting</Text>
-                <AntDesign name="info" size={28} color={colors.white} />
+                <AntDesign name='info' size={28} color={colors.white} />
               </View>
             </GradientButton>
 
@@ -416,7 +426,7 @@ const AddToCalendar = () => {
                   }}
                 >
                   <Text style={[styles.btnText]}>Grow in February</Text>
-                  <AntDesign name="plus" size={25} color={colors.white} />
+                  <AntDesign name='plus' size={25} color={colors.white} />
                 </View>
               </GradientButton>
             </View>
@@ -424,8 +434,8 @@ const AddToCalendar = () => {
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   parent: {
@@ -466,9 +476,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: screenWidth * 0.04,
   },
   jobsText: {
-    marginLeft: 20,
+    marginLeft: 15,
   },
   jobsImg: {
     width: 20,
@@ -542,6 +553,6 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
   },
-})
+});
 
-export default AddToCalendar
+export default AddToCalendar;
