@@ -1,24 +1,23 @@
-import React from 'react'
+import React from 'react';
 import {
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
-} from 'react-native'
-import { AntDesign, Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+} from 'react-native';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-import { GradientButton } from '../../components/Button'
+import { GradientButton, Text } from '../../components';
 
-import constants from '../../constants'
+import constants from '../../constants';
 
-const { colors } = constants
+const { colors } = constants;
 
 const ManageCrops = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <SafeAreaView>
@@ -29,19 +28,32 @@ const ManageCrops = () => {
 
           <View style={{ paddingHorizontal: '5%' }}>
             <View style={[styles.growCalendarCard]}>
-              <Text style={[styles.growText, {paddingRight: 80, paddingLeft: 80, fontWeight: 'light', fontSize: 18}]}>
+              <Text
+                style={{
+                  ...styles.growText,
+                  ...{ paddingRight: 80, paddingLeft: 80, fontSize: 18 },
+                }}
+              >
                 You aren’t growing anything yet!
               </Text>
-              <Text style={[styles.growText, {paddingRight: 70, paddingLeft: 70, fontSize: 18}]}>
-                Add a crop to your <Text style={{fontWeight: 'bold'}}>Grow Calendar</Text> today
+              <Text
+                style={[
+                  styles.growText,
+                  { paddingRight: 70, paddingLeft: 70, fontSize: 18 },
+                ]}
+              >
+                Add a crop to your{' '}
+                <Text style={{ fontWeight: 'bold' }}>Grow Calendar</Text> today
               </Text>
 
               <GradientButton
                 gradient={[colors.green, colors.greenDeep]}
-                onPress={() => navigation.navigate('Main-Profile', {
-                  //this would be refactored later... when the sideBar component is refactored...
-                  indexOfItemToShow: 5,
-                })}
+                onPress={() =>
+                  navigation.navigate('Main-Profile', {
+                    //this would be refactored later... when the sideBar component is refactored...
+                    indexOfItemToShow: 5,
+                  })
+                }
               >
                 <View
                   style={{
@@ -52,8 +64,8 @@ const ManageCrops = () => {
                     paddingHorizontal: 20,
                   }}
                 >
-                  <Text style={[styles.btnText]}>Go to Grow Calendar</Text>
-                  <Ionicons name="calendar" size={24} color={colors.white} />
+                  <Text style={styles.btnText}>Go to Grow Calendar</Text>
+                  <Ionicons name='calendar' size={24} color={colors.white} />
                 </View>
               </GradientButton>
             </View>
@@ -61,10 +73,10 @@ const ManageCrops = () => {
 
           <View style={{ paddingHorizontal: '5%' }}>
             <View>
-              <Text style={[styles.growingCrops]}>Current growing</Text>
+              <Text style={styles.growingCrops}>Current growing</Text>
               <TouchableOpacity
                 activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
+                style={styles.cropCardContainer}
                 onPress={() => navigation.navigate('Grow-Crop')}
               >
                 <View style={[styles.cropDetails]}>
@@ -73,11 +85,11 @@ const ManageCrops = () => {
                     source={require('../../assets/avatarimg.png')}
                   />
                   <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text style={styles.cropName}>Tomato</Text>
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -90,15 +102,15 @@ const ManageCrops = () => {
                     source={require('../../assets/avatarimg.png')}
                   />
                   <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text style={styles.cropName}>Tomato</Text>
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
             </View>
             <View>
-              <Text style={[styles.growingCrops]}>Past Harvest</Text>
+              <Text style={styles.growingCrops}>Past Harvest</Text>
 
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -111,11 +123,11 @@ const ManageCrops = () => {
                     source={require('../../assets/avatarimg.png')}
                   />
                   <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text style={styles.cropName}>Tomato</Text>
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -128,19 +140,19 @@ const ManageCrops = () => {
                     source={require('../../assets/avatarimg.png')}
                   />
                   <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
+                    <Text style={styles.cropName}>Tomato</Text>
                     <Text>Intermediate</Text>
                   </View>
                 </View>
-                <AntDesign name="right" size={24} color={colors.green} />
+                <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   titleContainer: {
@@ -210,6 +222,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: 'bold',
   },
-})
+});
 
-export default ManageCrops
+export default ManageCrops;
