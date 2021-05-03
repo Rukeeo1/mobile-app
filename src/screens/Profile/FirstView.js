@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Image,
   SafeAreaView,
@@ -7,22 +7,37 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { LinearGradient } from 'expo-linear-gradient'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { getUserGrowList, getUserProfile } from '../../redux/actions/authActions'
+
 import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
 import ShareModal from './ShareModal'
-import { LinearGradient } from 'expo-linear-gradient'
+import { ActivityIndicator } from 'react-native'
 
 const { colors } = constants
 
-const FirstView = ({}) => {
+const FirstView = ({ }) => {
+  const dispatch = useDispatch()
+  const { user, userData } = useSelector((state) => state.auth)
+  const { loading, refreshing } = useSelector((state) => state.loading)
+
   const [isList, setIsList] = useState(false)
   const [showShare, setShowShare] = useState(false)
 
   const navigation = useNavigation()
 
   const toggleModal = () => setShowShare((prevState) => !prevState)
+
+  useEffect(() => {
+    dispatch(getUserProfile())
+    dispatch(getUserGrowList())
+  }, [])
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
@@ -33,162 +48,201 @@ const FirstView = ({}) => {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Image
-          source={require('../../assets/profile.png')}
-          style={[styles.profileImg]}
-        />
-
-        <View style={[styles.detailsContainer, styles.detaileText]}>
-          <Text style={[styles.title]}>Garden_of_Riley</Text>
-          <Text style={{fontFamily: 'Hero-New-Light', fontSize: 14,}}>
-            {'<'}User bio grow baby grow{'>'}
-          </Text>
-          <Text style={{fontFamily: 'Hero-New-Light', fontSize: 14,}}>🇬🇧 Buckinghamshire</Text>
-          <Text style={[styles.edit]}>Edit profile</Text>
-        </View>
-
-        <View style={[styles.detailsContainer, styles.follows]}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate('Following')}
+        {user?.avatar ? (
+          <Image
+            source={{ uri: user?.avatar }}
+            style={styles.profileImg}
+          />
+        ) : (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: colors.grey100,
+              ...styles.profileImg,
+            }}
           >
-            <Text style={[styles.followsText]}>0 Following</Text>
-          </TouchableOpacity>
-          <Text>{'|'}</Text>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate('Followers')}
-          >
-            <Text style={[styles.followsText]}>0 Followers</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={[styles.growList]}>
-          {true ? (
-            <>
-              <Text style={[styles.growTitle]}>Current Grow It List</Text>
-              <ScrollView horizontal={true}>
-                <View style={[styles.growCard]}>
-                  <Image source={require('../../assets/growavatar.png')} />
-                  <Text style={[styles.growText]}>
-                    {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                </View>
-                <View style={[styles.growCard]}>
-                  <Image source={require('../../assets/growavatar.png')} />
-                  <Text style={[styles.growText]}>
-                    {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                </View>
-                <View style={[styles.growCard]}>
-                  <Image source={require('../../assets/growavatar.png')} />
-                  <Text style={[styles.growText]}>
-                    {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                </View>
-                <View style={[styles.growCard]}>
-                  <Image source={require('../../assets/growavatar.png')} />
-                  <Text style={[styles.growText]}>
-                    {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                </View>
-                <View style={[styles.growCard]}>
-                  <Image source={require('../../assets/growavatar.png')} />
-                  <Text style={[styles.growText]}>
-                    {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                </View>
-              </ScrollView>
-            </>
+            <Ionicons
+              name='ios-person-outline'
+              size={45}
+              color={colors.white}
+            />
+          </View>
+        )}
+        {(loading || refreshing)
+          ? (
+            <View
+              style={{
+                paddingVertical: 20,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <ActivityIndicator
+                color={colors.green}
+                animating
+                size="small"
+              />
+            </View>
           ) : (
-            <View>
-              <Text style={[styles.growTitle2]}>
-                You aren’t growing anything!
-              </Text>
-              <GradientButton
-                gradient={[colors.green, colors.greenDeep]}
-                onPress={() =>
-                  navigation.navigate('Main-Profile', {
-                    screen: 'Main-Profile',
-                    indexOfItemToShow: 5,
-                  })
-                }
-              >
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    width: '100%',
-                    paddingHorizontal: 30,
-                  }}
+            <>
+              <View style={[styles.detailsContainer, styles.detaileText]}>
+                <Text style={[styles.title]}>
+                  {user?.fullname}
+                </Text>
+                <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14, }}>
+                  {user?.biography}
+                </Text>
+                <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14, }}>
+                  {user?.location}
+                </Text>
+                <Text style={[styles.edit]}>Edit profile</Text>
+              </View>
+
+              <View style={[styles.detailsContainer, styles.follows]}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('Following')}
                 >
-                  <Text style={[styles.btnText]}>Add to Grow Calendar</Text>
-                  <Image
-                    style={{ width: 25, height: 25 }}
-                    source={require('../../assets/calendar-page.png')}
-                  />
-                </View>
-              </GradientButton>
-            </View>
-          )}
-        </View>
+                  <Text style={[styles.followsText]}>{userData?.following_count} Following</Text>
+                </TouchableOpacity>
+                <Text>{'|'}</Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('Followers')}
+                >
+                  <Text style={[styles.followsText]}>{userData?.follower_count} Followers</Text>
+                </TouchableOpacity>
+              </View>
 
-        {true ? (
-          <View style={[styles.postCard]}>
-            <View style={[styles.postAvatarContainer]}>
-              <Image
-                style={[styles.postAvatarImg]}
-                source={require('../../assets/profileAvatar.png')}
-              />
-              <Text style={[styles.postTitle]}>Garden_of_Riley</Text>
-            </View>
+              <View style={[styles.growList]}>
+                {true ? (
+                  <>
+                    <Text style={[styles.growTitle]}>Current Grow It List</Text>
+                    <ScrollView horizontal={true}>
+                      <View style={[styles.growCard]}>
+                        <Image source={require('../../assets/growavatar.png')} />
+                        <Text style={[styles.growText]}>
+                          {'<'}New Crop Name{'>'} “Variety Name”
+                  </Text>
+                      </View>
+                      <View style={[styles.growCard]}>
+                        <Image source={require('../../assets/growavatar.png')} />
+                        <Text style={[styles.growText]}>
+                          {'<'}New Crop Name{'>'} “Variety Name”
+                  </Text>
+                      </View>
+                      <View style={[styles.growCard]}>
+                        <Image source={require('../../assets/growavatar.png')} />
+                        <Text style={[styles.growText]}>
+                          {'<'}New Crop Name{'>'} “Variety Name”
+                  </Text>
+                      </View>
+                      <View style={[styles.growCard]}>
+                        <Image source={require('../../assets/growavatar.png')} />
+                        <Text style={[styles.growText]}>
+                          {'<'}New Crop Name{'>'} “Variety Name”
+                  </Text>
+                      </View>
+                      <View style={[styles.growCard]}>
+                        <Image source={require('../../assets/growavatar.png')} />
+                        <Text style={[styles.growText]}>
+                          {'<'}New Crop Name{'>'} “Variety Name”
+                  </Text>
+                      </View>
+                    </ScrollView>
+                  </>
+                ) : (
+                  <View>
+                    <Text style={[styles.growTitle2]}>
+                      You aren’t growing anything!
+              </Text>
+                    <GradientButton
+                      gradient={[colors.green, colors.greenDeep]}
+                      onPress={() =>
+                        navigation.navigate('Main-Profile', {
+                          screen: 'Main-Profile',
+                          indexOfItemToShow: 5,
+                        })
+                      }
+                    >
+                      <View
+                        style={{
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                          width: '100%',
+                          paddingHorizontal: 30,
+                        }}
+                      >
+                        <Text style={[styles.btnText]}>Add to Grow Calendar</Text>
+                        <Image
+                          style={{ width: 25, height: 25 }}
+                          source={require('../../assets/calendar-page.png')}
+                        />
+                      </View>
+                    </GradientButton>
+                  </View>
+                )}
+              </View>
 
-            <View>
-              <Image
-                style={[styles.postImg]}
-                source={require('../../assets/profile.png')}
-              />
-            </View>
+              {true ? (
+                <View style={[styles.postCard]}>
+                  <View style={[styles.postAvatarContainer]}>
+                    <Image
+                      style={[styles.postAvatarImg]}
+                      source={require('../../assets/profileAvatar.png')}
+                    />
+                    <Text style={[styles.postTitle]}>Garden_of_Riley</Text>
+                  </View>
 
-            <View style={[styles.postDateTime]}>
-              <Text style={{fontFamily: 'Hero-New-Light-Italic', color: '#9B9B9B'}}>23 July 2020</Text>
-              <TouchableOpacity onPress={toggleModal}>
-                <Text>...</Text>
-              </TouchableOpacity>
-            </View>
+                  <View>
+                    <Image
+                      style={[styles.postImg]}
+                      source={require('../../assets/profile.png')}
+                    />
+                  </View>
 
-            <View style={{ marginLeft: 15 }}>
-              <Text style={{fontFamily: 'Hero-New-Light'}}>
-                <Text style={{fontFamily: 'Hero-New-Medium'}}>Garden_of_Riley</Text> First handful
+                  <View style={[styles.postDateTime]}>
+                    <Text style={{ fontFamily: 'Hero-New-Light-Italic', color: '#9B9B9B' }}>23 July 2020</Text>
+                    <TouchableOpacity onPress={toggleModal}>
+                      <Text>...</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginLeft: 15 }}>
+                    <Text style={{ fontFamily: 'Hero-New-Light' }}>
+                      <Text style={{ fontFamily: 'Hero-New-Medium' }}>Garden_of_Riley</Text> First handful
                 of tomatoes!! Well worth the wait!
               </Text>
 
-              <Text style={{fontFamily: 'Hero-New-Medium'}}>Tomatoes - ‘Sungold’</Text>
-            </View>
-          </View>
-        ) : (
-          <View style={[styles.growMovement]}>
-            <View style={[styles.growMovementImgContainer]}>
-              <Image
-                style={[styles.growMovementImg]}
-                source={require('../../assets/grow-movement.png')}
-              />
-              <LinearGradient
-                colors={[colors.purshBlue, colors.blue]}
-                style={[styles.growMoveTextContainer]}
-              >
-                <Text style={[styles.growMoveText]}>
-                  You joined the Grow It movement!
+                    <Text style={{ fontFamily: 'Hero-New-Medium' }}>Tomatoes - ‘Sungold’</Text>
+                  </View>
+                </View>
+              ) : (
+                <View style={[styles.growMovement]}>
+                  <View style={[styles.growMovementImgContainer]}>
+                    <Image
+                      style={[styles.growMovementImg]}
+                      source={require('../../assets/grow-movement.png')}
+                    />
+                    <LinearGradient
+                      colors={[colors.purshBlue, colors.blue]}
+                      style={[styles.growMoveTextContainer]}
+                    >
+                      <Text style={[styles.growMoveText]}>
+                        You joined the Grow It movement!
                 </Text>
-                <Text style={{ color: '#fff', marginTop: 7 }}>Feb 2020</Text>
-              </LinearGradient>
-            </View>
-            <Text style={[styles.growMoveFooterText]}>
-              Click the ‘+’ in the side bar to create your first post!
+                      <Text style={{ color: '#fff', marginTop: 7 }}>Feb 2020</Text>
+                    </LinearGradient>
+                  </View>
+                  <Text style={[styles.growMoveFooterText]}>
+                    Click the ‘+’ in the side bar to create your first post!
             </Text>
-          </View>
-        )}
+                </View>
+              )}
+            </>
+          )}
         <ShareModal showBottomSheet={showShare} setShowShare={toggleModal} />
       </ScrollView>
     </SafeAreaView>
@@ -198,6 +252,7 @@ const FirstView = ({}) => {
 const styles = StyleSheet.create({
   profileImg: {
     width: '100%',
+    height: Dimensions.get('window').height / 3,
   },
   detailsContainer: {
     alignItems: 'center',
@@ -233,7 +288,7 @@ const styles = StyleSheet.create({
   growList: {
     backgroundColor: colors.nearWhite,
     padding: 20,
-    paddingRight:5,
+    paddingRight: 5,
     alignItems: 'center',
     fontFamily: 'Hero-New-Light',
   },

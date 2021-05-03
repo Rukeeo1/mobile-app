@@ -23,15 +23,6 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const RootNavigator = () => {
-  const isAuthenticated = async () => {
-    const token = await AsyncStorage.getItem('token')
-    const user = await AsyncStorage.getItem('user')
-
-    return !!token && !!user
-  }
-
-  console.log(isAuthenticated())
-
   return (
     <NavigationContainer>
       <Navigator

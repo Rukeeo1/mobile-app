@@ -30,7 +30,7 @@ export const apiRequest = async (endpoint, method = 'get', body = {}, contentTyp
 export const showApiError = (err, tryAgain = true, tryAgainFunc = null, tryAgainText = 'Try Again', title = '') => {
   const message = err.response?.data?.message || err.response?.data?.error || err.message
 
-  if (message && (err.response?.status === 401 || err.response?.config?.url?.includes('signin'))) {
+  if (err.response?.status !== 401 || err.response?.config?.url?.includes('signin')) {
     Alert.alert(
       title,
       message,

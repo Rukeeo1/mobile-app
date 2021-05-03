@@ -103,7 +103,7 @@ export const Register = ({ navigation }) => {
                 placeholder='Enter your username'
                 autoCapitalize='none'
               />
-              {/* <Input
+              <Input
                 containerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 labelStyle={styles.label}
@@ -111,7 +111,7 @@ export const Register = ({ navigation }) => {
                 value={authDetails.location}
                 onChangeText={(text) => handleAuthDetails('location', text)}
                 placeholder="Enter your location"
-              /> */}
+              />
 
               <Input
                 containerStyle={styles.inputContainer}

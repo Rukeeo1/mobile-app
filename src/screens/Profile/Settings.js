@@ -15,12 +15,20 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
+import { useSelector, useDispatch } from 'react-redux'
+
+import { updateProfile, updateAvatar } from '../../redux/actions/authActions'
+
 import { GradientButton, Header, Input, SafeArea } from '../../components';
 import constants from '../../constants';
 
 const { colors } = constants;
 
 const Settings = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.loading)
+  const { user } = useSelector((state) => state.auth)
+
   const ProfileSchema = Yup.object().shape({
     name: Yup.string()
       .required('Required')
@@ -47,36 +55,32 @@ const Settings = ({ navigation }) => {
     handleSubmit,
   } = useFormik({
     initialValues: {
-      name: '',
-      bio: '',
-      location: '',
-      profileImageUri: '',
+      name: user?.fullname ?? '',
+      bio: user?.biography ?? '',
+      location: user?.location ?? '',
+      profileImageUri: user?.avatar,
     },
 
     validationSchema: ProfileSchema,
     onSubmit: (values) => {
-      const { bio, location, name } = values;
-      const user = {
-        bio,
-        location,
-        name,
-      };
-      AsyncStorage.setItem('user', user);
+      console.log({ values })
+      if (values.profileImageUri !== user.avatar) dispatch(updateAvatar(values, navigation))
+      else dispatch(updateProfile(values, navigation))
     },
   });
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      base64: true,
+      // base64: true,
       quality: 0.5,
     });
 
     if (!result.cancelled) {
       setFieldValue('profileImageUri', result.uri);
-      handleBlur('profileImageUri');
+      // handleBlur('profileImageUri');
     }
   };
 
@@ -160,12 +164,7 @@ const Settings = ({ navigation }) => {
             onPress={handleSubmit}
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
-            onPress={() =>
-              navigation.navigate('Main-Profile', {
-                //this would be refactored later... when the sideBar component is refactored...
-                indexOfItemToShow: 2,
-              })
-            }
+            loading={loading}
           />
         </View>
       </ScrollView>
