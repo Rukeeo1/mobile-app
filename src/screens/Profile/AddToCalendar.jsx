@@ -30,7 +30,6 @@ const { colors, screenHeight, screenWidth, monthsAbr: months } = constants;
 const AddToCalendar = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
   const { favoriteCrops } = useSelector((state) => ({
     favoriteCrops: state.crops.favoriteCrops,
   }));
@@ -355,7 +354,6 @@ const AddToCalendar = () => {
                 Some of our favourites to grow this month
               </Text>
             </View>
-
             {favoriteCrops?.crops?.map((crop, index) => (
               <FavoriteCropItem
                 crop={crop}
