@@ -17,7 +17,6 @@ export const EditableTitle = () => {
   });
 
   const handleChange = (itemName, text) => {
-    console.log(text);
     setCropDetails((prevState) => ({
       ...prevState,
       [itemName]: text,

@@ -30,7 +30,6 @@ const { colors, screenHeight, screenWidth, monthsAbr: months } = constants;
 const AddToCalendar = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const rukee = useSelector((state) => state);
   const { favoriteCrops } = useSelector((state) => ({
     favoriteCrops: state.crops.favoriteCrops,
   }));
@@ -355,69 +354,24 @@ const AddToCalendar = () => {
                 Some of our favourites to grow this month
               </Text>
             </View>
-            <FavoriteCropItem />
-            <FavoriteCropItem />
             {favoriteCrops?.crops?.map((crop, index) => (
               <FavoriteCropItem
                 crop={crop}
                 key={index}
                 tipToShowId={cropToolTipIdToShow}
                 onSetTipToShow={setCropToolTipIdToShow}
+                onNavigate={() => {
+                  navigation.navigate('Crops', {
+                    screen: 'Crop-selection',
+                    params: {
+                      cropName: crop?.name,
+                      sowTip: crop?.sow_tip,
+                      growLevel: crop?.grow_level,
+                    },
+                  });
+                }}
               />
             ))}
-
-            {/* <View style={[styles.flowers]}>
-              <View>
-                <Image
-                  style={[styles.flowerImg]}
-                  source={require('../../assets/tomatoe1.png')}
-                />
-              </View>
-
-              <View style={[styles.flowerText]}>
-                <Text style={{ fontSize: 22 }}>Chillies</Text>
-                <Text style={styles.boldText}>Intermediate</Text>
-              </View>
-            </View> */}
-            {/* <View style={[styles.flowers]}>
-              <View>
-                <Image
-                  style={[styles.flowerImg]}
-                  source={require('../../assets/tomatoe2.png')}
-                />
-              </View>
-
-              <View style={[styles.flowerText]}>
-                <Text style={{ fontSize: 22 }}>Chillies</Text>
-                <Text style={styles.boldText}>Intermediate</Text>
-              </View>
-            </View> */}
-            {/* <View style={[styles.flowers]}>
-              <View>
-                <Image
-                  style={[styles.flowerImg]}
-                  source={require('../../assets/tomatoe3.png')}
-                />
-              </View>
-
-              <View style={[styles.flowerText]}>
-                <Text style={{ fontSize: 22 }}>Chillies</Text>
-                <Text style={styles.boldText}>Intermediate</Text>
-              </View>
-            </View> */}
-            {/* <View style={[styles.flowers]}>
-              <View>
-                <Image
-                  style={[styles.flowerImg]}
-                  source={require('../../assets/tomatoe4.png')}
-                />
-              </View>
-
-              <View style={[styles.flowerText]}>
-                <Text style={{ fontSize: 22 }}>Chillies</Text>
-                <Text>Intermediate</Text>
-              </View>
-            </View> */}
 
             <View style={{ marginBottom: 50 }}>
               <Text style={styles.explore}>Continue to explore</Text>

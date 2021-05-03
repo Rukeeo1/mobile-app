@@ -7,9 +7,14 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-const FavoriteCropItem = ({ crop, onSetTipToShow, tipToShowId }) => {
+const FavoriteCropItem = ({
+  crop,
+  onSetTipToShow,
+  tipToShowId,
+  onNavigate,
+}) => {
   const { sow_tip, media_url, grow_level, id, name } = crop || {};
-  const showTip = (id) => () => onSetTipToShow(id);
+  const showTip = (cropId) => () => onSetTipToShow(cropId);
   return (
     <View>
       <TouchableOpacity
@@ -31,7 +36,7 @@ const FavoriteCropItem = ({ crop, onSetTipToShow, tipToShowId }) => {
 
           <GradientButton
             gradient={[colors.green, colors.greenDeep]}
-            onPress={() => console.log('hello worl')}
+            onPress={onNavigate}
           >
             <Text style={styles.btnText}>Grow It</Text>
           </GradientButton>
