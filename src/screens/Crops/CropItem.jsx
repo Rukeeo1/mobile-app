@@ -9,25 +9,23 @@ import constants from '../../constants';
 
 const { colors, screenHeight } = constants;
 
-export const CropItem = () => {
+export const CropItem = ({ crop }) => {
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
+  const { thumbnail_url, name, category } = crop || {};
 
   return (
-    <View style={{marginVertical: screenHeight  * 0.005 }}>
+    <View style={{ marginVertical: screenHeight * 0.005 }}>
       <TouchableOpacity
         activeOpacity={0.9}
         style={[styles.cropCardContainer]}
         onPress={() => setShow(!show)}
       >
         <View style={[styles.cropDetails]}>
-          <Image
-            style={[styles.cropAvatar]}
-            source={require('../../assets/tomatoe1.png')}
-          />
+          <Image style={[styles.cropAvatar]} source={{ uri: thumbnail_url }} />
           <View style={[styles.cropText]}>
-            <Text style={[styles.cropName]}>Tomato</Text>
-            <Text>Intermediate</Text>
+            <Text style={[styles.cropName]}>{name}</Text>
+            <Text>{category}</Text>
           </View>
         </View>
         <AntDesign name='right' size={24} color={colors.green} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -7,8 +7,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { getCropsFavoriteToGrow, getCropDetails } from '../../redux/actions';
 
 import { Input, GradientButton } from '../../components/';
 import { CropItem } from './CropItem';
@@ -17,9 +20,22 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-const CropSelection = ({ navigation }) => {
-  const [show, setShow] = useState(false);
+const CropSelection = ({ navigation, route }) => {
   const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
+
+  const { cropDetail } = useSelector((state) => ({
+    cropDetail: state.crops.cropDetail,
+  }));
+
+  const { cropName, sowTip, growLevel } = route?.params || {};
+
+  useEffect(() => {
+    if (cropName) {
+      dispatch(getCropDetails(cropName));
+    }
+  }, [cropName]);
+
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <SafeAreaView>
@@ -36,12 +52,12 @@ const CropSelection = ({ navigation }) => {
                 onPress={() => navigation.goBack()}
               />
               <View style={{ alignItems: 'center' }}>
-                <Text style={[styles.titleTop]}>Tomato</Text>
+                <Text style={[styles.titleTop]}>{cropName}</Text>
 
                 <View style={[styles.titleTag]}>
                   <MaterialIcons name='star' size={20} color={colors.white} />
                   <Text style={{ color: colors.white, marginHorizontal: 4 }}>
-                    Begginer crop
+                    {growLevel}
                   </Text>
                 </View>
               </View>
@@ -104,43 +120,13 @@ const CropSelection = ({ navigation }) => {
 
           <View style={{ alignItems: 'center', marginVertical: 20 }}>
             <Text style={{ fontSize: 20 }}>Grow it Recommends</Text>
-            <Text style={{ width: '80%', textAlign: 'center' }}>
-              Still need to buy seeds? Here is some inspiration for you with
-              tried and tested suggestions.
-            </Text>
+            <Text style={{ width: '80%', textAlign: 'center' }}>{sowTip}</Text>
           </View>
 
           <View style={[styles.cropSection]}>
-            <CropItem />
-            <CropItem />
-            <CropItem />
-
-            <View style={[styles.cropCardContainer]}>
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/tomatoe.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name='right' size={24} color={colors.green} />
-            </View>
-            <View style={[styles.cropCardContainer]}>
-              <View style={[styles.cropDetails]}>
-                <Image
-                  style={[styles.cropAvatar]}
-                  source={require('../../assets/tomatoe2.png')}
-                />
-                <View style={[styles.cropText]}>
-                  <Text style={[styles.cropName]}>Tomato</Text>
-                  <Text>Intermediate</Text>
-                </View>
-              </View>
-              <AntDesign name='right' size={24} color={colors.green} />
-            </View>
+            {cropDetail?.crops?.map((crop, index) => (
+              <CropItem key={index} crop={crop} />
+            ))}
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -31,8 +31,6 @@ export const login = (user, navigation) => (dispatch) => {
 
   apiRequest('/users/signin', 'post', { password, auth_id: email })
     .then(({ data }) => {
-      console.log('login', data)
-
       dispatch(saveUser(data.token, { ...data.user }))
       navigation.navigate('Onboarding')
     })
@@ -62,8 +60,6 @@ export const register = (user, navigation) => (dispatch) => {
     role: 0,
   })
     .then(({ data }) => {
-      console.log('register', data)
-
       dispatch(saveUser(data.data.token, { ...data.data }))
       navigation.navigate('Onboarding')
     })
