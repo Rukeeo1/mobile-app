@@ -18,12 +18,13 @@ const { colors } = constants;
 
 const ManageCrops = () => {
   const navigation = useNavigation();
+
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <SafeAreaView>
         <ScrollView>
           <View style={[styles.titleContainer]}>
-            <Text style={[styles.title]}>Manage Crops</Text>
+            <Text style={styles.title}>Manage Crops</Text>
           </View>
 
           <View style={{ paddingHorizontal: '5%' }}>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -10,31 +10,30 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { JobItem } from './JobItem';
 
-import { GradientButton, Input, Text } from '../../components';
+import {
+  GradientButton,
+  Input,
+  Text,
+  FavoriteCropItem,
+} from '../../components';
+
+import { getCropsFavoriteToGrow } from '../../redux/actions';
 
 import constants from '../../constants';
 
-const { colors, screenHeight, screenWidth } = constants;
+const { colors, screenHeight, screenWidth, monthsAbr: months } = constants;
 
 const AddToCalendar = () => {
   const navigation = useNavigation();
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+  const dispatch = useDispatch();
+  const rukee = useSelector((state) => state);
+  const { favoriteCrops } = useSelector((state) => ({
+    favoriteCrops: state.crops.favoriteCrops,
+  }));
   const monthsFull = [
     'January',
     'February',
@@ -92,6 +91,11 @@ const AddToCalendar = () => {
   const [rest, setRest] = useState(false);
   const [viewingMore, setViewingMore] = useState(false);
   const [jobTitle, setJobTitle] = useState('');
+  const [cropToolTipIdToShow, setCropToolTipIdToShow] = useState('');
+
+  useEffect(() => {
+    dispatch(getCropsFavoriteToGrow(months[m]));
+  }, []);
 
   const nextItem = () => {
     if (m > months.length - 2) {
@@ -185,7 +189,7 @@ const AddToCalendar = () => {
                         color: `${index === m ? '#fff' : 'black'}`,
                         fontWeight: `${index === m ? 'bold' : '100'}`,
                       }}
-                      fontType={index === m ? 'bold':'light'}
+                      fontType={index === m ? 'bold' : 'light'}
                     >
                       {item}
                     </Text>
@@ -351,38 +355,18 @@ const AddToCalendar = () => {
                 Some of our favourites to grow this month
               </Text>
             </View>
+            <FavoriteCropItem />
+            <FavoriteCropItem />
+            {favoriteCrops?.crops?.map((crop, index) => (
+              <FavoriteCropItem
+                crop={crop}
+                key={index}
+                tipToShowId={cropToolTipIdToShow}
+                onSetTipToShow={setCropToolTipIdToShow}
+              />
+            ))}
 
-            <View style={[styles.flowers, { marginVertical: 15 }]}>
-              <View>
-                <Image
-                  style={[styles.flowerImg]}
-                  source={require('../../assets/tomatoe.png')}
-                />
-              </View>
-
-              <View style={[styles.flowerText]}>
-                <Text style={{ fontSize: 22, fontWeight: 'normal' }}>
-                  Chillies
-                </Text>
-                <Text style={styles.boldText}>Intermediate</Text>
-              </View>
-            </View>
-
-            <View style={{ marginBottom: 25 }}>
-              <Text style={styles.quote}>
-                You will be wishing for ripe tomatoes earlier than you think!
-                Get sowing these summer gems as soon as you can… Thank us later!
-              </Text>
-
-              <GradientButton
-                gradient={[colors.green, colors.greenDeep]}
-                onPress={() => console.log('hello worl')}
-              >
-                <Text style={styles.btnText}>Grow It</Text>
-              </GradientButton>
-            </View>
-
-            <View style={[styles.flowers]}>
+            {/* <View style={[styles.flowers]}>
               <View>
                 <Image
                   style={[styles.flowerImg]}
@@ -394,8 +378,8 @@ const AddToCalendar = () => {
                 <Text style={{ fontSize: 22 }}>Chillies</Text>
                 <Text style={styles.boldText}>Intermediate</Text>
               </View>
-            </View>
-            <View style={[styles.flowers]}>
+            </View> */}
+            {/* <View style={[styles.flowers]}>
               <View>
                 <Image
                   style={[styles.flowerImg]}
@@ -407,8 +391,8 @@ const AddToCalendar = () => {
                 <Text style={{ fontSize: 22 }}>Chillies</Text>
                 <Text style={styles.boldText}>Intermediate</Text>
               </View>
-            </View>
-            <View style={[styles.flowers]}>
+            </View> */}
+            {/* <View style={[styles.flowers]}>
               <View>
                 <Image
                   style={[styles.flowerImg]}
@@ -420,8 +404,8 @@ const AddToCalendar = () => {
                 <Text style={{ fontSize: 22 }}>Chillies</Text>
                 <Text style={styles.boldText}>Intermediate</Text>
               </View>
-            </View>
-            <View style={[styles.flowers]}>
+            </View> */}
+            {/* <View style={[styles.flowers]}>
               <View>
                 <Image
                   style={[styles.flowerImg]}
@@ -433,7 +417,7 @@ const AddToCalendar = () => {
                 <Text style={{ fontSize: 22 }}>Chillies</Text>
                 <Text>Intermediate</Text>
               </View>
-            </View>
+            </View> */}
 
             <View style={{ marginBottom: 50 }}>
               <Text style={styles.explore}>Continue to explore</Text>

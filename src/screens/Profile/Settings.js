@@ -1,8 +1,7 @@
+import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
-import React from 'react';
 import {
   Dimensions,
   Image,
@@ -12,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  AsyncStorage,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
@@ -160,12 +160,12 @@ const Settings = ({ navigation }) => {
             onPress={handleSubmit}
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
-            onPress={() =>
+            onPress={() => {
               navigation.navigate('Main-Profile', {
                 //this would be refactored later... when the sideBar component is refactored...
                 indexOfItemToShow: 2,
-              })
-            }
+              });
+            }}
           />
         </View>
       </ScrollView>
