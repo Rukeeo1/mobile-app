@@ -2,7 +2,6 @@ import {
  SAVE_TOKEN,
  SAVE_USER,
  LOADING,
- 
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 
