@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import {
-  Entypo,
-  FontAwesome5,
-  Ionicons,
-} from '@expo/vector-icons';
+import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 import notificationIcon from '../../assets/notification.png';
 import notificationActive from '../../assets/notification-active.png';
@@ -162,51 +158,57 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
         }}
         onPress={toggleSideMenu}
       />
-
-      <LinearGradient
-        colors={[colors.green, colors.greenDeep]}
+      <View
         style={{
           flex: 1,
-          height: '100%',
-          zIndex: 2323,
-          opacity: 1,
-          paddingTop: '15%',
-          borderTopLeftRadius: 100,
-          alignItems: 'center',
-          overflow:'visible'
+          backgroundColor: colors.white,
+          paddingTop: screenHeight * 0.049,
         }}
       >
-        <View style={{ alignItems: 'center', marginBottom: 45 }}>
-          <TouchableOpacity style={styles.ellipse}>
-            <FontAwesome5
-              name='ellipsis-h'
-              size={24}
-              color={colors.white}
-              style={{ opacity: 0.5 }}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.ball} />
-        {sideBarTabItems.map((item, index) => (
-          <TouchableOpacity
-            style={[styles.tabIconWrapper, item.styles]}
-            onPress={item?.onclick}
-            key={index}
-          >
-            {item.icon()}
-          </TouchableOpacity>
-        ))}
-        <View
+        <LinearGradient
+          colors={[colors.green, colors.greenDeep]}
           style={{
-            position: 'absolute',
-            height: 1,
-            backgroundColor: colors.white,
-            top: screenHeight * 0.64,
-            width: '100%',
-            opacity: 0.5,
+            height: screenHeight * 1,
+            zIndex: 2323,
+            opacity: 1,
+            paddingTop: '15%',
+            borderTopLeftRadius: 100,
+            alignItems: 'center',
+            overflow: 'visible',
           }}
-        />
-      </LinearGradient>
+        >
+          <View style={{ alignItems: 'center', marginBottom: 45 }}>
+            <TouchableOpacity style={styles.ellipse}>
+              <FontAwesome5
+                name='ellipsis-h'
+                size={24}
+                color={colors.white}
+                style={{ opacity: 0.5 }}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.ball} />
+          {sideBarTabItems.map((item, index) => (
+            <TouchableOpacity
+              style={[styles.tabIconWrapper, item.styles]}
+              onPress={item?.onclick}
+              key={index}
+            >
+              {item.icon()}
+            </TouchableOpacity>
+          ))}
+          <View
+            style={{
+              position: 'absolute',
+              height: 1,
+              backgroundColor: colors.white,
+              top: screenHeight * 0.58,
+              width: '100%',
+              opacity: 0.5,
+            }}
+          />
+        </LinearGradient>
+      </View>
     </View>
   );
 };
@@ -220,7 +222,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tabIconWrapper: {
-    marginTop: screenHeight * 0.030,
+    marginTop: screenHeight * 0.03,
     height: 60,
     width: 60,
     justifyContent: 'center',
@@ -229,7 +231,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   ball: {
-    top: screenHeight * 0.8,
+    top: screenHeight * 0.743,
     zIndex: -10,
     backgroundColor: colors.white,
     borderRadius: 30,
