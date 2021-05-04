@@ -501,10 +501,11 @@ const styles = StyleSheet.create({
   },
   toolTip: {
     borderRadius: 8,
-    height: Dimensions.get('screen').height * 0.19,
+    height: 'auto',
     justifyContent: 'center',
     marginTop: '5%',
     paddingHorizontal: '3%',
+    paddingVertical: '5%',
   },
   toolTipTitle: {
     color: colors.white,
