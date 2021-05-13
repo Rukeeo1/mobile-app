@@ -6,7 +6,8 @@ import {
   GET_USER_DATA,
   GET_FOLLOWERS,
   GET_FOLLOWING,
-  GET_USER_GROW_LIST
+  GET_USER_GROW_LIST,
+  GET_USER_POSTS,
 } from '../types';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   followers: null,
   following: null,
   growList: null,
+  posts: null,
 };
 
 const loadingReducer = (state = initialState, { type, payload }) => {
@@ -61,6 +63,11 @@ const loadingReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         growList: payload
+      }
+    case GET_USER_POSTS:
+      return {
+        ...state,
+        posts: payload
       }
     default:
       return state;

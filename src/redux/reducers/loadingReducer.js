@@ -1,8 +1,9 @@
-import { LOADING, REFRESHING } from '../types';
+import { LOADING, REFRESHING, FETCHING_MORE } from '../types';
 
 const initialState = {
   loading: false,
   refreshing: false,
+  fetchingMore: false,
 };
 
 const loadingReducer = (state = initialState, { type, payload }) => {
@@ -16,6 +17,11 @@ const loadingReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         refreshing: payload ?? !state.refreshing,
+      }
+    case FETCHING_MORE:
+      return {
+        ...state,
+        fetchingMore: payload ?? !state.fetchingMore,
       }
     default:
       return state;

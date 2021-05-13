@@ -12,8 +12,13 @@ import {
 import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSelector, useDispatch } from 'react-redux'
+import { Ionicons } from '@expo/vector-icons';
 
-import { getUserGrowList, getUserProfile } from '../../redux/actions/authActions'
+import {
+  getUserGrowList,
+  getUserProfile,
+  getUserPosts,
+} from '../../redux/actions/authActions'
 
 import { GradientButton } from '../../components/Button'
 import constants from '../../constants'
@@ -24,8 +29,8 @@ const { colors } = constants
 
 const FirstView = ({ }) => {
   const dispatch = useDispatch()
-  const { user, userData } = useSelector((state) => state.auth)
-  const { loading, refreshing } = useSelector((state) => state.loading)
+  const { user, userData, growList, posts } = useSelector((state) => state.auth)
+  const { loading, refreshing, fetchingMore } = useSelector((state) => state.loading)
 
   const [isList, setIsList] = useState(false)
   const [showShare, setShowShare] = useState(false)
@@ -35,8 +40,9 @@ const FirstView = ({ }) => {
   const toggleModal = () => setShowShare((prevState) => !prevState)
 
   useEffect(() => {
-    dispatch(getUserProfile())
+    // dispatch(getUserProfile())
     dispatch(getUserGrowList())
+    dispatch(getUserPosts())
   }, [])
 
   return (
@@ -69,7 +75,7 @@ const FirstView = ({ }) => {
             />
           </View>
         )}
-        {(loading || refreshing)
+        {(loading || fetchingMore || refreshing)
           ? (
             <View
               style={{
@@ -96,7 +102,13 @@ const FirstView = ({ }) => {
                 <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14, }}>
                   {user?.location}
                 </Text>
-                <Text style={[styles.edit]}>Edit profile</Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => navigation.navigate('Settings')}
+                >
+                  <Text style={[styles.edit]}>Edit profile</Text>
+                </TouchableOpacity>
+                
               </View>
 
               <View style={[styles.detailsContainer, styles.follows]}>
@@ -104,59 +116,41 @@ const FirstView = ({ }) => {
                   activeOpacity={0.7}
                   onPress={() => navigation.navigate('Following')}
                 >
-                  <Text style={[styles.followsText]}>{userData?.following_count} Following</Text>
+                  <Text style={[styles.followsText]}>{userData?.following_count ?? 0} Following</Text>
                 </TouchableOpacity>
                 <Text>{'|'}</Text>
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() => navigation.navigate('Followers')}
                 >
-                  <Text style={[styles.followsText]}>{userData?.follower_count} Followers</Text>
+                  <Text style={[styles.followsText]}>{userData?.follower_count ?? 0} Followers</Text>
                 </TouchableOpacity>
               </View>
 
               <View style={[styles.growList]}>
-                {true ? (
+                {growList?.length > 0 ? (
                   <>
                     <Text style={[styles.growTitle]}>Current Grow It List</Text>
                     <ScrollView horizontal={true}>
-                      <View style={[styles.growCard]}>
-                        <Image source={require('../../assets/growavatar.png')} />
-                        <Text style={[styles.growText]}>
-                          {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                      </View>
-                      <View style={[styles.growCard]}>
-                        <Image source={require('../../assets/growavatar.png')} />
-                        <Text style={[styles.growText]}>
-                          {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                      </View>
-                      <View style={[styles.growCard]}>
-                        <Image source={require('../../assets/growavatar.png')} />
-                        <Text style={[styles.growText]}>
-                          {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                      </View>
-                      <View style={[styles.growCard]}>
-                        <Image source={require('../../assets/growavatar.png')} />
-                        <Text style={[styles.growText]}>
-                          {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                      </View>
-                      <View style={[styles.growCard]}>
-                        <Image source={require('../../assets/growavatar.png')} />
-                        <Text style={[styles.growText]}>
-                          {'<'}New Crop Name{'>'} “Variety Name”
-                  </Text>
-                      </View>
+                      {growList?.map((crop) => {
+                        return (
+                          <View style={[styles.growCard]}>
+                            <Image source={{ uri: crop.thumbnail_url }} style={{ height: 60, width: 60 }} />
+                            <Text style={[styles.growText]}>
+                              {crop.name}
+                              {' '}
+                              {`“${crop.variety}”`}
+                            </Text>
+                          </View>
+                        )
+                      })}
                     </ScrollView>
                   </>
                 ) : (
                   <View>
                     <Text style={[styles.growTitle2]}>
                       You aren’t growing anything!
-              </Text>
+                    </Text>
                     <GradientButton
                       gradient={[colors.green, colors.greenDeep]}
                       onPress={() =>
@@ -186,39 +180,42 @@ const FirstView = ({ }) => {
                 )}
               </View>
 
-              {true ? (
-                <View style={[styles.postCard]}>
-                  <View style={[styles.postAvatarContainer]}>
-                    <Image
-                      style={[styles.postAvatarImg]}
-                      source={require('../../assets/profileAvatar.png')}
-                    />
-                    <Text style={[styles.postTitle]}>Garden_of_Riley</Text>
-                  </View>
+              {posts?.length > 0
+                ? posts?.map((post) => {
+                  return (
+                    <View style={[styles.postCard]}>
+                      <View style={[styles.postAvatarContainer]}>
+                        <Image
+                          style={[styles.postAvatarImg]}
+                          source={require('../../assets/profileAvatar.png')}
+                        />
+                        <Text style={[styles.postTitle]}>{user?.fullname}</Text>
+                      </View>
 
-                  <View>
-                    <Image
-                      style={[styles.postImg]}
-                      source={require('../../assets/profile.png')}
-                    />
-                  </View>
+                      <View>
+                        <Image
+                          style={[styles.postImg]}
+                          source={{ uri: post.media_url }}
+                        />
+                      </View>
 
-                  <View style={[styles.postDateTime]}>
-                    <Text style={{ fontFamily: 'Hero-New-Light-Italic', color: '#9B9B9B' }}>23 July 2020</Text>
-                    <TouchableOpacity onPress={toggleModal}>
-                      <Text>...</Text>
-                    </TouchableOpacity>
-                  </View>
+                      <View style={[styles.postDateTime]}>
+                        <Text style={{ fontFamily: 'Hero-New-Light-Italic', color: '#9B9B9B' }}>{new Date(post.created_at).toDateString()}</Text>
+                        <TouchableOpacity onPress={toggleModal}>
+                          <Text>...</Text>
+                        </TouchableOpacity>
+                      </View>
 
-                  <View style={{ marginLeft: 15 }}>
-                    <Text style={{ fontFamily: 'Hero-New-Light' }}>
-                      <Text style={{ fontFamily: 'Hero-New-Medium' }}>Garden_of_Riley</Text> First handful
-                of tomatoes!! Well worth the wait!
-              </Text>
+                      <View style={{ marginLeft: 15 }}>
+                        <Text style={{ fontFamily: 'Hero-New-Light' }}>
+                          <Text style={{ fontFamily: 'Hero-New-Medium' }}>{post?.title}</Text> {post.content}</Text>
 
-                    <Text style={{ fontFamily: 'Hero-New-Medium' }}>Tomatoes - ‘Sungold’</Text>
-                  </View>
-                </View>
+                        {/* <Text style={{ fontFamily: 'Hero-New-Medium' }}>Tomatoes - ‘Sungold’</Text> */}
+                      </View>
+                    </View>
+
+                  )
+                }
               ) : (
                 <View style={[styles.growMovement]}>
                   <View style={[styles.growMovementImgContainer]}>
@@ -232,13 +229,13 @@ const FirstView = ({ }) => {
                     >
                       <Text style={[styles.growMoveText]}>
                         You joined the Grow It movement!
-                </Text>
+                      </Text>
                       <Text style={{ color: '#fff', marginTop: 7 }}>Feb 2020</Text>
                     </LinearGradient>
                   </View>
                   <Text style={[styles.growMoveFooterText]}>
                     Click the ‘+’ in the side bar to create your first post!
-            </Text>
+                  </Text>
                 </View>
               )}
             </>

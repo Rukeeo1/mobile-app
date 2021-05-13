@@ -9,6 +9,8 @@ import {
   GET_FOLLOWERS,
   GET_FOLLOWING,
   GET_USER_GROW_LIST,
+  GET_USER_POSTS,
+  FETCHING_MORE,
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
@@ -148,7 +150,7 @@ export const updateProfile = (userData, navigation) => (dispatch, getState) => {
         payload: { ...user, ...data },
       })
 
-      dispatch(getUserProfile(null, true))
+      // dispatch(getUserProfile(true))
       navigation.navigate('Main-Profile', {
         //this would be refactored later... when the sideBar component is refactored...
         indexOfItemToShow: 2,
@@ -261,10 +263,10 @@ export const getUserGrowList = () => (dispatch, getState) => {
     .then(({ data }) => {
       console.log('user growlist', data)
 
-      // dispatch({
-      //   type: GET_USER_GROW_LIST,
-      //   payload: data,
-      // })
+      dispatch({
+        type: GET_USER_GROW_LIST,
+        payload: data.crops,
+      })
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(getUserGrowList()))
@@ -272,6 +274,34 @@ export const getUserGrowList = () => (dispatch, getState) => {
     .finally(() => {
       dispatch({
         type: REFRESHING,
+        payload: false,
+      })
+    })
+}
+
+export const getUserPosts = () => (dispatch, getState) => {
+  const { user } = getState().auth
+
+  dispatch({
+    type: FETCHING_MORE,
+    payload: true,
+  })
+
+  apiRequest(`/users/${user?.id}/posts`)
+    .then(({ data }) => {
+      console.log('user posts', data)
+
+      dispatch({
+        type: GET_USER_POSTS,
+        payload: data.posts,
+      })
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(getUserPosts()))
+    })
+    .finally(() => {
+      dispatch({
+        type: FETCHING_MORE,
         payload: false,
       })
     })
