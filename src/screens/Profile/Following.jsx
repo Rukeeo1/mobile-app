@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,38 +7,29 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 import { BottomSheet } from 'react-native-btr';
+import { useDispatch, useSelector } from 'react-redux'
+
+import { getUserFollowing } from '../../redux/actions/authActions'
 
 import { Header, Input } from '../../components/';
-
 import constants from '../../constants/';
 
 const { colors } = constants;
 
 const Following = ({ navigation }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const dummyImage =
-    'https://images.unsplash.com/photo-1615224571979-b9271f79998b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80';
 
-  const dummData = [
-    {
-      url:
-        'https://images.pexels.com/photos/1924867/pexels-photo-1924867.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-      text: 'Garden_of_Riley',
-    },
-    {
-      url:
-        'https://images.unsplash.com/photo-1615224571979-b9271f79998b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80',
-      text: 'Harriet_loves_to_grow',
-    },
-    {
-      url:
-        'https://images.unsplash.com/photo-1615224571979-b9271f79998b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80',
-      text: 'Kelly_loves_to_grow_it_too',
-    },
-  ];
+  const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.loading)
+  const { following } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    dispatch(getUserFollowing())
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,41 +38,46 @@ const Following = ({ navigation }) => {
         onIconPress={() => navigation.goBack()}
         containerStyle={styles.headerStyle}
       />
-      <View style={styles.searchBarWrapper}>
-        <Input
-          placeholder='Search'
-          containerStyle={styles.searchInputContainer}
-          inputStyle={{ marginTop: -10, paddingRight: 10 }}
-        >
-          <EvilIcons
-            name='search'
-            size={24}
-            color={colors.blue}
-            style={{
-              right: 10,
-              top: '30%',
-              position: 'absolute',
-            }}
+      {loading
+        ? (
+          <ActivityIndicator
+            color={colors.green}
+            animating
+            size="large"
           />
-        </Input>
-        <TouchableOpacity style={styles.cancelContainer}>
-          <Text style={styles.cancelText}>Cancel</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView style={styles.main}>
-        <View style={styles.followItem}>
-          <Image source={{ uri: dummyImage }} style={styles.image} />
-          <Text style={styles.followItemText}>Garden_of_Riley</Text>
-        </View>
-        {dummData.map((item, index) => (
-          <View style={styles.followItem} key={index}>
-            <Image source={{ uri: item.url }} style={styles.image} />
-            <Text style={styles.followItemText}>{item.text}</Text>
-          </View>
-        ))}
-        <BottomSheet visible={showBottomSheet}>
-          <View style={styles.bottomSheetItemWrapper}>
-            {/* <View style={styles.optionsContainer}>
+        ) : (
+          <>
+            <View style={styles.searchBarWrapper}>
+              <Input
+                placeholder='Search'
+                containerStyle={styles.searchInputContainer}
+                inputStyle={{ marginTop: -10, paddingRight: 10 }}
+              >
+                <EvilIcons
+                  name='search'
+                  size={24}
+                  color={colors.blue}
+                  style={{
+                    right: 10,
+                    top: '30%',
+                    position: 'absolute',
+                  }}
+                />
+              </Input>
+              <TouchableOpacity style={styles.cancelContainer}>
+                <Text style={styles.cancelText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.main}>
+              {following?.map((item, index) => (
+                <View style={styles.followItem} key={index}>
+                  <Image source={{ uri: item.avatar }} style={styles.image} />
+                  <Text style={styles.followItemText}>{item.name}</Text>
+                </View>
+              ))}
+              <BottomSheet visible={showBottomSheet}>
+                <View style={styles.bottomSheetItemWrapper}>
+                  {/* <View style={styles.optionsContainer}>
               <View style={styles.optionItem}>
                 <Text>Share to...</Text>
               </View>
@@ -97,32 +93,34 @@ const Following = ({ navigation }) => {
             <TouchableOpacity style={styles.cancelBottomSheet}>
               <Text>Cancel</Text>
             </TouchableOpacity> */}
-            <View style={styles.deleteConfirmation}>
-              <Text>Are you sure you want to delete your post</Text>
-            </View>
-            <View style={styles.deleteConfirmationOptions}>
-              <TouchableOpacity
-                style={{ ...styles.cancelBottomSheet, ...{ flex: 1 } }}
-              >
-                <Text>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  ...styles.cancelBottomSheet,
-                  ...{
-                    flex: 1,
-                    marginLeft: 5,
-                  },
-                }}
-              >
-                <Text style={{ color: colors.red, fontWeight: '500' }}>
-                  Delete
+                  <View style={styles.deleteConfirmation}>
+                    <Text>Are you sure you want to delete your post</Text>
+                  </View>
+                  <View style={styles.deleteConfirmationOptions}>
+                    <TouchableOpacity
+                      style={{ ...styles.cancelBottomSheet, ...{ flex: 1 } }}
+                    >
+                      <Text>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        ...styles.cancelBottomSheet,
+                        ...{
+                          flex: 1,
+                          marginLeft: 5,
+                        },
+                      }}
+                    >
+                      <Text style={{ color: colors.red, fontWeight: '500' }}>
+                        Delete
                 </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </BottomSheet>
-      </ScrollView>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </BottomSheet>
+            </ScrollView>
+          </>
+        )}
     </SafeAreaView>
   );
 };
