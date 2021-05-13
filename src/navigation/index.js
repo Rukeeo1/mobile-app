@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -16,13 +16,20 @@ import {
   ProfileNavigator,
   SplashScreen,
 } from '../screens';
-import Launch from './AuthLoading'
+import Launch from './AuthLoading';
 
 const Stack = createStackNavigator();
 
 const { Navigator, Screen } = Stack;
 
 const RootNavigator = () => {
+  const isAuthenticated = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const user = await AsyncStorage.getItem('user');
+
+    return !!token && !!user;
+  };
+
   return (
     <NavigationContainer>
       <Navigator
@@ -46,7 +53,7 @@ const RootNavigator = () => {
         <Screen name='Posts' component={PostsNavigator} />
       </Navigator>
     </NavigationContainer>
-  )
-      }
+  );
+};
 
 export default RootNavigator;

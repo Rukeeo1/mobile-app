@@ -25,9 +25,10 @@ import { SowItContainer } from './SowItContainer';
 import home from '../../assets/home-icon.png';
 import pencil from '../../assets/pencil_circle.png';
 
-import shovel from '../../assets/shovel.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
+import harvestIcon from '../../assets/harvest-icon.png';
+import jobPendingIcon from '../../assets/job-pending-grey.png';
 
 import constants from '../../constants';
 
@@ -54,7 +55,7 @@ const CropCard = ({ navigation }) => {
 
   const video = React.useRef(null);
 
-  const images = [growingSeed, plant, shovel];
+  const images = [growingSeed, plant, harvestIcon];
 
   const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
@@ -93,8 +94,8 @@ const CropCard = ({ navigation }) => {
             <Image
               source={images[index]}
               style={{
-                height: screenHeight * 0.03,
-                width: screenHeight * 0.03,
+                height: screenHeight * 0.05,
+                width: screenHeight * 0.05,
                 resizeMode: 'contain',
               }}
             />
@@ -500,10 +501,11 @@ const styles = StyleSheet.create({
   },
   toolTip: {
     borderRadius: 8,
-    height: Dimensions.get('screen').height * 0.19,
+    height: 'auto',
     justifyContent: 'center',
     marginTop: '5%',
     paddingHorizontal: '3%',
+    paddingVertical: '5%',
   },
   toolTipTitle: {
     color: colors.white,

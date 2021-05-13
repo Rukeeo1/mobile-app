@@ -43,11 +43,27 @@ const months = [
   'December',
 ];
 
+const monthsAbr = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
 export default {
   colors,
   screenHeight,
   screenWidth,
   months,
+  monthsAbr
 };
 
 export const API_URL = 'http://api.growit-app.co.uk:3000/api/v1'
