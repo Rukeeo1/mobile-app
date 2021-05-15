@@ -42,7 +42,8 @@ export const login = (user, navigation) => (dispatch) => {
   apiRequest('/users/signin', 'post', { password, auth_id: email })
     .then(({ data }) => {
       dispatch(saveUser(data.token, { ...data.user }))
-      navigation.navigate('Onboarding')
+      // navigation.navigate('Onboarding')
+      navigation.navigate('Splash')
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(login(user, navigation)))
@@ -72,7 +73,8 @@ export const register = (user, navigation) => (dispatch) => {
   })
     .then(({ data }) => {
       dispatch(saveUser(data.data.token, { ...data.data }))
-      navigation.navigate('Onboarding')
+      navigation.navigate('Splash')
+      // navigation.navigate('Onboarding')
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(register(user, navigation)))

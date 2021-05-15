@@ -1,5 +1,5 @@
 import { EvilIcons } from '@expo/vector-icons'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import {
   Image,
   SafeAreaView,
@@ -16,6 +16,9 @@ import { Input } from '../../components'
 import constants from '../../constants/'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { getPosts } from '../../redux/actions/postsActions'
 
 const { colors } = constants
 
@@ -27,31 +30,39 @@ const Explore = () => {
   const navigation = useNavigation()
   const [showShare, setShowShare] = useState(false)
   const [spinner, setSpinnner] = useState(true)
-  const [refreshing, setRefreshing] = React.useState(false)
+  // const [refreshing, setRefreshing] = React.useState(false)
   const [text, setText] = useState(false)
 
-  let spinValue = new Animated.Value(0)
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true)
-    wait(2000).then(() => setRefreshing(false))
-  }, [])
+  // let spinValue = new Animated.Value(0)
+  // const onRefresh = React.useCallback(() => {
+  //   setRefreshing(true)
+  //   wait(2000).then(() => setRefreshing(false))
+  // }, [])
   // First set up animation
-  Animated.timing(spinValue, {
-    toValue: 1,
-    duration: 3000,
-    easing: Easing.linear, // Easing is an additional import from react-native
-    useNativeDriver: true, // To make use of native driver for performance
-  }).start()
+  // Animated.timing(spinValue, {
+  //   toValue: 1,
+  //   duration: 3000,
+  //   easing: Easing.linear, // Easing is an additional import from react-native
+  //   useNativeDriver: true, // To make use of native driver for performance
+  // }).start()
 
   // Next, interpolate beginning and end values (in this case 0 and 1)
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  })
+  // const spin = spinValue.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: ['0deg', '360deg'],
+  // })
 
-  setTimeout(() => {
-    setSpinnner(false)
-  }, 1000)
+  // setTimeout(() => {
+  //   setSpinnner(false)
+  // }, 1000)
+
+  const dispatch = useDispatch()
+  const { loading, refreshing } = useSelector((state) => state.loading)
+  const { all: posts = [] } = useSelector((state) => state.posts)
+
+  useEffect(() => {
+    dispatch(getPosts())
+  }, [])
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
@@ -62,7 +73,12 @@ const Explore = () => {
         }}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing || loading}
+            onRefresh={() => dispatch(getPosts(true))}
+            tintColor={colors.blue}
+            colors={[colors.blue]}
+          />
         }
       >
         <View style={[styles.container]}>
@@ -85,14 +101,14 @@ const Explore = () => {
             </Input>
           </View>
 
-          <View style={[styles.flowercircle]}>
+          {/* <View style={[styles.flowercircle]}>
             {spinner && (
               <Animated.Image
                 style={{ transform: [{ rotate: spin }] }}
                 source={require('../../assets/flowercircle.png')}
               />
             )}
-          </View>
+          </View> */}
 
           <TouchableOpacity
             activeOpacity={0.8}
@@ -129,88 +145,58 @@ const Explore = () => {
               />
             </View>
           </TouchableOpacity>
+          {!loading && posts?.map((post) => {
+            return (
+              <View
+                style={[styles.postCard]}
+                key={post.id}
+              >
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={[styles.userDetail]}
+                  onPress={() => navigation.navigate('User-details')}
+                >
+                  <Image
+                    style={[styles.imgAvatar]}
+                    source={{ uri: post?.avatar }}
+                  />
+                  <Text style={[styles.imgText]}>{post?.fullname}</Text>
+                </TouchableOpacity>
 
-          <View style={[styles.postCard]}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={[styles.userDetail]}
-              onPress={() => navigation.navigate('User-details')}
-            >
-              <Image
-                style={[styles.imgAvatar]}
-                source={require('../../assets/avatarimg.png')}
-              />
-              <Text style={[styles.imgText]}>Harriet_loves_to_grow_it</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => navigation.navigate('User-details')}
+                >
+                  <Image
+                    style={[styles.postImg]}
+                    source={{ uri: post?.media_url }}
+                  />
+                </TouchableOpacity>
 
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('User-details')}
-            >
-              <Image
-                style={[styles.postImg]}
-                source={require('../../assets/profile.png')}
-              />
-            </TouchableOpacity>
+                <View style={[styles.dateTime]}>
+                  <Text style={[styles.date]}>{new Date(post?.created_at).toDateString()}</Text>
+                  {/* <Text>...</Text> */}
+                </View>
 
-            <View style={[styles.dateTime]}>
-              <Text style={[styles.date]}>23 July 2020</Text>
-              {/* <Text>...</Text> */}
-            </View>
-
-            <View style={[styles.postText]}>
-              <Text style={[styles.boldContainer, {}]}>
-                {' '}
-                <Text style={[styles.bold]}>Harriet_loves_to_grow_it</Text>{' '}
-                First handful of tomatoes!! Well worth the wait!
-                {!text && (
-                  <Text
-                    style={{ color: '#085BAC' }}
-                    onPress={() => setText(!text)}
-                  >
-                    ...more
+                <View style={[styles.postText]}>
+                  <Text style={[styles.boldContainer, {}]}>
+                    {' '}
+                    <Text style={[styles.bold]}>{post?.fullname}</Text>{' '}{post?.title}
+                {/* {!text && (
+                      <Text
+                        style={{ color: '#085BAC' }}
+                        onPress={() => setText(!text)}
+                      >
+                        ...more
+                      </Text>
+                    )}
+                    {text && <Text> yes, patient is golden any time!</Text>} */}
                   </Text>
-                )}
-                {text && <Text> yes, patient is golden any time!</Text>}
-              </Text>
-            </View>
-          </View>
-          <View style={[styles.postCard]}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={[styles.userDetail]}
-              onPress={() => navigation.navigate('User-details')}
-            >
-              <Image
-                style={[styles.imgAvatar]}
-                source={require('../../assets/avatarimg.png')}
-              />
-              <Text style={[styles.imgText]}>Harriet_loves_to_grow_it</Text>
-            </TouchableOpacity>
+                </View>
+              </View>
 
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('User-details')}
-            >
-              <Image
-                style={[styles.postImg]}
-                source={require('../../assets/profile.png')}
-              />
-            </TouchableOpacity>
-
-            <View style={[styles.dateTime]}>
-              <Text style={[styles.date]}>23 July 2020</Text>
-              {/* <Text>...</Text> */}
-            </View>
-
-            <View style={[styles.postText]}>
-              <Text style={[styles.boldContainer]}>
-                {' '}
-                <Text style={[styles.bold]}>Harriet_loves_to_grow_it</Text>{' '}
-                First handful of tomatoes!! Well worth the wait!
-              </Text>
-            </View>
-          </View>
+            )
+          })}
         </View>
       </ScrollView>
     </SafeAreaView>
