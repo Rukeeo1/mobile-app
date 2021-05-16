@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -12,13 +12,17 @@ import { AntDesign } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import Tooltip from 'react-native-walkthrough-tooltip';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { getCropCycleDetails, getCropSteps } from '../../redux/actions/';
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import ActionSheet from './ActionSheet';
 import SideMenuOverlay from './SideMenuOverlay';
 
 import { SafeArea, GradientButton as Button, Text } from '../../components';
 
-import { MyCarousel as Carousel } from './Carousel';
+import { MyCarousel as StepsCarousel } from './Carousel';
 import { EditableTitle } from './Title';
 import { SowItContainer } from './SowItContainer';
 
@@ -28,9 +32,9 @@ import pencil from '../../assets/pencil_circle.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 import harvestIcon from '../../assets/harvest-icon.png';
-import jobPendingIcon from '../../assets/job-pending-grey.png';
 
 import constants from '../../constants';
+import { getCropCardData } from '../../utils/index';
 
 const { colors } = constants;
 
@@ -47,11 +51,30 @@ const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
 
 const CropCard = ({ navigation }) => {
+  const manageCropContext = useContext(ManageCropContext);
+  const { cropToGrowDetails } = manageCropContext?.data;
+  const { cropCycleDetails, cropSteps } = useSelector((state) => ({
+    cropCycleDetails: state.crops.cropCycleDetails[0],
+    cropSteps: state.crops.cropSteps,
+  }));
+  const initialGrowDate = new Date().getDate() + ' ' + cropToGrowDetails.month;
+  const dispatch = useDispatch();
+
   const [activeScreen, setActiveScreen] = useState(0);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [toolTipIsVisible, setToolTipIsVisible] = useState(true);
+  const [growDate, setGrowDate] = useState(initialGrowDate);
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
+
+  const cycleData = getCropCardData(cropCycleDetails, cropSteps, activeScreen);
+
+  useEffect(() => {
+    if (cropToGrowDetails?.cropId) {
+      dispatch(getCropCycleDetails(cropToGrowDetails?.cropId));
+      dispatch(getCropSteps(cropToGrowDetails?.cropId));
+    }
+  }, [cropToGrowDetails?.cropId]);
 
   const video = React.useRef(null);
 
@@ -107,7 +130,7 @@ const CropCard = ({ navigation }) => {
             marginTop: '6%',
           }}
         >
-          20 Feb
+          {growDate}
         </Text>
 
         <View
@@ -236,7 +259,7 @@ const CropCard = ({ navigation }) => {
               <Image source={pencil} style={{ height: 37, width: 37 }} />
             </TouchableOpacity>
           </View>
-          <EditableTitle />
+          <EditableTitle cropToGrowDetails={cropToGrowDetails} />
 
           <View
             style={{
@@ -397,14 +420,9 @@ const CropCard = ({ navigation }) => {
                 fontWeight: '100',
               }}
             >
-              How to Sow Seeds
+              {cycleData?.title}
             </Text>
-            <Text style={{ textAlign: 'center' }}>
-              Not all tomatoes will grow well outside with no protection, having
-              said that there are varieties where you can so this is something
-              to bear in mind when choosing seeds and thinking about where you
-              will grow your tomatoes.
-            </Text>
+            <Text style={{ textAlign: 'center' }}>{cycleData?.summary}</Text>
           </View>
           <View style={{ marginTop: '4%' }}>
             <Video
@@ -419,36 +437,34 @@ const CropCard = ({ navigation }) => {
               onPlaybackStatusUpdate={(status) => {}}
             />
           </View>
-          <Carousel />
+          <StepsCarousel steps={cycleData?.steps} />
+
           <LinearGradient
             style={styles.toolTip}
             colors={[colors.green, colors.greenDeep]}
           >
             <Text style={styles.toolTipTitle}>Tool tip</Text>
-            <Text style={styles.toolTipContent}>
-              March is usually a great time to start sowing seeds. Starting
-              earlier in the year can be difficult as you may end up with plants
-              that are outgrowing their pots, that you can’t plant out because
-              its too cold still! But who doesn’t love a challenge!{' '}
-            </Text>
+            <Text style={styles.toolTipContent}>{cycleData?.tip}</Text>
           </LinearGradient>
           <View style={styles.companionContainer}>
             <Image
               source={{
-                uri:
-                  'https://images.pexels.com/photos/265216/pexels-photo-265216.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
+                uri: cropCycleDetails?.media_url,
               }}
               style={styles.companionContainerImage}
             />
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.companionContainerTitle}>
-                Companion Plant
-              </Text>
-              <Text style={styles.companionContainerText}>
-                Basil is great with tomatoes not only for its culinary delights,
-                but it can also help deter some garden pests such as whiteflies.
-              </Text>
-            </View>
+            {cropCycleDetails?.companion_crops && (
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.companionContainerTitle}>
+                  Companion Plant
+                </Text>
+                <Text style={styles.companionContainerText}>
+                  Basil is great with tomatoes not only for its culinary
+                  delights, but it can also help deter some garden pests such as
+                  whiteflies.
+                </Text>
+              </View>
+            )}
           </View>
           <View style={styles.footer}>
             <Text style={styles.footerText}>Ready. Set. Grow!</Text>

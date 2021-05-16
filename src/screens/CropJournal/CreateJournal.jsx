@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,13 @@ import {
   TouchableOpacity,
   Switch,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { Ionicons } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   Header,
@@ -17,18 +22,77 @@ import {
   SafeArea,
 } from '../../components/';
 
-import { Ionicons } from '@expo/vector-icons';
+import ManageCropContext from '../../context/ManageCropsContext';
+
+import { addJournal } from '../../redux/actions';
 
 import constants from '../../constants/';
 
 const { colors } = constants;
 
 const CreateJournal = ({ navigation }) => {
-  const [journalEntry, setJournalEntry] = useState({
-    entry: '',
-    isPublic: false,
-    isPublic1: false,
-    journalUri: '',
+  const dispatch = useDispatch();
+
+  const manageCropContext = useContext(ManageCropContext);
+  const { cropToGrowDetails } = manageCropContext?.data;
+  const { user, journal } = useSelector((state) => ({
+    user: state?.auth.user,
+    journal: state?.journal?.journals,
+  }));
+
+  const [addingJournal, setAddingJournal] = useState(false);
+
+  const createJournalSchema = Yup.object().shape({
+    content: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    journalImageUri: Yup.string().required('Required').min(3, 'Too Short!'),
+  });
+
+  const {
+    handleChange,
+    handleBlur,
+    values,
+    isValid,
+    errors,
+    setFieldValue,
+    handleSubmit,
+    dirty,
+    touched,
+  } = useFormik({
+    initialValues: {
+      content: '',
+      user_id: user?.id,
+      crop_id: cropToGrowDetails?.cropId,
+      post_type: 'private', //public
+      isPublic: false,
+      journalImageUri: '',
+      isCoverImage: false,
+    },
+
+    validationSchema: createJournalSchema,
+    onSubmit: async (data) => {
+      
+      const { user_id, crop_id, isPublic, content, journalImageUri } = data;
+
+      const journalFormData = new FormData();
+      journalFormData.append('user_id', user_id);
+      journalFormData.append('crop_id', crop_id);
+      journalFormData.append('post_type', isPublic ? 'public' : 'private');
+      journalFormData.append('content', content);
+      journalFormData.append('thumbnail_url', {
+        name: journalImageUri?.split('/').pop(),
+        uri: journalImageUri,
+        type: 'image/*',
+      });
+
+      setAddingJournal(true);
+      await dispatch(addJournal(journalFormData, user));
+      setAddingJournal(false);
+    },
+
+    enableReinitialize: true,
   });
 
   const pickImage = async () => {
@@ -41,12 +105,10 @@ const CreateJournal = ({ navigation }) => {
     });
 
     if (!result.cancelled) {
-      setJournalEntry((prevState) => ({
-        ...prevState,
-        journalUri: result?.uri,
-      }));
+      setFieldValue('journalImageUri', result?.uri);
     }
   };
+  const disableForm = !isValid || !values.content || !values.journalImageUri;
 
   return (
     <SafeArea>
@@ -61,9 +123,9 @@ const CreateJournal = ({ navigation }) => {
         />
         <View style={styles.postInput}>
           <TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>
-            {journalEntry.journalUri ? (
+            {values.journalImageUri ? (
               <Image
-                source={{ uri: journalEntry.journalUri }}
+                source={{ uri: values.journalImageUri }}
                 style={{ height: '100%', width: '100%' }}
               />
             ) : (
@@ -77,13 +139,8 @@ const CreateJournal = ({ navigation }) => {
           <View style={{ flex: 1, height: 150, flexWrap: 'wrap' }}>
             <Input
               placeholder='Write a journal entry…'
-              onChangeText={(text) =>
-                setJournalEntry((prevState) => ({
-                  ...prevState,
-                  entry: text,
-                }))
-              }
-              value={journalEntry.entry}
+              onChangeText={handleChange('content')}
+              value={values.content}
               numberOfLines={4}
               inputStyle={{ flexWrap: 'wrap' }}
               containerStyle={{ flexWrap: 'wrap' }}
@@ -92,37 +149,32 @@ const CreateJournal = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.switchContainer}>
-          <Text style={{fontSize: 16}}>Add to public profile</Text>
+          <Text style={{ fontSize: 16 }}>Add to public profile</Text>
           <Switch
             trackColor={{ false: '#767577', true: colors.pink }}
-            value={journalEntry.isPublic}
-            onValueChange={(value) => {
-              setJournalEntry((prevState) => ({
-                ...prevState,
-                isPublic: value,
-              }));
-            }}
+            value={values.isPublic}
+            onValueChange={(value) => setFieldValue('isPublic', value)}
           />
         </View>
         <View style={styles.switchContainer}>
-          <Text style={{fontSize: 16}}>Make crop cover image</Text>
+          <Text style={{ fontSize: 16 }}>Make crop cover image</Text>
           <Switch
             trackColor={{ false: '#767577', true: colors.pink }}
-            value={journalEntry.isPublic1}
-            onValueChange={(value) => {
-              setJournalEntry((prevState) => ({
-                ...prevState,
-                isPublic1: value,
-              }));
-            }}
+            value={values.isCoverImage}
+            onValueChange={(value) => setFieldValue('isCoverImage', value)}
           />
         </View>
       </ScrollView>
       <View style={styles.footer}>
         <Button
           title='Share'
-          gradient={[colors.green, colors.greenDeep]}
-          onPress={() => navigation.navigate('Crop-Journal')}
+          gradient={
+            disableForm
+              ? [colors.grey, colors.grey]
+              : [colors.green, colors.greenDeep]
+          }
+          loading={addingJournal}
+          onPress={handleSubmit}
         />
       </View>
     </SafeArea>
@@ -159,7 +211,7 @@ const styles = StyleSheet.create({
   footer: {
     padding: 22,
     justifyContent: 'flex-end',
-    marginBottom:"5%"
+    marginBottom: '5%',
   },
 });
 

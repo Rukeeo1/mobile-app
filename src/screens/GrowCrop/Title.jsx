@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 import constants from '../../constants';
 
 const { colors } = constants;
 
-export const EditableTitle = () => {
+export const EditableTitle = ({ cropToGrowDetails }) => {
   const [cropDetails, setCropDetails] = useState({
-    cropName: '<Type if applicable>',
+    cropName: '<Crop>',
+    category: '<Type if applicable>',
     variety: "'<Var >'",
+    monthIndex: 0,
   });
+
+  useEffect(() => {
+    setCropDetails((prevState) => ({
+      ...prevState,
+      ...cropToGrowDetails,
+    }));
+  }, [cropToGrowDetails]);
 
   const handleChange = (itemName, text) => {
     setCropDetails((prevState) => ({
@@ -25,19 +29,26 @@ export const EditableTitle = () => {
   return (
     <View>
       <View style={{ alignItems: 'center', marginTop: '5%' }}>
-        <Text style={{ fontSize: 34, color: colors.white, fontWeight: '200' }}>
-          <Text>{'<Crop >'}</Text>
-        </Text>
         <TextInput
           color={colors.white}
           value={cropDetails.cropName}
+          onChangeText={(text) => handleChange('cropName', text)}
+          style={{
+            fontSize: 28,
+            fontWeight: '200',
+            maxWidth: '80%',
+          }}
+        />
+        <TextInput
+          color={colors.white}
+          value={cropDetails.category}
           style={{
             fontSize: 24,
             fontWeight: '500',
             marginVertical: '2%',
             maxWidth: '80%',
           }}
-          onChangeText={(text) => handleChange('cropName', text)}
+          onChangeText={(text) => handleChange('category', text)}
           placeholder='helo'
         />
         <TextInput

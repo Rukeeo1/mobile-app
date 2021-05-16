@@ -6,7 +6,7 @@ import { API_URL } from '../constants'
 export const apiRequest = async (endpoint, method = 'get', body = {}, contentType = 'application/json') => {
   try {
     const token = await AsyncStorage.getItem('token')
-
+    
     const url = `${API_URL}${endpoint}`
 
     const request = await axios(url, {

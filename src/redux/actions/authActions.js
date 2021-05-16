@@ -96,7 +96,6 @@ export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
     type: 'image/*',
   })
   const url = `${API_URL}/users/${user?.id}/updateAvatar`
-  console.log(url)
 
   dispatch({
     type: LOADING,
@@ -110,11 +109,9 @@ export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
       },
     })
     .then(({ data }) => {
-      console.log('upload avatar', data)
       dispatch(updateProfile(userData, navigation))
     })
-    .catch((err) => {
-      console.log('api', err.response ?? err)
+    .catch((err) => {  
       showApiError(err, true, () => dispatch(updateAvatar(image, navigation)))
     })
     .finally(() => {
@@ -139,7 +136,6 @@ export const updateProfile = (userData, navigation) => (dispatch, getState) => {
     location: userData.location,
   })
     .then(({ data }) => {
-      console.log('update profile', data)
 
       dispatch({
         type: SAVE_USER,
@@ -173,7 +169,7 @@ export const getUserProfile = (silent = false) => (dispatch, getState) => {
 
   apiRequest(`/users/${user?.id}`)
     .then(({ data }) => {
-      console.log('user profile', data)
+  
 
       dispatch({
         type: GET_USER_DATA,
@@ -201,8 +197,6 @@ export const getUserFollowing = (refreshing = false) => (dispatch, getState) => 
 
   apiRequest(`/users/${user?.id}/following`)
     .then(({ data }) => {
-      console.log('user following', data)
-
       dispatch({
         type: GET_FOLLOWING,
         payload: data,
@@ -229,8 +223,6 @@ export const getUserFollowers = (refreshing = false) => (dispatch, getState) => 
 
   apiRequest(`/users/${user?.id}/followers`)
     .then(({ data }) => {
-      console.log('user followers', data)
-
       dispatch({
         type: GET_FOLLOWERS,
         payload: data,

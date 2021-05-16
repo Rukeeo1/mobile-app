@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, Entypo } from '@expo/vector-icons';
+
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import { GradientButton, Text } from '../../components/';
 
@@ -12,7 +14,17 @@ const { colors, screenHeight } = constants;
 export const CropItem = ({ crop }) => {
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
-  const { thumbnail_url, name, category } = crop || {};
+  const { thumbnail_url, name, category, variety } = crop || {};
+
+  const manageCropContext = useContext(ManageCropContext);
+
+  const handleNavigation = (path, extraInfo) => () => {
+    navigation.navigate(path);
+    manageCropContext?.actions?.updateCropToGrowDetails({
+      variety,
+      cropName: name,
+    });
+  };
 
   return (
     <View style={{ marginVertical: screenHeight * 0.005 }}>
@@ -42,7 +54,7 @@ export const CropItem = ({ crop }) => {
         >
           <GradientButton
             gradient={[colors.blueLigth, colors.blue]}
-            onPress={() => navigation.navigate('Success')}
+            onPress={handleNavigation('Success', {})}
           >
             <View
               style={{

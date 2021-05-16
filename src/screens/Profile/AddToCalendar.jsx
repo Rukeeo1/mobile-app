@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
@@ -22,31 +23,26 @@ import {
 } from '../../components';
 
 import { getCropsFavoriteToGrow } from '../../redux/actions';
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
 
-const { colors, screenHeight, screenWidth, monthsAbr: months } = constants;
+const {
+  colors,
+  screenHeight,
+  screenWidth,
+  monthsAbr: months,
+  months: monthsFull,
+} = constants;
 
 const AddToCalendar = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const manageCropContext = useContext(ManageCropContext);
+
   const { favoriteCrops } = useSelector((state) => ({
     favoriteCrops: state.crops.favoriteCrops,
   }));
-  const monthsFull = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
 
   const dummyJobs = [
     {
@@ -91,10 +87,17 @@ const AddToCalendar = () => {
   const [viewingMore, setViewingMore] = useState(false);
   const [jobTitle, setJobTitle] = useState('');
   const [cropToolTipIdToShow, setCropToolTipIdToShow] = useState('');
+  const [fetchingFavoriteCrops, setFetchingFavoriteCrops] = useState(false);
+
+  const getFavoriteCrops = async () => {
+    setFetchingFavoriteCrops(true);
+    await dispatch(getCropsFavoriteToGrow(months[m]));
+    setFetchingFavoriteCrops(false);
+  };
 
   useEffect(() => {
-    dispatch(getCropsFavoriteToGrow(months[m]));
-  }, []);
+    getFavoriteCrops();
+  }, [m]);
 
   const nextItem = () => {
     if (m > months.length - 2) {
@@ -354,24 +357,38 @@ const AddToCalendar = () => {
                 Some of our favourites to grow this month
               </Text>
             </View>
-            {favoriteCrops?.crops?.map((crop, index) => (
-              <FavoriteCropItem
-                crop={crop}
-                key={index}
-                tipToShowId={cropToolTipIdToShow}
-                onSetTipToShow={setCropToolTipIdToShow}
-                onNavigate={() => {
-                  navigation.navigate('Crops', {
-                    screen: 'Crop-selection',
-                    params: {
+            {fetchingFavoriteCrops ? (
+              <View>
+                <ActivityIndicator />
+              </View>
+            ) : (
+              favoriteCrops?.crops?.map((crop, index) => (
+                <FavoriteCropItem
+                  crop={crop}
+                  key={index}
+                  tipToShowId={cropToolTipIdToShow}
+                  onSetTipToShow={setCropToolTipIdToShow}
+                  onNavigate={() => {
+                    navigation.navigate('Crops', {
+                      screen: 'Crop-selection',
+                      params: {
+                        cropName: crop?.name,
+                        sowTip: crop?.sow_tip,
+                        growLevel: crop?.grow_level,
+                      },
+                    });
+                    //update state context???
+                    manageCropContext?.actions?.updateCropToGrowDetails({
                       cropName: crop?.name,
-                      sowTip: crop?.sow_tip,
-                      growLevel: crop?.grow_level,
-                    },
-                  });
-                }}
-              />
-            ))}
+                      month: months[m],
+                      variety: crop?.variety,
+                      monthIndex: m,
+                      cropId: crop?.id,
+                    });
+                  }}
+                />
+              ))
+            )}
 
             <View style={{ marginBottom: 50 }}>
               <Text style={styles.explore}>Continue to explore</Text>
