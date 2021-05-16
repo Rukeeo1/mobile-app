@@ -11,7 +11,7 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getCropsFavoriteToGrow, getCropDetails } from '../../redux/actions';
+import { getCropsFavoriteToGrow, getCropVarieties } from '../../redux/actions';
 
 import { Input, GradientButton } from '../../components/';
 import { CropItem } from './CropItem';
@@ -32,7 +32,7 @@ const CropSelection = ({ navigation, route }) => {
 
   useEffect(() => {
     if (cropName) {
-      dispatch(getCropDetails(cropName));
+      dispatch(getCropVarieties(cropName));
     }
   }, [cropName]);
 

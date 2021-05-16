@@ -63,7 +63,6 @@ const Settings = ({ navigation }) => {
 
     validationSchema: ProfileSchema,
     onSubmit: (values) => {
-      console.log({ values })
       if (values.profileImageUri !== user.avatar) dispatch(updateAvatar(values, navigation))
       else dispatch(updateProfile(values, navigation))
     },

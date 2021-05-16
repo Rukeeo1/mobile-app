@@ -1,6 +1,7 @@
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -16,9 +17,22 @@ import constants from '../../constants';
 import ModalSheet from './ModalSheet';
 import DeleteModal from './DeleteModal';
 
+import { getJournals } from '../../redux/actions';
+
 const { colors } = constants;
 
 const CropJournalLists = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { user, journal } = useSelector((state) => ({
+    user: state?.auth.user,
+    journal: state?.journal?.journals,
+  }));
+  console.log(journal, 'RO: cross it', user);
+
+  useEffect(() => {
+    dispatch(getJournals(user?.id));
+  }, []);
+
   return (
     <SafeArea>
       <TouchableOpacity style={styles.plusButtonContainer}>
