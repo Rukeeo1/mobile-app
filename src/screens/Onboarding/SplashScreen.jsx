@@ -5,11 +5,11 @@ import constants from "../../constants";
 
 const {colors} = constants;
 const SplashScreen = ({ navigation }) => {
-    useEffect(() => {
-        setTimeout(() => {
-            navigation.navigate('Settings');
-        }, 3000)
-    }, [])
+  useEffect(() => {
+      setTimeout(() => {
+          navigation.navigate('Settings');
+      }, 1500)
+  }, [navigation])
 
   return (
     <TouchableOpacity activeOpacity={0.7} style={{ flex: 1, backgroundColor: colors.green }} onPress={() => navigation.navigate('Settings')}>

@@ -24,7 +24,7 @@ const Launch = ({ navigation }) => {
 
       if (token && user) {
         dispatch(saveUser(token, JSON.parse(user)))
-        navigation.navigate('Onboarding')
+        navigation.navigate('Splash')
       } else navigation.navigate('AuthNavigator')
     } catch (err) {
       console.log('launch error', err)
