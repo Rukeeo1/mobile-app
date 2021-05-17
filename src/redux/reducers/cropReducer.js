@@ -3,6 +3,7 @@ import {
   GET_CROP_VARIETIES,
   GET_CROP_CYCLE_DETAILS,
   GET_CROP_STEPS,
+  GET_SEARCH_RESULTS,
 } from '../types/';
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
   cropDetail: {},
   cropCycleDetails: [],
   cropSteps: {},
+  searchResults: [],
 };
 
 const cropsReducer = (state = initialState, { type, payload }) => {
@@ -34,7 +36,11 @@ const cropsReducer = (state = initialState, { type, payload }) => {
         ...state,
         cropSteps: payload,
       };
-
+    case GET_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchResults: payload,
+      }
     default:
       return state;
   }
