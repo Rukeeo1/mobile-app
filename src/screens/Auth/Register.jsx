@@ -45,6 +45,7 @@ export const Register = ({ navigation }) => {
   return (
     <KeyboardAvoiding>
       <SafeArea>
+        <View style={{ flex: 1 }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ backgroundColor: colors.white }}
@@ -154,6 +155,7 @@ export const Register = ({ navigation }) => {
             </LinearGradient>
           </View>
         </ScrollView>
+        </View>
       </SafeArea>
     </KeyboardAvoiding>
   );

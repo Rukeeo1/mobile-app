@@ -13,7 +13,7 @@ const Launch = ({ navigation }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // AsyncStorage.clear()
+    AsyncStorage.clear()
     redirect()
   }, [])
 

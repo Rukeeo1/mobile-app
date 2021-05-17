@@ -59,12 +59,13 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect }) => {
   };
 
   return (
-    <View style={{ marginHorizontal: 10 }}>
+    <View style={{ marginHorizontal: 5 }}>
       {!showDropDown && (
         <GradientButton
           gradient={[colors.red, colors.redDeep]}
           title={activeItem}
           onPress={() => setShowDropDown(!showDropDown)}
+          coverStyle={{ maxWidth: 220, width: 'auto' }}
         />
       )}
       {showDropDown && (
