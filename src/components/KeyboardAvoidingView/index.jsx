@@ -9,7 +9,7 @@ const KeyboardAvoiding = ({ children }) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: colors.white }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
     >
       {children}
     </KeyboardAvoidingView>

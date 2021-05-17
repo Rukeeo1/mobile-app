@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import * as Yup from 'yup';
 
@@ -65,131 +66,134 @@ const ManualAuth = ({ navigation }) => {
   });
 
   return (
-    <SafeArea containerStyle={{ backgroundColor: colors.white }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+    >
+      <SafeArea containerStyle={{ backgroundColor: colors.white }}>
         <View
           style={{
             flex: 1,
-            alignItems: 'center',
+            // alignItems: 'center',
             backgroundColor: colors.white,
           }}
         >
-          <Header onIconPress={() => navigation.goBack()} />
-          <Logo
-            source={growthLogo}
-            logoStyles={{ marginTop: '10%', marginBottom: '10%' }}
-          />
-          <View style={styles.authContainer}>
-            <Input
-              inputStyle={styles.inputStyle}
-              labelStyle={styles.labelText}
-              labelText='Email'
-              value={values.email}
-              onBlur={handleBlur('email')}
-              onChangeText={handleChange('email')}
-              placeholder='Enter your email'
-              errorMessage={errors.email}
-              autoCapitalize='none'
+          <ScrollView>
+            <Header onIconPress={() => navigation.goBack()} />
+            <Logo
+              source={growthLogo}
+              logoStyles={{ marginTop: '10%', marginBottom: '10%', alignSelf: 'center' }}
             />
-            <Input
-              containerStyle={styles.inputPasswordCont}
-              inputStyle={styles.inputStyle}
-              labelStyle={styles.labelText}
-              labelText='Password'
-              value={values.password}
-              onBlur={handleBlur('password')}
-              onChangeText={handleChange('password')}
-              placeholder='Enter your password'
-              secureTextEntry={true}
-            />
-
-            <View style={{ marginTop: 25 }}>
-              <GradientButton
-                gradient={[colors.green, colors.greenDeep]}
-                coverStyle={{}}
-                title={'Log in'}
-                onPress={handleSubmit}
-                loading={loading}
+            <View style={styles.authContainer}>
+              <Input
+                inputStyle={styles.inputStyle}
+                labelStyle={styles.labelText}
+                labelText='Email'
+                value={values.email}
+                onBlur={handleBlur('email')}
+                onChangeText={handleChange('email')}
+                placeholder='Enter your email'
+                errorMessage={errors.email}
+                autoCapitalize='none'
               />
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => navigation.navigate('Forgot-password')}
+              <Input
+                containerStyle={styles.inputPasswordCont}
+                inputStyle={styles.inputStyle}
+                labelStyle={styles.labelText}
+                labelText='Password'
+                value={values.password}
+                onBlur={handleBlur('password')}
+                onChangeText={handleChange('password')}
+                placeholder='Enter your password'
+                secureTextEntry={true}
+              />
+
+              <View style={{ marginTop: 25 }}>
+                <GradientButton
+                  gradient={[colors.green, colors.greenDeep]}
+                  coverStyle={{}}
+                  title={'Log in'}
+                  onPress={handleSubmit}
+                  loading={loading}
+                />
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() => navigation.navigate('Forgot-password')}
+                >
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      marginTop: '6%',
+                      marginBottom: 32,
+                      fontSize: 14,
+                      fontFamily: 'Hero-New-Light',
+                    }}
+                  >
+                    Forgotten Password?
+                </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View
+              style={[
+                {
+                  width: '100%',
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  overflow: 'hidden',
+                },
+              ]}
+            >
+              <LinearGradient
+                style={{
+                  width: '100%',
+                  height: 305,
+                  paddingLeft: '8%',
+                  paddingRight: '8%',
+                }}
+                colors={[colors.blueLigth, colors.blue]}
               >
                 <Text
                   style={{
+                    color: colors.white,
                     textAlign: 'center',
-                    marginTop: '6%',
-                    marginBottom: 32,
-                    fontSize: 14,
-                    fontFamily: 'Hero-New-Light',
+                    marginTop: 40,
+                    marginBottom: 10,
                   }}
                 >
-                  Forgotten Password?
-                </Text>
-              </TouchableOpacity>
+                  Not got an account?
+              </Text>
+                <GradientButton
+                  gradient={[colors.green, colors.greenDeep]}
+                  coverStyle={{ marginBottom: '10%' }}
+                  title={'Register'}
+                  onPress={() => navigation.navigate('Register')}
+                />
+
+                <Text
+                  style={{
+                    position: 'absolute',
+                    bottom: '35%',
+                    left: 0,
+                    right: 0,
+                    color: colors.white,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontSize: 16,
+                  }}
+                  onPress={() => navigation.goBack()}
+                  fontType='bold'
+                >
+                  Cancel
+              </Text>
+              </LinearGradient>
             </View>
-          </View>
-
-          <View
-            style={[
-              {
-                width: '100%',
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                overflow: 'hidden',
-              },
-            ]}
-          >
-            <LinearGradient
-              style={{
-                width: '100%',
-                height: 305,
-                paddingLeft: '8%',
-                paddingRight: '8%',
-              }}
-              colors={[colors.blueLigth, colors.blue]}
-            >
-              <Text
-                style={{
-                  color: colors.white,
-                  textAlign: 'center',
-                  marginTop: 40,
-                  marginBottom: 10,
-                }}
-              >
-                Not got an account?
-              </Text>
-              <GradientButton
-                gradient={[colors.green, colors.greenDeep]}
-                coverStyle={{ marginBottom: '10%' }}
-                title={'Register'}
-                onPress={() => navigation.navigate('Register')}
-              />
-
-              <Text
-                style={{
-                  position: 'absolute',
-                  bottom: '35%',
-                  left: 0,
-                  right: 0,
-                  color: colors.white,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  fontSize: 16,
-                }}
-                onPress={() => navigation.goBack()}
-                fontType='bold'
-              >
-                Cancel
-              </Text>
-            </LinearGradient>
-          </View>
+          </ScrollView>
         </View>
-      </KeyboardAvoidingView>
-    </SafeArea>
+
+      </SafeArea>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -214,6 +218,7 @@ const styles = StyleSheet.create({
     width: '85%',
     justifyContent: 'center',
     marginTop: '5%',
+    alignSelf: 'center',
   },
   inputPasswordCont: {
     marginTop: '10%',

@@ -21,6 +21,7 @@ const { colors, months } = constants;
 const CropSearch = ({ navigation }) => {
   const [search, setSearch] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('February');
+  const [selectedLevel, setSelectedLevel] = useState('Intermediate');
 
   let _menu = null;
 
@@ -71,20 +72,23 @@ const CropSearch = ({ navigation }) => {
                 </Text>
               </View>
 
+              <View style={{ flex: 1 }}>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
+                style={{
                   width: '100%',
-                  alignItems: 'center',
                   flex: 1,
+                }}
+                contentContainerStyle={{
+                  alignItems: 'center',
                 }}
               >
                 <View
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
-                    paddingTop: 16,
+                    paddingTop: 10,
                     marginLeft: 30,
                   }}
                 >
@@ -105,10 +109,10 @@ const CropSearch = ({ navigation }) => {
                 />
                 <FilterItemDropDown
                   items={['Beginner', 'Intermediate', 'Advance']}
-                  activeItem={`Grow in ${selectedMonth}`}
-                  onSelect={setSelectedMonth}
+                  activeItem={selectedLevel}
+                  onSelect={setSelectedLevel}
                 />
-                <FilterItemDropDown items={months} />
+                {/* <FilterItemDropDown items={months} />
                 <View
                   style={{
                     marginRight: 20,
@@ -116,8 +120,9 @@ const CropSearch = ({ navigation }) => {
                     height: 100,
                     backgroundColor: 'red',
                   }}
-                />
+                /> */}
               </ScrollView>
+              </View>
             </LinearGradient>
           </View>
 
