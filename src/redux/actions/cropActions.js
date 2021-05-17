@@ -3,6 +3,7 @@ import {
   GET_CROP_VARIETIES,
   GET_CROP_CYCLE_DETAILS,
   GET_CROP_STEPS,
+  GET_SEARCH_RESULTS
 } from '../types/cropTypes';
 import { apiRequest, showApiError } from '../../config/api';
 
@@ -55,3 +56,16 @@ export const getCropSteps = (cropId) => async (dispatch) => {
     showApiError(error);
   }
 };
+
+export const getCropSearchResults = (value) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}`);
+    console.log('get search results', data)
+    dispatch({
+      type: GET_SEARCH_RESULTS,
+      payload: data,
+    });
+  } catch (error) {
+    showApiError(error);
+  }
+}

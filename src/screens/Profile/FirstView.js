@@ -27,7 +27,7 @@ import { ActivityIndicator } from 'react-native'
 
 const { colors } = constants
 
-const FirstView = ({ }) => {
+const FirstView = () => {
   const dispatch = useDispatch()
   const { user, userData, growList, posts } = useSelector((state) => state.auth)
   const { loading, refreshing, fetchingMore } = useSelector((state) => state.loading)
@@ -104,11 +104,10 @@ const FirstView = ({ }) => {
                 </Text>
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  onPress={() => navigation.navigate('Settings')}
+                  onPress={() => navigation.navigate('Profile-Settings')}
                 >
                   <Text style={[styles.edit]}>Edit profile</Text>
                 </TouchableOpacity>
-                
               </View>
 
               <View style={[styles.detailsContainer, styles.follows]}>
