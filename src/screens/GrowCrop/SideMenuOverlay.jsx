@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   ball: {
-    top: screenHeight * 0.743,
+    top: screenHeight * 0.740,
     zIndex: -10,
     backgroundColor: colors.white,
     borderRadius: 30,
