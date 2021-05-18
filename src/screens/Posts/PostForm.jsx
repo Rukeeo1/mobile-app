@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -8,14 +8,19 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Modal,
+  RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux'
+
+import { getCropVarieties, getCrops } from '../../redux/actions/cropActions'
+import { addPost } from '../../redux/actions/postsActions'
 
 import { GradientButton as Button, Header, Input } from '../../components/';
-
 import constants from '../../constants/';
 
 const { colors } = constants;
@@ -55,11 +60,14 @@ const PostForm = ({
 
   const [post, setPost] = useState({
     post: '',
-    plantName: '',
-    plantVariety: '',
+    plantName: null,
+    plantVariety: null,
     postImageUri: '',
     isPublic: false,
   });
+
+  const [selectModal, setSelectModal] = useState(false)
+  const [selecting, setSelecting] = useState(null)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -79,7 +87,16 @@ const PostForm = ({
     }
   };
 
-  React.useEffect(() => {
+  const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.loading)
+  const { crops, cropDetail } = useSelector((state) => state.crops)
+  const { user } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    dispatch(getCrops())
+  }, [])
+
+  useEffect(() => {
     if (defaultPostImage) {
       setFieldValue('postImageUri', defaultPostImage);
       setPost((prevState) => ({
@@ -87,7 +104,7 @@ const PostForm = ({
         postImageUri: defaultPostImage,
       }));
     }
-    pickImage();
+    // pickImage();
   }, [defaultPostImage, currentIndex]);
 
   const goBack = () => {
@@ -98,6 +115,30 @@ const PostForm = ({
       },
     });
   };
+
+  const submit = () => {
+    const data = new FormData()
+
+    data.append('title', values.post)
+    data.append('content', values.post)
+    data.append('post_type', post.isPublic ? 'public' : 'private')
+    data.append('crop_id', post.plantName?.id)
+    data.append('user_id', user?.id)
+    data.append('thumbnail_url', {
+      name: post.postImageUri?.split('/').pop(),
+      uri: post.postImageUri,
+      type: 'image/*',
+    })
+    data.append('media_url', {
+      name: post.postImageUri?.split('/').pop(),
+      uri: post.postImageUri,
+      type: 'image/*',
+    })
+
+    dispatch(addPost(data))
+    // navigation.goBack()
+    goBack()
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -135,12 +176,63 @@ const PostForm = ({
           </View>
         </View>
         <View style={styles.postDetails}>
-          <Input
+          <TouchableOpacity
+            style={styles.select}
+            onPress={() => {
+              setSelecting('crop')
+              setSelectModal(true)
+            }}
+          >
+            <Text style={{
+              ...styles.labelText,
+              fontSize: 18,
+              fontWeight: '600',
+            }}>
+              Plant Name
+            </Text>
+            <Text style={{
+              fontSize: 18,
+              color: constants.colors.greyDark,
+              fontWeight: '300',
+              marginVertical: 5
+            }}>
+              {post.plantName === null ? 'Plant Name e.g Tomatoes' : post.plantName?.name}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ ...styles.select, marginTop: 10 }}
+            onPress={() => {
+              setSelecting('variety')
+              setSelectModal(true)
+            }}
+          >
+            <Text style={{
+              ...styles.labelText,
+              fontSize: 18,
+              fontWeight: '600',
+            }}>
+              Plant Variety
+            </Text>
+            <Text style={{
+              fontSize: 18,
+              color: constants.colors.greyDark,
+              fontWeight: '300',
+              marginVertical: 5
+            }}>
+              {post.plantVariety === null ? 'Plant variety' : post.plantVariety?.variety}
+            </Text>
+          </TouchableOpacity>
+          {/* <Input
             inputStyle={styles.inputStyle}
             labelStyle={styles.labelText}
             labelText='Plant Name'
             value={values.plantName}
             onChangeText={handleChange('plantName')}
+            // onBlur={() => dispatch(getCropVarieties(values.plantName))}
+            onFocus={() => {
+              setSelecting('crop')
+              setSelectModal(true)
+            }}
             placeholder='Plant Name e.g. Tomatoes '
           />
           <Input
@@ -151,7 +243,7 @@ const PostForm = ({
             value={values.plantVariety}
             onChangeText={handleChange('plantVariety')}
             placeholder='Plant variety e.g. Sungold'
-          />
+          /> */}
         </View>
         <View style={styles.switchContainer}>
           <Text>Add to public profile</Text>
@@ -168,13 +260,88 @@ const PostForm = ({
         </View>
         <View style={styles.footer}>
           <Button
-            title='Share,'
+            title='Share'
             gradient={[colors.green, colors.greenDeep]}
             //the "settings title for this would be refactored to profile"
-            onPress={() => goBack()}
+            // onPress={() => goBack()}
+            onPress={submit}
           />
         </View>
       </ScrollView>
+      <Modal
+        visible={selectModal}
+        animationType="fade"
+        onDismiss={() => setSelectModal(false)}
+        onRequestClose={() => setSelectModal(false)}
+        transparent
+      >
+        <View style={{
+          flex: 1,
+          backgroundColor: '#0005',
+          padding: 20,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <View style={{
+            width: '100%',
+            backgroundColor: '#fff',
+            borderRadius: 16,
+            height: '75%',
+          }}>
+            <ScrollView
+              refreshControl={(
+                <RefreshControl
+                  refreshing={loading}
+                  onRefresh={() => null}
+                  colors={[constants.colors.green]}
+                  tintColor={constants.colors.green}
+                />
+              )}
+              style={{ padding: 20 }}
+            >
+              {selecting === 'crop' && crops?.crops?.map((crop) => {
+                return (
+                  <TouchableOpacity
+                    key={crop.id}
+                    onPress={() => {
+                      setPost({ ...post, plantName: crop })
+                      setSelectModal(false)
+                      dispatch(getCropVarieties(crop?.name))
+                    }}
+                    style={{
+                      paddingVertical: 5,
+                    }}
+                  >
+                    <Text style={{ fontSize: 16 }}>{crop.name}</Text>
+                  </TouchableOpacity>
+                )
+              })}
+              {selecting === 'variety' && cropDetail?.crops?.map((crop) => {
+                return (
+                  <TouchableOpacity
+                    key={crop.id}
+                    onPress={() => {
+                      setPost({ ...post, plantVariety: crop })
+                      setSelectModal(false)
+                    }}
+                    style={{
+                      paddingVertical: 5,
+                    }}
+                  >
+                    <Text style={{ fontSize: 16 }}>{crop.variety}</Text>
+                  </TouchableOpacity>
+                )
+              })}
+            </ScrollView>
+            <TouchableOpacity
+              style={{ alignItems: 'center', paddingVertical: 15 }}
+              onPress={() => setSelectModal(false)}
+            >
+              <Text style={{ color: 'red', fontSize: 16 }}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
