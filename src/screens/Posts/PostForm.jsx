@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -10,12 +14,14 @@ import {
   View,
   Modal,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux'
+import RBSheet from 'react-native-raw-bottom-sheet'
 
 import { getCropVarieties, getCrops } from '../../redux/actions/cropActions'
 import { addPost } from '../../redux/actions/postsActions'
@@ -91,6 +97,8 @@ const PostForm = ({
   const { loading } = useSelector((state) => state.loading)
   const { crops, cropDetail } = useSelector((state) => state.crops)
   const { user } = useSelector((state) => state.auth)
+
+  const rbSheet = useRef()
 
   useEffect(() => {
     dispatch(getCrops())
@@ -180,7 +188,8 @@ const PostForm = ({
             style={styles.select}
             onPress={() => {
               setSelecting('crop')
-              setSelectModal(true)
+              // setSelectModal(true)
+              rbSheet.current?.open()
             }}
           >
             <Text style={{
@@ -203,7 +212,8 @@ const PostForm = ({
             style={{ ...styles.select, marginTop: 10 }}
             onPress={() => {
               setSelecting('variety')
-              setSelectModal(true)
+              // setSelectModal(true)
+              rbSheet.current?.open()
             }}
           >
             <Text style={{
@@ -268,7 +278,75 @@ const PostForm = ({
           />
         </View>
       </ScrollView>
-      <Modal
+      <RBSheet
+        ref={rbSheet}
+        height={Dimensions.get('window').height * 0.6}
+        duration={500}
+        dragFromTopOnly
+        closeOnDragDown
+        customStyles={{
+          container: {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          },
+          draggableIcon: {
+            width: 50,
+            height: 5,
+            borderRadius: 100,
+            backgroundColor: '#0005',
+          },
+        }}
+      >
+        <SafeAreaView style={{ flex: 1 }}>
+          <ScrollView
+            refreshControl={(
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => null}
+                colors={[constants.colors.green]}
+                tintColor={constants.colors.green}
+              />
+            )}
+            style={{ padding: 20 }}
+          >
+            {selecting === 'crop' && crops?.crops?.map((crop) => {
+              return (
+                <TouchableOpacity
+                  key={crop.id}
+                  onPress={() => {
+                    setPost({ ...post, plantName: crop })
+                    setSelectModal(false)
+                    dispatch(getCropVarieties(crop?.name))
+                  }}
+                  style={{
+                    paddingVertical: 7,
+                  }}
+                >
+                  <Text style={{ fontSize: 18 }}>{crop.name}</Text>
+                </TouchableOpacity>
+              )
+            })}
+            {selecting === 'variety' && cropDetail?.crops?.map((crop) => {
+              return (
+                <TouchableOpacity
+                  key={crop.id}
+                  onPress={() => {
+                    setPost({ ...post, plantVariety: crop })
+                    setSelectModal(false)
+                  }}
+                  style={{
+                    paddingVertical: 7,
+                  }}
+                >
+                  <Text style={{ fontSize: 18 }}>{crop.variety}</Text>
+                </TouchableOpacity>
+              )
+            })}
+            <View style={{ height: 20 }} />
+          </ScrollView>
+        </SafeAreaView>
+      </RBSheet>
+      {/* <Modal
         visible={selectModal}
         animationType="fade"
         onDismiss={() => setSelectModal(false)}
@@ -341,7 +419,7 @@ const PostForm = ({
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </SafeAreaView>
   );
 };
