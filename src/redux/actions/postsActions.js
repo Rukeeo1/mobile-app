@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import {
   FETCH_POSTS,
   LOADING,
@@ -27,6 +29,37 @@ export const getPosts = (refreshing = false) => (dispatch) => {
     .finally(() => {
       dispatch({
         type: refreshing ? REFRESHING : LOADING,
+        payload: false,
+      })
+    })
+}
+
+export const addPost = (formData) => (dispatch, getState) => {
+  const { token } = getState().auth
+  console.log(formData)
+
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  axios
+    .post(`${API_URL}/posts/newpost`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(({ data }) => {
+      console.log('add post', data)
+
+      dispatch(getPosts(true))
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(addPost(formData)))
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
         payload: false,
       })
     })

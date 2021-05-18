@@ -121,12 +121,12 @@ const CropSearch = ({ navigation }) => {
                     Clear filters
                   </Text>
                 </TouchableOpacity>
-                <FilterItemDropDown
+                {/* <FilterItemDropDown
                   items={months}
                   activeItem={selectedMonth ??'Select Month'}
                   onSelect={setSelectedMonth}
                   placeholder="Month to grow"
-                />
+                /> */}
                 <FilterItemDropDown
                   items={['Beginner', 'Intermediate', 'Advanced']}
                   activeItem={selectedLevel ?? 'Select level'}

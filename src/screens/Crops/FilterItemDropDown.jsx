@@ -17,7 +17,7 @@ import constants from '../../constants';
 const { colors, screenWidth } = constants;
 
 export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder }) => {
-  const [showDropDown, setShowDropDown] = useState(true);
+  const [showDropDown, setShowDropDown] = useState(false);
   const [showDropDownItems] = useState(false);
   const [menuToGrowButtonStyle, setMenuToGrowButtonStyle] = useState({
     borderBottomLeftRadius: 25,
@@ -33,7 +33,7 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
 
   let hideMenu = () => {
     _menu.hide();
-    // setShowDropDown(false);
+    setShowDropDown(false);
     setMenuToGrowButtonStyle({
       borderBottomLeftRadius: 25,
       borderBottomRightRadius: 25,
