@@ -5,6 +5,7 @@ import auth from './authReducer';
 import crops from './cropReducer';
 import journal from './JournalReducer';
 import posts from './postsReducer';
+import jobs from './jobReducer';
 
 export default combineReducers({
   loading,
@@ -12,4 +13,5 @@ export default combineReducers({
   crops,
   journal,
   posts,
+  jobs,
 });

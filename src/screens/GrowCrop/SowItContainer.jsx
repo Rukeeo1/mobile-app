@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Feather, AntDesign } from '@expo/vector-icons';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 import { GradientButton as Button, Text } from '../../components';
 
@@ -8,7 +8,7 @@ import { GrowCropCalender } from './GrowCropCalendar';
 
 import constants from '../../constants';
 
-const { colors } = constants;
+const { colors, months, monthsAbr } = constants;
 
 export const SowItContainer = ({
   buttonTitle,
@@ -17,43 +17,21 @@ export const SowItContainer = ({
   reminderText,
   showHoriazontalButtonAfterDateIsSelected,
   onPressOfHorizontalBtn,
+  startMonth,
+  onSubmitSelected,
+  submitting,
 }) => {
   const [showSowItButton, setShowSowItButton] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   const [showFullSelectedDate, setShowFullSelectedDate] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState('18');
-  const [selectedMonth, setSelectedMonth] = useState('February');
+  const [selectedMonth, setSelectedMonth] = useState(
+    months[monthsAbr.indexOf(startMonth)]
+  );
   const [selectedYear, setSelectedYear] = useState('2021');
 
-  // const renderConfirmIcon = (callBack) => {
-  //   return (
-  //     <View
-  //       style={{
-  //         alignItems: 'center',
-  //         justifyContent: 'center',
-  //         flex: '1',
-  //         paddingHorizontal: '5%',
-  //         marginRight: 20,
-  //         marginTop: '2%',
-  //       }}
-  //     >
-  //       <TouchableOpacity
-  //         onPress={callBack}
-  //         style={{
-  //           height: 50,
-  //           width: 50,
-  //           borderRadius: 25,
-  //           backgroundColor: colors.pink,
-  //           justifyContent: 'center',
-  //           alignItems: 'center',
-  //         }}
-  //       >
-  //         <AntDesign name='right' size={29} color={colors.white} />
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
+  const monthIndex = monthsAbr.indexOf(startMonth);
 
   return (
     <View>
@@ -81,12 +59,18 @@ export const SowItContainer = ({
             handleMonth={setSelectedMonth}
             handleYear={setSelectedYear}
             setSelectedDateItems={() => {
+              // maybe this prop should be named toggle
               setShowCalender(false);
               setShowSowItButton(false);
               setShowFullSelectedDate(true);
+              onSubmitSelected(
+                `${selectedYear} - ${selectedMonth} - ${selectedDate} `
+              );
             }}
-            // renderIcon={renderConfirmIcon}
             renderIcon={renderIcon}
+            defaultMonthIndex={monthIndex}
+            selectedYear={selectedYear}
+            selectedMonth={selectedMonth}
           />
         </View>
       )}
@@ -145,7 +129,11 @@ export const SowItContainer = ({
                   marginTop: 15,
                 }}
               >
-                <Feather name='clock' size={24} color={colors.white} />
+                {submitting ? (
+                  <ActivityIndicator />
+                ) : (
+                  <Feather name='clock' size={24} color={colors.white} />
+                )}
               </TouchableOpacity>
             )}
           </View>
