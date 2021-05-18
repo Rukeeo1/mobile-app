@@ -28,13 +28,13 @@ const getIcon = (jobType) => {
 };
 
 export const JobItem = ({ job }) => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={[styles.jobs]}
-      onPress={() => navigation.navigate('Grow-Crop')}
+      // onPress={() => navigation.navigate('Grow-Crop')}
     >
       <View style={[styles.jobsChild]}>
         <Image
@@ -42,9 +42,9 @@ export const JobItem = ({ job }) => {
           resizeMode='contain'
           style={{ height: screenHeight * 0.06, width: screenWidth * 0.05 }}
         />
-        <View style={[styles.jobsText]}>
+        <View style={styles.jobsText}>
           <Text>{job?.title}</Text>
-          <Text fontType='bold' style={[styles.boldText]}>
+          <Text fontType='bold' style={styles.boldText}>
             20 February
           </Text>
         </View>

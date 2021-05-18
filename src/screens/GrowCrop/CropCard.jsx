@@ -13,8 +13,16 @@ import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import { useSelector, useDispatch } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
-import { getCropCycleDetails, getCropSteps } from '../../redux/actions/';
+import {
+  getCropCycleDetails,
+  getCropSteps,
+  growCrop,
+  harvestCrop,
+  plantCrop,
+  getUserJobs,
+} from '../../redux/actions/';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import ActionSheet from './ActionSheet';
@@ -26,15 +34,15 @@ import { MyCarousel as StepsCarousel } from './Carousel';
 import { EditableTitle } from './Title';
 import { SowItContainer } from './SowItContainer';
 
+import constants from '../../constants';
+import { getCropCardData } from '../../utils/index';
+
 import home from '../../assets/home-icon.png';
 import pencil from '../../assets/pencil_circle.png';
 
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 import harvestIcon from '../../assets/harvest-icon.png';
-
-import constants from '../../constants';
-import { getCropCardData } from '../../utils/index';
 
 const { colors } = constants;
 
@@ -53,18 +61,19 @@ const screenWidth = Dimensions.get('screen').width;
 const CropCard = ({ navigation }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails } = manageCropContext?.data;
-  const { cropCycleDetails, cropSteps } = useSelector((state) => ({
+  const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
     cropSteps: state.crops.cropSteps,
+    user: state?.auth?.user,
   }));
-  const initialGrowDate = new Date().getDate() + ' ' + cropToGrowDetails.month;
   const dispatch = useDispatch();
 
   const [activeScreen, setActiveScreen] = useState(0);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [toolTipIsVisible, setToolTipIsVisible] = useState(true);
-  const [growDate, setGrowDate] = useState(initialGrowDate);
+  const [loadingJobs, setLoadingJobs] = useState(false);
+
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
 
   const cycleData = getCropCardData(cropCycleDetails, cropSteps, activeScreen);
@@ -82,7 +91,39 @@ const CropCard = ({ navigation }) => {
 
   const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
-  const renderTab = (index) => (
+  const cropSeasons = [
+    cropToGrowDetails.month,
+    `${cropCycleDetails?.plant_start_month} - ${cropCycleDetails?.plant_end_month}`,
+    `${cropCycleDetails?.harvest_start_month} - ${cropCycleDetails?.harvest_end_month}`,
+  ];
+
+  const handleGrowCrop = async (selectedDate, jobType) => {
+    const jobInfo = {
+      crop_id: cropToGrowDetails?.cropId,
+      user_id: user.id,
+      job_date: new Date(selectedDate),
+    };
+
+    setLoadingJobs(true);
+
+    if (jobType === 'Sow') {
+      jobInfo.title = 'Sow';
+      await dispatch(growCrop(jobInfo, Toast));
+    }
+
+    if (jobType === 'Plant') {
+      jobInfo.title = 'Plant';
+      await dispatch(plantCrop(jobInfo, Toast));
+    }
+
+    if (jobType === 'Harvest') {
+      jobInfo.title = 'Harvest';
+      await dispatch(harvestCrop(jobInfo, Toast));
+    }
+    setLoadingJobs(false);
+  };
+
+  const renderTab = (season, index) => (
     <>
       <View
         style={[
@@ -130,7 +171,7 @@ const CropCard = ({ navigation }) => {
             marginTop: '6%',
           }}
         >
-          {growDate}
+          {season}
         </Text>
 
         <View
@@ -268,8 +309,10 @@ const CropCard = ({ navigation }) => {
               marginTop: '4%',
             }}
           >
-            {[1, 2, 3].map((item, index) => (
-              <React.Fragment key={index}>{renderTab(index)}</React.Fragment>
+            {cropSeasons?.map((season, index) => (
+              <React.Fragment key={index}>
+                {renderTab(season, index)}
+              </React.Fragment>
             ))}
           </View>
         </LinearGradient>
@@ -282,6 +325,12 @@ const CropCard = ({ navigation }) => {
               }
               tip='Enter the date you plan to sow your seeds'
               reminderText='Sown'
+              startMonth={cropToGrowDetails.month}
+              onSubmitSelected={handleGrowCrop}
+              onSubmitSelected={(dateSelected) =>
+                handleGrowCrop(dateSelected, 'Sow')
+              }
+              submitting={loadingJobs}
             />
           )}
           {activeScreen === 1 && (
@@ -292,6 +341,11 @@ const CropCard = ({ navigation }) => {
                 renderCalenderConfirmIcon(itemToConfirm)
               }
               reminderText='Reminder to plant'
+              startMonth={cropCycleDetails?.plant_start_month}
+              onSubmitSelected={(dateSelected) =>
+                handleGrowCrop(dateSelected, 'Plant')
+              }
+              submitting={loadingJobs}
             />
           )}
           {activeScreen === 2 && (
@@ -304,6 +358,11 @@ const CropCard = ({ navigation }) => {
               reminderText='Harvest started'
               showHoriazontalButtonAfterDateIsSelected
               onPressOfHorizontalBtn={() => navigation.navigate('End-Harvest')}
+              startMonth={cropCycleDetails?.harvest_start_month}
+              onSubmitSelected={(dateSelected) =>
+                handleGrowCrop(dateSelected, 'Harvest')
+              }
+              submitting={loadingJobs}
             />
           )}
           <View style={styles.skipStep}>
@@ -475,6 +534,7 @@ const CropCard = ({ navigation }) => {
       {showSideMenu && (
         <SideMenuOverlay toggleSideMenu={() => setShowSideMenu(false)} />
       )}
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeArea>
   );
 };

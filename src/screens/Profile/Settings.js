@@ -19,7 +19,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { updateProfile, updateAvatar } from '../../redux/actions/authActions'
 
-import { GradientButton, Header, Input, SafeArea } from '../../components';
+import { GradientButton, Header, Input, SafeArea, KeyboardAvoiding } from '../../components';
 import constants from '../../constants';
 
 const { colors } = constants;
@@ -84,9 +84,10 @@ const Settings = ({ navigation }) => {
   };
 
   return (
+    <KeyboardAvoiding>
     <SafeArea>
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
         <Header
@@ -168,6 +169,7 @@ const Settings = ({ navigation }) => {
         </View>
       </ScrollView>
     </SafeArea>
+    </KeyboardAvoiding>
   );
 };
 

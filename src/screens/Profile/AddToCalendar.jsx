@@ -22,7 +22,7 @@ import {
   FavoriteCropItem,
 } from '../../components';
 
-import { getCropsFavoriteToGrow } from '../../redux/actions';
+import { getCropsFavoriteToGrow, getUserJobs } from '../../redux/actions';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
@@ -40,42 +40,16 @@ const AddToCalendar = () => {
   const dispatch = useDispatch();
   const manageCropContext = useContext(ManageCropContext);
 
-  const { favoriteCrops } = useSelector((state) => ({
+  const {
+    favoriteCrops,
+    user,
+    jobs: userJobs,
+  } = useSelector((state) => ({
     favoriteCrops: state.crops.favoriteCrops,
+    user: state.auth?.user,
+    jobs: state.jobs?.usersJobs,
   }));
 
-  const dummyJobs = [
-    {
-      type: 'sow',
-      title: 'Sow Tomatoes',
-      status: 'about to start',
-    },
-    {
-      type: 'plant',
-      title: 'Plant Pepper',
-      status: 'about to start',
-    },
-    {
-      type: 'water',
-      title: 'Water House Plants',
-      status: 'in progress',
-    },
-    {
-      type: 'harvest',
-      title: 'Harvest Leeks',
-      status: 'done',
-    },
-    {
-      type: 'plant',
-      title: 'Plant Pepper',
-      status: 'about to start',
-    },
-    {
-      type: 'water',
-      title: 'Water House Plants',
-      status: 'in progress',
-    },
-  ];
   const currentMonthIndex = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const [m, setM] = useState(currentMonthIndex);
@@ -88,6 +62,7 @@ const AddToCalendar = () => {
   const [jobTitle, setJobTitle] = useState('');
   const [cropToolTipIdToShow, setCropToolTipIdToShow] = useState('');
   const [fetchingFavoriteCrops, setFetchingFavoriteCrops] = useState(false);
+  const [loadingJobs, setLoadingJobs] = useState(false);
 
   const getFavoriteCrops = async () => {
     setFetchingFavoriteCrops(true);
@@ -95,9 +70,18 @@ const AddToCalendar = () => {
     setFetchingFavoriteCrops(false);
   };
 
+  const getJobs = async (userId) => {
+    setLoadingJobs(true);
+    await dispatch(getUserJobs(userId));
+    setLoadingJobs(false);
+  };
+
   useEffect(() => {
     getFavoriteCrops();
-  }, [m]);
+    if (user?.id) {
+      getJobs(user?.id);
+    }
+  }, [m, user?.id]);
 
   const nextItem = () => {
     if (m > months.length - 2) {
@@ -283,14 +267,7 @@ const AddToCalendar = () => {
             </GradientButton>
 
             {jobs && (
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.jobs]}
-                // onPress={() => {
-                //   // setRest(true);
-                //   // setJobs(false);
-                // }}
-              >
+              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/circle.png')} />
                   <View style={[styles.jobsText]}>
@@ -314,26 +291,25 @@ const AddToCalendar = () => {
                 />
               </TouchableOpacity>
             )}
-
-            {rest ? (
-              <View style={{ marginTop: 30 }}>
-                {dummyJobs
-                  .slice(0, viewingMore ? dummyJobs.length : 3)
+            <View style={{ marginTop: 30 }}>
+              {loadingJobs ? (
+                <ActivityIndicator />
+              ) : (
+                userJobs?.jobs
+                  ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
                   .map((job, index) => (
                     <React.Fragment key={index}>
                       <JobItem job={job} />
                     </React.Fragment>
-                  ))}
+                  ))
+              )}
 
-                <TouchableOpacity onPress={() => setViewingMore(!viewingMore)}>
-                  <Text style={[styles.viewMore]}>
-                    {viewingMore ? 'Hide jobs' : 'View more'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View></View>
-            )}
+              <TouchableOpacity onPress={() => setViewingMore(!viewingMore)}>
+                <Text style={styles.viewMore}>
+                  {viewingMore ? 'Hide jobs' : 'View more'}
+                </Text>
+              </TouchableOpacity>
+            </View>
 
             <GradientButton gradient={[colors.blueLigth, colors.blue]}>
               <View
