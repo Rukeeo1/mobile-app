@@ -154,7 +154,7 @@ const CropSearch = ({ navigation }) => {
               style={{ paddingVertical: 10 }}
             />
           )}
-          {(searchResults?.crops?.length < 1 || search === '') ? (
+          {(searchResults?.crops?.length < 1) ? (
             <View style={{ marginTop: 30 }}>
               {search !== '' && (
                 <>
@@ -179,7 +179,7 @@ const CropSearch = ({ navigation }) => {
                       key={crop?.id}
                       activeOpacity={0.9}
                       style={[styles.cropCardContainer]}
-                      onPress={() => navigation.navigate('Crop-selection')}
+                      onPress={() => navigation.navigate('Crop-selection', { cropName: crop?.name, growLevel: crop?.grow_level, sowTip: crop?.sow_tip })}
                     >
                       <View style={[styles.cropDetails]}>
                         <Image
