@@ -8,11 +8,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import {
-  Entypo,
-  FontAwesome5,
-  Ionicons,
-} from '@expo/vector-icons';
+import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 import constants from '../../constants/index';
 import notificationIcon from '../../assets/notification.png';
@@ -40,6 +36,7 @@ const ProfileSideTab = ({
   const [activeIndex, setActiveIndex] = useState(0);
 
   const containerRef = React.useRef();
+  const activeBallRef = React.useRef();
 
   const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -102,7 +99,7 @@ const ProfileSideTab = ({
       icon: (active) => (
         <Image
           source={active ? manageCrops : manageCropsInactive}
-          style={{ width: 32, height: 32, opacity: active ? 1 : 0.5,  }}
+          style={{ width: 32, height: 32, opacity: active ? 1 : 0.5 }}
         />
       ),
       ref: React.createRef(),
@@ -113,7 +110,15 @@ const ProfileSideTab = ({
     {
       name: 'calendar',
       icon: (active) => (
-        <Ionicons name='md-calendar-outline' size={24} color={colors.white} style={{color: active? colors.greenDeep : colors.white, opacity: active? 1 : 0.5}} />
+        <Ionicons
+          name='md-calendar-outline'
+          size={24}
+          color={colors.white}
+          style={{
+            color: active ? colors.greenDeep : colors.white,
+            opacity: active ? 1 : 0.5,
+          }}
+        />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
@@ -141,24 +146,26 @@ const ProfileSideTab = ({
 
   useEffect(() => {
     // get the positions of sidebar items/icons on the screen (basically their x and y coordinates)
-    const intialCoordinatesDetails = [];
-    sideBarTabItems.forEach((item) => {
-      //for each item on the side bar loop through and get their position
-      item.ref.current?.measureLayout(
-        containerRef.current,
-        (x, y, width, height) => {
-          intialCoordinatesDetails.push({
-            x,
-            y,
-            width,
-            height,
-            item: item.name,
-          });
-          intialCoordinatesDetails.length === sideBarTabItems.length &&
-            setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
-        }
-      );
-    });
+    setTimeout(() => {
+      const intialCoordinatesDetails = [];
+      sideBarTabItems.forEach((item) => {
+        //for each item on the side bar loop through and get their position
+        item.ref.current?.measureLayout(
+          containerRef.current,
+          (x, y, width, height) => {
+            intialCoordinatesDetails.push({
+              x,
+              y,
+              width,
+              height,
+              item: item.name,
+            });
+            intialCoordinatesDetails.length === sideBarTabItems.length &&
+              setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
+          }
+        );
+      });
+    }, 6);
   }, [coordinates.length, JSON.stringify(coordinates)]);
 
   useEffect(() => {
@@ -186,7 +193,12 @@ const ProfileSideTab = ({
         indexOfItemToShow: null,
       });
     }
-  }, [coordinates.length, indexOfItemToShow, currentIndex, JSON.stringify(coordinates)]);
+  }, [
+    coordinates.length,
+    indexOfItemToShow,
+    currentIndex,
+    JSON.stringify(coordinates),
+  ]);
 
   return (
     <SafeAreaView style={styles.tab}>
@@ -238,6 +250,7 @@ const ProfileSideTab = ({
           width: 100,
           opacity: 0.5,
         }}
+        ref={activeBallRef}
       />
     </SafeAreaView>
   );
