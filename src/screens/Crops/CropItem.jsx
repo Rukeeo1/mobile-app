@@ -23,6 +23,7 @@ export const CropItem = ({ crop }) => {
     manageCropContext?.actions?.updateCropToGrowDetails({
       variety,
       cropName: name,
+      cropId: crop?.id,
     });
   };
 

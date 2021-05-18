@@ -105,6 +105,7 @@ const CropSelection = ({ navigation, route }) => {
                           ManageCropContext?.actions?.updateCropToGrowDetails({
                             variety: crop?.variety,
                             cropName,
+                            cropId: crop?.id,
                           });
                         }}
                         // onPress={() => navigation.navigate('Success')}
