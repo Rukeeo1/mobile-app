@@ -2,11 +2,11 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-import { GrowCalendar } from '../../components';
+import { GrowCalendar } from '../../components'; //calendarScrollItem
 
 import constants from '../../constants';
 
-const { colors } = constants;
+const { colors, months } = constants;
 
 const start = 2000;
 
@@ -25,46 +25,19 @@ const monthsForCalender = [
   'December',
 ];
 
-const years = new Array(new Date().getFullYear() - start + 1)
-  .fill(0)
-  .map((_, i) => {
-    const value = start + i;
-    return value;
-  })
-  .reverse();
+const getYears = () => {
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear];
 
-const days = [
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  23,
-  24,
-  25,
-  26,
-  27,
-  28,
-  29,
-  30,
-];
+  for (let i = 1; i < 20; i++) {
+    years.push(currentYear + i);
+  }
+  return years;
+};
+
+const getDaysInMonth = (year, month) => {
+  return new Date(year, month, 0).getDate();
+};
 
 export const GrowCropCalender = ({
   handleDate = () => {},
@@ -75,9 +48,24 @@ export const GrowCropCalender = ({
   calenderWrapperStyle = {},
   textColor,
   renderIcon = () => {},
+  defaultMonthIndex,
+  selectedYear,
+  selectedMonth,
 }) => {
   const confirmCallback = () => {
     setSelectedDateItems?.();
+  };
+
+  const getDays = () => {
+    const days = [];
+    for (
+      let i = 1;
+      i <= getDaysInMonth(selectedYear, months.indexOf(selectedMonth) + 1);
+      i++
+    ) {
+      days.push(i);
+    }
+    return days;
   };
 
   return (
@@ -88,21 +76,24 @@ export const GrowCropCalender = ({
         />
         <GrowCalendar
           type='days'
-          data={days}
+          data={getDays()}
           onSelectItem={handleDate}
           textColor={textColor}
+          defaultSelectedItem={defaultMonthIndex}
         />
         <GrowCalendar
           type='month'
-          data={monthsForCalender}
+          data={months}
           onSelectItem={handleMonth}
           textColor={textColor}
+          defaultSelectedItem={defaultMonthIndex}
         />
         <GrowCalendar
           type='years'
-          data={years}
+          data={getYears()}
           onSelectItem={handleYear}
           textColor={textColor}
+          defaultSelectedItem={1}
         />
       </View>
       {renderIcon(confirmCallback)}

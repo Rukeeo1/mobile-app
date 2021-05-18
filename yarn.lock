@@ -5748,6 +5748,11 @@ react-native-size-matters@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz#24d0cfc335a2c730f6d58bd7b43ea5a41be4b49f"
 
+react-native-skeleton-placeholder@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-4.0.0.tgz#8c982cd9e00ffc69d5193da94945b75191eaa7c4"
+  integrity sha512-nX0NM6GhurCIgz8Yf+H9VYIaxSF2mbtdozLgaJNh/8QIH9mi+aJ2G9BVHSpjQ0o1fNdKYbGzrXDsC+6v4hmqAA==
+
 react-native-smooth-picker@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/react-native-smooth-picker/-/react-native-smooth-picker-1.1.4.tgz#9d459920b53167a28e9dcc837f103e972adf3fa3"
@@ -5777,6 +5782,13 @@ react-native-swiper@^1.6.0:
   resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.6.0.tgz#59fdbdf95addee49630312f27077622c27776819"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-toast-message@^1.4.9:
+  version "1.4.9"
+  resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-1.4.9.tgz#47f33ac312fe2aee5dbdd4ae14745fa0d354102e"
+  integrity sha512-QhHzzsiymKpHEWz2nUKQjQMRuGN+/a8cOwDXJcz3TQFY03p20f6sJW9JKw3KkMfvWiUhGbApCPpNU6tHaAZ32w==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-vector-icons@^6.6.0:
   version "6.7.0"

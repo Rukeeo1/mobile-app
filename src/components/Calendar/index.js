@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SmoothPicker from 'react-native-smooth-picker';
 
 import { View, StyleSheet } from 'react-native';
@@ -96,8 +96,18 @@ export const GrowCalendar = ({
   onSelectItem,
   activeTextColor,
   textColor,
+  defaultSelectedItem,
 }) => {
-  const [selected, setSelected] = React.useState(4);
+  const [selected, setSelected] = React.useState(2);
+
+  
+
+
+  useEffect(() => {
+    if (defaultSelectedItem) {
+      setSelected(defaultSelectedItem);
+    }
+  }, [defaultSelectedItem]);
 
   function handleChange(index, item) {
     setSelected(index);
