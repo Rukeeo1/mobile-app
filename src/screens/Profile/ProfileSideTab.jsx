@@ -46,7 +46,6 @@ const ProfileSideTab = ({
   const sideBarTabItems = [
     {
       name: 'notifications',
-      // icon: (iconStyle) => <Feather name='bell' size={24} style={iconStyle} />,
       icon: (active) => (
         <Image
           source={active ? notificationActive : notificationIcon}
@@ -160,7 +159,7 @@ const ProfileSideTab = ({
         }
       );
     });
-  }, []);
+  }, [coordinates.length, JSON.stringify(coordinates)]);
 
   useEffect(() => {
     /**
@@ -187,7 +186,7 @@ const ProfileSideTab = ({
         indexOfItemToShow: null,
       });
     }
-  }, [coordinates.length, indexOfItemToShow, currentIndex]);
+  }, [coordinates.length, indexOfItemToShow, currentIndex, JSON.stringify(coordinates)]);
 
   return (
     <SafeAreaView style={styles.tab}>

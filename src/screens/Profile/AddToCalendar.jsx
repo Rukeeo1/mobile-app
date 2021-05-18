@@ -296,7 +296,7 @@ const AddToCalendar = () => {
                 <ActivityIndicator />
               ) : (
                 userJobs?.jobs
-                  .slice(0, viewingMore ? userJobs?.jobs.length : 3)
+                  ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
                   .map((job, index) => (
                     <React.Fragment key={index}>
                       <JobItem job={job} />
