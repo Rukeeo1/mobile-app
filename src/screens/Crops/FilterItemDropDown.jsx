@@ -16,7 +16,7 @@ import constants from '../../constants';
 
 const { colors, screenWidth } = constants;
 
-export const FilterItemDropDown = ({ items, activeItem, onSelect }) => {
+export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [showDropDownItems] = useState(false);
   const [menuToGrowButtonStyle, setMenuToGrowButtonStyle] = useState({
@@ -75,7 +75,7 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect }) => {
             onPress={showMenu}
           >
             <Text style={{ color: colors.green, fontWeight: '500' }}>
-              Month to Grow
+              {activeItem ?? placeholder}
             </Text>
             <TouchableOpacity onPress={showMenu}>
               {showDropDownItems ? (

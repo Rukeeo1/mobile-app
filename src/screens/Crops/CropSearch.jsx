@@ -7,9 +7,13 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useDispatch, useSelector } from 'react-redux'
+
+import { getCropSearchResults } from '../../redux/actions/cropActions'
 
 import { GradientButton, Input } from '../../components/';
 import { FilterItemDropDown } from './FilterItemDropDown';
@@ -20,8 +24,12 @@ const { colors, months } = constants;
 
 const CropSearch = ({ navigation }) => {
   const [search, setSearch] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('February');
-  const [selectedLevel, setSelectedLevel] = useState('Intermediate');
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(null);
+
+  const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.loading)
+  const { searchResults } = useSelector((state) => state.crops)
 
   let _menu = null;
 
@@ -37,6 +45,16 @@ const CropSearch = ({ navigation }) => {
     _menu.show();
   };
 
+  const clearFilter = () => {
+    setSelectedLevel(null)
+    setSelectedMonth(null)
+  }
+
+  const handleSearch = (value) => {
+    setSearch(value)
+    if (value !== '') dispatch(getCropSearchResults(value))
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <SafeAreaView>
@@ -51,7 +69,7 @@ const CropSearch = ({ navigation }) => {
                   placeholder='Search crops'
                   containerStyle={styles.searchInputContainer}
                   inputStyle={{ marginTop: -10, paddingRight: 10 }}
-                  onChangeText={(text) => setSearch(text)}
+                  onChangeText={(text) => handleSearch(text)}
                 >
                   <EvilIcons
                     name='search'
@@ -84,7 +102,8 @@ const CropSearch = ({ navigation }) => {
                   alignItems: 'center',
                 }}
               >
-                <View
+                <TouchableOpacity
+                  onPress={clearFilter}
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -101,16 +120,18 @@ const CropSearch = ({ navigation }) => {
                   >
                     Clear filters
                   </Text>
-                </View>
-                <FilterItemDropDown
+                </TouchableOpacity>
+                {/* <FilterItemDropDown
                   items={months}
-                  activeItem={`Grow in ${selectedMonth}`}
+                  activeItem={selectedMonth ??'Select Month'}
                   onSelect={setSelectedMonth}
-                />
+                  placeholder="Month to grow"
+                /> */}
                 <FilterItemDropDown
-                  items={['Beginner', 'Intermediate', 'Advance']}
-                  activeItem={selectedLevel}
+                  items={['Beginner', 'Intermediate', 'Advanced']}
+                  activeItem={selectedLevel ?? 'Select level'}
                   onSelect={setSelectedLevel}
+                  placeholder="Grow level"
                 />
                 {/* <FilterItemDropDown items={months} />
                 <View
@@ -125,103 +146,55 @@ const CropSearch = ({ navigation }) => {
               </View>
             </LinearGradient>
           </View>
-
-          {search.length > 3 ? (
+          {loading && (
+            <ActivityIndicator
+              size="large"
+              color={colors.green}
+              animating
+              style={{ paddingVertical: 10 }}
+            />
+          )}
+          {(searchResults?.crops?.length < 1 || search === '') ? (
             <View style={{ marginTop: 30 }}>
-              <Text style={{ textAlign: 'center' }}>No matches found</Text>
+              {search !== '' && (
+                <>
+                  <Text style={{ textAlign: 'center' }}>No matches found</Text>
 
-              <View style={{ marginTop: 50 }}>
-                <Text style={{ textAlign: 'center' }}>
-                  Looks like you are getting adventurous!
+                  <View style={{ marginTop: 50 }}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Looks like you are getting adventurous!
                 </Text>
-                <Text style={{ textAlign: 'center' }}>
-                  Create a new crop below
+                    <Text style={{ textAlign: 'center' }}>
+                      Create a new crop below
                 </Text>
-              </View>
+                  </View>
+                </>
+              )}
             </View>
           ) : (
             <View style={[styles.cropSection]}>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
-                onPress={() => navigation.navigate('Crop-selection')}
-              >
-                <View style={[styles.cropDetails]}>
-                  <Image
-                    style={[styles.cropAvatar]}
-                    source={require('../../assets/tomatoe.png')}
-                  />
-                  <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
-                    <Text>Intermediate</Text>
-                  </View>
-                </View>
-                <AntDesign name='right' size={24} color={colors.green} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
-              >
-                <View style={[styles.cropDetails]}>
-                  <Image
-                    style={[styles.cropAvatar]}
-                    source={require('../../assets/tomatoe1.png')}
-                  />
-                  <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
-                    <Text>star Beginner</Text>
-                  </View>
-                </View>
-                <AntDesign name='right' size={24} color={colors.green} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
-              >
-                <View style={[styles.cropDetails]}>
-                  <Image
-                    style={[styles.cropAvatar]}
-                    source={require('../../assets/tomatoe2.png')}
-                  />
-                  <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
-                    <Text>Intermediate</Text>
-                  </View>
-                </View>
-                <AntDesign name='right' size={24} color={colors.green} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
-              >
-                <View style={[styles.cropDetails]}>
-                  <Image
-                    style={[styles.cropAvatar]}
-                    source={require('../../assets/tomatoe3.png')}
-                  />
-                  <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
-                    <Text>Intermediate</Text>
-                  </View>
-                </View>
-                <AntDesign name='right' size={24} color={colors.green} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
-              >
-                <View style={[styles.cropDetails]}>
-                  <Image
-                    style={[styles.cropAvatar]}
-                    source={require('../../assets/tomatoe4.png')}
-                  />
-                  <View style={[styles.cropText]}>
-                    <Text style={[styles.cropName]}>Tomato</Text>
-                    <Text>Intermediate</Text>
-                  </View>
-                </View>
-                <AntDesign name='right' size={24} color={colors.green} />
-              </TouchableOpacity>
+                {searchResults?.crops?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true).map((crop) => {
+                  return (
+                    <TouchableOpacity
+                      key={crop?.id}
+                      activeOpacity={0.9}
+                      style={[styles.cropCardContainer]}
+                      onPress={() => navigation.navigate('Crop-selection')}
+                    >
+                      <View style={[styles.cropDetails]}>
+                        <Image
+                          style={[styles.cropAvatar]}
+                          source={{ uri: crop?.thumbnail_url }}
+                        />
+                        <View style={[styles.cropText]}>
+                          <Text style={[styles.cropName]}>{crop?.name}</Text>
+                          <Text>{crop?.grow_level}</Text>
+                        </View>
+                      </View>
+                      <AntDesign name='right' size={24} color={colors.green} />
+                    </TouchableOpacity>
+                  )
+                })}
             </View>
           )}
 
@@ -311,6 +284,7 @@ const styles = StyleSheet.create({
   cropDetails: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   cropAvatar: {
     width: 70,
@@ -319,6 +293,7 @@ const styles = StyleSheet.create({
   },
   cropText: {
     marginLeft: 10,
+    flex: 1,
   },
   cropName: {
     fontSize: 20,

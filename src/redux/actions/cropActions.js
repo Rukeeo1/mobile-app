@@ -3,6 +3,8 @@ import {
   GET_CROP_VARIETIES,
   GET_CROP_CYCLE_DETAILS,
   GET_CROP_STEPS,
+  GET_SEARCH_RESULTS,
+  GET_CROPS,
 } from '../types/cropTypes';
 import { apiRequest, showApiError } from '../../config/api';
 
@@ -17,6 +19,18 @@ export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   } catch (error) {
     showApiError(error);
     return;
+  }
+};
+
+export const getCrops = (crop) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/crops/`);
+    dispatch({
+      type: GET_CROPS,
+      payload: data,
+    });
+  } catch (error) {
+    showApiError(error);
   }
 };
 
@@ -94,3 +108,15 @@ export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
     return error
   }
 };
+export const getCropSearchResults = (value) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}`);
+  
+    dispatch({
+      type: GET_SEARCH_RESULTS,
+      payload: data,
+    });
+  } catch (error) {
+    showApiError(error);
+  }
+}

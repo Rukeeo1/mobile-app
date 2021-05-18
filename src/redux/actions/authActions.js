@@ -90,6 +90,8 @@ export const register = (user, navigation) => (dispatch) => {
 export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
   const { user, token } = getState().auth
 
+  console.log('update avatar')
+
   const { profileImageUri: image } = userData
   const formData = new FormData()
   formData.append('profileImage', {
@@ -111,6 +113,8 @@ export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
       },
     })
     .then(({ data }) => {
+      console.log('update avatar', data)
+
       dispatch(updateProfile(userData, navigation))
     })
     .catch((err) => {  
@@ -126,6 +130,8 @@ export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
 
 export const updateProfile = (userData, navigation) => (dispatch, getState) => {
   const { user } = getState().auth
+
+  console.log('update profile')
 
   dispatch({
     type: LOADING,
