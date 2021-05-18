@@ -296,7 +296,7 @@ const AddToCalendar = () => {
                 <ActivityIndicator />
               ) : (
                 userJobs?.jobs
-                  .slice(0, viewingMore ? userJobs?.jobs.length : 3)
+                  ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
                   .map((job, index) => (
                     <React.Fragment key={index}>
                       <JobItem job={job} />
@@ -310,27 +310,6 @@ const AddToCalendar = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-
-            {/* {rest ? (
-              <View style={{ marginTop: 30 }}>
-                {console.log("hello pelegrini")}
-                {userJobs?.jobs
-                  .slice(0, viewingMore ? userJobs?.jobs.length : 3)
-                  .map((job, index) => (
-                    <React.Fragment key={index}>
-                      <JobItem job={job} />
-                    </React.Fragment>
-                  ))}
-
-                <TouchableOpacity onPress={() => setViewingMore(!viewingMore)}>
-                  <Text style={[styles.viewMore]}>
-                    {viewingMore ? 'Hide jobs' : 'View more'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View></View>
-            )} */}
 
             <GradientButton gradient={[colors.blueLigth, colors.blue]}>
               <View
