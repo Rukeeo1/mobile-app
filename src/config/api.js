@@ -43,4 +43,5 @@ export const showApiError = (err, tryAgain = true, tryAgainFunc = null, tryAgain
       ],
     )
   }
+  return message
 }

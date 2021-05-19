@@ -8,7 +8,7 @@ const { colors } = constants;
 export const EditableTitle = ({ cropToGrowDetails }) => {
   const [cropDetails, setCropDetails] = useState({
     cropName: '<Crop>',
-    category: '<Type if applicable>',
+    category: '',
     variety: "'<Var >'",
     monthIndex: 0,
   });
@@ -49,7 +49,6 @@ export const EditableTitle = ({ cropToGrowDetails }) => {
             maxWidth: '80%',
           }}
           onChangeText={(text) => handleChange('category', text)}
-          placeholder='helo'
         />
         <TextInput
           color={colors.white}
