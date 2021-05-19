@@ -86,11 +86,11 @@ const Notification = () => {
               </View>
             </View>
 
-            <View style={[styles.Line]} />
+            {/* <View style={[styles.Line]} /> */}
 
             <View style={[styles.sections]}>
-              <Text style={[styles.sectionTitle]}>This week</Text>
-
+              {/* <Text style={[styles.sectionTitle]}>This week</Text> */}
+{/* 
               <View style={[styles.Card]}>
                 <View>
                   <Image
@@ -107,8 +107,8 @@ const Notification = () => {
                     06 December at 10:04am
                   </Text>
                 </View>
-              </View>
-              <View style={[styles.Card]}>
+              </View> */}
+              {/* <View style={[styles.Card]}>
                 <View>
                   <Image
                     source={require('../../assets/avatarimg.png')}
@@ -123,15 +123,15 @@ const Notification = () => {
                     06 December at 10:04am
                   </Text>
                 </View>
-              </View>
+              </View> */}
             </View>
 
-            <View style={[styles.Line]} />
+            {/* <View style={[styles.Line]} /> */}
 
             <View style={[styles.sections]}>
-              <Text style={[styles.sectionTitle]}>Earlier</Text>
+              {/* <Text style={[styles.sectionTitle]}>Earlier</Text> */}
 
-              <View style={[styles.Card]}>
+              {/* <View style={[styles.Card]}>
                 <View>
                   <Image
                     source={require('../../assets/avatarimg.png')}
@@ -147,8 +147,8 @@ const Notification = () => {
                     06 December at 10:04am
                   </Text>
                 </View>
-              </View>
-              <View style={[styles.Card]}>
+              </View> */}
+              {/* <View style={[styles.Card]}>
                 <View>
                   <Image
                     source={require('../../assets/avatarimg.png')}
@@ -164,7 +164,7 @@ const Notification = () => {
                     06 December at 10:04am
                   </Text>
                 </View>
-              </View>
+              </View> */}
             </View>
           </View>
         </ScrollView>

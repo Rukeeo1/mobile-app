@@ -11,9 +11,10 @@ const { colors, screenHeight, screenWidth } = constants;
 
 //icons
 import sowIcon from '../../assets/sow-it-pink.png';
-import completedIcon from '../../assets/completed-job-pink.png';
+// import completedIcon from '../../assets/completed-job-pink.png';
 import jobIndicatorPink from '../../assets/job-indicator-pink.png';
 import plantItPink from '../../assets/plant-it-pink.png';
+import harvestIcon from '../../assets/harvest-icon-pink.png';
 
 const getIcon = (jobType) => {
   switch (jobType) {
@@ -21,6 +22,8 @@ const getIcon = (jobType) => {
       return plantItPink;
     case 'water':
       return jobIndicatorPink;
+    case 'harvest':
+      return harvestIcon;
 
     default:
       return sowIcon;
@@ -38,14 +41,14 @@ export const JobItem = ({ job }) => {
     >
       <View style={[styles.jobsChild]}>
         <Image
-          source={getIcon(job.type)}
+          source={getIcon(job?.job_type)}
           resizeMode='contain'
           style={{ height: screenHeight * 0.06, width: screenWidth * 0.05 }}
         />
         <View style={styles.jobsText}>
           <Text>{job?.title}</Text>
           <Text fontType='bold' style={styles.boldText}>
-            20 February
+            {new Date(job.job_date).toDateString()}
           </Text>
         </View>
       </View>

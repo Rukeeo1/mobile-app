@@ -33,6 +33,7 @@ import { SafeArea, GradientButton as Button, Text } from '../../components';
 import { MyCarousel as StepsCarousel } from './Carousel';
 import { EditableTitle } from './Title';
 import { SowItContainer } from './SowItContainer';
+import { MonthGraph } from './MonthGraph';
 
 import constants from '../../constants';
 import { getCropCardData } from '../../utils/index';
@@ -43,6 +44,7 @@ import pencil from '../../assets/pencil_circle.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 import harvestIcon from '../../assets/harvest-icon.png';
+import { date } from 'yup';
 
 const { colors } = constants;
 
@@ -93,14 +95,18 @@ const CropCard = ({ navigation }) => {
 
   const cropSeasons = [
     cropToGrowDetails.month,
-    `${cropCycleDetails?.plant_start_month} - ${cropCycleDetails?.plant_end_month}`,
-    `${cropCycleDetails?.harvest_start_month} - ${cropCycleDetails?.harvest_end_month}`,
+    `${cropCycleDetails?.plant_start_month || ''} - ${
+      cropCycleDetails?.plant_end_month || ''
+    }`,
+    `${cropCycleDetails?.harvest_start_month || ''} - ${
+      cropCycleDetails?.harvest_end_month || ''
+    }`,
   ];
 
   const handleGrowCrop = async (selectedDate, jobType) => {
     const jobInfo = {
       crop_id: cropToGrowDetails?.cropId,
-      user_id: user.id,
+      user_id: user?.id,
       job_date: new Date(selectedDate),
     };
 
@@ -120,6 +126,7 @@ const CropCard = ({ navigation }) => {
       jobInfo.title = 'Harvest';
       await dispatch(harvestCrop(jobInfo, Toast));
     }
+
     setLoadingJobs(false);
   };
 
@@ -327,9 +334,9 @@ const CropCard = ({ navigation }) => {
               reminderText='Sown'
               startMonth={cropToGrowDetails.month}
               onSubmitSelected={handleGrowCrop}
-              onSubmitSelected={(dateSelected) =>
-                handleGrowCrop(dateSelected, 'Sow')
-              }
+              onSubmitSelected={(dateSelected) => {
+                handleGrowCrop(dateSelected, 'Sow');
+              }}
               submitting={loadingJobs}
             />
           )}
@@ -342,9 +349,9 @@ const CropCard = ({ navigation }) => {
               }
               reminderText='Reminder to plant'
               startMonth={cropCycleDetails?.plant_start_month}
-              onSubmitSelected={(dateSelected) =>
-                handleGrowCrop(dateSelected, 'Plant')
-              }
+              onSubmitSelected={(dateSelected) => {
+                handleGrowCrop(dateSelected, 'Plant');
+              }}
               submitting={loadingJobs}
             />
           )}
@@ -378,51 +385,36 @@ const CropCard = ({ navigation }) => {
               backgroundColor: colors.white,
             }}
           >
-            <Text>When to sow guide</Text>
-            <View style={styles.monthStrip}>
-              {months.map((item, index) => (
-                <View
-                  style={[
-                    styles.montStripItem,
-                    true && { backgroundColor: colors.blue },
-                    index === 0 && {
-                      borderTopLeftRadius: 10,
-                      borderBottomLeftRadius: 10,
-                    },
-                    index === months.length - 1 && {
-                      borderTopRightRadius: 10,
-                      borderBottomRightRadius: 10,
-                    },
-                  ]}
-                  key={index}
-                >
-                  <Text style={{ color: colors.white }}>{item}</Text>
-                </View>
-              ))}
-            </View>
+            {activeScreen === 0 && (
+              <MonthGraph
+                activeMonths={cropCycleDetails?.sow_months?.split(',')}
+                title='When to sow guide'
+                bottomTextOne='Sow Under Cover'
+                bottomTextTwo='Sow Direct Outside'
+              />
+            )}
+            {activeScreen === 1 && (
+              <MonthGraph
+                activeMonths={[
+                  cropCycleDetails?.plant_start_month,
+                  cropCycleDetails?.plant_end_month,
+                ]}
+                
+                title='When to plant guide'
+                bottomTextOne='Plant out'
+              />
+            )}
+            {activeScreen === 2 && (
+              <MonthGraph
+                activeMonths={[
+                  cropCycleDetails?.harvest_start_month,
+                  cropCycleDetails?.harvest_end_month,
+                ]}
+                title='When to harvest guide'
+                bottomTextOne='Harvest months'
+              />
+            )}
 
-            <View style={{ flexDirection: 'row', marginTop: 5 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: colors.blue,
-                }}
-              >
-                Sow Under Cover
-              </Text>
-
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: colors.blue100,
-                }}
-                style={{ marginLeft: 20 }}
-              >
-                Sow Direct Outside
-              </Text>
-            </View>
             <View>
               <Tooltip
                 animated={true}

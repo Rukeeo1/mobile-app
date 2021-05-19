@@ -38,13 +38,13 @@ const ManageCrops = () => {
                 You aren’t growing anything yet!
               </Text>
               <Text
-                style={[
-                  styles.growText,
-                  { paddingRight: 70, paddingLeft: 70, fontSize: 18 },
-                ]}
+                style={{
+                  ...styles.growText,
+                  ...{ paddingRight: 70, paddingLeft: 70, fontSize: 18 }
+                }}
               >
                 Add a crop to your{' '}
-                <Text style={{ fontWeight: 'bold' }}>Grow Calendar</Text> today
+                <Text fontType="bold" style={{ color: colors.green }}>Grow Calendar</Text> today
               </Text>
 
               <GradientButton
@@ -72,7 +72,7 @@ const ManageCrops = () => {
             </View>
           </View>
 
-          <View style={{ paddingHorizontal: '5%' }}>
+          {/* <View style={{ paddingHorizontal: '5%' }}>
             <View>
               <Text style={styles.growingCrops}>Current growing</Text>
               <TouchableOpacity
@@ -148,7 +148,7 @@ const ManageCrops = () => {
                 <AntDesign name='right' size={24} color={colors.green} />
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </SafeAreaView>
     </View>

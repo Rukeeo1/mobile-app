@@ -70,44 +70,44 @@ export const getCropSteps = (cropId) => async (dispatch) => {
   }
 };
 
-export const growCrop = (cropDetails, toast) => async (dispatch) => {
-  try {
-    const { data } = await apiRequest(`/jobs/growit`, 'post', cropDetails);
-    toast.show({
-      text1: data?.message,
-    });
-    return
-  } catch (error) {
-    showApiError(error);
-    return error
-  }
-};
+// export const growCrop = (cropDetails, toast) => async (dispatch) => {
+//   try {
+//     const { data } = await apiRequest(`/jobs/growit`, 'post', cropDetails);
+//     toast.show({
+//       text1: data?.message,
+//     });
+//     return
+//   } catch (error) {
+//     showApiError(error);
+//     return error
+//   }
+// };
 
-export const plantCrop = (cropDetails, toast) => async (dispatch) => {
-  try {
-    const { data } = await apiRequest(`/jobs/plantit`, 'post', cropDetails);
-    toast.show({
-      text1: data?.message,
-    });
-    return
-  } catch (error) {
-    showApiError(error);
-    return error
-  }
-};
+// export const plantCrop = (cropDetails, toast) => async (dispatch) => {
+//   try {
+//     const { data } = await apiRequest(`/jobs/plantit`, 'post', cropDetails);
+//     toast.show({
+//       text1: data?.message,
+//     });
+//     return
+//   } catch (error) {
+//     showApiError(error);
+//     return error
+//   }
+// };
 
-export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
-  try {
-    const { data } = await apiRequest(`/jobs/harvestit`, 'post', cropDetails);
-    toast.show({
-      text1: data?.message,
-    });
-    return 
-  } catch (error) {
-    showApiError(error);
-    return error
-  }
-};
+// export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
+//   try {
+//     const { data } = await apiRequest(`/jobs/harvestit`, 'post', cropDetails);
+//     toast.show({
+//       text1: data?.message,
+//     });
+//     return 
+//   } catch (error) {
+//     showApiError(error);
+//     return error
+//   }
+// };
 export const getCropSearchResults = (value) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}`);

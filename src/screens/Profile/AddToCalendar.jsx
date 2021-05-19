@@ -383,7 +383,8 @@ const AddToCalendar = () => {
                     paddingHorizontal: 20,
                   }}
                 >
-                  <Text style={styles.btnText}>Grow in February</Text>
+                  <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
+
                   <AntDesign name='plus' size={25} color={colors.white} />
                 </View>
               </GradientButton>

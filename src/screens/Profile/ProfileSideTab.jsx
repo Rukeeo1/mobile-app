@@ -165,7 +165,7 @@ const ProfileSideTab = ({
           }
         );
       });
-    }, 6);
+    }, 0);
   }, [coordinates.length, JSON.stringify(coordinates)]);
 
   useEffect(() => {
@@ -233,11 +233,7 @@ const ProfileSideTab = ({
             ref={item.ref}
             key={index}
           >
-            {item.icon(
-              activeIndex === index
-              // ? { color: activeGradient[0] }
-              // : { color: colors.white, opacity: 0.5 }
-            )}
+            {item.icon(activeIndex === index)}
           </AnimatedTouchable>
         ))}
       </ScrollView>

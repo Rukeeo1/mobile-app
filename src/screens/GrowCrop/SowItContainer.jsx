@@ -64,7 +64,7 @@ export const SowItContainer = ({
               setShowSowItButton(false);
               setShowFullSelectedDate(true);
               onSubmitSelected(
-                `${selectedYear} - ${selectedMonth} - ${selectedDate} `
+                `${selectedYear} ${selectedMonth} ${selectedDate} `
               );
             }}
             renderIcon={renderIcon}

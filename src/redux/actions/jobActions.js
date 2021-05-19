@@ -13,3 +13,44 @@ export const getUserJobs = (userId) => (dispatch, getState) => {
       showApiError(err, true, () => dispatch(getUserFollowers(refreshing)));
     });
 };
+
+export const growCrop = (cropDetails, toast) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/jobs/growit`, 'post', cropDetails);
+    toast.show({
+      text1: data?.message,
+    });
+    dispatch(getUserJobs(cropDetails?.user_id));
+    return;
+  } catch (error) {
+    showApiError(error);
+    return error;
+  }
+};
+
+export const plantCrop = (cropDetails, toast) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/jobs/plantit`, 'post', cropDetails);
+    toast.show({
+      text1: data?.message,
+    });
+    dispatch(getUserJobs(cropDetails?.user_id));
+    return;
+  } catch (error) {
+    showApiError(error);
+    return error;
+  }
+};
+
+export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/jobs/harvestit`, 'post', cropDetails);
+    toast.show({
+      text1: data?.message,
+    });
+    dispatch(getUserJobs(cropDetails?.user_id));
+    return;
+  } catch (error) {
+    return showApiError(error);
+  }
+};
