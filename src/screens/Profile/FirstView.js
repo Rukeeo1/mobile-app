@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSelector, useDispatch } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message'
 
 import {
   getUserGrowList,
@@ -34,10 +35,14 @@ const FirstView = () => {
 
   const [isList, setIsList] = useState(false)
   const [showShare, setShowShare] = useState(false)
+  const [postToShare, setPostToShare] = useState(null)
 
   const navigation = useNavigation()
 
-  const toggleModal = () => setShowShare((prevState) => !prevState)
+  const toggleModal = (postId) => {
+    setShowShare((prevState) => !prevState)
+    setPostToShare(postId)
+  }
 
   useEffect(() => {
     // dispatch(getUserProfile())
@@ -200,7 +205,7 @@ const FirstView = () => {
 
                       <View style={[styles.postDateTime]}>
                         <Text style={{ fontFamily: 'Hero-New-Light-Italic', color: '#9B9B9B' }}>{new Date(post.created_at).toDateString()}</Text>
-                        <TouchableOpacity onPress={toggleModal}>
+                        <TouchableOpacity onPress={() => toggleModal(post?.id)}>
                           <Text>...</Text>
                         </TouchableOpacity>
                       </View>
@@ -239,8 +244,14 @@ const FirstView = () => {
               )}
             </>
           )}
-        <ShareModal showBottomSheet={showShare} setShowShare={toggleModal} />
+        <ShareModal
+          showBottomSheet={showShare}
+          setShowShare={toggleModal}
+          postId={postToShare}
+          Toast={Toast}
+        />
       </ScrollView>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
   )
 }
@@ -356,7 +367,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   postCard: {
-    marginVertical: 40,
+    marginBottom: 40,
   },
   postAvatarImg: {
     width: 30,

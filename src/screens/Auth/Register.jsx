@@ -150,7 +150,7 @@ export const Register = ({ navigation }) => {
                   marginTop: '30%',
                   fontSize: 16,
                 }}
-                onPress={() => navigation.navigate('Login')}
+                // onPress={() => navigation.navigate('Login')}
               >
                 Cancel
               </Text>
