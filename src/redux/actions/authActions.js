@@ -83,17 +83,18 @@ export const register = (user, navigation) => (dispatch) => {
   })
     .then(({ data }) => {
       console.log('signup', data)
-      dispatch(saveUser(data.data.token, { ...data.data }))
+      dispatch(login({ email: user.email, password: user.password }, navigation))
+      // dispatch(saveUser(data.data.token, { ...data.data }))
       // navigation.navigate('Splash')
       // navigation.navigate('Onboarding')
 
-      navigation.dispatch(CommonActions.reset({
-        index: 0,
-        key: null,
-        routes: [{
-          name: 'Splash'
-        }],
-      }))
+      // navigation.dispatch(CommonActions.reset({
+      //   index: 0,
+      //   key: null,
+      //   routes: [{
+      //     name: 'Splash'
+      //   }],
+      // }))
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(register(user, navigation)))
@@ -276,7 +277,6 @@ export const getUserGrowList = () => (dispatch, getState) => {
 
   apiRequest(`/jobs/growlist?user_id=${user?.id}`)
     .then(({ data }) => {
-      console.log('user growlist', data)
 
       dispatch({
         type: GET_USER_GROW_LIST,
@@ -304,7 +304,6 @@ export const getUserPosts = () => (dispatch, getState) => {
 
   apiRequest(`/users/${user?.id}/posts`)
     .then(({ data }) => {
-      console.log('user posts', data)
 
       dispatch({
         type: GET_USER_POSTS,

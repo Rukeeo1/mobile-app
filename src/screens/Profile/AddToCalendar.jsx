@@ -81,7 +81,7 @@ const AddToCalendar = () => {
     if (user?.id) {
       getJobs(user?.id);
     }
-  }, [m, user?.id]);
+  }, [m, user?.id, JSON.stringify(userJobs)]);
 
   const nextItem = () => {
     if (m > months.length - 2) {
@@ -268,7 +268,7 @@ const AddToCalendar = () => {
               </View>
             </GradientButton>
 
-            {jobs && (
+            {/* {jobs && (
               <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/circle.png')} />
@@ -292,24 +292,28 @@ const AddToCalendar = () => {
                   onPress={addJob}
                 />
               </TouchableOpacity>
-            )}
+            )} */}
             <View style={{ marginTop: 30 }}>
               {loadingJobs ? (
                 <ActivityIndicator />
               ) : (
                 userJobs?.jobs
                   ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
-                  .map((job, index) => (
-                    <React.Fragment key={index}>
-                      <JobItem job={job} />
-                    </React.Fragment>
-                  ))
+                  .map((job, index) => {
+                    return job.job_type !== 'harvest' ? (
+                      <React.Fragment key={index}>
+                        <JobItem job={job} />
+                      </React.Fragment>
+                    ) : null;
+                  })
               )}
 
               <TouchableOpacity onPress={() => setViewingMore(!viewingMore)}>
-                <Text style={styles.viewMore}>
-                  {viewingMore ? 'Hide jobs' : 'View more'}
-                </Text>
+                {userJobs?.jobs?.length > 3 && (
+                  <Text style={styles.viewMore}>
+                    {viewingMore ? 'Hide jobs' : 'View more'}
+                  </Text>
+                )}
               </TouchableOpacity>
             </View>
 
@@ -327,6 +331,21 @@ const AddToCalendar = () => {
                 <AntDesign name='info' size={28} color={colors.white} />
               </View>
             </GradientButton>
+            <View>
+              {loadingJobs ? (
+                <ActivityIndicator />
+              ) : (
+                userJobs?.jobs
+                  ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
+                  .map((job, index) => {
+                    return job?.job_type === 'harvest' ? (
+                      <React.Fragment key={index}>
+                        <JobItem job={job} />
+                      </React.Fragment>
+                    ) : null;
+                  })
+              )}
+            </View>
 
             <View style={[styles.horizontalLine]}></View>
 
@@ -362,6 +381,7 @@ const AddToCalendar = () => {
                       variety: crop?.variety,
                       monthIndex: m,
                       cropId: crop?.id,
+                      action: 'sow'
                     });
                   }}
                 />
