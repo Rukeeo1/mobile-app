@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useDispatch } from 'react-redux'
+import { CommonActions } from '@react-navigation/native'
+
+import { signOut } from '../../redux/actions/authActions'
 
 import { GradientButton as Button } from '../../components';
 import constants from '../../constants';
@@ -15,6 +19,20 @@ import { Dimensions } from 'react-native';
 const { colors } = constants;
 
 const Logout = ({ navigation }) => {
+  const dispatch = useDispatch()
+
+  const logout = () => {
+    dispatch(signOut())
+    // navigation.navigate('AuthNavigator', { screen: 'Login' })
+    navigation.dispatch(CommonActions.reset({
+      index: 0,
+      key: null,
+      routes: [{
+        name: 'AuthNavigator'
+      }],
+    }))
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
@@ -30,7 +48,7 @@ const Logout = ({ navigation }) => {
           title='Yes please, Log me out!'
           coverStyle={{ marginTop: '10%' }}
           gradient={[colors.pink, colors.pinkDeep]}
-          onPress={() => navigation.navigate('Login')}
+          onPress={logout}
         />
         <TouchableOpacity
           onPress={() => navigation.goBack('End-Harvest-Schedule')}

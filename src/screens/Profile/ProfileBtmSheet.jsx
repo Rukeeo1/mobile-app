@@ -16,9 +16,13 @@ const ProfileBtmSheet = ({ showBottomSheet, onClose }) => {
           <View style={styles.optionItem}>
             <Text style={{fontSize: 17}}>Share to...</Text>
           </View>
-          <View style={styles.optionItem}>
+          <TouchableOpacity onPress={() => {
+            setTimeout(() => {
+              navigation.navigate('Profile-Settings')
+            }, 500)
+          }} style={styles.optionItem}>
             <Text style={{fontSize: 17}}>Edit Profile</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.optionItem}>
             <Text style={{ fontSize: 17 }}>
               About Grow It

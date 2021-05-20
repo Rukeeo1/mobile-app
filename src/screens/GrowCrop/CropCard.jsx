@@ -33,6 +33,7 @@ import { SafeArea, GradientButton as Button, Text } from '../../components';
 import { MyCarousel as StepsCarousel } from './Carousel';
 import { EditableTitle } from './Title';
 import { SowItContainer } from './SowItContainer';
+import { MonthGraph } from './MonthGraph';
 
 import constants from '../../constants';
 import { getCropCardData } from '../../utils/index';
@@ -43,17 +44,12 @@ import pencil from '../../assets/pencil_circle.png';
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 import harvestIcon from '../../assets/harvest-icon.png';
+import { date } from 'yup';
 
 const { colors } = constants;
 
 const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
-const getMonthStripItemWidth = () => {
-  const screenWidth = Dimensions.get('screen').width;
-  const itemWidth = (screenWidth * 0.9) / 12;
-
-  return itemWidth;
-};
 
 const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
@@ -83,6 +79,12 @@ const CropCard = ({ navigation }) => {
       dispatch(getCropCycleDetails(cropToGrowDetails?.cropId));
       dispatch(getCropSteps(cropToGrowDetails?.cropId));
     }
+    if (cropToGrowDetails.action === 'harvest') {
+      setActiveScreen(2);
+    }
+    if (cropToGrowDetails.action === 'plant') {
+      setActiveScreen(1);
+    }
   }, [cropToGrowDetails?.cropId]);
 
   const video = React.useRef(null);
@@ -93,14 +95,18 @@ const CropCard = ({ navigation }) => {
 
   const cropSeasons = [
     cropToGrowDetails.month,
-    `${cropCycleDetails?.plant_start_month} - ${cropCycleDetails?.plant_end_month}`,
-    `${cropCycleDetails?.harvest_start_month} - ${cropCycleDetails?.harvest_end_month}`,
+    `${cropCycleDetails?.plant_start_month || ''} - ${
+      cropCycleDetails?.plant_end_month || ''
+    }`,
+    `${cropCycleDetails?.harvest_start_month || ''} - ${
+      cropCycleDetails?.harvest_end_month || ''
+    }`,
   ];
 
   const handleGrowCrop = async (selectedDate, jobType) => {
     const jobInfo = {
       crop_id: cropToGrowDetails?.cropId,
-      user_id: user.id,
+      user_id: user?.id,
       job_date: new Date(selectedDate),
     };
 
@@ -120,6 +126,7 @@ const CropCard = ({ navigation }) => {
       jobInfo.title = 'Harvest';
       await dispatch(harvestCrop(jobInfo, Toast));
     }
+
     setLoadingJobs(false);
   };
 
@@ -296,9 +303,9 @@ const CropCard = ({ navigation }) => {
               marginTop: '10%',
             }}
           >
-            <TouchableOpacity onPress={() => toggleBtmSheet()}>
+            {/* <TouchableOpacity onPress={() => toggleBtmSheet()}>
               <Image source={pencil} style={{ height: 37, width: 37 }} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <EditableTitle cropToGrowDetails={cropToGrowDetails} />
 
@@ -327,9 +334,9 @@ const CropCard = ({ navigation }) => {
               reminderText='Sown'
               startMonth={cropToGrowDetails.month}
               onSubmitSelected={handleGrowCrop}
-              onSubmitSelected={(dateSelected) =>
-                handleGrowCrop(dateSelected, 'Sow')
-              }
+              onSubmitSelected={(dateSelected) => {
+                handleGrowCrop(dateSelected, 'Sow');
+              }}
               submitting={loadingJobs}
             />
           )}
@@ -342,9 +349,9 @@ const CropCard = ({ navigation }) => {
               }
               reminderText='Reminder to plant'
               startMonth={cropCycleDetails?.plant_start_month}
-              onSubmitSelected={(dateSelected) =>
-                handleGrowCrop(dateSelected, 'Plant')
-              }
+              onSubmitSelected={(dateSelected) => {
+                handleGrowCrop(dateSelected, 'Plant');
+              }}
               submitting={loadingJobs}
             />
           )}
@@ -378,96 +385,43 @@ const CropCard = ({ navigation }) => {
               backgroundColor: colors.white,
             }}
           >
-            <Text>When to sow guide</Text>
-            <View style={styles.monthStrip}>
-              {months.map((item, index) => (
-                <View
-                  style={[
-                    styles.montStripItem,
-                    true && { backgroundColor: colors.blue },
-                    index === 0 && {
-                      borderTopLeftRadius: 10,
-                      borderBottomLeftRadius: 10,
-                    },
-                    index === months.length - 1 && {
-                      borderTopRightRadius: 10,
-                      borderBottomRightRadius: 10,
-                    },
-                  ]}
-                  key={index}
-                >
-                  <Text style={{ color: colors.white }}>{item}</Text>
-                </View>
-              ))}
-            </View>
+            {activeScreen === 0 && (
+              <MonthGraph
+                activeMonths={cropCycleDetails?.sow_months?.split(',')}
+                title='When to sow guide'
+                bottomTextOne='Sow Under Cover'
+                bottomTextTwo='Sow Direct Outside'
+              />
+            )}
+            {activeScreen === 1 && (
+              <MonthGraph
+                activeMonths={[
+                  cropCycleDetails?.plant_start_month,
+                  cropCycleDetails?.plant_end_month,
+                ]}
+                title='When to plant guide'
+                bottomTextOne='Plant out'
+              />
+            )}
+            {activeScreen === 2 && (
+              <MonthGraph
+                activeMonths={[
+                  cropCycleDetails?.harvest_start_month,
+                  cropCycleDetails?.harvest_end_month,
+                ]}
+                title='When to harvest guide'
+                bottomTextOne='Harvest months'
+              />
+            )}
 
-            <View style={{ flexDirection: 'row', marginTop: 5 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: colors.blue,
-                }}
-              >
-                Sow Under Cover
-              </Text>
-
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: colors.blue100,
-                }}
-                style={{ marginLeft: 20 }}
-              >
-                Sow Direct Outside
-              </Text>
-            </View>
             <View>
-              <Tooltip
-                animated={true}
-                isVisible={toolTipIsVisible}
-                content={
-                  <View>
-                    <Text
-                      style={{
-                        color: colors.white,
-                        flexWrap: 'wrap',
-                      }}
-                      fontType='light'
-                    >
-                      Your first step is complete! Add a journal entry to track
-                      your
-                    </Text>
-                  </View>
-                }
-                contentStyle={{
-                  backgroundColor: colors.blueLigth,
-                  paddingHorizontal: '5%',
-                  paddingVertical: '5%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  elevation: 0,
-                  shadowOpacity: 0,
-                }}
-                childrenWrapperStyle={{ width: '80%' }}
-                backgroundColor='transparent'
-                placement='bottom'
-                arrowSize={{
-                  width: 24,
-                  height: 12,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                onClose={() => setToolTipIsVisible(false)}
-              >
-                <Button
-                  gradient={[colors.purshBlue, colors.blue]}
-                  title='Add to Journal'
-                  onPress={() => navigation.navigate('Crop-Journal')}
-                />
-              </Tooltip>
+              
+              <Button
+                gradient={[colors.purshBlue, colors.blue]}
+                title='Add to Journal'
+                onPress={() => navigation.navigate('Crop-Journal')}
+              />
+              {/* </Tooltip> */}
             </View>
           </View>
           <View>
@@ -558,19 +512,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   skipText: { color: colors.pink, fontSize: 15, fontWeight: 'bold' },
-  monthStrip: {
-    height: Dimensions.get('screen').height * 0.02,
-    backgroundColor: 'red',
-    borderRadius: 25,
-    flexDirection: 'row',
-    marginTop: 5,
-  },
-  montStripItem: {
-    width: getMonthStripItemWidth(),
-    alignItems: 'center',
-    backgroundColor: colors.grey100,
-    height: '100%',
-  },
+
   video: {
     height: 200,
     width: '100%',

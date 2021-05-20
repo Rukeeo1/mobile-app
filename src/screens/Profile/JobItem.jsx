@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { Text } from '../../components';
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
 
-const { colors, screenHeight, screenWidth } = constants;
+const { colors, screenHeight, screenWidth, monthsAbr } = constants;
 
 //icons
 import sowIcon from '../../assets/sow-it-pink.png';
-import completedIcon from '../../assets/completed-job-pink.png';
+// import completedIcon from '../../assets/completed-job-pink.png';
 import jobIndicatorPink from '../../assets/job-indicator-pink.png';
 import plantItPink from '../../assets/plant-it-pink.png';
+import harvestIcon from '../../assets/harvest-icon-pink.png';
 
 const getIcon = (jobType) => {
   switch (jobType) {
@@ -21,6 +23,8 @@ const getIcon = (jobType) => {
       return plantItPink;
     case 'water':
       return jobIndicatorPink;
+    case 'harvest':
+      return harvestIcon;
 
     default:
       return sowIcon;
@@ -28,24 +32,44 @@ const getIcon = (jobType) => {
 };
 
 export const JobItem = ({ job }) => {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
+
+  const manageCropContext = useContext(ManageCropContext);
+
+  const monthIndex = new Date(job.job_date).getMonth();
+  console.log(job?.crop_Id,'from jobs items')
+
+
+  const handleNavigation = (path) => () => {
+    navigation.navigate(path);
+
+    manageCropContext?.actions?.updateCropToGrowDetails({
+      // cropName: crop?.name,
+      month: monthsAbr[monthIndex],
+      // variety: job?.variety,
+      monthIndex,
+      cropId: job?.crop_id,
+      action: job?.job_type,
+    });
+  };
 
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={[styles.jobs]}
       // onPress={() => navigation.navigate('Grow-Crop')}
+      onPress={handleNavigation('Grow-Crop')}
     >
       <View style={[styles.jobsChild]}>
         <Image
-          source={getIcon(job.type)}
+          source={getIcon(job?.job_type)}
           resizeMode='contain'
           style={{ height: screenHeight * 0.06, width: screenWidth * 0.05 }}
         />
         <View style={styles.jobsText}>
           <Text>{job?.title}</Text>
           <Text fontType='bold' style={styles.boldText}>
-            20 February
+            {new Date(job.job_date).toDateString()}
           </Text>
         </View>
       </View>

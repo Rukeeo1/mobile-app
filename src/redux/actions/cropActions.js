@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import {
   GET_FAVORITE_CROPS_TO_GROW,
   GET_CROP_VARIETIES,
@@ -5,8 +7,9 @@ import {
   GET_CROP_STEPS,
   GET_SEARCH_RESULTS,
   GET_CROPS,
-} from '../types/cropTypes';
-import { apiRequest, showApiError } from '../../config/api';
+} from '../types/cropTypes'
+import { apiRequest, showApiError } from '../../config/api'
+import { API_URL } from '../../constants'
 
 export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   try {
@@ -70,44 +73,57 @@ export const getCropSteps = (cropId) => async (dispatch) => {
   }
 };
 
-export const growCrop = (cropDetails, toast) => async (dispatch) => {
-  try {
-    const { data } = await apiRequest(`/jobs/growit`, 'post', cropDetails);
-    toast.show({
-      text1: data?.message,
-    });
-    return
-  } catch (error) {
-    showApiError(error);
-    return error
-  }
-};
 
-export const plantCrop = (cropDetails, toast) => async (dispatch) => {
-  try {
-    const { data } = await apiRequest(`/jobs/plantit`, 'post', cropDetails);
-    toast.show({
-      text1: data?.message,
-    });
-    return
-  } catch (error) {
-    showApiError(error);
-    return error
-  }
-};
+export const addCrop = (cropData, navigation) => (dispatch) => {
+  const formData = new FormData()
 
-export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
-  try {
-    const { data } = await apiRequest(`/jobs/harvestit`, 'post', cropDetails);
-    toast.show({
-      text1: data?.message,
-    });
-    return 
-  } catch (error) {
-    showApiError(error);
-    return error
+  formData.append('name', cropData.name)
+  formData.append('grow_level', cropData.level)
+  formData.append('variety', cropData.variety)
+
+  if (cropData.image) {
+    formData.append('media_url', {
+      name: cropData.image?.split('/').pop(),
+      uri: cropData.image,
+      type: 'image/*',
+    })
+
+    formData.append('thumbnail_url', {
+      name: cropData.image?.split('/').pop(),
+      uri: cropData.image,
+      type: 'image/*',
+    })
   }
-};
+
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  axios
+    .post(`${API_URL}/crops/newCrop`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(({ data }) => {
+      console.log('update crop', data)
+
+      // dispatch(updateProfile(userData, navigation))
+      navigation.navigate('Crop-selection', { cropName: cropData?.name, growLevel: cropData?.level, sowTip: data?.sow_tip })
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(updateAvatar(image, navigation)))
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      })
+    })
+}
+
+
 export const getCropSearchResults = (value) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}`);
