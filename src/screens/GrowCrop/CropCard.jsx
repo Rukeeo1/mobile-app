@@ -50,12 +50,6 @@ const { colors } = constants;
 
 const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
-const getMonthStripItemWidth = () => {
-  const screenWidth = Dimensions.get('screen').width;
-  const itemWidth = (screenWidth * 0.9) / 12;
-
-  return itemWidth;
-};
 
 const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
@@ -84,6 +78,12 @@ const CropCard = ({ navigation }) => {
     if (cropToGrowDetails?.cropId) {
       dispatch(getCropCycleDetails(cropToGrowDetails?.cropId));
       dispatch(getCropSteps(cropToGrowDetails?.cropId));
+    }
+    if (cropToGrowDetails.action === 'harvest') {
+      setActiveScreen(2);
+    }
+    if (cropToGrowDetails.action === 'plant') {
+      setActiveScreen(1);
     }
   }, [cropToGrowDetails?.cropId]);
 
@@ -303,9 +303,9 @@ const CropCard = ({ navigation }) => {
               marginTop: '10%',
             }}
           >
-            <TouchableOpacity onPress={() => toggleBtmSheet()}>
+            {/* <TouchableOpacity onPress={() => toggleBtmSheet()}>
               <Image source={pencil} style={{ height: 37, width: 37 }} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <EditableTitle cropToGrowDetails={cropToGrowDetails} />
 
@@ -399,7 +399,6 @@ const CropCard = ({ navigation }) => {
                   cropCycleDetails?.plant_start_month,
                   cropCycleDetails?.plant_end_month,
                 ]}
-                
                 title='When to plant guide'
                 bottomTextOne='Plant out'
               />
@@ -416,50 +415,13 @@ const CropCard = ({ navigation }) => {
             )}
 
             <View>
-              <Tooltip
-                animated={true}
-                isVisible={toolTipIsVisible}
-                content={
-                  <View>
-                    <Text
-                      style={{
-                        color: colors.white,
-                        flexWrap: 'wrap',
-                      }}
-                      fontType='light'
-                    >
-                      Your first step is complete! Add a journal entry to track
-                      your
-                    </Text>
-                  </View>
-                }
-                contentStyle={{
-                  backgroundColor: colors.blueLigth,
-                  paddingHorizontal: '5%',
-                  paddingVertical: '5%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  elevation: 0,
-                  shadowOpacity: 0,
-                }}
-                childrenWrapperStyle={{ width: '80%' }}
-                backgroundColor='transparent'
-                placement='bottom'
-                arrowSize={{
-                  width: 24,
-                  height: 12,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                onClose={() => setToolTipIsVisible(false)}
-              >
-                <Button
-                  gradient={[colors.purshBlue, colors.blue]}
-                  title='Add to Journal'
-                  onPress={() => navigation.navigate('Crop-Journal')}
-                />
-              </Tooltip>
+              
+              <Button
+                gradient={[colors.purshBlue, colors.blue]}
+                title='Add to Journal'
+                onPress={() => navigation.navigate('Crop-Journal')}
+              />
+              {/* </Tooltip> */}
             </View>
           </View>
           <View>
@@ -550,19 +512,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   skipText: { color: colors.pink, fontSize: 15, fontWeight: 'bold' },
-  monthStrip: {
-    height: Dimensions.get('screen').height * 0.02,
-    backgroundColor: 'red',
-    borderRadius: 25,
-    flexDirection: 'row',
-    marginTop: 5,
-  },
-  montStripItem: {
-    width: getMonthStripItemWidth(),
-    alignItems: 'center',
-    backgroundColor: colors.grey100,
-    height: '100%',
-  },
+
   video: {
     height: 200,
     width: '100%',
