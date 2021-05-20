@@ -276,7 +276,6 @@ export const getUserGrowList = () => (dispatch, getState) => {
 
   apiRequest(`/jobs/growlist?user_id=${user?.id}`)
     .then(({ data }) => {
-      console.log('user growlist', data)
 
       dispatch({
         type: GET_USER_GROW_LIST,
@@ -304,7 +303,6 @@ export const getUserPosts = () => (dispatch, getState) => {
 
   apiRequest(`/users/${user?.id}/posts`)
     .then(({ data }) => {
-      console.log('user posts', data)
 
       dispatch({
         type: GET_USER_POSTS,

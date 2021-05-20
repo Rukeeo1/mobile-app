@@ -33,7 +33,6 @@ const FirstView = () => {
   const { user, userData, growList, posts } = useSelector((state) => state.auth)
   const { loading, refreshing, fetchingMore } = useSelector((state) => state.loading)
 
-  const [isList, setIsList] = useState(false)
   const [showShare, setShowShare] = useState(false)
   const [postToShare, setPostToShare] = useState(null)
 

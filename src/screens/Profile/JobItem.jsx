@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { Text } from '../../components';
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
 
-const { colors, screenHeight, screenWidth } = constants;
+const { colors, screenHeight, screenWidth, monthsAbr } = constants;
 
 //icons
 import sowIcon from '../../assets/sow-it-pink.png';
@@ -31,13 +32,33 @@ const getIcon = (jobType) => {
 };
 
 export const JobItem = ({ job }) => {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
+
+  const manageCropContext = useContext(ManageCropContext);
+
+  const monthIndex = new Date(job.job_date).getMonth();
+  console.log(job?.crop_Id,'from jobs items')
+
+
+  const handleNavigation = (path) => () => {
+    navigation.navigate(path);
+
+    manageCropContext?.actions?.updateCropToGrowDetails({
+      // cropName: crop?.name,
+      month: monthsAbr[monthIndex],
+      // variety: job?.variety,
+      monthIndex,
+      cropId: job?.crop_id,
+      action: job?.job_type,
+    });
+  };
 
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={[styles.jobs]}
       // onPress={() => navigation.navigate('Grow-Crop')}
+      onPress={handleNavigation('Grow-Crop')}
     >
       <View style={[styles.jobsChild]}>
         <Image
