@@ -103,6 +103,7 @@ export const Register = ({ navigation }) => {
                 onChangeText={(text) => handleAuthDetails('username', text)}
                 placeholder='Enter your username'
                 autoCapitalize='none'
+                placeholderTextColor={colors.white}
               />
               <Input
                 containerStyle={styles.inputContainer}
@@ -112,6 +113,7 @@ export const Register = ({ navigation }) => {
                 value={authDetails.location}
                 onChangeText={(text) => handleAuthDetails('location', text)}
                 placeholder="Enter your location"
+                placeholderTextColor={colors.white}
               />
 
               <Input
@@ -148,7 +150,7 @@ export const Register = ({ navigation }) => {
                   marginTop: '30%',
                   fontSize: 16,
                 }}
-                onPress={() => navigation.navigate('Login')}
+                // onPress={() => navigation.navigate('Login')}
               >
                 Cancel
               </Text>

@@ -338,7 +338,7 @@ const PostForm = ({
                     paddingVertical: 7,
                   }}
                 >
-                  <Text style={{ fontSize: 18 }}>{crop.variety}</Text>
+                  <Text style={{ fontSize: 18 }} >{crop.variety}</Text>
                 </TouchableOpacity>
               )
             })}

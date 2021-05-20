@@ -16,10 +16,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { JobItem } from './JobItem';
 
 import {
-  GradientButton,
-  Input,
-  Text,
-  FavoriteCropItem,
+    GradientButton,
+    Input,
+    Text,
+    FavoriteCropItem, SafeArea, KeyboardAvoiding,
 } from '../../components';
 
 import { getCropsFavoriteToGrow, getUserJobs } from '../../redux/actions';
@@ -122,6 +122,8 @@ const AddToCalendar = () => {
   const jobDate = new Date().getDate();
 
   return (
+      <KeyboardAvoiding>
+          <SafeArea>
     <View style={{ flex: 1 }}>
       <SafeAreaView style={[styles.parent]}>
         <ScrollView
@@ -411,6 +413,8 @@ const AddToCalendar = () => {
         </ScrollView>
       </SafeAreaView>
     </View>
+          </SafeArea>
+      </KeyboardAvoiding>
   );
 };
 

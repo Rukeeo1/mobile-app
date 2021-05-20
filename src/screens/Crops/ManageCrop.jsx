@@ -115,15 +115,68 @@ const ManageCrops = () => {
                     <PlantItem job={job} key={job.id} />
                   ) : null;
                 })}
+                
+                {/* <TouchableOpacity
+                  activeOpacity={0.9}
+                  style={[styles.cropCardContainer]}
+                  onPress={() => navigation.navigate('Grow-Crop')}
+                >
+                  <View style={[styles.cropDetails]}>
+                    <Image
+                      style={[styles.cropAvatar]}
+                      source={require('../../assets/avatarimg.png')}
+                    />
+                    <View style={[styles.cropText]}>
+                      <Text style={styles.cropName}>Tomato</Text>
+                      <Text>Intermediate</Text>
+                    </View>
+                  </View>
+                  <AntDesign name='right' size={24} color={colors.green} />
+                </TouchableOpacity> */}
               </View>
             )}
             <View>
               <Text style={styles.growingCrops}>Past Harvest</Text>
               {jobs?.jobs?.map((job) => {
-                return job.job_type === 'harvest' ? (
-                  <PlantItem job={job} key={job.id} />
-                ) : null;
-              })}
+                  return job.job_type === 'harvest' ? (
+                    <PlantItem job={job} key={job.id} />
+                  ) : null;
+                })}
+
+              {/* <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/avatarimg.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={styles.cropName}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name='right' size={24} color={colors.green} />
+              </TouchableOpacity> */}
+              {/* <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.cropCardContainer]}
+                onPress={() => navigation.navigate('Grow-Crop')}
+              >
+                <View style={[styles.cropDetails]}>
+                  <Image
+                    style={[styles.cropAvatar]}
+                    source={require('../../assets/avatarimg.png')}
+                  />
+                  <View style={[styles.cropText]}>
+                    <Text style={styles.cropName}>Tomato</Text>
+                    <Text>Intermediate</Text>
+                  </View>
+                </View>
+                <AntDesign name='right' size={24} color={colors.green} />
+              </TouchableOpacity> */}
             </View>
           </View>
         </ScrollView>

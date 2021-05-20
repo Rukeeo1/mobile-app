@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { CommonActions } from '@react-navigation/native'
 
 import {
   SAVE_TOKEN,
@@ -11,12 +12,13 @@ import {
   GET_USER_GROW_LIST,
   GET_USER_POSTS,
   FETCHING_MORE,
+  LOG_OUT,
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
 
 export const signOut = () => ({
-  type: SIGN_OUT,
+  type: LOG_OUT,
 })
 
 export const saveUser = (token, user) => (dispatch) => {
@@ -43,7 +45,15 @@ export const login = (user, navigation) => (dispatch) => {
     .then(({ data }) => {
       dispatch(saveUser(data.token, { ...data.user }))
       // navigation.navigate('Onboarding')
-      navigation.navigate('Splash')
+      // navigation.navigate('Splash')
+
+      navigation.dispatch(CommonActions.reset({
+        index: 0,
+        key: null,
+        routes: [{
+          name: 'Splash'
+        }],
+      }))
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(login(user, navigation)))
@@ -72,9 +82,18 @@ export const register = (user, navigation) => (dispatch) => {
     role: 0,
   })
     .then(({ data }) => {
+      console.log('signup', data)
       dispatch(saveUser(data.data.token, { ...data.data }))
-      navigation.navigate('Splash')
+      // navigation.navigate('Splash')
       // navigation.navigate('Onboarding')
+
+      navigation.dispatch(CommonActions.reset({
+        index: 0,
+        key: null,
+        routes: [{
+          name: 'Splash'
+        }],
+      }))
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(register(user, navigation)))
@@ -299,4 +318,23 @@ export const getUserPosts = () => (dispatch, getState) => {
         payload: false,
       })
     })
+}
+
+export const deleteUserPosts = (postId, toast) => (dispatch, getState) => {
+  const { posts = [] } = getState().auth
+  const newPosts = posts.filter((post) => post?.id !== postId)
+
+  dispatch({
+    type: GET_USER_POSTS,
+    payload: newPosts,
+  })
+
+  toast.show({
+    text1: 'Post deleted successfully',
+    position: 'bottom'
+  });
+
+  apiRequest(`/posts/${postId}`, 'delete')
+    .then(({ data }) => console.log('delete post', data))
+    .catch(({ err }) => console.log('delete post error', err?.response))
 }
