@@ -10,6 +10,8 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native'
+import {useSelector, useDispatch} from 'react-redux'
+
 import { SafeArea } from '../../components'
 import { GradientButton, SmallGradientButton } from '../../components/Button'
 import constants from '../../constants'

@@ -12,7 +12,6 @@ const { colors, screenHeight, screenWidth, monthsAbr } = constants;
 
 //icons
 import sowIcon from '../../assets/sow-it-pink.png';
-// import completedIcon from '../../assets/completed-job-pink.png';
 import jobIndicatorPink from '../../assets/job-indicator-pink.png';
 import plantItPink from '../../assets/plant-it-pink.png';
 import harvestIcon from '../../assets/harvest-icon-pink.png';
@@ -37,16 +36,15 @@ export const JobItem = ({ job }) => {
   const manageCropContext = useContext(ManageCropContext);
 
   const monthIndex = new Date(job.job_date).getMonth();
-  console.log(job?.crop_Id,'from jobs items')
-
 
   const handleNavigation = (path) => () => {
     navigation.navigate(path);
 
     manageCropContext?.actions?.updateCropToGrowDetails({
-      // cropName: crop?.name,
+      //name in this case represents crop name...details for the crop was added to the job object
+      cropName: job?.name,
       month: monthsAbr[monthIndex],
-      // variety: job?.variety,
+      variety: job?.variety,
       monthIndex,
       cropId: job?.crop_id,
       action: job?.job_type,

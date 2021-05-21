@@ -10,7 +10,6 @@ import Explore from './Explore'
 import FirstView from './FirstView'
 import ProfileBtmSheet from './ProfileBtmSheet'
 import ProfileSideTab from './ProfileSideTab'
-import { useRoute } from '@react-navigation/native'
 
 const { colors } = constants
 

@@ -16,16 +16,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { JobItem } from './JobItem';
 
 import {
-    GradientButton,
-    Input,
-    Text,
-    FavoriteCropItem, SafeArea, KeyboardAvoiding,
+  GradientButton,
+  Input,
+  Text,
+  FavoriteCropItem,
+  SafeArea,
+  KeyboardAvoiding,
 } from '../../components';
 
 import { getCropsFavoriteToGrow, getUserJobs } from '../../redux/actions';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
+import { Picker } from 'react-native';
 
 const {
   colors,
@@ -59,7 +62,6 @@ const AddToCalendar = () => {
   const [jobs, setJobs] = useState(false);
   const [rest, setRest] = useState(false);
   const [viewingMore, setViewingMore] = useState(false);
-  const [jobTitle, setJobTitle] = useState('');
   const [cropToolTipIdToShow, setCropToolTipIdToShow] = useState('');
   const [fetchingFavoriteCrops, setFetchingFavoriteCrops] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
@@ -112,163 +114,160 @@ const AddToCalendar = () => {
     });
   };
 
-  const addJob = () => {
-    setRest(true);
-    setJobs(false);
+  const pickCurrentMonth = () => {
+    const currentMonth = new Date().getMonth();
+    setMonth(currentMonth);
   };
 
-  const handleJobTextChange = (text) => setJobTitle(text);
-
-  const jobDate = new Date().getDate();
-
   return (
-      <KeyboardAvoiding>
-          <SafeArea>
-    <View style={{ flex: 1 }}>
-      <SafeAreaView style={[styles.parent]}>
-        <ScrollView
-          style={[styles.parentContiner]}
-          nestedScrollEnabled
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-          showsVerticalScrollIndicator={false}
-          ref={scrollRef}
-        >
-          <View
-            style={{
-              width: '100%',
-              flexDirection: 'column',
-              justifyContent: 'center',
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                alignItems: 'center',
+    <KeyboardAvoiding>
+      <SafeArea>
+        <View style={{ flex: 1 }}>
+          <SafeAreaView style={[styles.parent]}>
+            <ScrollView
+              style={[styles.parentContiner]}
+              nestedScrollEnabled
+              contentContainerStyle={{
+                flexGrow: 1,
               }}
+              showsVerticalScrollIndicator={false}
+              ref={scrollRef}
             >
-              <FlatList
-                data={months}
-                keyExtractor={(item, index) => item}
-                numColumns={6}
-                renderItem={({ item, index }) => (
-                  <TouchableOpacity
-                    activeOpacity={0.9}
-                    style={{
-                      height: 46,
-                      width: 46,
-                      borderRadius: 46 / 2,
-                      textAlign: 'center',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginHorizontal: 2,
-                      marginVertical: 10,
-                      backgroundColor: `${
-                        index === m ? colors.green : 'white'
-                      }`,
-                    }}
-                    onPress={() => setMonth(index)}
-                  >
-                    <Text
-                      style={{
-                        color: `${index === m ? '#fff' : 'black'}`,
-                        fontWeight: `${index === m ? 'bold' : '100'}`,
-                      }}
-                      fontType={index === m ? 'bold' : 'light'}
-                    >
-                      {item}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: 15,
-                marginBottom: 10,
-              }}
-            >
-              <TouchableOpacity onPress={prevYear}>
-                <MaterialIcons
-                  name='arrow-back-ios'
-                  size={24}
-                  color={colors.green}
-                />
-              </TouchableOpacity>
-              <View style={{}}>
-                <Text
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <View
                   style={{
-                    color: colors.black,
-                    fontSize: 40,
-                    fontWeight: '100',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  {months[m]} {y}
-                </Text>
+                  <FlatList
+                    data={months}
+                    keyExtractor={(item, index) => item}
+                    numColumns={6}
+                    renderItem={({ item, index }) => (
+                      <TouchableOpacity
+                        activeOpacity={0.9}
+                        style={{
+                          height: 46,
+                          width: 46,
+                          borderRadius: 46 / 2,
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginHorizontal: 2,
+                          marginVertical: 10,
+                          backgroundColor: `${
+                            index === m ? colors.green : 'white'
+                          }`,
+                        }}
+                        onPress={() => setMonth(index)}
+                      >
+                        <Text
+                          style={{
+                            color: `${index === m ? '#fff' : 'black'}`,
+                            fontWeight: `${index === m ? 'bold' : '100'}`,
+                          }}
+                          fontType={index === m ? 'bold' : 'light'}
+                        >
+                          {item}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: 15,
+                    marginBottom: 10,
+                  }}
+                >
+                  <TouchableOpacity onPress={prevYear}>
+                    <MaterialIcons
+                      name='arrow-back-ios'
+                      size={24}
+                      color={colors.green}
+                    />
+                  </TouchableOpacity>
+                  <View style={{}}>
+                    <Text
+                      style={{
+                        color: colors.black,
+                        fontSize: 40,
+                        fontWeight: '100',
+                      }}
+                    >
+                      {months[m]} {y}
+                    </Text>
+                  </View>
+                  <TouchableOpacity onPress={nextItem}>
+                    <MaterialIcons
+                      name='arrow-forward-ios'
+                      size={24}
+                      color={colors.green}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={pickCurrentMonth}>
+                  <Text
+                    style={{
+                      marginBottom: 30,
+                      textAlign: 'center',
+                      color: colors.green,
+                    }}
+                  >
+                    Today
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={nextItem}>
-                <MaterialIcons
-                  name='arrow-forward-ios'
-                  size={24}
-                  color={colors.green}
-                />
-              </TouchableOpacity>
-            </View>
 
-            <Text
-              style={{
-                marginBottom: 30,
-                textAlign: 'center',
-                color: colors.green,
-              }}
-            >
-              Today
-            </Text>
-          </View>
+              <View>
+                <GradientButton
+                  gradient={[colors.red, colors.redDeep]}
+                  onPress={() => navigation.navigate('Crops')}
+                >
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      width: '100%',
+                      paddingHorizontal: 20,
+                    }}
+                  >
+                    <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
+                    <AntDesign name='search1' size={25} color={colors.white} />
+                  </View>
+                </GradientButton>
+                <GradientButton
+                  gradient={[colors.green, colors.greenDeep]}
+                  onPress={() => setJobs(!jobs)}
+                >
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      width: '100%',
+                      paddingHorizontal: 20,
+                    }}
+                  >
+                    <Text style={styles.btnText}>Jobs</Text>
+                    <AntDesign name='plus' size={25} color={colors.white} />
+                  </View>
+                </GradientButton>
 
-          <View>
-            <GradientButton
-              gradient={[colors.red, colors.redDeep]}
-              onPress={() => navigation.navigate('Crops')}
-            >
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  width: '100%',
-                  paddingHorizontal: 20,
-                }}
-              >
-                <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
-                <AntDesign name='search1' size={25} color={colors.white} />
-              </View>
-            </GradientButton>
-            <GradientButton
-              gradient={[colors.green, colors.greenDeep]}
-              onPress={() => setJobs(!jobs)}
-            >
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  width: '100%',
-                  paddingHorizontal: 20,
-                }}
-              >
-                <Text style={styles.btnText}>Jobs</Text>
-                <AntDesign name='plus' size={25} color={colors.white} />
-              </View>
-            </GradientButton>
-
-            {/* {jobs && (
+                {/* {jobs && (
               <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
                 <View style={[styles.jobsChild]}>
                   <Image source={require('../../assets/circle.png')} />
@@ -293,128 +292,132 @@ const AddToCalendar = () => {
                 />
               </TouchableOpacity>
             )} */}
-            <View style={{ marginTop: 30 }}>
-              {loadingJobs ? (
-                <ActivityIndicator />
-              ) : (
-                userJobs?.jobs
-                  ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
-                  .map((job, index) => {
-                    return job.job_type !== 'harvest' ? (
-                      <React.Fragment key={index}>
-                        <JobItem job={job} />
-                      </React.Fragment>
-                    ) : null;
-                  })
-              )}
+                <View style={{ marginTop: 30 }}>
+                  {loadingJobs ? (
+                    <ActivityIndicator />
+                  ) : (
+                    userJobs?.jobs
+                      ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
+                      .map((job, index) => {
+                        return job.job_type !== 'harvest' ? (
+                          <React.Fragment key={index}>
+                            <JobItem job={job} />
+                          </React.Fragment>
+                        ) : null;
+                      })
+                  )}
 
-              <TouchableOpacity onPress={() => setViewingMore(!viewingMore)}>
-                {userJobs?.jobs?.length > 3 && (
-                  <Text style={styles.viewMore}>
-                    {viewingMore ? 'Hide jobs' : 'View more'}
-                  </Text>
-                )}
-              </TouchableOpacity>
-            </View>
-
-            <GradientButton gradient={[colors.blueLigth, colors.blue]}>
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  width: '100%',
-                  paddingHorizontal: 20,
-                }}
-              >
-                <Text style={styles.btnText}>What you’re harvesting</Text>
-                <AntDesign name='info' size={28} color={colors.white} />
-              </View>
-            </GradientButton>
-            <View>
-              {loadingJobs ? (
-                <ActivityIndicator />
-              ) : (
-                userJobs?.jobs
-                  ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
-                  .map((job, index) => {
-                    return job?.job_type === 'harvest' ? (
-                      <React.Fragment key={index}>
-                        <JobItem job={job} />
-                      </React.Fragment>
-                    ) : null;
-                  })
-              )}
-            </View>
-
-            <View style={[styles.horizontalLine]}></View>
-
-            <View style={[styles.favoriteContainer]}>
-              <Text style={styles.favouriteText}>
-                Some of our favourites to grow this month
-              </Text>
-            </View>
-            {fetchingFavoriteCrops ? (
-              <View>
-                <ActivityIndicator />
-              </View>
-            ) : (
-              favoriteCrops?.crops?.map((crop, index) => (
-                <FavoriteCropItem
-                  crop={crop}
-                  key={index}
-                  tipToShowId={cropToolTipIdToShow}
-                  onSetTipToShow={setCropToolTipIdToShow}
-                  onNavigate={() => {
-                    navigation.navigate('Crops', {
-                      screen: 'Crop-selection',
-                      params: {
-                        cropName: crop?.name,
-                        sowTip: crop?.sow_tip,
-                        growLevel: crop?.grow_level,
-                      },
-                    });
-                    //update state context???
-                    manageCropContext?.actions?.updateCropToGrowDetails({
-                      cropName: crop?.name,
-                      month: months[m],
-                      variety: crop?.variety,
-                      monthIndex: m,
-                      cropId: crop?.id,
-                      action: 'sow'
-                    });
-                  }}
-                />
-              ))
-            )}
-
-            <View style={{ marginBottom: 50 }}>
-              <Text style={styles.explore}>Continue to explore</Text>
-              <GradientButton
-                gradient={[colors.red, colors.redDeep]}
-                onPress={onFabPress}
-              >
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    width: '100%',
-                    paddingHorizontal: 20,
-                  }}
-                >
-                  <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
-
-                  <AntDesign name='plus' size={25} color={colors.white} />
+                  <TouchableOpacity
+                    onPress={() => setViewingMore(!viewingMore)}
+                  >
+                    {userJobs?.jobs?.length > 3 && (
+                      <Text style={styles.viewMore}>
+                        {viewingMore ? 'Hide jobs' : 'View more'}
+                      </Text>
+                    )}
+                  </TouchableOpacity>
                 </View>
-              </GradientButton>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
-          </SafeArea>
-      </KeyboardAvoiding>
+
+                <GradientButton gradient={[colors.blueLigth, colors.blue]}>
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      width: '100%',
+                      paddingHorizontal: 20,
+                    }}
+                  >
+                    <Text style={styles.btnText}>What you’re harvesting</Text>
+                    <AntDesign name='info' size={28} color={colors.white} />
+                  </View>
+                </GradientButton>
+                <View>
+                  {loadingJobs ? (
+                    <ActivityIndicator />
+                  ) : (
+                    userJobs?.jobs
+                      ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
+                      .map((job, index) => {
+                        return job?.job_type === 'harvest' ? (
+                          <React.Fragment key={index}>
+                            <JobItem job={job} />
+                          </React.Fragment>
+                        ) : null;
+                      })
+                  )}
+                </View>
+
+                <View style={[styles.horizontalLine]}></View>
+
+                <View style={[styles.favoriteContainer]}>
+                  <Text style={styles.favouriteText}>
+                    Some of our favourites to grow this month
+                  </Text>
+                </View>
+                {fetchingFavoriteCrops ? (
+                  <View>
+                    <ActivityIndicator />
+                  </View>
+                ) : (
+                  favoriteCrops?.crops?.map((crop, index) => (
+                    <FavoriteCropItem
+                      crop={crop}
+                      key={index}
+                      tipToShowId={cropToolTipIdToShow}
+                      onSetTipToShow={setCropToolTipIdToShow}
+                      onNavigate={() => {
+                        navigation.navigate('Crops', {
+                          screen: 'Crop-selection',
+                          params: {
+                            cropName: crop?.name,
+                            sowTip: crop?.sow_tip,
+                            growLevel: crop?.grow_level,
+                          },
+                        });
+                        //update state context???
+                        manageCropContext?.actions?.updateCropToGrowDetails({
+                          cropName: crop?.name,
+                          month: months[m],
+                          variety: crop?.variety,
+                          monthIndex: m,
+                          cropId: crop?.id,
+                          action: 'sow',
+                        });
+                      }}
+                    />
+                  ))
+                )}
+
+                <View style={{ marginBottom: 50 }}>
+                  <Text style={styles.explore}>Continue to explore</Text>
+                  <GradientButton
+                    gradient={[colors.red, colors.redDeep]}
+                    onPress={onFabPress}
+                  >
+                    <View
+                      style={{
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        width: '100%',
+                        paddingHorizontal: 20,
+                      }}
+                    >
+                      <Text style={styles.btnText}>
+                        Grow in {monthsFull[m]}{' '}
+                      </Text>
+
+                      <AntDesign name='plus' size={25} color={colors.white} />
+                    </View>
+                  </GradientButton>
+                </View>
+              </View>
+            </ScrollView>
+          </SafeAreaView>
+        </View>
+      </SafeArea>
+    </KeyboardAvoiding>
   );
 };
 
