@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -8,46 +8,54 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
-} from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { useSelector, useDispatch } from 'react-redux'
+  ActivityIndicator,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-import Toast from 'react-native-toast-message'
+import Toast from 'react-native-toast-message';
 
-import {
-  getUserGrowList,
-  getUserProfile,
-  getUserPosts,
-} from '../../redux/actions/authActions'
+import { getUserGrowList, getUserPosts } from '../../redux/actions/authActions';
 
-import { GradientButton } from '../../components/Button'
-import constants from '../../constants'
-import ShareModal from './ShareModal'
-import { ActivityIndicator } from 'react-native'
+import { GradientButton } from '../../components/Button';
+import constants from '../../constants';
+import ShareModal from './ShareModal';
+import { getUserJobs } from '../../redux/actions';
 
-const { colors } = constants
+const { colors } = constants;
 
 const FirstView = () => {
-  const dispatch = useDispatch()
-  const { user, userData, growList, posts } = useSelector((state) => state.auth)
-  const { loading, refreshing, fetchingMore } = useSelector((state) => state.loading)
+  const dispatch = useDispatch();
+  const { user, userData, growList, posts } = useSelector(
+    (state) => state.auth
+  );
+  const { loading, refreshing, fetchingMore } = useSelector(
+    (state) => state.loading
+  );
+  const { jobs, loadingJobs } = useSelector(
+    (state) => ({
+      jobs: state.jobs.usersJobs,
+      loadingJobs: state.jobs.loadingJobs,
+    }),
+    shallowEqual
+  );
 
-  const [showShare, setShowShare] = useState(false)
-  const [postToShare, setPostToShare] = useState(null)
+  const [showShare, setShowShare] = useState(false);
+  const [postToShare, setPostToShare] = useState(null);
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const toggleModal = (postId) => {
-    setShowShare((prevState) => !prevState)
-    setPostToShare(postId)
-  }
+    setShowShare((prevState) => !prevState);
+    setPostToShare(postId);
+  };
 
   useEffect(() => {
-    // dispatch(getUserProfile())
-    dispatch(getUserGrowList())
-    dispatch(getUserPosts())
-  }, [])
+    dispatch(getUserGrowList());
+    dispatch(getUserPosts());
+    dispatch(getUserJobs(user?.id));
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.white }}>
@@ -59,10 +67,7 @@ const FirstView = () => {
         showsVerticalScrollIndicator={false}
       >
         {user?.avatar ? (
-          <Image
-            source={{ uri: user?.avatar }}
-            style={styles.profileImg}
-          />
+          <Image source={{ uri: user?.avatar }} style={styles.profileImg} />
         ) : (
           <View
             style={{
@@ -79,170 +84,183 @@ const FirstView = () => {
             />
           </View>
         )}
-        {(loading || fetchingMore || refreshing)
-          ? (
-            <View
-              style={{
-                paddingVertical: 20,
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <ActivityIndicator
-                color={colors.green}
-                animating
-                size="small"
-              />
+        {loading || fetchingMore || loadingJobs || refreshing ? (
+          <View
+            style={{
+              paddingVertical: 20,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ActivityIndicator color={colors.green} animating size='small' />
+          </View>
+        ) : (
+          <>
+            <View style={[styles.detailsContainer, styles.detaileText]}>
+              <Text style={[styles.title]}>{user?.fullname}</Text>
+              <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14 }}>
+                {user?.biography}
+              </Text>
+              <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14 }}>
+                {user?.location}
+              </Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('Profile-Settings')}
+              >
+                <Text style={[styles.edit]}>Edit profile</Text>
+              </TouchableOpacity>
             </View>
-          ) : (
-            <>
-              <View style={[styles.detailsContainer, styles.detaileText]}>
-                <Text style={[styles.title]}>
-                  {user?.fullname}
+
+            <View style={[styles.detailsContainer, styles.follows]}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('Following')}
+              >
+                <Text style={[styles.followsText]}>
+                  {userData?.following_count ?? 0} Following
                 </Text>
-                <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14, }}>
-                  {user?.biography}
+              </TouchableOpacity>
+              <Text>{'|'}</Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('Followers')}
+              >
+                <Text style={[styles.followsText]}>
+                  {userData?.follower_count ?? 0} Followers
                 </Text>
-                <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14, }}>
-                  {user?.location}
-                </Text>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => navigation.navigate('Profile-Settings')}
-                >
-                  <Text style={[styles.edit]}>Edit profile</Text>
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
+            </View>
 
-              <View style={[styles.detailsContainer, styles.follows]}>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => navigation.navigate('Following')}
-                >
-                  <Text style={[styles.followsText]}>{userData?.following_count ?? 0} Following</Text>
-                </TouchableOpacity>
-                <Text>{'|'}</Text>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => navigation.navigate('Followers')}
-                >
-                  <Text style={[styles.followsText]}>{userData?.follower_count ?? 0} Followers</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={[styles.growList]}>
-                {growList?.length > 0 ? (
-                  <>
-                    <Text style={[styles.growTitle]}>Current Grow It List</Text>
-                    <ScrollView horizontal={true}>
-                      {growList?.map((crop) => {
-                        return (
-                          <View style={[styles.growCard]}>
-                            <Image source={{ uri: crop.thumbnail_url }} style={{ height: 60, width: 60 }} />
-                            <Text style={[styles.growText]}>
-                              {crop.name}
-                              {' '}
-                              {`“${crop.variety}”`}
-                            </Text>
-                          </View>
-                        )
-                      })}
-                    </ScrollView>
-                  </>
-                ) : (
-                  <View>
-                    <Text style={[styles.growTitle2]}>
-                      You aren’t growing anything!
-                    </Text>
-                    <GradientButton
-                      gradient={[colors.green, colors.greenDeep]}
-                      onPress={() =>
-                        navigation.navigate('Main-Profile', {
-                          screen: 'Main-Profile',
-                          indexOfItemToShow: 5,
-                        })
-                      }
-                    >
-                      <View
-                        style={{
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                          width: '100%',
-                          paddingHorizontal: 30,
-                        }}
-                      >
-                        <Text style={[styles.btnText]}>Add to Grow Calendar</Text>
-                        <Image
-                          style={{ width: 25, height: 25 }}
-                          source={require('../../assets/calendar-page.png')}
-                        />
-                      </View>
-                    </GradientButton>
-                  </View>
-                )}
-              </View>
-
-              {posts?.length > 0
-                ? posts?.map((post) => {
-                  return (
-                    <View style={[styles.postCard]}>
-                      <View style={[styles.postAvatarContainer]}>
-                        <Image
-                          style={[styles.postAvatarImg]}
-                          source={require('../../assets/profileAvatar.png')}
-                        />
-                        <Text style={[styles.postTitle]}>{user?.fullname}</Text>
-                      </View>
-
-                      <View>
-                        <Image
-                          style={[styles.postImg]}
-                          source={{ uri: post.media_url }}
-                        />
-                      </View>
-
-                      <View style={[styles.postDateTime]}>
-                        <Text style={{ fontFamily: 'Hero-New-Light-Italic', color: '#9B9B9B' }}>{new Date(post.created_at).toDateString()}</Text>
-                        <TouchableOpacity onPress={() => toggleModal(post?.id)}>
-                          <Text>...</Text>
-                        </TouchableOpacity>
-                      </View>
-
-                      <View style={{ marginLeft: 15 }}>
-                        <Text style={{ fontFamily: 'Hero-New-Light' }}>
-                          <Text style={{ fontFamily: 'Hero-New-Medium' }}>{post?.title}</Text> {post.content}</Text>
-
-                        {/* <Text style={{ fontFamily: 'Hero-New-Medium' }}>Tomatoes - ‘Sungold’</Text> */}
-                      </View>
-                    </View>
-
-                  )
-                }
+            <View style={[styles.growList]}>
+              {jobs?.jobs?.length > 0 ? (
+                <>
+                  <Text style={[styles.growTitle]}>Current Grow It List</Text>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    {jobs?.jobs?.map((crop) => {
+                      return (
+                        <View style={[styles.growCard]}>
+                          <Image
+                            source={{ uri: crop.thumbnail_url }}
+                            style={{ height: 60, width: 60, borderRadius: 30 }}
+                          />
+                          <Text style={[styles.growText]}>
+                            {crop.name} {`“${crop.variety}”`}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+                </>
               ) : (
-                <View style={[styles.growMovement]}>
-                  <View style={[styles.growMovementImgContainer]}>
-                    <Image
-                      style={[styles.growMovementImg]}
-                      source={require('../../assets/grow-movement.png')}
-                    />
-                    <LinearGradient
-                      colors={[colors.purshBlue, colors.blue]}
-                      style={[styles.growMoveTextContainer]}
-                    >
-                      <Text style={[styles.growMoveText]}>
-                        You joined the Grow It movement!
-                      </Text>
-                      <Text style={{ color: '#fff', marginTop: 7 }}>Feb 2020</Text>
-                    </LinearGradient>
-                  </View>
-                  <Text style={[styles.growMoveFooterText]}>
-                    Click the ‘+’ in the side bar to create your first post!
+                <View>
+                  <Text style={[styles.growTitle2]}>
+                    You aren’t growing anything!
                   </Text>
+                  <GradientButton
+                    gradient={[colors.green, colors.greenDeep]}
+                    onPress={() =>
+                      navigation.navigate('Main-Profile', {
+                        screen: 'Main-Profile',
+                        indexOfItemToShow: 5,
+                      })
+                    }
+                  >
+                    <View
+                      style={{
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        width: '100%',
+                        paddingHorizontal: 30,
+                      }}
+                    >
+                      <Text style={[styles.btnText]}>Add to Grow Calendar</Text>
+                      <Image
+                        style={{ width: 25, height: 25 }}
+                        source={require('../../assets/calendar-page.png')}
+                      />
+                    </View>
+                  </GradientButton>
                 </View>
               )}
-            </>
-          )}
+            </View>
+
+            {posts?.length > 0 ? (
+              posts?.map((post) => {
+                return (
+                  <View style={[styles.postCard]}>
+                    <View style={[styles.postAvatarContainer]}>
+                      <Image
+                        style={[styles.postAvatarImg]}
+                        source={require('../../assets/profileAvatar.png')}
+                      />
+                      <Text style={[styles.postTitle]}>{user?.fullname}</Text>
+                    </View>
+
+                    <View>
+                      <Image
+                        style={[styles.postImg]}
+                        source={{ uri: post.media_url }}
+                      />
+                    </View>
+
+                    <View style={[styles.postDateTime]}>
+                      <Text
+                        style={{
+                          fontFamily: 'Hero-New-Light-Italic',
+                          color: '#9B9B9B',
+                        }}
+                      >
+                        {new Date(post.created_at).toDateString()}
+                      </Text>
+                      <TouchableOpacity onPress={() => toggleModal(post?.id)}>
+                        <Text>...</Text>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={{ marginLeft: 15 }}>
+                      <Text style={{ fontFamily: 'Hero-New-Light' }}>
+                        <Text style={{ fontFamily: 'Hero-New-Medium' }}>
+                          {post?.title}
+                        </Text>{' '}
+                        {post.content}
+                      </Text>
+
+                      {/* <Text style={{ fontFamily: 'Hero-New-Medium' }}>Tomatoes - ‘Sungold’</Text> */}
+                    </View>
+                  </View>
+                );
+              })
+            ) : (
+              <View style={[styles.growMovement]}>
+                <View style={[styles.growMovementImgContainer]}>
+                  <Image
+                    style={[styles.growMovementImg]}
+                    source={require('../../assets/grow-movement.png')}
+                  />
+                  <LinearGradient
+                    colors={[colors.purshBlue, colors.blue]}
+                    style={[styles.growMoveTextContainer]}
+                  >
+                    <Text style={[styles.growMoveText]}>
+                      You joined the Grow It movement!
+                    </Text>
+                    <Text style={{ color: '#fff', marginTop: 7 }}>
+                      Feb 2020
+                    </Text>
+                  </LinearGradient>
+                </View>
+                <Text style={[styles.growMoveFooterText]}>
+                  Click the ‘+’ in the side bar to create your first post!
+                </Text>
+              </View>
+            )}
+          </>
+        )}
         <ShareModal
           showBottomSheet={showShare}
           setShowShare={toggleModal}
@@ -252,8 +270,8 @@ const FirstView = () => {
       </ScrollView>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   profileImg: {
@@ -356,7 +374,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginHorizontal: 5,
-    maxWidth: 90
+    maxWidth: 90,
   },
   growMoveFooterText: {
     textAlign: 'center',
@@ -400,6 +418,6 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: 'bold',
   },
-})
+});
 
-export default FirstView
+export default FirstView;

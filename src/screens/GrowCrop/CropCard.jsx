@@ -11,7 +11,6 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
-import Tooltip from 'react-native-walkthrough-tooltip';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
 
@@ -21,7 +20,6 @@ import {
   growCrop,
   harvestCrop,
   plantCrop,
-  getUserJobs,
 } from '../../redux/actions/';
 import ManageCropContext from '../../context/ManageCropsContext';
 
@@ -39,12 +37,11 @@ import constants from '../../constants';
 import { getCropCardData } from '../../utils/index';
 
 import home from '../../assets/home-icon.png';
-import pencil from '../../assets/pencil_circle.png';
+// import pencil from '../../assets/pencil_circle.png';
 
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 import harvestIcon from '../../assets/harvest-icon.png';
-import { date } from 'yup';
 
 const { colors } = constants;
 
@@ -67,7 +64,6 @@ const CropCard = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState(0);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [toolTipIsVisible, setToolTipIsVisible] = useState(true);
   const [loadingJobs, setLoadingJobs] = useState(false);
 
   // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee

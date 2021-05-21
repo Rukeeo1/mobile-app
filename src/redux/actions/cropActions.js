@@ -7,7 +7,8 @@ import {
   GET_CROP_STEPS,
   GET_SEARCH_RESULTS,
   GET_CROPS,
-} from '../types/cropTypes'
+  LOADING,
+} from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
 
@@ -74,7 +75,8 @@ export const getCropSteps = (cropId) => async (dispatch) => {
 };
 
 
-export const addCrop = (cropData, navigation) => (dispatch) => {
+
+export const addCrop = (cropData, navigation) => (dispatch, getState) => {
   const formData = new FormData()
 
   formData.append('name', cropData.name)
@@ -95,6 +97,8 @@ export const addCrop = (cropData, navigation) => (dispatch) => {
     })
   }
 
+  const { token } = getState().auth
+
   dispatch({
     type: LOADING,
     payload: true,
@@ -109,8 +113,14 @@ export const addCrop = (cropData, navigation) => (dispatch) => {
     .then(({ data }) => {
       console.log('update crop', data)
 
+      ManageCropContext?.actions?.updateCropToGrowDetails({
+        variety: cropData.variety,
+        cropName: cropData.name,
+        cropId: data?.id,
+      });
+      navigation.navigate('Success');
       // dispatch(updateProfile(userData, navigation))
-      navigation.navigate('Crop-selection', { cropName: cropData?.name, growLevel: cropData?.level, sowTip: data?.sow_tip })
+      // navigation.navigate('Crop-selection', { cropName: cropData?.name, growLevel: cropData?.level, sowTip: data?.sow_tip })
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(updateAvatar(image, navigation)))

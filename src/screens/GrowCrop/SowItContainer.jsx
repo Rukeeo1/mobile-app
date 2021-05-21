@@ -8,7 +8,9 @@ import { GrowCropCalender } from './GrowCropCalendar';
 
 import constants from '../../constants';
 
-const { colors, months, monthsAbr } = constants;
+const { colors, months, monthsAbr, defaultCalendarDay, defaultCalendarYear } = constants;
+
+
 
 export const SowItContainer = ({
   buttonTitle,
@@ -24,12 +26,12 @@ export const SowItContainer = ({
   const [showSowItButton, setShowSowItButton] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   const [showFullSelectedDate, setShowFullSelectedDate] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState('18');
+  //refactor: note change selectedDate to selectedDay to avoid confusion
+  const [selectedDate, setSelectedDate] = useState(defaultCalendarDay);
   const [selectedMonth, setSelectedMonth] = useState(
     months[monthsAbr.indexOf(startMonth)]
   );
-  const [selectedYear, setSelectedYear] = useState('2021');
+  const [selectedYear, setSelectedYear] = useState(defaultCalendarYear);
 
   const monthIndex = monthsAbr.indexOf(startMonth);
 
@@ -71,6 +73,7 @@ export const SowItContainer = ({
             defaultMonthIndex={monthIndex}
             selectedYear={selectedYear}
             selectedMonth={selectedMonth}
+            selectedDay={selectedDate}
           />
         </View>
       )}

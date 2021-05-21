@@ -83,17 +83,18 @@ export const register = (user, navigation) => (dispatch) => {
   })
     .then(({ data }) => {
       console.log('signup', data)
-      dispatch(saveUser(data.data.token, { ...data.data }))
+      dispatch(login({ email: user.email, password: user.password }, navigation))
+      // dispatch(saveUser(data.data.token, { ...data.data }))
       // navigation.navigate('Splash')
       // navigation.navigate('Onboarding')
 
-      navigation.dispatch(CommonActions.reset({
-        index: 0,
-        key: null,
-        routes: [{
-          name: 'Splash'
-        }],
-      }))
+      // navigation.dispatch(CommonActions.reset({
+      //   index: 0,
+      //   key: null,
+      //   routes: [{
+      //     name: 'Splash'
+      //   }],
+      // }))
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(register(user, navigation)))

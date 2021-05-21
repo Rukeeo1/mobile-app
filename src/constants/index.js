@@ -58,12 +58,17 @@ const monthsAbr = [
   'Dec',
 ];
 
+const defaultCalendarDay = new Date().getDate() + 1;
+const defaultCalendarYear = new Date().getFullYear() + 1;
+
 export default {
   colors,
   screenHeight,
   screenWidth,
   months,
-  monthsAbr
+  monthsAbr,
+  defaultCalendarDay,
+  defaultCalendarYear
 };
 
 export const API_URL = 'http://api.growit-app.co.uk:3000/api/v1'

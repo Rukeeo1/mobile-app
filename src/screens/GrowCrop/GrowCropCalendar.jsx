@@ -35,8 +35,20 @@ const getYears = () => {
   return years;
 };
 
-const getDaysInMonth = (year, month) => {
+export const getDaysInMonth = (year, month) => {
   return new Date(year, month, 0).getDate();
+};
+
+export const getDays = (selectedYear, selectedMonth) => {
+  const days = [];
+  for (
+    let i = 1;
+    i <= getDaysInMonth(selectedYear, months.indexOf(selectedMonth) + 1);
+    i++
+  ) {
+    days.push(i);
+  }
+  return days;
 };
 
 export const GrowCropCalender = ({
@@ -51,22 +63,13 @@ export const GrowCropCalender = ({
   defaultMonthIndex,
   selectedYear,
   selectedMonth,
+  selectedDay,
 }) => {
   const confirmCallback = () => {
     setSelectedDateItems?.();
   };
 
-  const getDays = () => {
-    const days = [];
-    for (
-      let i = 1;
-      i <= getDaysInMonth(selectedYear, months.indexOf(selectedMonth) + 1);
-      i++
-    ) {
-      days.push(i);
-    }
-    return days;
-  };
+  const daysOfTheMonth = getDays(selectedYear, selectedMonth);
 
   return (
     <View style={{ flexDirection: 'row', height: 200, alignItems: 'center' }}>
@@ -76,10 +79,10 @@ export const GrowCropCalender = ({
         />
         <GrowCalendar
           type='days'
-          data={getDays()}
+          data={daysOfTheMonth}
           onSelectItem={handleDate}
           textColor={textColor}
-          defaultSelectedItem={defaultMonthIndex}
+          defaultSelectedItem={daysOfTheMonth.indexOf(parseInt(selectedDay))}
         />
         <GrowCalendar
           type='month'
@@ -87,6 +90,7 @@ export const GrowCropCalender = ({
           onSelectItem={handleMonth}
           textColor={textColor}
           defaultSelectedItem={defaultMonthIndex}
+          
         />
         <GrowCalendar
           type='years'
