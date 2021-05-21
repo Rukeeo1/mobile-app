@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -12,6 +12,8 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
+import ManageCropContext from '../../context/ManageCropsContext';
+
 import { GradientButton, Text } from '../../components';
 import { getUserJobs } from '../../redux/actions';
 
@@ -21,6 +23,7 @@ const { colors } = constants;
 
 const ManageCrops = () => {
   const navigation = useNavigation();
+
   const { jobs, userId } = useSelector(
     (state) => ({
       jobs: state.jobs?.usersJobs,
@@ -28,6 +31,8 @@ const ManageCrops = () => {
     }),
     shallowEqual
   );
+
+  const manageCropContext = useContext(ManageCropContext);
 
   const dispatch = useDispatch();
 
@@ -45,6 +50,19 @@ const ManageCrops = () => {
   useEffect(() => {
     getJobs();
   }, [getJobs]);
+
+  const handleNavigation = (path, details) => () => {
+    navigation.navigate(path);
+
+    manageCropContext?.actions?.updateCropToGrowDetails({
+      cropName: details?.name,
+      // month: months[m],
+      variety: details?.variety,
+      // monthIndex: m,
+      cropId: details?.crop_id,
+      action: details?.job_type,
+    });
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -112,71 +130,26 @@ const ManageCrops = () => {
                 <Text style={styles.growingCrops}>Current growing</Text>
                 {jobs?.jobs?.map((job) => {
                   return job.job_type !== 'harvest' ? (
-                    <PlantItem job={job} key={job.id} />
+                    <PlantItem
+                      job={job}
+                      key={job.id}
+                      onPress={handleNavigation('Grow-Crop', job)}
+                    />
                   ) : null;
                 })}
-                
-                {/* <TouchableOpacity
-                  activeOpacity={0.9}
-                  style={[styles.cropCardContainer]}
-                  onPress={() => navigation.navigate('Grow-Crop')}
-                >
-                  <View style={[styles.cropDetails]}>
-                    <Image
-                      style={[styles.cropAvatar]}
-                      source={require('../../assets/avatarimg.png')}
-                    />
-                    <View style={[styles.cropText]}>
-                      <Text style={styles.cropName}>Tomato</Text>
-                      <Text>Intermediate</Text>
-                    </View>
-                  </View>
-                  <AntDesign name='right' size={24} color={colors.green} />
-                </TouchableOpacity> */}
               </View>
             )}
             <View>
               <Text style={styles.growingCrops}>Past Harvest</Text>
               {jobs?.jobs?.map((job) => {
-                  return job.job_type === 'harvest' ? (
-                    <PlantItem job={job} key={job.id} />
-                  ) : null;
-                })}
-
-              {/* <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
-                onPress={() => navigation.navigate('Grow-Crop')}
-              >
-                <View style={[styles.cropDetails]}>
-                  <Image
-                    style={[styles.cropAvatar]}
-                    source={require('../../assets/avatarimg.png')}
+                return job.job_type === 'harvest' ? (
+                  <PlantItem
+                    job={job}
+                    key={job.id}
+                    onPress={handleNavigation('Grow-Crop', job)}
                   />
-                  <View style={[styles.cropText]}>
-                    <Text style={styles.cropName}>Tomato</Text>
-                    <Text>Intermediate</Text>
-                  </View>
-                </View>
-                <AntDesign name='right' size={24} color={colors.green} />
-              </TouchableOpacity> */}
-              {/* <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.cropCardContainer]}
-                onPress={() => navigation.navigate('Grow-Crop')}
-              >
-                <View style={[styles.cropDetails]}>
-                  <Image
-                    style={[styles.cropAvatar]}
-                    source={require('../../assets/avatarimg.png')}
-                  />
-                  <View style={[styles.cropText]}>
-                    <Text style={styles.cropName}>Tomato</Text>
-                    <Text>Intermediate</Text>
-                  </View>
-                </View>
-                <AntDesign name='right' size={24} color={colors.green} />
-              </TouchableOpacity> */}
+                ) : null;
+              })}
             </View>
           </View>
         </ScrollView>
@@ -185,13 +158,12 @@ const ManageCrops = () => {
   );
 };
 
-const PlantItem = ({ job }) => {
+const PlantItem = ({ job, onPress = () => {} }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={styles.cropCardContainer}
-      onPress={() => navigation.navigate('Grow-Crop')}
-      key={job.id}
+      onPress={onPress}
     >
       <View style={[styles.cropDetails]}>
         <Image
@@ -199,8 +171,8 @@ const PlantItem = ({ job }) => {
           source={require('../../assets/avatarimg.png')}
         />
         <View style={[styles.cropText]}>
-          <Text style={styles.cropName}>Tomato</Text>
-          <Text>Intermediate</Text>
+          <Text style={styles.cropName}>{job?.name}</Text>
+          <Text>{job?.grow_level}</Text>
         </View>
       </View>
       <AntDesign name='right' size={24} color={colors.green} />
