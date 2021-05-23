@@ -18,7 +18,8 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getPosts } from '../../redux/actions/postsActions'
+import { getPosts, selectPost } from '../../redux/actions/postsActions'
+import { followUser } from '../../redux/actions/authActions'
 
 const { colors } = constants
 
@@ -59,6 +60,7 @@ const Explore = () => {
   const dispatch = useDispatch()
   const { loading, refreshing } = useSelector((state) => state.loading)
   const { all: posts = [] } = useSelector((state) => state.posts)
+  const { following = [] } = useSelector((state) => state.auth)
 
   useEffect(() => {
     dispatch(getPosts())
@@ -147,6 +149,8 @@ const Explore = () => {
             </View>
           </TouchableOpacity>
           {!loading && posts?.map((post) => {
+            let isFollowing = !!(following?.find((user) => user?.id === post?.user_id)) ?? false
+
             return (
               <View
                 style={[styles.postCard]}
@@ -155,18 +159,41 @@ const Explore = () => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={[styles.userDetail]}
-                  onPress={() => navigation.navigate('User-details')}
+                  onPress={() => {
+                    dispatch(selectPost(post))
+                    navigation.navigate('Single-Post')
+                  }}
+                  // onPress={() => navigation.navigate('User-details')}
                 >
                   <Image
                     style={[styles.imgAvatar]}
                     source={{ uri: post?.avatar }}
                   />
                   <Text style={[styles.imgText]}>{post?.fullname}</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (!isFollowing) {
+                        isFollowing = true
+                        dispatch(followUser(post?.user_id))
+                      }
+                    }}
+                  >
+                    <Text>
+                      {' • '}
+                      <Text style={{ textDecorationLine: isFollowing ? 'none' : 'underline' }}>
+                        {isFollowing ? 'Following' : 'Follow'}
+                      </Text>
+                    </Text>
+                  </TouchableOpacity>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => navigation.navigate('User-details')}
+                  activeOpacity={1}
+                  // onPress={() => navigation.navigate('User-details')}
+                  onPress={() => {
+                    dispatch(selectPost(post))
+                    navigation.navigate('Single-Post')
+                  }}
                 >
                   <Image
                     style={[styles.postImg]}

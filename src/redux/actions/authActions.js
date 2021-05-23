@@ -101,6 +101,7 @@ export const register = (user, navigation) => (dispatch) => {
       // }))
     })
     .catch((err) => {
+      console.log('register', err?.response ?? err?.message)
       showApiError(err, true, () => dispatch(register(user, navigation)))
     })
     .finally(() => {
@@ -219,13 +220,15 @@ export const getUserProfile = (silent = false) => (dispatch, getState) => {
     })
 }
 
-export const getUserFollowing = (refreshing = false) => (dispatch, getState) => {
+export const getUserFollowing = (refreshing = false, silent = false) => (dispatch, getState) => {
   const { user } = getState().auth
 
-  dispatch({
-    type: refreshing ? REFRESHING : LOADING,
-    payload: true,
-  })
+  if (!silent) {
+    dispatch({
+      type: refreshing ? REFRESHING : LOADING,
+      payload: true,
+    })
+  }
 
   apiRequest(`/users/${user?.id}/following`)
     .then(({ data }) => {
@@ -238,20 +241,24 @@ export const getUserFollowing = (refreshing = false) => (dispatch, getState) => 
       showApiError(err, true, () => dispatch(getUserFollowing(refreshing)))
     })
     .finally(() => {
-      dispatch({
-        type: refreshing ? REFRESHING : LOADING,
-        payload: false,
-      })
+      if (!silent) {
+        dispatch({
+          type: refreshing ? REFRESHING : LOADING,
+          payload: false,
+        })
+      }
     })
 }
 
-export const getUserFollowers = (refreshing = false) => (dispatch, getState) => {
+export const getUserFollowers = (refreshing = false, silent = false) => (dispatch, getState) => {
   const { user } = getState().auth
 
-  dispatch({
-    type: refreshing ? REFRESHING : LOADING,
-    payload: true,
-  })
+  if (!silent) {
+    dispatch({
+      type: refreshing ? REFRESHING : LOADING,
+      payload: true,
+    })
+  }
 
   apiRequest(`/users/${user?.id}/followers`)
     .then(({ data }) => {
@@ -264,10 +271,24 @@ export const getUserFollowers = (refreshing = false) => (dispatch, getState) => 
       showApiError(err, true, () => dispatch(getUserFollowers(refreshing)))
     })
     .finally(() => {
-      dispatch({
-        type: refreshing ? REFRESHING : LOADING,
-        payload: false,
-      })
+      if (!silent) {
+        dispatch({
+          type: refreshing ? REFRESHING : LOADING,
+          payload: false,
+        })
+      }
+    })
+}
+
+export const followUser = (user_id) => (dispatch) => {
+  apiRequest('/users/follows', 'post', { user_id })
+    .then(({ data }) => {
+      console.log('follow user', data)
+
+      dispatch(getUserFollowing(false, true))
+    })
+    .catch((err) => {
+      console.log('follow user error', err?.response ?? err.data)
     })
 }
 
