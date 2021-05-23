@@ -19,6 +19,7 @@ export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
       type: GET_FAVORITE_CROPS_TO_GROW,
       payload: data,
     });
+  
     return;
   } catch (error) {
     showApiError(error);

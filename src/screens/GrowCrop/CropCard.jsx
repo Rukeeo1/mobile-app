@@ -47,7 +47,6 @@ const { colors } = constants;
 
 const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
-
 const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
 
@@ -90,7 +89,7 @@ const CropCard = ({ navigation }) => {
   const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
   const cropSeasons = [
-    cropToGrowDetails.month,
+    cropCycleDetails?.sow_months?.split(',')[0],
     `${cropCycleDetails?.plant_start_month || ''} - ${
       cropCycleDetails?.plant_end_month || ''
     }`,
@@ -411,11 +410,14 @@ const CropCard = ({ navigation }) => {
             )}
 
             <View>
-              
               <Button
                 gradient={[colors.purshBlue, colors.blue]}
                 title='Add to Journal'
-                onPress={() => navigation.navigate('Crop-Journal')}
+                onPress={() =>
+                  navigation.navigate('Crop-Journal', {
+                    screen: 'Create-Journal',
+                  })
+                }
               />
               {/* </Tooltip> */}
             </View>
