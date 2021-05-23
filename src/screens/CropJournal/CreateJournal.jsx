@@ -73,6 +73,7 @@ const CreateJournal = ({ navigation }) => {
 
     validationSchema: createJournalSchema,
     onSubmit: async (data) => {
+      console.log(data)
       
       const { user_id, crop_id, isPublic, content, journalImageUri } = data;
 
@@ -136,14 +137,14 @@ const CreateJournal = ({ navigation }) => {
               />
             )}
           </TouchableOpacity>
-          <View style={{ flex: 1, height: 150, flexWrap: 'wrap' }}>
+          <View style={{ flex: 1, height: 150 }}>
             <Input
               placeholder='Write a journal entry…'
               onChangeText={handleChange('content')}
               value={values.content}
-              numberOfLines={4}
-              inputStyle={{ flexWrap: 'wrap' }}
-              containerStyle={{ flexWrap: 'wrap' }}
+              // numberOfLines={4}
+              inputStyle={{ flex: 1 }}
+              containerStyle={{ flex: 1 }}
               multiline
             />
           </View>

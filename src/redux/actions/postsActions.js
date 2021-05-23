@@ -4,6 +4,7 @@ import {
   FETCH_POSTS,
   LOADING,
   REFRESHING,
+  SELECT_POST,
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
@@ -65,3 +66,8 @@ export const addPost = (formData) => (dispatch, getState) => {
       })
     })
 }
+
+export const selectPost = (payload) => ({
+  type: SELECT_POST,
+  payload,
+})
