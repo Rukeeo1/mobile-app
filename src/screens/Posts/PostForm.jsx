@@ -176,9 +176,9 @@ const PostForm = ({
               placeholder='Write a journal entry…'
               onChangeText={handleChange('post')}
               value={values.post}
-              numberOfLines={4}
-              inputStyle={{ flexWrap: 'wrap' }}
-              containerStyle={{ flexWrap: 'wrap' }}
+              // numberOfLines={4}
+              // inputStyle={{ flexWrap: 'wrap' }}
+              containerStyle={{ flex: 1 }}
               multiline
             />
           </View>
@@ -205,10 +205,16 @@ const PostForm = ({
               fontWeight: '300',
               marginVertical: 5
             }}>
-              {post.plantName === null ? 'Plant Name e.g Tomatoes' : post.plantName?.name}
+              {post.plantName === null ? 'Plant Name e.g Tomatoes' : (
+                <>
+                  {post.plantName?.name}
+                  {' '}
+                  {post.plantName?.variety && post.plantName?.variety !== 'N/A' && `(${post.plantName?.variety})`}
+                </>
+              )}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ ...styles.select, marginTop: 10 }}
             onPress={() => {
               setSelecting('variety')
@@ -231,7 +237,7 @@ const PostForm = ({
             }}>
               {post.plantVariety === null ? 'Plant variety' : post.plantVariety?.variety}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {/* <Input
             inputStyle={styles.inputStyle}
             labelStyle={styles.labelText}
@@ -315,14 +321,18 @@ const PostForm = ({
                   key={crop.id}
                   onPress={() => {
                     setPost({ ...post, plantName: crop })
-                    setSelectModal(false)
-                    dispatch(getCropVarieties(crop?.name))
+                    rbSheet.current?.close()
+                    // dispatch(getCropVarieties(crop?.name))
                   }}
                   style={{
                     paddingVertical: 7,
                   }}
                 >
-                  <Text style={{ fontSize: 18 }}>{crop.name}</Text>
+                  <Text style={{ fontSize: 18 }}>
+                    {crop?.name}
+                    {' '}
+                    {crop?.variety && crop?.variety !== 'N/A' && `(${crop?.variety})`}
+                  </Text>
                 </TouchableOpacity>
               )
             })}
@@ -332,7 +342,7 @@ const PostForm = ({
                   key={crop.id}
                   onPress={() => {
                     setPost({ ...post, plantVariety: crop })
-                    setSelectModal(false)
+                    rbSheet.current?.close()
                   }}
                   style={{
                     paddingVertical: 7,
@@ -344,82 +354,17 @@ const PostForm = ({
             })}
             <View style={{ height: 20 }} />
           </ScrollView>
+          <View style={{ paddingHorizontal: 20 }}>
+            <Button
+              title='Dismiss'
+              gradient={[colors.green, colors.greenDeep]}
+              //the "settings title for this would be refactored to profile"
+              // onPress={() => goBack()}
+              onPress={() => rbSheet.current?.close()}
+            />
+          </View>
         </SafeAreaView>
       </RBSheet>
-      {/* <Modal
-        visible={selectModal}
-        animationType="fade"
-        onDismiss={() => setSelectModal(false)}
-        onRequestClose={() => setSelectModal(false)}
-        transparent
-      >
-        <View style={{
-          flex: 1,
-          backgroundColor: '#0005',
-          padding: 20,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <View style={{
-            width: '100%',
-            backgroundColor: '#fff',
-            borderRadius: 16,
-            height: '75%',
-          }}>
-            <ScrollView
-              refreshControl={(
-                <RefreshControl
-                  refreshing={loading}
-                  onRefresh={() => null}
-                  colors={[constants.colors.green]}
-                  tintColor={constants.colors.green}
-                />
-              )}
-              style={{ padding: 20 }}
-            >
-              {selecting === 'crop' && crops?.crops?.map((crop) => {
-                return (
-                  <TouchableOpacity
-                    key={crop.id}
-                    onPress={() => {
-                      setPost({ ...post, plantName: crop })
-                      setSelectModal(false)
-                      dispatch(getCropVarieties(crop?.name))
-                    }}
-                    style={{
-                      paddingVertical: 5,
-                    }}
-                  >
-                    <Text style={{ fontSize: 16 }}>{crop.name}</Text>
-                  </TouchableOpacity>
-                )
-              })}
-              {selecting === 'variety' && cropDetail?.crops?.map((crop) => {
-                return (
-                  <TouchableOpacity
-                    key={crop.id}
-                    onPress={() => {
-                      setPost({ ...post, plantVariety: crop })
-                      setSelectModal(false)
-                    }}
-                    style={{
-                      paddingVertical: 5,
-                    }}
-                  >
-                    <Text style={{ fontSize: 16 }}>{crop.variety}</Text>
-                  </TouchableOpacity>
-                )
-              })}
-            </ScrollView>
-            <TouchableOpacity
-              style={{ alignItems: 'center', paddingVertical: 15 }}
-              onPress={() => setSelectModal(false)}
-            >
-              <Text style={{ color: 'red', fontSize: 16 }}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal> */}
     </SafeAreaView>
   );
 };

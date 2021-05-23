@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
     color: constants.colors.black,
     fontWeight: '300',
     // paddingHorizontal: 8,
-    paddingBottom: 3
+    paddingBottom: 3,
+    flex: 1,
   },
   errorMessage: {
     color: colors.red,
