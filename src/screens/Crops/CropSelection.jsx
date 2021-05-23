@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,29 +12,24 @@ import { CropItem } from './CropItem';
 import constants from '../../constants';
 import ManageCropContext from '../../context/ManageCropsContext';
 
-const { colors } = constants;
+const { colors, months } = constants;
 
 const CropSelection = ({ navigation, route }) => {
   const [search, setSearch] = useState('');
+
   const dispatch = useDispatch();
+  const manageCropContext = useContext(ManageCropContext);
 
   const { cropDetail, favoriteCrops } = useSelector((state) => state.crops);
 
-  const { cropName, sowTip, growLevel } = route?.params || {};
+  const { cropName, sowTip, growLevel, cropId } = route?.params || {};
 
   useEffect(() => {
     if (cropName) {
       dispatch(getCropVarieties(cropName));
     }
-
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    dispatch(getCropsFavoriteToGrow(months[new Date().getMonth()]))
+    dispatch(getCropsFavoriteToGrow(months[new Date().getMonth()]));
   }, [cropName]);
-
-  // const handleNext = (path, variety) => () => {
-    
-  //   alert(variety)
-  // }
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
@@ -93,36 +81,67 @@ const CropSelection = ({ navigation, route }) => {
                   </Text>
                 )}
               </View>
-              {cropDetail?.crops?.length > 0 && (
+              {cropDetail?.crops?.length > 0 ? (
                 <View>
-                  {cropDetail?.crops?.filter((crop) => crop?.variety?.toLowerCase().includes(search?.toLowerCase()))?.map((crop) => {
-                    return (
-                      <GradientButton
-                        key={crop?.id}
-                        gradient={[colors.blueLigth, colors.blue]}
-                        onPress={() => {
-                          navigation.navigate('Success');
-                          ManageCropContext?.actions?.updateCropToGrowDetails({
-                            variety: crop?.variety,
-                            cropName,
-                            cropId: crop?.id,
-                          });
-                        }}
-                        // onPress={() => navigation.navigate('Success')}
-                      >
-                        <View
-                          style={{
-                            alignItems: 'center',
-                            width: '100%',
-                            paddingHorizontal: 20,
+                  {cropDetail?.crops
+                    ?.filter((crop) =>
+                      crop?.variety
+                        ?.toLowerCase()
+                        .includes(search?.toLowerCase())
+                    )
+                    ?.map((crop) => {
+                      return (
+                        <GradientButton
+                          key={crop?.id}
+                          gradient={[colors.blueLigth, colors.blue]}
+                          onPress={() => {
+                            manageCropContext?.actions?.updateCropToGrowDetails(
+                              {
+                                variety: crop?.variety,
+                                cropName,
+                                cropId: crop?.id,
+                              }
+                            );
+                            navigation.navigate('Success');
                           }}
                         >
-                          <Text style={[styles.btnText]}>{crop?.variety}</Text>
-                        </View>
-                      </GradientButton>
-                    )
-                  })}
+                          <View
+                            style={{
+                              alignItems: 'center',
+                              width: '100%',
+                              paddingHorizontal: 20,
+                            }}
+                          >
+                            <Text style={[styles.btnText]}>
+                              {crop?.variety}
+                            </Text>
+                          </View>
+                        </GradientButton>
+                      );
+                    })}
                 </View>
+              ) : (
+                <GradientButton
+                  gradient={[colors.blueLigth, colors.blue]}
+                  onPress={() => {
+                    navigation.navigate('Success');
+                    ManageCropContext?.actions?.updateCropToGrowDetails({
+                      variety: crop?.variety,
+                      cropName,
+                      cropId,
+                    });
+                  }}
+                >
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      width: '100%',
+                      paddingHorizontal: 20,
+                    }}
+                  >
+                    <Text style={[styles.btnText]}>Grow Crop</Text>
+                  </View>
+                </GradientButton>
               )}
             </LinearGradient>
           </View>

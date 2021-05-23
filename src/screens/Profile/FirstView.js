@@ -108,7 +108,7 @@ const FirstView = () => {
                 activeOpacity={0.7}
                 onPress={() => navigation.navigate('Profile-Settings')}
               >
-                <Text style={[styles.edit]}>Edit profile</Text>
+                <Text style={styles.edit}>Edit profile</Text>
               </TouchableOpacity>
             </View>
 
@@ -148,7 +148,8 @@ const FirstView = () => {
                             style={{ height: 60, width: 60, borderRadius: 30 }}
                           />
                           <Text style={[styles.growText]}>
-                            {crop.name} {`“${crop.variety}”`}
+                            {crop.name}{' '}
+                            {crop.variety ? `“${crop?.variety}”` : ''}
                           </Text>
                         </View>
                       );

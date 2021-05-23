@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getCropSearchResults } from '../../redux/actions/cropActions'
+import { getCropSearchResults } from '../../redux/actions/cropActions';
 
 import { GradientButton, Input } from '../../components/';
 import { FilterItemDropDown } from './FilterItemDropDown';
@@ -27,9 +27,9 @@ const CropSearch = ({ navigation }) => {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(null);
 
-  const dispatch = useDispatch()
-  const { loading } = useSelector((state) => state.loading)
-  const { searchResults } = useSelector((state) => state.crops)
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.loading);
+  const { searchResults } = useSelector((state) => state.crops);
 
   let _menu = null;
 
@@ -46,14 +46,14 @@ const CropSearch = ({ navigation }) => {
   };
 
   const clearFilter = () => {
-    setSelectedLevel(null)
-    setSelectedMonth(null)
-  }
+    setSelectedLevel(null);
+    setSelectedMonth(null);
+  };
 
   const handleSearch = (value) => {
-    setSearch(value)
-    if (value !== '') dispatch(getCropSearchResults(value))
-  }
+    setSearch(value);
+    if (value !== '') dispatch(getCropSearchResults(value));
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -91,49 +91,49 @@ const CropSearch = ({ navigation }) => {
               </View>
 
               <View style={{ flex: 1 }}>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={{
-                  width: '100%',
-                  flex: 1,
-                }}
-                contentContainerStyle={{
-                  alignItems: 'center',
-                }}
-              >
-                <TouchableOpacity
-                  onPress={clearFilter}
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
                   style={{
-                    justifyContent: 'center',
+                    width: '100%',
+                    flex: 1,
+                  }}
+                  contentContainerStyle={{
                     alignItems: 'center',
-                    paddingTop: 10,
-                    marginLeft: 30,
                   }}
                 >
-                  <Text
+                  <TouchableOpacity
+                    onPress={clearFilter}
                     style={{
-                      color: colors.white,
-                      fontWeight: '500',
-                      textDecorationLine: 'underline',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingTop: 10,
+                      marginLeft: 30,
                     }}
                   >
-                    Clear filters
-                  </Text>
-                </TouchableOpacity>
-                {/* <FilterItemDropDown
+                    <Text
+                      style={{
+                        color: colors.white,
+                        fontWeight: '500',
+                        textDecorationLine: 'underline',
+                      }}
+                    >
+                      Clear filters
+                    </Text>
+                  </TouchableOpacity>
+                  {/* <FilterItemDropDown
                   items={months}
                   activeItem={selectedMonth ??'Select Month'}
                   onSelect={setSelectedMonth}
                   placeholder="Month to grow"
                 /> */}
-                <FilterItemDropDown
-                  items={['Beginner', 'Intermediate', 'Advanced']}
-                  activeItem={selectedLevel ?? 'Select level'}
-                  onSelect={setSelectedLevel}
-                  placeholder="Grow level"
-                />
-                {/* <FilterItemDropDown items={months} />
+                  <FilterItemDropDown
+                    items={['Beginner', 'Intermediate', 'Advanced']}
+                    activeItem={selectedLevel ?? 'Select level'}
+                    onSelect={setSelectedLevel}
+                    placeholder='Grow level'
+                  />
+                  {/* <FilterItemDropDown items={months} />
                 <View
                   style={{
                     marginRight: 20,
@@ -142,19 +142,19 @@ const CropSearch = ({ navigation }) => {
                     backgroundColor: 'red',
                   }}
                 /> */}
-              </ScrollView>
+                </ScrollView>
               </View>
             </LinearGradient>
           </View>
           {loading && (
             <ActivityIndicator
-              size="large"
+              size='large'
               color={colors.green}
               animating
               style={{ paddingVertical: 10 }}
             />
           )}
-          {(searchResults?.crops?.length < 1) ? (
+          {searchResults?.crops?.length < 1 ? (
             <View style={{ marginTop: 30 }}>
               {search !== '' && (
                 <>
@@ -163,23 +163,34 @@ const CropSearch = ({ navigation }) => {
                   <View style={{ marginTop: 50 }}>
                     <Text style={{ textAlign: 'center' }}>
                       Looks like you are getting adventurous!
-                </Text>
+                    </Text>
                     <Text style={{ textAlign: 'center' }}>
                       Create a new crop below
-                </Text>
+                    </Text>
                   </View>
                 </>
               )}
             </View>
           ) : (
             <View style={[styles.cropSection]}>
-                {searchResults?.crops?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true).map((crop) => {
+              {searchResults?.crops
+                ?.filter((crop) =>
+                  selectedLevel ? crop?.grow_level == selectedLevel : true
+                )
+                .map((crop) => {
                   return (
                     <TouchableOpacity
                       key={crop?.id}
                       activeOpacity={0.9}
                       style={[styles.cropCardContainer]}
-                      onPress={() => navigation.navigate('Crop-selection', { cropName: crop?.name, growLevel: crop?.grow_level, sowTip: crop?.sow_tip })}
+                      onPress={() =>
+                        navigation.navigate('Crop-selection', {
+                          cropName: crop?.name,
+                          growLevel: crop?.grow_level,
+                          sowTip: crop?.sow_tip,
+                          cropId: crop?.id,
+                        })
+                      }
                     >
                       <View style={[styles.cropDetails]}>
                         <Image
@@ -193,7 +204,7 @@ const CropSearch = ({ navigation }) => {
                       </View>
                       <AntDesign name='right' size={24} color={colors.green} />
                     </TouchableOpacity>
-                  )
+                  );
                 })}
             </View>
           )}

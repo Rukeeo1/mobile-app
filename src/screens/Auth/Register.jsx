@@ -24,6 +24,7 @@ export const Register = ({ navigation }) => {
     bio: '',
     location: '',
     password: '',
+    repassword: '',
   });
 
   const dispatch = useDispatch();
@@ -37,7 +38,10 @@ export const Register = ({ navigation }) => {
   };
 
   const submit = () => {
-    dispatch(register(authDetails, navigation));
+    if (authDetails.password === authDetails.repassword) dispatch(register(authDetails, navigation))
+    else {
+      Alert.alert('', 'Passwords don\'t match', [{ text: 'Dismiss' }])
+    }
   };
 
   const { colors } = constants;
@@ -127,6 +131,18 @@ export const Register = ({ navigation }) => {
                 secureTextEntry={true}
                 placeholderTextColor={colors.white}
               />
+
+                <Input
+                  containerStyle={styles.inputContainer}
+                  inputStyle={styles.input}
+                  labelStyle={styles.label}
+                  labelText='Confirm Password'
+                  value={authDetails.repassword}
+                  onChangeText={(text) => handleAuthDetails('repassword', text)}
+                  placeholder='Confirm your password'
+                  secureTextEntry={true}
+                  placeholderTextColor={colors.white}
+                />
 
               <GradientButton
                 gradient={[colors.green, colors.greenDeep]}

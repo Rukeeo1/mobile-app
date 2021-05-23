@@ -55,7 +55,8 @@ export const addPost = (formData) => (dispatch, getState) => {
       dispatch(getPosts(true))
     })
     .catch((err) => {
-      showApiError(err, true, () => dispatch(addPost(formData)))
+      // showApiError(err, true, () => dispatch(addPost(formData)))
+      console.log('add post error', err?.response ?? err.message)
     })
     .finally(() => {
       dispatch({
