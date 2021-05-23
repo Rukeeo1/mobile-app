@@ -8,6 +8,7 @@ import {
   View,
   FlatList,
   ActivityIndicator,
+  Picker
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
@@ -28,7 +29,6 @@ import { getCropsFavoriteToGrow, getUserJobs } from '../../redux/actions';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
-import { Picker } from 'react-native';
 
 const {
   colors,
@@ -60,7 +60,6 @@ const AddToCalendar = () => {
   const scrollRef = useRef();
 
   const [jobs, setJobs] = useState(false);
-  const [rest, setRest] = useState(false);
   const [viewingMore, setViewingMore] = useState(false);
   const [cropToolTipIdToShow, setCropToolTipIdToShow] = useState('');
   const [fetchingFavoriteCrops, setFetchingFavoriteCrops] = useState(false);
@@ -373,6 +372,7 @@ const AddToCalendar = () => {
                             cropName: crop?.name,
                             sowTip: crop?.sow_tip,
                             growLevel: crop?.grow_level,
+                            cropId: crop?.id,
                           },
                         });
                         //update state context???

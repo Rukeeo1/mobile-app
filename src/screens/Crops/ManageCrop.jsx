@@ -127,7 +127,9 @@ const ManageCrops = () => {
               <ActivityIndicator />
             ) : (
               <View>
-                <Text style={styles.growingCrops}>Current growing</Text>
+                <Text style={styles.growingCrops}>
+                  {jobs?.jobs?.length > 0 ? 'Current growing' : null}
+                </Text>
                 {jobs?.jobs?.map((job) => {
                   return job.job_type !== 'harvest' ? (
                     <PlantItem
@@ -140,7 +142,10 @@ const ManageCrops = () => {
               </View>
             )}
             <View>
-              <Text style={styles.growingCrops}>Past Harvest</Text>
+              <Text style={styles.growingCrops}>
+                {' '}
+                {jobs?.jobs?.length > 0 ? 'Past Harvest' : null}
+              </Text>
               {jobs?.jobs?.map((job) => {
                 return job.job_type === 'harvest' ? (
                   <PlantItem

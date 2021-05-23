@@ -27,7 +27,7 @@ const CropJournalLists = ({ navigation }) => {
     user: state?.auth.user,
     journal: state?.journal?.journals,
   }));
-  console.log(journal, 'RO: cross it', user);
+
 
   useEffect(() => {
     dispatch(getJournals(user?.id));
