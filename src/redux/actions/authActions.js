@@ -72,15 +72,19 @@ export const register = (user, navigation) => (dispatch) => {
     payload: true,
   })
 
-  apiRequest('/users/signup', 'post', {
+  const postData = {
     auth_id: user.email,
     auth_type: 'email',
     password: user.password,
     username: user.name,
-    fullname: user.fullname,
+    fullname: user.name,
     location: user.location,
     role: 0,
-  })
+  }
+
+  console.log('user data', postData)
+
+  apiRequest('/users/signup', 'post', postData)
     .then(({ data }) => {
       console.log('signup', data)
       dispatch(login({ email: user.email, password: user.password }, navigation))
