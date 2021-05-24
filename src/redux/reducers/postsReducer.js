@@ -1,7 +1,8 @@
-import { FETCH_POSTS } from '../types';
+import { FETCH_POSTS, SELECT_POST } from '../types';
 
 const initialState = {
   all: null,
+  selected: null,
 };
 
 const postsReducer = (state = initialState, { type, payload }) => {
@@ -11,6 +12,11 @@ const postsReducer = (state = initialState, { type, payload }) => {
         ...state,
         all: payload,
       };
+    case SELECT_POST:
+      return {
+        ...state,
+        selected: payload,
+      }
     default:
       return state;
   }

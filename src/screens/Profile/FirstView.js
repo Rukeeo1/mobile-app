@@ -16,7 +16,12 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 
-import { getUserGrowList, getUserPosts } from '../../redux/actions/authActions';
+import {
+  getUserFollowers,
+  getUserFollowing,
+  getUserGrowList,
+  getUserPosts,
+} from '../../redux/actions/authActions';
 
 import { GradientButton } from '../../components/Button';
 import constants from '../../constants';
@@ -55,6 +60,8 @@ const FirstView = () => {
     dispatch(getUserGrowList());
     dispatch(getUserPosts());
     dispatch(getUserJobs(user?.id));
+    dispatch(getUserFollowers(false, true))
+    dispatch(getUserFollowing(false, true))
   }, []);
 
   return (

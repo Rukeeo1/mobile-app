@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View , Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -143,7 +143,9 @@ export const Register = ({ navigation }) => {
                   secureTextEntry={true}
                   placeholderTextColor={colors.white}
                 />
-
+                {(authDetails.repassword !== '' && authDetails.password !== authDetails.repassword) && (
+                  <Text style={{ color: 'red' }}>Passwords must match</Text>
+                )}
               <GradientButton
                 gradient={[colors.green, colors.greenDeep]}
                 coverStyle={{ marginBottom: 20, marginTop: 50 }}
@@ -151,6 +153,7 @@ export const Register = ({ navigation }) => {
                 // onPress={() => navigation.navigate('Onboarding')}
                 onPress={submit}
                 loading={loading}
+                // disabled={authDetails.repassword === '' || authDetails.password !== authDetails.repassword}
               />
               <Text
                 style={{ textAlign: 'center', color: 'white' }}
