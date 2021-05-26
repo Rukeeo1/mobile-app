@@ -33,18 +33,6 @@ const CropSearch = ({ navigation }) => {
 
   let _menu = null;
 
-  let setMenuRef = (ref) => {
-    _menu = ref;
-  };
-
-  let hideMenu = () => {
-    _menu.hide();
-  };
-
-  let showMenu = () => {
-    _menu.show();
-  };
-
   const clearFilter = () => {
     setSelectedLevel(null);
     setSelectedMonth(null);
