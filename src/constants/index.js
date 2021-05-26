@@ -72,3 +72,4 @@ export default {
 };
 
 export const API_URL = 'http://api.growit-app.co.uk:3000/api/v1'
+export const GOOGLE_API_KEY = 'AIzaSyBk-9XknUOxTL2keqWWW5Q7Bh0joPTN6m8'
