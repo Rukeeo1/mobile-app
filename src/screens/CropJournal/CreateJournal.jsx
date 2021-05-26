@@ -87,6 +87,11 @@ const CreateJournal = ({ navigation }) => {
         uri: journalImageUri,
         type: 'image/*',
       });
+      journalFormData.append('media_url', {
+        name: journalImageUri?.split('/').pop(),
+        uri: journalImageUri,
+        type: 'image/*',
+      });
 
       setAddingJournal(true);
       await dispatch(addJournal(journalFormData, user));

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -54,6 +54,10 @@ const CropSearch = ({ navigation }) => {
     setSearch(value);
     if (value !== '') dispatch(getCropSearchResults(value));
   };
+
+  useEffect(() => {
+    dispatch(getCropSearchResults(''))
+  }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>

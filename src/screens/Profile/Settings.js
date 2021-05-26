@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
@@ -16,11 +16,12 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { updateProfile, updateAvatar } from '../../redux/actions/authActions'
 
 import { GradientButton, Header, Input, SafeArea, KeyboardAvoiding } from '../../components';
-import constants from '../../constants';
+import constants, { GOOGLE_API_KEY } from '../../constants';
 
 const { colors } = constants;
 
@@ -45,6 +46,8 @@ const Settings = ({ navigation }) => {
     profileImageUri: Yup.string().required(),
   });
 
+  const [location, setLocation] = useState(null)
+
   const {
     handleChange,
     handleBlur,
@@ -63,8 +66,8 @@ const Settings = ({ navigation }) => {
 
     validationSchema: ProfileSchema,
     onSubmit: (values) => {
-      if (values.profileImageUri !== user.avatar) dispatch(updateAvatar(values, navigation))
-      else dispatch(updateProfile(values, navigation))
+      if (values.profileImageUri !== user.avatar) dispatch(updateAvatar({ ...values, location }, navigation))
+      else dispatch(updateProfile({ ...values, location }, navigation))
     },
   });
 
@@ -85,71 +88,72 @@ const Settings = ({ navigation }) => {
 
   return (
     <KeyboardAvoiding>
-    <SafeArea>
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <Header
-          title='Profile Settings'
-          onIconPress={() => navigation.goBack()}
-        />
-        <View style={styles.profileImageContainer}>
-          {values.profileImageUri ? (
-            <Image
-              source={{ uri: values.profileImageUri }}
-              style={styles.image}
-            />
-          ) : (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
-                height: '100%',
-                backgroundColor: colors.grey100,
-              }}
-            >
-              <Ionicons
-                name='ios-person-outline'
-                size={45}
-                color={colors.white}
+      <SafeArea>
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 100 }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Header
+            title='Profile Settings'
+            onIconPress={() => navigation.goBack()}
+          />
+          <View style={styles.profileImageContainer}>
+            {values.profileImageUri ? (
+              <Image
+                source={{ uri: values.profileImageUri }}
+                style={styles.image}
               />
-            </View>
-          )}
-          <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
-            <Ionicons
-              name='ios-camera-outline'
-              size={30}
-              color={constants.colors.green}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{ paddingLeft: '25%' }}>
-          <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
-        </View>
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flex: 1,
+                  height: '100%',
+                  backgroundColor: colors.grey100,
+                }}
+              >
+                <Ionicons
+                  name='ios-person-outline'
+                  size={45}
+                  color={colors.white}
+                />
+              </View>
+            )}
+            <TouchableOpacity style={styles.cameraContainer} onPress={pickImage}>
+              <Ionicons
+                name='ios-camera-outline'
+                size={30}
+                color={constants.colors.green}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ paddingLeft: '25%' }}>
+            <Text style={{ color: colors.red }}>{errors.profileImageUri}</Text>
+          </View>
 
-        <View style={styles.profileDetails}>
-          <Input
-            value={values.name}
-            placeholder='Enter your name'
-            onChangeText={handleChange('name')}
-            onBlur={handleBlur('name')}
-            labelText='Name'
-            labelStyle={styles.labelText}
-            errorMessage={errors.name}
-          />
-          <Input
-            value={values.bio}
-            placeholder='Enter your bio'
-            onChangeText={handleChange('bio')}
-            onBlur={handleBlur('bio')}
-            labelText='Bio'
-            labelStyle={styles.labelText}
-            containerStyle={styles.input}
-            errorMessage={errors.bio}
-          />
-          <Input
+          <View style={styles.profileDetails}>
+            <Input
+              value={values.name}
+              placeholder='Enter your name'
+              onChangeText={handleChange('name')}
+              onBlur={handleBlur('name')}
+              labelText='Name'
+              labelStyle={styles.labelText}
+              errorMessage={errors.name}
+            />
+            <Input
+              value={values.bio}
+              placeholder='Enter your bio'
+              onChangeText={handleChange('bio')}
+              onBlur={handleBlur('bio')}
+              labelText='Bio'
+              labelStyle={styles.labelText}
+              containerStyle={styles.input}
+              errorMessage={errors.bio}
+            />
+            {/* <Input
             value={values.location}
             placeholder='Enter your Location'
             onChangeText={handleChange('location')}
@@ -158,17 +162,44 @@ const Settings = ({ navigation }) => {
             labelStyle={styles.labelText}
             containerStyle={styles.input}
             errorMessage={errors.location}
-          />
-          <GradientButton
+          /> */}
+            <View style={styles.input}>
+              <Text style={{ ...styles.labelText, fontSize: 16, fontWeight: '600' }}>Location</Text>
+              <GooglePlacesAutocomplete
+                placeholder='Enter your location'
+                onPress={(data) => {
+                  // console.warn('location', data)
+                  setLocation(data.description)
+                }}
+                query={{
+                  key: GOOGLE_API_KEY,
+                  language: 'en',
+                }}
+                currentLocation
+                currentLocationLabel="Current location"
+                styles={{
+                  textInput: {
+                    fontSize: 18,
+                    color: constants.colors.black,
+                    fontWeight: '300',
+                    // paddingHorizontal: 8,
+                    paddingBottom: 3,
+                    flex: 1,
+                    paddingHorizontal: 0,
+                  },
+                }}
+              />
+            </View>
+            <GradientButton
             title='Save'
             onPress={handleSubmit}
             gradient={[constants.colors.green, '#83B403']}
             coverStyle={styles.button}
             loading={loading}
           />
-        </View>
-      </ScrollView>
-    </SafeArea>
+          </View>
+        </ScrollView>
+      </SafeArea>
     </KeyboardAvoiding>
   );
 };
