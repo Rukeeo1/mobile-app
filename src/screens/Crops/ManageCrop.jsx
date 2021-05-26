@@ -56,9 +56,8 @@ const ManageCrops = () => {
 
     manageCropContext?.actions?.updateCropToGrowDetails({
       cropName: details?.name,
-      // month: months[m],
+      monthIndex: new Date(details?.job_date).getMonth(),
       variety: details?.variety,
-      // monthIndex: m,
       cropId: details?.crop_id,
       action: details?.job_type,
     });
