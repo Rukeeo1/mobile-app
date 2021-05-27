@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View , Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 import {
   GradientButton,
   Input,
@@ -9,11 +11,8 @@ import {
   KeyboardAvoiding,
   SafeArea,
 } from '../../components';
-
 import { register } from '../../redux/actions/authActions';
-
-import constants from '../../constants';
-
+import constants, { GOOGLE_API_KEY } from '../../constants';
 import growthLogo from '../../assets/growth_logo.png';
 
 export const Register = ({ navigation }) => {
@@ -50,66 +49,67 @@ export const Register = ({ navigation }) => {
     <KeyboardAvoiding>
       <SafeArea>
         <View style={{ flex: 1 }}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ backgroundColor: colors.white }}
-        >
-          <View style={{ alignItems: 'center' }}>
-            <Logo
-              source={growthLogo}
-              logoStyles={{
-                marginTop: '20%',
-                marginBottom: '10%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            />
-          </View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ backgroundColor: colors.white }}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={{ alignItems: 'center' }}>
+              <Logo
+                source={growthLogo}
+                logoStyles={{
+                  marginTop: '20%',
+                  marginBottom: '10%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              />
+            </View>
 
-          <View style={styles.container}>
-            <LinearGradient
-              style={{
-                width: '100%',
-                paddingLeft: '5%',
-                paddingRight: '5%',
-                flex: 1,
-                paddingBottom: 30,
-                paddingTop: 50,
-              }}
-              colors={[colors.blueLigth, colors.blue]}
-            >
-              <Input
-                inputStyle={styles.input}
-                labelStyle={styles.label}
-                labelText='Email'
-                value={authDetails.email}
-                onChangeText={(text) => handleAuthDetails('email', text)}
-                placeholder='Enter your email'
-                placeholderTextColor={colors.white}
-                autoCapitalize='none'
-              />
-              <Input
-                containerStyle={styles.inputContainer}
-                inputStyle={styles.input}
-                labelStyle={styles.label}
-                labelText='Name'
-                value={authDetails.name}
-                onChangeText={(text) => handleAuthDetails('name', text)}
-                placeholder='Enter your name'
-                placeholderTextColor={colors.white}
-              />
-              <Input
-                containerStyle={styles.inputContainer}
-                inputStyle={styles.input}
-                labelStyle={styles.label}
-                labelText='Username'
-                value={authDetails.username}
-                onChangeText={(text) => handleAuthDetails('username', text)}
-                placeholder='Enter your username'
-                autoCapitalize='none'
-                placeholderTextColor={colors.white}
-              />
-              <Input
+            <View style={styles.container}>
+              <LinearGradient
+                style={{
+                  width: '100%',
+                  paddingLeft: '5%',
+                  paddingRight: '5%',
+                  flex: 1,
+                  paddingBottom: 30,
+                  paddingTop: 50,
+                }}
+                colors={[colors.blueLigth, colors.blue]}
+              >
+                <Input
+                  inputStyle={styles.input}
+                  labelStyle={styles.label}
+                  labelText='Email'
+                  value={authDetails.email}
+                  onChangeText={(text) => handleAuthDetails('email', text)}
+                  placeholder='Enter your email'
+                  placeholderTextColor={colors.white}
+                  autoCapitalize='none'
+                />
+                <Input
+                  containerStyle={styles.inputContainer}
+                  inputStyle={styles.input}
+                  labelStyle={styles.label}
+                  labelText='Name'
+                  value={authDetails.name}
+                  onChangeText={(text) => handleAuthDetails('name', text)}
+                  placeholder='Enter your name'
+                  placeholderTextColor={colors.white}
+                />
+                <Input
+                  containerStyle={styles.inputContainer}
+                  inputStyle={styles.input}
+                  labelStyle={styles.label}
+                  labelText='Username'
+                  value={authDetails.username}
+                  onChangeText={(text) => handleAuthDetails('username', text)}
+                  placeholder='Enter your username'
+                  autoCapitalize='none'
+                  placeholderTextColor={colors.white}
+                />
+                {/* <Input
                 containerStyle={styles.inputContainer}
                 inputStyle={styles.input}
                 labelStyle={styles.label}
@@ -118,64 +118,108 @@ export const Register = ({ navigation }) => {
                 onChangeText={(text) => handleAuthDetails('location', text)}
                 placeholder="Enter your location"
                 placeholderTextColor={colors.white}
-              />
+              /> */}
+                <View style={styles.inputContainer}>
+                  <Text style={{ ...styles.label, fontSize: 16, fontWeight: '600' }}>Location</Text>
+                  <GooglePlacesAutocomplete
+                    placeholder='Enter your location'
+                    onPress={(data) => {
+                      // console.warn('location', data)
+                      handleAuthDetails('location', data.description)
+                    }}
+                    query={{
+                      key: GOOGLE_API_KEY,
+                      language: 'en',
+                    }}
+                    currentLocation
+                    currentLocationLabel="Current location"
+                    // placeholderTextColor="#fff"
+                    textInputProps={{
+                      placeholderTextColor: '#fff'
+                    }}
+                    styles={{
+                      textInput: {
+                        fontSize: 18,
+                        color: constants.colors.black,
+                        fontWeight: '300',
+                        // paddingHorizontal: 8,
+                        paddingBottom: 3,
+                        flex: 1,
+                        paddingHorizontal: 0,
+                        backgroundColor: 'transparent',
+                        color: '#fff',
+                        ...styles.input
+                      },
+                      listView: {
+                        position: 'absolute',
+                        zIndex: 999,
+                        elevation: 1,
+                        top: '100%'
+                      },
+                      container: {
+                        elevation: 3,
+                        zIndex: 999,
+                      }
+                    }}
+                  />
+                  <Input
+                    containerStyle={styles.inputContainer}
+                    inputStyle={styles.input}
+                    labelStyle={styles.label}
+                    labelText='Password'
+                    value={authDetails.password}
+                    onChangeText={(text) => handleAuthDetails('password', text)}
+                    placeholder='Enter your password'
+                    secureTextEntry={true}
+                    placeholderTextColor={colors.white}
+                  />
 
-              <Input
-                containerStyle={styles.inputContainer}
-                inputStyle={styles.input}
-                labelStyle={styles.label}
-                labelText='Password'
-                value={authDetails.password}
-                onChangeText={(text) => handleAuthDetails('password', text)}
-                placeholder='Enter your password'
-                secureTextEntry={true}
-                placeholderTextColor={colors.white}
-              />
-
-                <Input
-                  containerStyle={styles.inputContainer}
-                  inputStyle={styles.input}
-                  labelStyle={styles.label}
-                  labelText='Confirm Password'
-                  value={authDetails.repassword}
-                  onChangeText={(text) => handleAuthDetails('repassword', text)}
-                  placeholder='Confirm your password'
-                  secureTextEntry={true}
-                  placeholderTextColor={colors.white}
-                />
-                {(authDetails.repassword !== '' && authDetails.password !== authDetails.repassword) && (
-                  <Text style={{ color: 'red' }}>Passwords must match</Text>
-                )}
-              <GradientButton
-                gradient={[colors.green, colors.greenDeep]}
-                coverStyle={{ marginBottom: 20, marginTop: 50 }}
-                title={'Register'}
-                // onPress={() => navigation.navigate('Onboarding')}
-                onPress={submit}
-                loading={loading}
-                // disabled={authDetails.repassword === '' || authDetails.password !== authDetails.repassword}
-              />
-              <Text
-                style={{ textAlign: 'center', color: 'white' }}
-                onPress={() => navigation.navigate('ManualAuthentication')}
-              >
-                Already have an Account? Log in
+                  <Input
+                    containerStyle={styles.inputContainer}
+                    inputStyle={styles.input}
+                    labelStyle={styles.label}
+                    labelText='Confirm Password'
+                    value={authDetails.repassword}
+                    onChangeText={(text) => handleAuthDetails('repassword', text)}
+                    placeholder='Confirm your password'
+                    secureTextEntry={true}
+                    placeholderTextColor={colors.white}
+                  />
+                  {(authDetails.repassword !== '' && authDetails.password !== authDetails.repassword) && (
+                    <Text style={{ color: 'red' }}>Passwords must match</Text>
+                  )}
+                  <GradientButton
+                    gradient={[colors.green, colors.greenDeep]}
+                    coverStyle={{ marginBottom: 20, marginTop: 50 }}
+                    title={'Register'}
+                    // onPress={() => navigation.navigate('Onboarding')}
+                    onPress={submit}
+                    loading={loading}
+                  // disabled={authDetails.repassword === '' || authDetails.password !== authDetails.repassword}
+                  />
+                </View>
+                
+                <Text
+                  style={{ textAlign: 'center', color: 'white' }}
+                  onPress={() => navigation.navigate('ManualAuthentication')}
+                >
+                  Already have an Account? Log in
               </Text>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  color: 'white',
-                  textAlign: 'center',
-                  marginTop: '30%',
-                  fontSize: 16,
-                }}
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color: 'white',
+                    textAlign: 'center',
+                    marginTop: '30%',
+                    fontSize: 16,
+                  }}
                 // onPress={() => navigation.navigate('Login')}
-              >
-                Cancel
+                >
+                  Cancel
               </Text>
-            </LinearGradient>
-          </View>
-        </ScrollView>
+              </LinearGradient>
+            </View>
+          </ScrollView>
         </View>
       </SafeArea>
     </KeyboardAvoiding>

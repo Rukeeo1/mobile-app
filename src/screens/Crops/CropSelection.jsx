@@ -85,7 +85,7 @@ const CropSelection = ({ navigation, route }) => {
                 <View>
                   {cropDetail?.crops
                     ?.filter((crop) =>
-                      crop?.variety
+                      search === '' ? true : crop?.variety
                         ?.toLowerCase()
                         .includes(search?.toLowerCase())
                     )

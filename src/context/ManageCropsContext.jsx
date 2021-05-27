@@ -9,7 +9,7 @@ export const ManageCropProvider = ({ children }) => {
     action: 'Sow',
     variety: '',
     monthIndex: 0,
-    cropId: ''
+    cropId: '',
   });
 
   const updateCropToGrowDetails = (info) => {

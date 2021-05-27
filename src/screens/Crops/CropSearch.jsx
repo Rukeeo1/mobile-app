@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -33,18 +33,6 @@ const CropSearch = ({ navigation }) => {
 
   let _menu = null;
 
-  let setMenuRef = (ref) => {
-    _menu = ref;
-  };
-
-  let hideMenu = () => {
-    _menu.hide();
-  };
-
-  let showMenu = () => {
-    _menu.show();
-  };
-
   const clearFilter = () => {
     setSelectedLevel(null);
     setSelectedMonth(null);
@@ -54,6 +42,10 @@ const CropSearch = ({ navigation }) => {
     setSearch(value);
     if (value !== '') dispatch(getCropSearchResults(value));
   };
+
+  useEffect(() => {
+    dispatch(getCropSearchResults(''))
+  }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>

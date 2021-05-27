@@ -43,7 +43,7 @@ import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 import harvestIcon from '../../assets/harvest-icon.png';
 
-const { colors } = constants;
+const { colors, monthsAbr } = constants;
 
 const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
@@ -64,8 +64,6 @@ const CropCard = ({ navigation }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
-
-  // please if you stumble accross this and this comment is still here, make sure you force me to refactor this code and break things into chunks...Rukee
 
   const cycleData = getCropCardData(cropCycleDetails, cropSteps, activeScreen);
 
@@ -88,15 +86,26 @@ const CropCard = ({ navigation }) => {
 
   const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
-  const cropSeasons = [
-    cropCycleDetails?.sow_months?.split(',')[0],
-    `${cropCycleDetails?.plant_start_month || ''} - ${
-      cropCycleDetails?.plant_end_month || ''
-    }`,
-    `${cropCycleDetails?.harvest_start_month || ''} - ${
-      cropCycleDetails?.harvest_end_month || ''
-    }`,
-  ];
+  const sowMonth =
+    cropToGrowDetails?.action === 'grow'
+      ? monthsAbr[cropToGrowDetails?.monthIndex]
+      : cropCycleDetails?.sow_months?.split(',')[0];
+
+  const plantMonth =
+    cropToGrowDetails?.action === 'plant'
+      ? monthsAbr[cropToGrowDetails?.monthIndex]
+      : `${cropCycleDetails?.plant_start_month || ''} - ${
+          cropCycleDetails?.plant_end_month || ''
+        }`;
+
+  const harvestMonth =
+    cropToGrowDetails?.action === 'harvest'
+      ? monthsAbr[cropToGrowDetails?.monthIndex]
+      : `${cropCycleDetails?.harvest_start_month || ''} - ${
+          cropCycleDetails?.harvest_end_month || ''
+        }`;
+
+  const cropSeasons = [sowMonth, plantMonth, harvestMonth];
 
   const handleGrowCrop = async (selectedDate, jobType) => {
     const jobInfo = {

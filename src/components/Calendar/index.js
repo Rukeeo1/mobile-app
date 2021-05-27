@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import SmoothPicker from 'react-native-smooth-picker';
+import ScrollPicker from 'react-native-picker-scrollview'
 
 import { View, StyleSheet } from 'react-native';
 import { Text } from '../../components';
@@ -39,7 +40,8 @@ const Item = React.memo(
           activeItemContainerStyle,
           {
             opacity,
-            borderColor: selected ? 'grey' : 'transparent',
+            // borderColor: selected ? 'grey' : 'transparent',
+            // borderWidth: 2,
             backgroundColor: 'transparent',
             width: 'auto',
           },
@@ -78,10 +80,12 @@ const ItemToRender = (
 
   return (
     <Item
-      opacity={opacity}
+      opacity={1}
+      // opacity={opacity}
       selected={selected}
       vertical={vertical}
-      fontSize={fontSize}
+      fontSize={16}
+      // fontSize={fontSize}
       name={item}
       index={indexSelected}
       activeItemContainerStyle={activeItemContainerStyle}
@@ -116,7 +120,7 @@ export const GrowCalendar = ({
   return (
     <React.Fragment>
       <View style={styles.wrapperVertical} keyboardShouldPersistTaps='always'>
-        <SmoothPicker
+        {/* <SmoothPicker
           initialScrollToIndex={selected}
           onScrollToIndexFailed={() => {}}
           keyExtractor={(_, index) => index.toString()}
@@ -124,8 +128,10 @@ export const GrowCalendar = ({
           data={data}
           scrollAnimation
           onSelected={({ item, index }) => handleChange(index, item)}
-          renderItem={(option) =>
-            ItemToRender(
+          offsetSelection={0}
+          renderItem={(option) => {
+            console.warn(option)
+            return ItemToRender(
               option,
               selected,
               true,
@@ -133,10 +139,35 @@ export const GrowCalendar = ({
               activeTextColor,
               textColor
             )
-          }
+          }}
           magnet
           selectOnPress
           key={1}
+        /> */}
+        <ScrollPicker
+          // ref={(sp) => { this.sp = sp }}
+          dataSource={data}
+          selectedIndex={selected}
+          wrapperColor="#fff"
+          highlightColor="#fff"
+          // itemHeight={50}
+          wrapperHeight={200}
+          animateToSelectedIndex
+          highlightColor={colors.pink}
+          renderItem={(option, index) => {
+            // console.warn(option)
+            return ItemToRender(
+              { item: option, index },
+              selected,
+              true,
+              activeItemContainerStyle,
+              activeTextColor,
+              textColor
+            )
+          }}
+          onValueChange={(item, index) => {
+            handleChange(index, item)
+          }}
         />
       </View>
     </React.Fragment>
@@ -163,17 +194,17 @@ const styles = StyleSheet.create({
   },
   wrapperVertical: {
     width: '30%',
-    height: 350,
+    height: 200,
     color: 'black',
   },
   OptionWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    height: 50,
+    // marginTop: 10,
+    // marginBottom: 10,
+    // paddingTop: 10,
+    // paddingBottom: 10,
+    // height: 50,
     width: '100%',
   },
 });
