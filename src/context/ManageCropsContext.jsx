@@ -10,6 +10,7 @@ export const ManageCropProvider = ({ children }) => {
     variety: '',
     monthIndex: 0,
     cropId: '',
+    fromJobs: false,
   });
 
   const updateCropToGrowDetails = (info) => {

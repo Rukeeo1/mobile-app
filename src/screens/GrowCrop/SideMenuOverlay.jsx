@@ -20,6 +20,8 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
 
   const navigation = useNavigation();
 
+  const containerRef = React.useRef();
+
   const handleNavigation = (index) => {
     navigation.navigate('Settings', {
       screen: 'Main-Profile',
@@ -127,25 +129,37 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
 
   useEffect(() => {
     // get the positions of sidebar items/icons on the screen (basically their x and y coordinates)
-    const intialCoordinatesDetails = [];
-    sideBarTabItems.forEach((item) => {
-      //for each item on the side bar loop through and get their position
-      item.ref.current?.measureLayout(
-        containerRef.current,
-        (x, y, width, height) => {
-          intialCoordinatesDetails.push({
-            x,
-            y,
-            width,
-            height,
-            item: item.name,
-          });
-          intialCoordinatesDetails.length === sideBarTabItems.length &&
-            setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
-        }
-      );
-    });
-  }, []);
+    setTimeout(() => {
+      const intialCoordinatesDetails = [];
+      sideBarTabItems.forEach((item) => {
+        //for each item on the side bar loop through and get their position
+        item.ref.current?.measureLayout(
+          containerRef.current,
+          (x, y, width, height) => {
+            intialCoordinatesDetails.push({
+              x,
+              y,
+              width,
+              height,
+              item: item.name,
+            });
+            intialCoordinatesDetails.length === sideBarTabItems.length &&
+              setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
+              console.log(intialCoordinatesDetails,'made your choice')
+          }
+        );
+      });
+    }, 0);
+  },[coordinates.length]);
+
+  let postion;
+  if (coordinates.length === sideBarTabItems.length) {
+    postion = coordinates[sideBarTabItems.length - 1];
+  }
+  console.log(sideBarTabItems, '***-__', '888', coordinates);
+
+  // const lastCoordinate = coordinates[sideBarTabItems.length - 1];
+  // console.log(lastCoordinate,'hellp me')
 
   return (
     <View style={styles.container}>
@@ -177,7 +191,10 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
             overflow: 'visible',
           }}
         >
-          <View style={{ alignItems: 'center', marginBottom: 45 }}>
+          <View
+            style={{ alignItems: 'center', marginBottom: 45 }}
+            ref={containerRef}
+          >
             <TouchableOpacity style={styles.ellipse}>
               <FontAwesome5
                 name='ellipsis-h'
@@ -193,6 +210,7 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
               style={[styles.tabIconWrapper, item.styles]}
               onPress={item?.onclick}
               key={index}
+              ref={item.ref}
             >
               {item.icon()}
             </TouchableOpacity>
@@ -231,7 +249,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   ball: {
-    top: screenHeight * 0.740,
+    top: screenHeight * 0.74,
     zIndex: -10,
     backgroundColor: colors.white,
     borderRadius: 30,

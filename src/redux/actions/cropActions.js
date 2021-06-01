@@ -42,6 +42,7 @@ export const getCrops = (crop) => async (dispatch) => {
 export const getCropVarieties = (crop) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/varieties?crop=${crop}`);
+
     dispatch({
       type: GET_CROP_VARIETIES,
       payload: data,
