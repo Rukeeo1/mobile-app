@@ -9,7 +9,7 @@ const { colors } = constants;
 
 const DeleteCrop = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    // <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
@@ -31,7 +31,7 @@ const DeleteCrop = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </LinearGradient>
-    </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 

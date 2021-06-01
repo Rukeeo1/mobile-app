@@ -34,7 +34,7 @@ const Logout = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
@@ -59,7 +59,7 @@ const Logout = ({ navigation }) => {
         </TouchableOpacity>
        
       </LinearGradient>
-    </SafeAreaView>
+    </View>
   );
 };
 

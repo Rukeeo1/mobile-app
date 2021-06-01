@@ -32,7 +32,7 @@ const Following = ({ navigation }) => {
   }, [])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Header
         title='Following'
         onIconPress={() => navigation.goBack()}
@@ -121,7 +121,7 @@ const Following = ({ navigation }) => {
             </ScrollView>
           </>
         )}
-    </SafeAreaView>
+    </View>
   );
 };
 
