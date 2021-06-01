@@ -49,7 +49,7 @@ const CropSearch = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <SafeAreaView>
+      {/* <SafeAreaView> */}
         <ScrollView>
           <View>
             <LinearGradient
@@ -218,7 +218,7 @@ const CropSearch = ({ navigation }) => {
             </GradientButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </View>
   );
 };

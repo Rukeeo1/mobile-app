@@ -1,13 +1,20 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  StatusBar,
+  Platform,
+} from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
+import Constants from 'expo-constants'
 
 import RootNavigator from './src/navigation';
 
 import { ManageCropProvider } from './src/context/ManageCropsContext';
 
 import store from './src/redux';
+import constants from './src/constants';
 
 // import { initializeFirebase } from './src/config/';
 
@@ -30,6 +37,20 @@ export default function App() {
   return (
     fontsLoaded && (
       <Provider store={store}>
+        <StatusBar
+          backgroundColor={constants.colors.greenDeep}
+          barStyle="light-content"
+          animated
+        />
+        {Platform.OS === 'ios' && (
+          <View
+            style={{
+              height: Constants.statusBarHeight,
+              width: '100%',
+              backgroundColor: constants.colors.greenDeep,
+            }}
+          />
+        )}
         <ManageCropProvider>
           <View style={styles.container}>
             <RootNavigator />

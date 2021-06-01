@@ -57,7 +57,7 @@ const EndHarvestSchedule = ({ navigation }) => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    // <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
@@ -93,7 +93,7 @@ const EndHarvestSchedule = ({ navigation }) => {
           <Text style={styles.optOut}>Later</Text>
         </TouchableOpacity>
       </LinearGradient>
-    </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 

@@ -13,7 +13,7 @@ const { colors } = constants;
 const Notification = () => {
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView>
+      {/* <SafeAreaView> */}
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <View style={[styles.topSection]}>
@@ -168,7 +168,7 @@ const Notification = () => {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </View>
   );
 };

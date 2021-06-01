@@ -65,7 +65,7 @@ const ManageCrops = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <SafeAreaView>
+      {/* <SafeAreaView> */}
         <ScrollView>
           <View style={[styles.titleContainer]}>
             <Text style={styles.title}>Manage Crops</Text>
@@ -157,7 +157,7 @@ const ManageCrops = () => {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </View>
   );
 };
