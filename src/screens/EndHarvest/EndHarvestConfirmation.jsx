@@ -15,7 +15,7 @@ const EndHarvestConfirmation = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    // <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
@@ -46,7 +46,7 @@ const EndHarvestConfirmation = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </LinearGradient>
-    </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 

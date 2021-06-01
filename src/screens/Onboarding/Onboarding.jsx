@@ -19,7 +19,7 @@ const { colors } = constants;
 const OnboardingLayout = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <SafeAreaView>
+      {/* <SafeAreaView> */}
         <ScrollView>
           <View style={{ height: 335 }}>
             <Swiper
@@ -194,7 +194,7 @@ const OnboardingLayout = ({ navigation }) => {
             </Text>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </View>
   );
 };

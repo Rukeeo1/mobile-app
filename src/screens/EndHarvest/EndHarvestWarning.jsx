@@ -19,7 +19,7 @@ const { colors } = constants;
 
 const EndHarvestWarning = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    // <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
@@ -59,7 +59,7 @@ const EndHarvestWarning = ({ navigation }) => {
           </Text>
         </View>
       </LinearGradient>
-    </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 

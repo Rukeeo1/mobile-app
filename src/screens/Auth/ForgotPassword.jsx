@@ -29,7 +29,7 @@ export const ForgotPassword = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
-      <SafeAreaView>
+      {/* <SafeAreaView> */}
         <ScrollView showsVerticalScrollIndicator={false}>
 
           <View style={{ alignItems: 'center' }}>
@@ -100,7 +100,7 @@ export const ForgotPassword = ({ navigation }) => {
             </LinearGradient>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </View>
   )
 }

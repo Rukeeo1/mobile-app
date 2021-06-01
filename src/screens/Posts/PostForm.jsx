@@ -149,7 +149,7 @@ const PostForm = ({
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps='never'>
         <Header
           title='Post'
@@ -365,7 +365,7 @@ const PostForm = ({
           </View>
         </SafeAreaView>
       </RBSheet>
-    </SafeAreaView>
+    </View>
   );
 };
 

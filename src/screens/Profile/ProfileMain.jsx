@@ -62,8 +62,9 @@ const MainProfile = ({ navigation, route }) => {
     setShowBottomSheet(!showBottomSheet);
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, paddingTop: Platform.OS === 'android' ? 25 : 0 }}
+    <View
+      style={{ flex: 1 }}
+      // style={{ flex: 1, paddingTop: Platform.OS === 'android' ? 25 : 0 }}
     >
       <LinearGradient style={styles.container} colors={activeGradient}>
         <View style={styles.mainContainer}>
@@ -91,7 +92,7 @@ const MainProfile = ({ navigation, route }) => {
           onClose={toggleBottomSheetVisibility}
         />
       </LinearGradient>
-    </SafeAreaView>
+    </View>
   );
 };
 
