@@ -9,7 +9,7 @@ const { colors } = constants;
 
 const EndHarvest = ({navigation}) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    // <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
@@ -29,7 +29,7 @@ const EndHarvest = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </LinearGradient>
-    </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 

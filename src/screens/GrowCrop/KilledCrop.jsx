@@ -9,7 +9,7 @@ const { colors } = constants;
 
 const KilledCrop = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    // <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         style={styles.container}
         colors={[colors.green, colors.greenDeep]}
@@ -28,7 +28,7 @@ const KilledCrop = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </LinearGradient>
-    </SafeAreaView>
+    // </SafeAreaView>
   );
 };
 

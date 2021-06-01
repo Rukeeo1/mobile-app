@@ -33,7 +33,7 @@ const CropSelection = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
-      <SafeAreaView>
+      {/* <SafeAreaView> */}
         <ScrollView>
           <View>
             <LinearGradient
@@ -157,7 +157,7 @@ const CropSelection = ({ navigation, route }) => {
             ))}
           </View>
         </ScrollView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </View>
   );
 };

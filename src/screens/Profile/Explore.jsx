@@ -67,7 +67,7 @@ const Explore = () => {
   }, [])
 
   return (
-    <SafeAreaView style={{ backgroundColor: colors.white, flex: 1, }}>
+    <View style={{ backgroundColor: colors.white, flex: 1, }}>
       <View style={{ flex: 1 }}>
       <ScrollView
         nestedScrollEnabled
@@ -228,7 +228,7 @@ const Explore = () => {
         </View>
       </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 

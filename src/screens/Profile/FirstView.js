@@ -65,7 +65,7 @@ const FirstView = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ backgroundColor: colors.white }}>
+    <View style={{ backgroundColor: colors.white }}>
       <ScrollView
         nestedScrollEnabled
         contentContainerStyle={{
@@ -277,7 +277,7 @@ const FirstView = () => {
         />
       </ScrollView>
       <Toast ref={(ref) => Toast.setRef(ref)} />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -298,6 +298,7 @@ const styles = StyleSheet.create({
     lineHeight: 45,
     marginVertical: 10,
     fontFamily: 'Hero-New-Thin',
+    textAlign: 'center'
   },
   edit: {
     marginVertical: 15,

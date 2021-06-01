@@ -44,7 +44,7 @@ const NeCrop = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
+      {/* <SafeAreaView style={{ flex: 1 }}> */}
         <ScrollView>
           <LinearGradient
             style={[styles.topSection]}
@@ -124,7 +124,7 @@ const NeCrop = ({ navigation }) => {
             /> */}
           </View>
         </ScrollView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </View>
   )
 }
