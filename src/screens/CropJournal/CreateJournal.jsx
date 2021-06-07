@@ -47,7 +47,6 @@ const CreateJournal = ({ navigation }) => {
       .required('Required')
       .min(2, 'Too Short!')
       .max(1000, 'Too Long!'),
-    journalImageUri: Yup.string().required('Required').min(3, 'Too Short!'),
   });
 
   const {
