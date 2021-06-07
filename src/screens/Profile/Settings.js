@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
@@ -86,6 +90,13 @@ const Settings = ({ navigation }) => {
     }
   };
 
+  const address = useRef()
+
+  useEffect(() => {
+    setLocation(user?.location ?? '')
+    address.current?.setAddressText(user?.location ?? '')
+  }, [user])
+
   return (
     <KeyboardAvoiding>
       <SafeArea>
@@ -171,10 +182,12 @@ const Settings = ({ navigation }) => {
                   // console.warn('location', data)
                   setLocation(data.description)
                 }}
+                
                 query={{
                   key: GOOGLE_API_KEY,
                   language: 'en',
                 }}
+                ref={address}
                 currentLocation
                 currentLocationLabel="Current location"
                 styles={{

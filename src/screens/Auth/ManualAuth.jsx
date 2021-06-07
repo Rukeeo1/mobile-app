@@ -106,6 +106,7 @@ const ManualAuth = ({ navigation }) => {
                 onChangeText={handleChange('password')}
                 placeholder='Enter your password'
                 secureTextEntry={true}
+                errorMessage={errors.password}
               />
 
               <View style={{ marginTop: 25 }}>

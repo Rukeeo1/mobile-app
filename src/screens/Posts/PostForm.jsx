@@ -22,8 +22,9 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux'
 import RBSheet from 'react-native-raw-bottom-sheet'
+import Autocomplete from 'react-native-autocomplete-input'
 
-import { getCropVarieties, getCrops } from '../../redux/actions/cropActions'
+import { getCropVarieties, getCrops, addCrop2 } from '../../redux/actions/cropActions'
 import { addPost } from '../../redux/actions/postsActions'
 
 import { GradientButton as Button, Header, Input } from '../../components/';
@@ -42,7 +43,6 @@ const PostForm = ({
       .required('Required')
       .min(2, 'Too Short!')
       .max(1000, 'Too Long!'),
-    postImageUri: Yup.string().required('Required'),
   });
   const {
     handleChange,
@@ -60,20 +60,21 @@ const PostForm = ({
       postImageUri: defaultPostImage || '',
       isPublic: false,
     },
-    // validationSchema: PostSchema,
+    validationSchema: PostSchema,
     // enableReinitialize: true,
   });
 
   const [post, setPost] = useState({
     post: '',
-    plantName: null,
-    plantVariety: null,
+    plantName: '',
+    plantVariety: '',
     postImageUri: '',
     isPublic: false,
-  });
-
+  })
+  const [crop, setCrop] = useState(null)
   const [selectModal, setSelectModal] = useState(false)
   const [selecting, setSelecting] = useState(null)
+  const [isSelecting, setIsSelecting] = useState(false)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -131,6 +132,7 @@ const PostForm = ({
     data.append('content', values.post)
     data.append('post_type', post.isPublic ? 'public' : 'private')
     data.append('crop_id', post.plantName?.id)
+    data.append('variety', values.plantVariety)
     data.append('user_id', user?.id)
     data.append('thumbnail_url', {
       name: post.postImageUri?.split('/').pop(),
@@ -149,7 +151,9 @@ const PostForm = ({
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{ flex: 1 }}
+    >
       <ScrollView keyboardShouldPersistTaps='never'>
         <Header
           title='Post'
@@ -184,7 +188,64 @@ const PostForm = ({
           </View>
         </View>
         <View style={styles.postDetails}>
-          <TouchableOpacity
+          <Text style={{
+            ...styles.labelText,
+            fontSize: 18,
+            fontWeight: '600',
+          }}>
+            Plant Name
+            </Text>
+          <Autocomplete
+            // editable={!isLoading}
+            autoCorrect={false}
+            data={[...(crops?.crops?.filter((crop) => crop?.name?.toLowerCase()?.includes(values?.plantName?.toLowerCase())) ?? []), `Add ${values.plantName} as a new crop`]}
+            value={values.plantName}
+            onChangeText={handleChange('plantName')}
+            placeholder={"Enter Plant Name"}
+            hideResults={!isSelecting}
+            style={{
+              ...styles.inputStyle,
+              fontSize: 18,
+              color: constants.colors.black,
+              fontWeight: '300',
+              // paddingHorizontal: 8,
+              paddingBottom: 3,
+              borderWidth: 0,
+            }}
+            onFocus={() => setIsSelecting(true)}
+            // onBlur={() => {
+            //   setIsSelecting(false)
+            //   // if (!crop) alert('blur')
+            //   // else alert('blur blur')
+            // }}
+            inputContainerStyle={{ borderWidth: 0 }}
+            flatListProps={{
+              keyboardShouldPersistTaps: 'always',
+              keyExtractor: (item) => item.id,
+              renderItem: ({ item }) => (
+                <TouchableOpacity
+                  style={{
+                    paddingHorizontal: 10,
+                    paddingVertical: 4,
+                  }}
+                  onPress={() => {
+                    if (item?.name) {
+                      setCrop(item)
+                      setFieldValue('plantName', item?.name)
+                    } else {
+                      dispatch(addCrop2(item, setCrop))
+                    }
+
+                    setIsSelecting(false)
+                  }}
+                >
+                  <Text style={{ fontSize: 16 }}>{item?.name ?? item}</Text>
+                </TouchableOpacity>
+              ),
+            }}
+            
+          />
+          {/* <TouchableOpacity
             style={styles.select}
             onPress={() => {
               setSelecting('crop')
@@ -213,7 +274,7 @@ const PostForm = ({
                 </>
               )}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {/* <TouchableOpacity
             style={{ ...styles.select, marginTop: 10 }}
             onPress={() => {
@@ -250,7 +311,7 @@ const PostForm = ({
               setSelectModal(true)
             }}
             placeholder='Plant Name e.g. Tomatoes '
-          />
+          /> */}
           <Input
             containerStyle={{ marginTop: 20 }}
             inputStyle={styles.inputStyle}
@@ -259,29 +320,29 @@ const PostForm = ({
             value={values.plantVariety}
             onChangeText={handleChange('plantVariety')}
             placeholder='Plant variety e.g. Sungold'
-          /> */}
-        </View>
-        <View style={styles.switchContainer}>
-          <Text>Add to public profile</Text>
-          <Switch
-            trackColor={{ false: '#767577', true: colors.pink }}
-            value={post.isPublic}
-            onValueChange={(value) => {
-              setPost((prevState) => ({
-                ...prevState,
-                isPublic: value,
-              }));
-            }}
           />
-        </View>
-        <View style={styles.footer}>
-          <Button
-            title='Share'
-            gradient={[colors.green, colors.greenDeep]}
-            //the "settings title for this would be refactored to profile"
-            // onPress={() => goBack()}
-            onPress={submit}
-          />
+          <View style={styles.switchContainer}>
+            <Text>Add to public profile</Text>
+            <Switch
+              trackColor={{ false: '#767577', true: colors.pink }}
+              value={post.isPublic}
+              onValueChange={(value) => {
+                setPost((prevState) => ({
+                  ...prevState,
+                  isPublic: value,
+                }));
+              }}
+            />
+          </View>
+          <View style={styles.footer}>
+            <Button
+              title='Share'
+              gradient={[colors.green, colors.greenDeep]}
+              //the "settings title for this would be refactored to profile"
+              // onPress={() => goBack()}
+              onPress={submit}
+            />
+          </View>
         </View>
       </ScrollView>
       <RBSheet
@@ -403,7 +464,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 22,
+    paddingVertical: 22,
+    marginTop: 10,
     borderBottomColor: colors.grey100,
     borderBottomWidth: 1,
   },

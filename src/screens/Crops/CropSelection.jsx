@@ -81,68 +81,66 @@ const CropSelection = ({ navigation, route }) => {
                   </Text>
                 )}
               </View>
-              {cropDetail?.crops?.length > 0 ? (
-                <View>
-                  {cropDetail?.crops
-                    ?.filter((crop) =>
-                      search === '' ? true : crop?.variety
-                        ?.toLowerCase()
-                        .includes(search?.toLowerCase())
-                    )
-                    ?.map((crop) => {
-                      return (
-                        <GradientButton
-                          key={crop?.id}
-                          gradient={[colors.blueLigth, colors.blue]}
-                          onPress={() => {
-                            manageCropContext?.actions?.updateCropToGrowDetails(
-                              {
-                                variety: crop?.variety,
-                                cropName,
-                                cropId: crop?.id,
-                              }
-                            );
-                            navigation.navigate('Success');
+              <View>
+                {cropDetail?.crops
+                  // ?.filter((crop) =>
+                  //   search === '' ? true : crop?.variety
+                  //     ?.toLowerCase()
+                  //     .includes(search?.toLowerCase())
+                  // )
+                  ?.map((crop) => {
+                    return (
+                      <GradientButton
+                        key={crop?.id}
+                        gradient={[colors.blueLigth, colors.blue]}
+                        onPress={() => {
+                          setSearch(crop?.variety)
+                          manageCropContext?.actions?.updateCropToGrowDetails(
+                            {
+                              variety: search,
+                              cropName,
+                              cropId: crop?.id,
+                            }
+                          );
+                          navigation.navigate('Success');
+                        }}
+                      >
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            width: '100%',
+                            paddingHorizontal: 20,
                           }}
                         >
-                          <View
-                            style={{
-                              alignItems: 'center',
-                              width: '100%',
-                              paddingHorizontal: 20,
-                            }}
-                          >
-                            <Text style={[styles.btnText]}>
-                              {crop?.variety}
-                            </Text>
-                          </View>
-                        </GradientButton>
-                      );
-                    })}
-                </View>
-              ) : (
-                <GradientButton
-                  gradient={[colors.blueLigth, colors.blue]}
-                  onPress={() => {
-                    navigation.navigate('Success');
-                    ManageCropContext?.actions?.updateCropToGrowDetails({
-                      variety: crop?.variety,
-                      cropName,
-                      cropId,
-                    });
-                  }}
-                >
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      width: '100%',
-                      paddingHorizontal: 20,
-                    }}
-                  >
-                    <Text style={[styles.btnText]}>Grow Crop</Text>
-                  </View>
-                </GradientButton>
-              )}
+                          <Text style={[styles.btnText]}>
+                            {crop?.variety}
+                          </Text>
+                        </View>
+                      </GradientButton>
+                    );
+                  })}
+              </View>
+            <GradientButton
+              gradient={[colors.blueLigth, colors.blue]}
+              onPress={() => {
+                navigation.navigate('Success');
+                ManageCropContext?.actions?.updateCropToGrowDetails({
+                  variety: search,
+                  cropName,
+                  cropId,
+                });
+              }}
+            >
+              <View
+                style={{
+                  alignItems: 'center',
+                  width: '100%',
+                  paddingHorizontal: 20,
+                }}
+              >
+                <Text style={[styles.btnText]}>Grow it</Text>
+              </View>
+            </GradientButton>
             </LinearGradient>
           </View>
 

@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 import {
   GradientButton,
@@ -26,21 +28,69 @@ export const Register = ({ navigation }) => {
     repassword: '',
   });
 
+  const RegisterSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Email is not valid')
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    name: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    username: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    bio: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    location: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    password: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
+    repassword: Yup.string()
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!')
+      .oneOf([Yup.ref('password'), null], 'Passwords don\'t match')
+  })
+
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.loading);
 
-  const handleAuthDetails = (name, value) => {
-    setAuthDetails((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const {
+    handleChange,
+    values,
+    errors,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      email: '',
+      name: '',
+      username: '',
+      bio: '',
+      location: '',
+      password: '',
+      repassword: '',
+    },
+    validationSchema: RegisterSchema,
+    onSubmit: (values) => {
+      dispatch(register(values, navigation))
+    },
+  })
 
   const submit = () => {
-    if (authDetails.password === authDetails.repassword) dispatch(register(authDetails, navigation))
-    else {
-      Alert.alert('', 'Passwords don\'t match', [{ text: 'Dismiss' }])
-    }
+    // if (authDetails.password === authDetails.repassword) dispatch(register(authDetails, navigation))
+    // else {
+    //   Alert.alert('', 'Passwords don\'t match', [{ text: 'Dismiss' }])
+    // }
+    dispatch(register(values, navigation))
   };
 
   const { colors } = constants;
@@ -82,32 +132,36 @@ export const Register = ({ navigation }) => {
                   inputStyle={styles.input}
                   labelStyle={styles.label}
                   labelText='Email'
-                  value={authDetails.email}
-                  onChangeText={(text) => handleAuthDetails('email', text)}
+                  value={values.email}
+                  onChangeText={handleChange('email')}
                   placeholder='Enter your email'
                   placeholderTextColor={colors.white}
                   autoCapitalize='none'
+                  errorMessage={errors.email}
                 />
                 <Input
                   containerStyle={styles.inputContainer}
                   inputStyle={styles.input}
                   labelStyle={styles.label}
                   labelText='Name'
-                  value={authDetails.name}
-                  onChangeText={(text) => handleAuthDetails('name', text)}
+                  value={values.name}
+                  onChangeText={handleChange('name')}
                   placeholder='Enter your name'
                   placeholderTextColor={colors.white}
+                  autoCapitalize="words"
+                  errorMessage={errors.name}
                 />
                 <Input
                   containerStyle={styles.inputContainer}
                   inputStyle={styles.input}
                   labelStyle={styles.label}
                   labelText='Username'
-                  value={authDetails.username}
-                  onChangeText={(text) => handleAuthDetails('username', text)}
+                  value={values.username}
+                  onChangeText={handleChange('username')}
                   placeholder='Enter your username'
                   autoCapitalize='none'
                   placeholderTextColor={colors.white}
+                  errorMessage={errors.username}
                 />
                 {/* <Input
                 containerStyle={styles.inputContainer}
@@ -125,7 +179,7 @@ export const Register = ({ navigation }) => {
                     placeholder='Enter your location'
                     onPress={(data) => {
                       // console.warn('location', data)
-                      handleAuthDetails('location', data.description)
+                      // handleChange(data.description, 'location')
                     }}
                     query={{
                       key: GOOGLE_API_KEY,
@@ -135,7 +189,8 @@ export const Register = ({ navigation }) => {
                     currentLocationLabel="Current location"
                     // placeholderTextColor="#fff"
                     textInputProps={{
-                      placeholderTextColor: '#fff'
+                      placeholderTextColor: '#fff',
+                      onChangeText: handleChange('location')
                     }}
                     styles={{
                       textInput: {
@@ -162,16 +217,21 @@ export const Register = ({ navigation }) => {
                       }
                     }}
                   />
+                  {errors.location && (
+                    <Text style={{ color: colors.red }}>{errors.location}</Text>
+                  )}
                   <Input
                     containerStyle={styles.inputContainer}
                     inputStyle={styles.input}
                     labelStyle={styles.label}
                     labelText='Password'
-                    value={authDetails.password}
-                    onChangeText={(text) => handleAuthDetails('password', text)}
+                    value={values.password}
+                    onChangeText={handleChange('password')}
                     placeholder='Enter your password'
                     secureTextEntry={true}
                     placeholderTextColor={colors.white}
+                    errorMessage={errors.password}
+                    textContentType="oneTimeCode"
                   />
 
                   <Input
@@ -179,15 +239,17 @@ export const Register = ({ navigation }) => {
                     inputStyle={styles.input}
                     labelStyle={styles.label}
                     labelText='Confirm Password'
-                    value={authDetails.repassword}
-                    onChangeText={(text) => handleAuthDetails('repassword', text)}
+                    value={values.repassword}
+                    onChangeText={handleChange('repassword')}
                     placeholder='Confirm your password'
                     secureTextEntry={true}
                     placeholderTextColor={colors.white}
+                    errorMessage={errors.repassword}
+                    textContentType="oneTimeCode"
                   />
-                  {(authDetails.repassword !== '' && authDetails.password !== authDetails.repassword) && (
+                  {/* {(authDetails.repassword !== '' && authDetails.password !== authDetails.repassword) && (
                     <Text style={{ color: 'red' }}>Passwords must match</Text>
-                  )}
+                  )} */}
                   <GradientButton
                     gradient={[colors.green, colors.greenDeep]}
                     coverStyle={{ marginBottom: 20, marginTop: 50 }}
@@ -195,6 +257,7 @@ export const Register = ({ navigation }) => {
                     // onPress={() => navigation.navigate('Onboarding')}
                     onPress={submit}
                     loading={loading}
+                    // disabled={!isValid}
                   // disabled={authDetails.repassword === '' || authDetails.password !== authDetails.repassword}
                   />
                 </View>

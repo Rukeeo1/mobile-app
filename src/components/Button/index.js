@@ -47,12 +47,14 @@ export const GradientButton = ({
   gradient = ['#000000', '#000000'],
   coverStyle,
   onPress,
-  loading = false
+  loading = false,
+  ...props
 }) => {
   return (
     <TouchableOpacity
       style={[styles.defaultBtnContainer, coverStyle]}
       onPress={onPress}
+      {...props}
     >
       <LinearGradient
         colors={gradient}
