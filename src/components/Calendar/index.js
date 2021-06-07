@@ -48,7 +48,7 @@ const Item = React.memo(
         ]}
       >
         <Text
-          style={{ fontSize, color: selected ? activeTextColor : textColor }}
+          style={{ fontSize, color: selected ? activeTextColor : colors.black }}
           fontType={selected ? 'bold' : 'thin'}
         >
           {name}
@@ -64,7 +64,7 @@ const ItemToRender = (
   vertical,
   activeItemContainerStyle,
   activeTextColor,
-  textColor
+  textColor="#000"
 ) => {
   const selected = index === indexSelected;
   const gap = Math.abs(index - indexSelected);

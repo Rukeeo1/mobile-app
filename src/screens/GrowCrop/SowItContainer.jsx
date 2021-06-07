@@ -5,13 +5,17 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import { Feather, FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { Feather, AntDesign } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import { GradientButton as Button, Text } from '../../components';
 
 import { GrowCropCalender } from './GrowCropCalendar';
+
+import { updateJob } from '../../redux/actions';
 
 import constants from '../../constants';
 
@@ -206,6 +210,7 @@ export const CropDatePickerContainer = ({
             exisitngJobConfirmQuestion={exisitngJobConfirmQuestion}
             confirmedJobText={confirmedJobText}
             onCancel={onCancel}
+            // onConfirm={}
           />
         )}
       </View>
@@ -333,12 +338,46 @@ const ConfirmExistingJob = ({
 }) => {
   const [showQuestion, setShowQuestion] = useState(true);
   const [showConfirmed, setShowConfirmed] = useState(false);
+
+  const { userId } = useSelector((state) => ({
+    userId: state.auth?.user.id,
+  }));
   const manageCropContext = useContext(ManageCropContext);
   const { data } = manageCropContext;
+  const { jobId, cropId, jobDate } = data.cropToGrowDetails;
+  console.log(data, 'ROL context');
+
+  const dispatch = useDispatch();
+
+  //   action: "SOW"
+  // cropId: "60391d3d-10a2-48a7-8137-a2addc0fc767"
+  // cropName: "Tomatoes"
+  // fromJobs: true
+  // jobDate: "2022-06-06T23:00:00.000Z"
+  // jobId: "eea07701-d956-434b-b73b-264740bdae5b"
+  // month: "Jun"
+  // monthIndex: 5
+  // variety: undefined
 
   const onConfirm = () => {
     setShowConfirmed(true);
     setShowQuestion(false);
+    if (jobId) {
+      dispatch(
+        updateJob(
+          jobId,
+          {
+            status: 'DONE',
+            crop_id: cropId,
+            user_id: userId,
+            job_date: jobDate,
+            title:''
+          },
+          Toast
+        )
+      );
+    }
+    // dispatch(updateJob())
   };
 
   return (
@@ -377,6 +416,7 @@ const ConfirmExistingJob = ({
           </View>
         )}
       </View>
+      {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
     </View>
   );
 };

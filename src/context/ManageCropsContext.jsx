@@ -11,7 +11,24 @@ export const ManageCropProvider = ({ children }) => {
     monthIndex: 0,
     cropId: '',
     fromJobs: false,
+    jobId: ''
   });
+
+  const [endHarvest, setEndharvest] = useState(false);
+
+  const cleanContextState = () => {
+    setCropToGrowDetails((prevState) => ({
+      cropName: '',
+      month: '',
+      action: 'Sow',
+      variety: '',
+      monthIndex: 0,
+      cropId: '',
+      fromJobs: false,
+    }));
+
+    setEndharvest(false);
+  };
 
   const updateCropToGrowDetails = (info) => {
     setCropToGrowDetails((prevState) => ({
@@ -20,9 +37,11 @@ export const ManageCropProvider = ({ children }) => {
     }));
   };
   const values = {
-    data: { cropToGrowDetails },
+    data: { cropToGrowDetails, endHarvest },
     actions: {
       updateCropToGrowDetails,
+      setEndharvest,
+      cleanContextState,
     },
   };
   return (

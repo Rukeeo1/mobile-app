@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
+
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import notificationIcon from '../../assets/notification.png';
 import notificationActive from '../../assets/notification-active.png';
@@ -18,6 +20,8 @@ const { colors, screenHeight, screenWidth } = constants;
 const SideMenuOverlay = ({ toggleSideMenu }) => {
   const [coordinates, setCoordinates] = useState([]);
 
+  const manageCropContext = useContext(ManageCropContext);
+
   const navigation = useNavigation();
 
   const containerRef = React.useRef();
@@ -30,6 +34,8 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
       },
     });
     toggleSideMenu();
+    // clear context state... and start from scratch...
+    manageCropContext.actions.cleanContextState();
   };
 
   const sideBarTabItems = [
@@ -145,12 +151,12 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
             });
             intialCoordinatesDetails.length === sideBarTabItems.length &&
               setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
-              console.log(intialCoordinatesDetails,'made your choice')
+            console.log(intialCoordinatesDetails, 'made your choice');
           }
         );
       });
     }, 0);
-  },[coordinates.length]);
+  }, [coordinates.length]);
 
   let postion;
   if (coordinates.length === sideBarTabItems.length) {
@@ -176,7 +182,7 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
         style={{
           flex: 1,
           backgroundColor: colors.white,
-          paddingTop: screenHeight * 0.049,
+          // paddingTop: screenHeight * 0.049,
         }}
       >
         <LinearGradient

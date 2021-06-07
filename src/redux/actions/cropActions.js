@@ -15,6 +15,7 @@ import { API_URL } from '../../constants'
 export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/favourites?month=${month}`);
+    console.log(data,'RO: thisisdada')
     dispatch({
       type: GET_FAVORITE_CROPS_TO_GROW,
       payload: data,
@@ -148,3 +149,21 @@ export const getCropSearchResults = (value) => async (dispatch) => {
     showApiError(error);
   }
 }
+
+export const getCurrentGrowing = (userId) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(
+      `/jobs/current_growing?user_id=${userId}`
+    );
+
+    console.log(data,'ROL thsis')
+    dispatch({
+      type: GET_CURRENT_GROW_CROPS,
+      payload: data,
+    });
+
+    return;
+  } catch (error) {
+    return showApiError(error);
+  }
+};

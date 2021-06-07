@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View } from 'react-native';
+
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import { GradientButton as Button, Text } from '../../components';
 
@@ -20,20 +22,43 @@ export const HarevestDatePicker = ({
   startMonth,
   onSubmitSelected,
   submitting,
-  dateStartedTitle
+  dateStartedTitle,
+  onEndHarvest = () => {},
+  harvestEnded,
 }) => {
+  const manageCropContext = useContext(ManageCropContext);
+  const { cropToGrowDetails } = manageCropContext?.data;
+
   const [showStartButton, setShowStartButton] = useState(true);
   const [showCalender, setShowCalender] = useState(false);
   const [showFullSelectedDate, setShowFullSelectedDate] = useState(false);
   const [showEndHarvestButton, setShowEndHarvestButton] = useState(true);
   const [selectedDate, setSelectedDate] = useState(defaultCalendarDay);
+  const [showEndHarvestSummary, setShowEndHarvestSummary] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(
     months[monthsAbr.indexOf(startMonth)]
   );
   const [selectedYear, setSelectedYear] = useState(defaultCalendarYear);
 
   const monthIndex = monthsAbr.indexOf(startMonth);
-  console.log(selectedMonth, 'RO: selected month');
+
+  useEffect(() => {
+    if (cropToGrowDetails.fromJobs) {
+      setShowEndHarvestButton(true);
+      setShowStartButton(false);
+      setShowFullSelectedDate(true);
+    }
+  }, [manageCropContext.data]);
+
+  useEffect(() => {
+    if (harvestEnded) {
+      setShowStartButton(false);
+      setShowCalender(false);
+      setShowEndHarvestButton(false);
+      setShowEndHarvestSummary(true);
+      setShowFullSelectedDate(false);
+    }
+  }, [harvestEnded]);
 
   return (
     <View>
@@ -82,24 +107,31 @@ export const HarevestDatePicker = ({
             selectedDate={selectedDate}
             selectedMonth={selectedMonth}
             selectedYear={selectedYear}
-            title={reminderText} //set a condition if harvest ended
+            title={dateStartedTitle} //set a condition if harvest ended
           />
           <View>
-            {showEndHarvestButton ? (
-              <Button
-                title='End Harvest'
-                gradient={[colors.pink, colors.pinkDeep]}
-                onPress={() => {}}
-              />
-            ) : (
-              <SelectedDate
-                selectedDate={selectedDate} //endharvest date as today's date
-                selectedMonth={selectedMonth} // end harvest month as current month
-                selectedYear={selectedYear} // end harvest year as current year
-                title={reminderText} //set a condition if harvest ended
-              />
-            )}
+            <Button
+              title='End Harvest'
+              gradient={[colors.pink, colors.pinkDeep]}
+              onPress={onEndHarvest}
+            />
           </View>
+        </>
+      )}
+      {showEndHarvestSummary && (
+        <>
+          <SelectedDate
+            selectedDate={selectedDate}
+            selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
+            title={dateStartedTitle} //set a condition if harvest ended
+          />
+          <SelectedDate
+            selectedDate={selectedDate}
+            selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
+            title={'Harvest Ended'} //set a condition if harvest ended
+          />
         </>
       )}
     </View>

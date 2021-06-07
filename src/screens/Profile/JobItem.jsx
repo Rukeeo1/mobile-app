@@ -50,6 +50,7 @@ export const JobItem = ({ job }) => {
       action: job?.job_type,
       jobDate: job?.job_date,
       fromJobs: true,
+      jobId: job.id
     });
   };
 

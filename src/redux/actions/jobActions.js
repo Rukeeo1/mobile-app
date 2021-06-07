@@ -1,4 +1,9 @@
-import { GET_USER_JOBS, LOADING_JOBS } from '../types';
+import {
+  GET_USER_JOBS,
+  LOADING_JOBS,
+  GET_CURRENT_GROW_CROPS,
+  GET_FAVORITE_CROPS_TO_GROW,
+} from '../types';
 import { apiRequest, showApiError } from '../../config/api';
 
 export const getUserJobs = (userId) => (dispatch, getState) => {
@@ -24,6 +29,7 @@ export const getUserJobs = (userId) => (dispatch, getState) => {
 };
 
 export const growCrop = (cropDetails, toast) => async (dispatch) => {
+
   try {
     const { data } = await apiRequest(`/jobs/growit`, 'post', cropDetails);
     toast.show({
@@ -58,6 +64,53 @@ export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
       text1: data?.message,
     });
     dispatch(getUserJobs(cropDetails?.user_id));
+    return;
+  } catch (error) {
+    return showApiError(error);
+  }
+};
+
+// export const getCurrentGrowing = (userId) => async (dispatch) => {
+//   try {
+//     const { data } = await apiRequest(
+//       `/jobs/current_growing?user_id=${userId}`
+//     );
+//     dispatch({
+//       type: GET_CURRENT_GROW_CROPS,
+//       payload: data,
+//     });
+
+//     return;
+//   } catch (error) {
+//     return showApiError(error);
+//   }
+// };
+
+export const getPastHarvests = (userId) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(
+      `/jobs/past_harvest?user_id=${userId}`
+    );
+    dispatch({
+      type: GET_PASSED_HARVEST,
+      payload: data,
+    });
+
+    return;
+  } catch (error) {
+    return showApiError(error);
+  }
+};
+
+export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
+
+  try {
+    const { data } = await apiRequest(`/jobs/${jobId}`, 'put', jobDetails);
+    toast.show({
+      text1: data?.message,
+    });
+
+    // dispatch(getUserJobs(cropDetails?.user_id));
     return;
   } catch (error) {
     return showApiError(error);

@@ -54,13 +54,14 @@ const screenWidth = Dimensions.get('screen').width;
 
 const CropCard = ({ navigation }) => {
   const manageCropContext = useContext(ManageCropContext);
-  const { cropToGrowDetails } = manageCropContext?.data;
+  const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
 
   const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
     cropSteps: state.crops.cropSteps,
     user: state?.auth?.user,
   }));
+
 
   const dispatch = useDispatch();
 
@@ -76,10 +77,10 @@ const CropCard = ({ navigation }) => {
       dispatch(getCropCycleDetails(cropToGrowDetails?.cropId));
       dispatch(getCropSteps(cropToGrowDetails?.cropId));
     }
-    if (cropToGrowDetails.action === 'harvest') {
+    if (cropToGrowDetails.action === 'HARVEST') {
       setActiveScreen(2);
     }
-    if (cropToGrowDetails.action === 'plant') {
+    if (cropToGrowDetails.action === 'PLANT') {
       setActiveScreen(1);
     }
   }, [cropToGrowDetails?.cropId]);
@@ -116,12 +117,14 @@ const CropCard = ({ navigation }) => {
       crop_id: cropToGrowDetails?.cropId,
       user_id: user?.id,
       job_date: new Date(selectedDate),
+      status: 'pending'
     };
 
     setLoadingJobs(true);
 
     if (jobType === 'Sow') {
       jobInfo.title = 'Sow';
+      //add pending___
       await dispatch(growCrop(jobInfo, Toast));
     }
 
@@ -333,20 +336,6 @@ const CropCard = ({ navigation }) => {
         </LinearGradient>
         <View style={{ paddingHorizontal: '5%' }}>
           {activeScreen === 0 && (
-            // <SowItContainer
-            //   buttonTitle='Sow It!'
-            //   renderIcon={(itemToConfirm) =>
-            //     renderCalenderConfirmIcon(itemToConfirm)
-            //   }
-            //   tip='Enter the date you plan to sow your seeds'
-            //   reminderText='Sown'
-            //   startMonth={cropToGrowDetails.month}
-            //   onSubmitSelected={handleGrowCrop}
-            //   onSubmitSelected={(dateSelected) => {
-            //     handleGrowCrop(dateSelected, 'Sow');
-            //   }}
-            //   submitting={loadingJobs}
-            // />
             <CropDatePickerContainer
               buttonTitle='Sow It!'
               tip='Enter the date you plan to sow your seeds'
@@ -386,23 +375,6 @@ const CropCard = ({ navigation }) => {
 
           {activeScreen === 2 && (
             <>
-              {/* <SowItContainer
-                buttonTitle='Harvest it!'
-                tip='Enter the date harvest started'
-                renderIcon={(itemToConfirm) =>
-                  renderCalenderConfirmIcon(itemToConfirm)
-                }
-                reminderText='Harvest started'
-                showHoriazontalButtonAfterDateIsSelected
-                onPressOfHorizontalBtn={() =>
-                  navigation.navigate('End-Harvest')
-                }
-                startMonth={cropCycleDetails?.harvest_start_month}
-                onSubmitSelected={(dateSelected) =>
-                  handleGrowCrop(dateSelected, 'Harvest')
-                }
-                submitting={loadingJobs}
-              /> */}
               <HarevestDatePicker
                 startButtonTitle='Harvest it!'
                 tip='Enter the date harvest started'
@@ -413,7 +385,9 @@ const CropCard = ({ navigation }) => {
                   handleGrowCrop(dateSelected, 'Harvest')
                 }
                 startMonth={cropCycleDetails?.harvest_start_month}
-                dateStartedTitle=""
+                dateStartedTitle='Harvest started'
+                onEndHarvest={() => navigation.navigate('End-Harvest')}
+                harvestEnded={endHarvest}
               />
             </>
           )}
