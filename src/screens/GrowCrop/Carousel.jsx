@@ -15,31 +15,33 @@ export const MyCarousel = ({ steps }) => {
       showsHorizontalScrollIndicator={false}
     >
       {steps?.map((step, index) => (
-        <View style={styles.carouselItem} key={index}>
-          <View>
-            <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/5760807/pexels-photo-5760807.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
-              }}
-              style={{
-                height: Dimensions.get('screen').height * 0.23,
-                width: '100%',
-                borderTopLeftRadius: 8,
-                borderTopRightRadius: 8,
-              }}
-              resizeMode='cover'
-            />
-            <View style={styles.carouselText}  resizeMode="contain">
-              <Button
-                title={`Step ${index + 1}`}
-                gradient={[colors.pink, colors.pinkDeep]}
-              />
-              <Text fontType="light" style={{ textAlign: 'center', fontSize: 16, marginTop: 10, flex: 1 }}>
-                {step?.content}
-              </Text>
-            </View>
-          </View>
-        </View>
+              step?.content.toLowerCase() !== 'n/a' && (
+              <View style={styles.carouselItem} key={index}>
+              <View>
+                  <Image
+                      source={{
+                          uri: 'https://images.pexels.com/photos/5760807/pexels-photo-5760807.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
+                      }}
+                      style={{
+                          height: Dimensions.get('screen').height * 0.23,
+                          width: '100%',
+                          borderTopLeftRadius: 8,
+                          borderTopRightRadius: 8,
+                      }}
+                      resizeMode='cover'
+                  />
+                  <View style={styles.carouselText} resizeMode="contain">
+                      <Button
+                          title={`Step ${index + 1}`}
+                          gradient={[colors.pink, colors.pinkDeep]}
+                      />
+                      <Text fontType="light" style={{textAlign: 'center', fontSize: 16, marginTop: 10, flex: 1}}>
+                          {step?.content}
+                      </Text>
+                  </View>
+              </View>
+          </View>)
+
       ))}
     </ScrollView>
   );

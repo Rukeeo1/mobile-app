@@ -454,40 +454,41 @@ const CropCard = ({ navigation }) => {
               {/* </Tooltip> */}
             </View>
           </View>
-          <View>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 24,
-                marginVertical: 10,
-                fontWeight: '100',
-              }}
-            >
-              {cycleData?.title}
-            </Text>
-            <Text style={{ textAlign: 'center' }}>{cycleData?.summary}</Text>
-          </View>
-          <View style={{ marginTop: '4%' }}>
-            <Video
-              ref={video}
-              style={styles.video}
-              source={{
-                uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-              }}
-              useNativeControls
-              resizeMode='contain'
-              isLooping
-              onPlaybackStatusUpdate={(status) => {}}
-            />
-          </View>
+            {cycleData?.summary && (<View>
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        fontSize: 24,
+                        marginVertical: 10,
+                        fontWeight: '100',
+                    }}
+                >
+                    {cycleData?.title}
+                </Text>
+                <Text style={{textAlign: 'center'}}>{cycleData?.summary}</Text>
+            </View>)}
+            {cycleData?.steps && (<View style={{marginTop: '4%'}}>
+                <Video
+                    ref={video}
+                    style={styles.video}
+                    source={{
+                        uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+                    }}
+                    useNativeControls
+                    resizeMode='contain'
+                    isLooping
+                    onPlaybackStatusUpdate={(status) => {
+                    }}
+                />
+            </View>)}
           <StepsCarousel steps={cycleData?.steps} />
-          <LinearGradient
-            style={styles.toolTip}
-            colors={[colors.green, colors.greenDeep]}
-          >
-            <Text style={styles.toolTipTitle}>Tool tip</Text>
-            <Text style={styles.toolTipContent}>{cycleData?.tip}</Text>
-          </LinearGradient>
+            {cycleData?.tip && (<LinearGradient
+                style={styles.toolTip}
+                colors={[colors.green, colors.greenDeep]}
+            >
+                <Text style={styles.toolTipTitle}>Tool tip</Text>
+                <Text style={styles.toolTipContent}>{cycleData?.tip}</Text>
+            </LinearGradient>)}
           <View style={styles.companionContainer}>
             <Image
               source={{
@@ -501,9 +502,7 @@ const CropCard = ({ navigation }) => {
                   Companion Plant
                 </Text>
                 <Text style={styles.companionContainerText}>
-                  Basil is great with tomatoes not only for its culinary
-                  delights, but it can also help deter some garden pests such as
-                  whiteflies.
+                    {cropCycleDetails?.companion_crops}
                 </Text>
               </View>
             )}
