@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  FlatList,
-  ActivityIndicator,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    FlatList,
+    ActivityIndicator, Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
@@ -15,11 +15,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { JobItem } from './JobItem';
 
 import {
-  GradientButton,
-  Text,
-  FavoriteCropItem,
-  SafeArea,
-  KeyboardAvoiding,
+    GradientButton,
+    Text,
+    FavoriteCropItem,
+    SafeArea,
+    KeyboardAvoiding, Input,
 } from '../../components';
 
 import { getCropsFavoriteToGrow, getUserJobs } from '../../redux/actions';
@@ -266,31 +266,7 @@ const AddToCalendar = () => {
                   </View>
                 </GradientButton>
 
-                {/* {jobs && (
-              <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
-                <View style={[styles.jobsChild]}>
-                  <Image source={require('../../assets/circle.png')} />
-                  <View style={[styles.jobsText]}>
-                    <Input
-                      inputStyle={{ width: screenWidth * 0.4, fontSize: 16 }}
-                      onChangeText={handleJobTextChange}
-                      value={jobTitle}
-                      placeholder='Enter Job...'
-                      placeholderTextColor={colors.grey}
-                    />
-                    <Text style={styles.boldText}>
-                      {jobDate} {months[m]}
-                    </Text>
-                  </View>
-                </View>
-                <AntDesign
-                  name='right'
-                  size={24}
-                  color={colors.green}
-                  onPress={addJob}
-                />
-              </TouchableOpacity>
-            )} */}
+
                 <View style={{ marginTop: 30 }}>
                   {loadingJobs ? (
                     <ActivityIndicator />
@@ -305,6 +281,33 @@ const AddToCalendar = () => {
                         ) : null;
                       })
                   )}
+                    {jobs && (
+                        <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
+                            <View style={[styles.jobsChild]}>
+                                <Image source={require('../../assets/circle.png')} />
+                                <View style={[styles.jobsText]}>
+                                    <Input
+                                        inputStyle={{ width: screenWidth * 0.4, fontSize: 16 }}
+                                        // onChangeText={handleJobTextChange}
+                                        // value={jobTitle}
+                                        value='jobTitle'
+                                        placeholder='Enter Job...'
+                                        placeholderTextColor={colors.grey}
+                                    />
+                                    <Text style={styles.boldText}>
+                                        {/*{jobDate} {months[m]}*/}
+                                        {months[m]} {y}
+                                    </Text>
+                                </View>
+                            </View>
+                            <AntDesign
+                                name='right'
+                                size={24}
+                                color={colors.green}
+                                // onPress={addJob}
+                            />
+                        </TouchableOpacity>
+                    )}
 
                   <TouchableOpacity
                     onPress={() => setViewingMore(!viewingMore)}
