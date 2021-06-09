@@ -7,14 +7,14 @@ import growthLogo from '../../assets/growth_logo.png'
 import { GradientButton, Input, Logo } from '../../components'
 import constants from '../../constants'
 import { useDispatch, useSelector } from 'react-redux'
-import { forgotPassword } from '../../redux/actions/authActions'
+import { validateOTP } from '../../redux/actions/authActions'
 
-export const ForgotPassword = ({ navigation }) => {
+export const ValidateOTP = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loading } = useSelector((state) => state.loading)
 
   const [authDetails, setAuthDetails] = useState({
-    email: '',
+    otpToken: '',
   })
 
   const handleAuthDetails = (name, value) => {
@@ -56,52 +56,52 @@ export const ForgotPassword = ({ navigation }) => {
             colors={[colors.blueLigth, colors.blue]}
           >
             <SafeAreaView style={{ flex: 1 }}>
-            <Input
-              inputStyle={styles.input}
-              containerStyle={{ height: 70 }}
-              labelStyle={styles.label}
-              labelText="Email"
-              value={authDetails.email}
-              onChangeText={(text) => handleAuthDetails('email', text)}
-              placeholder="Enter your email"
-              placeholderTextColor="#fff"
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
+              <Input
+                inputStyle={styles.input}
+                containerStyle={{ height: 70 }}
+                labelStyle={styles.label}
+                labelText="OTP token"
+                value={authDetails.otpToken}
+                onChangeText={(text) => handleAuthDetails('otpToken', text)}
+                placeholder="Enter the OTP token sent to your email"
+                placeholderTextColor="#fff"
+                autoCapitalize="none"
+                keyboardType="numeric"
+              />
 
 
-            <GradientButton
-              gradient={[colors.green, colors.greenDeep]}
-              coverStyle={{ marginBottom: 20, marginTop: 50 }}
-              title={'Submit'}
-              onPress={() => dispatch(forgotPassword(authDetails.email, navigation))}
-              loading={loading}
+              <GradientButton
+                gradient={[colors.green, colors.greenDeep]}
+                coverStyle={{ marginBottom: 20, marginTop: 50 }}
+                title={'Submit'}
+                onPress={() => dispatch(validateOTP(authDetails.otpToken, navigation))}
+                loading={loading}
               // onPress={() => navigation.navigate('Onboarding')}
-            />
-            <Text
-              style={{
-                textAlign: 'center', color: 'white',
-                fontFamily: 'Hero-New-Medium',
-              }}
-              onPress={() => navigation.navigate('ManualAuthentication')}
-            >
-              Already have an Account? Log in
+              />
+              <Text
+                style={{
+                  textAlign: 'center', color: 'white',
+                  fontFamily: 'Hero-New-Medium',
+                }}
+                onPress={() => navigation.navigate('ManualAuthentication')}
+              >
+                Already have an Account? Log in
               </Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                color: 'white',
-                textAlign: 'center',
-                bottom: 42,
-                left: 0,
-                right: 0,
-                position: 'absolute',
-                fontFamily: 'Hero-New-Medium',
-                fontSize: 16,
-              }}
-              onPress={() => navigation.navigate("Login")}
-            >
-              Cancel
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: 'white',
+                  textAlign: 'center',
+                  bottom: 42,
+                  left: 0,
+                  right: 0,
+                  position: 'absolute',
+                  fontFamily: 'Hero-New-Medium',
+                  fontSize: 16,
+                }}
+                onPress={() => navigation.navigate("Login")}
+              >
+                Cancel
               </Text>
             </SafeAreaView>
           </LinearGradient>
@@ -159,4 +159,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ForgotPassword
+export default ValidateOTP

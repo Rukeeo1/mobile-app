@@ -8,6 +8,8 @@ import {
   GET_FOLLOWING,
   GET_USER_GROW_LIST,
   GET_USER_POSTS,
+  SET_FORGOT_PASSWORD_DATA,
+  RESET_FORGOT_PASSWORD_DATA,
 } from '../types';
 
 const initialState = {
@@ -18,6 +20,10 @@ const initialState = {
   following: null,
   growList: null,
   posts: null,
+  forgotPassword: {
+    email: '',
+    otpToken: '',
+  }
 };
 
 const loadingReducer = (state = initialState, { type, payload }) => {
@@ -68,6 +74,22 @@ const loadingReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: payload
+      }
+    case RESET_FORGOT_PASSWORD_DATA:
+      return {
+        ...state,
+        forgotPassword: {
+          email: '',
+          otpToken: '',
+        }
+      }
+    case SET_FORGOT_PASSWORD_DATA:
+      return {
+        ...state,
+        forgotPassword: {
+          ...state.forgotPassword,
+          ...payload,
+        }
       }
     default:
       return state;

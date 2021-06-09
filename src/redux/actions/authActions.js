@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Alert, AsyncStorage } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 
 import {
@@ -13,6 +14,8 @@ import {
   GET_USER_POSTS,
   FETCHING_MORE,
   LOG_OUT,
+  SET_FORGOT_PASSWORD_DATA,
+  RESET_FORGOT_PASSWORD_DATA,
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
@@ -66,7 +69,8 @@ export const login = (user, navigation) => (dispatch) => {
     })
 }
 
-export const register = (user, navigation) => (dispatch) => {
+export const register = (user, navigation) => async (dispatch) => {
+  const deviceToken = await AsyncStorage.getItem('PushNotificationToken')
   dispatch({
     type: LOADING,
     payload: true,
@@ -80,6 +84,7 @@ export const register = (user, navigation) => (dispatch) => {
     fullname: user.name,
     location: user.location,
     role: 0,
+    device_token: deviceToken,
   }
 
   console.log('user data', postData)
@@ -103,6 +108,153 @@ export const register = (user, navigation) => (dispatch) => {
     .catch((err) => {
       console.log('register', err?.response ?? err?.message)
       showApiError(err, true, () => dispatch(register(user, navigation)))
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      })
+    })
+}
+
+export const socialAuth = (user, navigation) => async (dispatch) => {
+  const deviceToken = await AsyncStorage.getItem('PushNotificationToken')
+
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  apiRequest('/users/social-media', 'post', {
+    device_token: deviceToken,
+    auth_type: 'social',
+    ...user,
+  })
+    .then(({ data }) => {
+      dispatch(saveUser(data.token, { ...data.user }))
+      // navigation.navigate('Onboarding')
+      // navigation.navigate('Splash')
+
+      navigation.dispatch(CommonActions.reset({
+        index: 0,
+        key: null,
+        routes: [{
+          name: 'Splash'
+        }],
+      }))
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(socialAuth(user, navigation)))
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      })
+    })
+}
+
+export const forgotPassword = (email, navigation) => (dispatch) => {
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  apiRequest('/users/forgot_password', 'post', { auth_id: email })
+    .then(({ data }) => {
+      console.log('forgot password', data)
+
+      dispatch({
+        type: SET_FORGOT_PASSWORD_DATA,
+        payload: { email }
+      })
+
+      navigation.navigate('ValidateOTP')
+
+      // Alert.alert('OTP token sent', 'Please check your email for the OTP and further instructions', [
+      //   { text: 'Dismiss' }
+      // ], {
+      //   onDismiss: () => navigation.navigate('ManualAuthentication')
+      // })
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(forgotPassword(email)))
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      })
+    })
+}
+
+export const validateOTP = (otpToken, navigation) => (dispatch, getState) => {
+  const { forgotPassword: { email } } = getState().auth
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  apiRequest('/users/password_otp_validation', 'post', { x_request_auth_id: email, x_request_otp_token: otpToken })
+    .then(({ data }) => {
+      console.log('validate otp', data)
+
+      if (data.valid) {
+        dispatch({
+          type: SET_FORGOT_PASSWORD_DATA,
+          payload: { email, otpToken }
+        })
+
+        navigation.navigate('Reset-password')
+      } else {
+        Alert.alert('', 'Invalid token', [
+          { text: 'Dismiss' }
+        ])
+      }
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(forgotPassword(email)))
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      })
+    })
+}
+
+export const resetPassword = (password, navigation) => (dispatch, getState) => {
+  const { forgotPassword: { email, otpToken } } = getState().auth
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  apiRequest('/users/reset_password', 'put', { auth_id: email, x_request_otp_token: otpToken, password })
+    .then(({ data }) => {
+      console.log('reset password', data)
+
+      Alert.alert('', 'Password reset successfully', [
+        { text: 'Dismiss' }
+      ], {
+        onDismiss: () => navigation.navigate('ManualAuthentication')
+      })
+
+    //   if (data.valid) {
+    //     dispatch({
+    //       type: SET_FORGOT_PASSWORD_DATA,
+    //       payload: { email, otpToken }
+    //     })
+
+    //     navigation.navigate('Reset-password')
+    //   } else {
+    //     Alert.alert('', 'Invalif token', [
+    //       { text: 'Dismiss' }
+    //     ])
+    //   }
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(forgotPassword(email)))
     })
     .finally(() => {
       dispatch({

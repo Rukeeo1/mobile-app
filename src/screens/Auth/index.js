@@ -6,6 +6,7 @@ import ManualAuthentication from './ManualAuth';
 import Register from './Register';
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from './ResetPassword';
+import ValidateOTP from './ValidateOTP';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const AuthNavigator = () => (
     <Screen name='Register' component={Register} />
     <Screen name='Forgot-password' component={ForgotPassword} />
     <Screen name='Reset-password' component={ResetPassword} />
+    <Screen name='ValidateOTP' component={ValidateOTP} />
   </Navigator>
 );
 
