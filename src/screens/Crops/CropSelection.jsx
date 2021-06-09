@@ -90,57 +90,59 @@ const CropSelection = ({ navigation, route }) => {
                   // )
                   ?.map((crop) => {
                     return (
-                      <GradientButton
+                        crop?.variety && crop?.variety.toLowerCase() !== 'n/a' ? (  <GradientButton
                         key={crop?.id}
                         gradient={[colors.blueLigth, colors.blue]}
                         onPress={() => {
-                          setSearch(crop?.variety)
-                          manageCropContext?.actions?.updateCropToGrowDetails(
-                            {
-                              variety: search,
-                              cropName,
-                              cropId: crop?.id,
-                            }
-                          );
-                          navigation.navigate('Success');
+                            setSearch(crop?.variety)
+                            manageCropContext?.actions?.updateCropToGrowDetails(
+                                {
+                                    variety: search,
+                                    cropName,
+                                    cropId: crop?.id,
+                                }
+                            );
+                            navigation.navigate('Success');
                         }}
-                      >
+                    >
                         <View
-                          style={{
-                            alignItems: 'center',
-                            width: '100%',
-                            paddingHorizontal: 20,
-                          }}
+                            style={{
+                                alignItems: 'center',
+                                width: '100%',
+                                paddingHorizontal: 20,
+                            }}
                         >
-                          <Text style={[styles.btnText]}>
-                            {crop?.variety}
-                          </Text>
+                            <Text style={[styles.btnText]}>
+                                {crop?.variety}
+                            </Text>
                         </View>
+                    </GradientButton>) : (
+                      <GradientButton
+                          gradient={[colors.blueLigth, colors.blue]}
+                          onPress={() => {
+                              navigation.navigate('Success');
+                              ManageCropContext?.actions?.updateCropToGrowDetails({
+                                  type: search,
+                                  cropName,
+                                  cropId,
+                              });
+                          }}
+                      >
+                          <View
+                              style={{
+                                  alignItems: 'center',
+                                  width: '100%',
+                                  paddingHorizontal: 20,
+                              }}
+                          >
+                              <Text style={[styles.btnText]}>Grow it</Text>
+                          </View>
                       </GradientButton>
+                            )
                     );
                   })}
               </View>
-            <GradientButton
-              gradient={[colors.blueLigth, colors.blue]}
-              onPress={() => {
-                navigation.navigate('Success');
-                ManageCropContext?.actions?.updateCropToGrowDetails({
-                  variety: search,
-                  cropName,
-                  cropId,
-                });
-              }}
-            >
-              <View
-                style={{
-                  alignItems: 'center',
-                  width: '100%',
-                  paddingHorizontal: 20,
-                }}
-              >
-                <Text style={[styles.btnText]}>Grow it</Text>
-              </View>
-            </GradientButton>
+
             </LinearGradient>
           </View>
 
