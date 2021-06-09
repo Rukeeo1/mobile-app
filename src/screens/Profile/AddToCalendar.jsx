@@ -16,7 +16,6 @@ import { JobItem } from './JobItem';
 
 import {
   GradientButton,
-  Input,
   Text,
   FavoriteCropItem,
   SafeArea,
@@ -231,7 +230,10 @@ const AddToCalendar = () => {
               <View>
                 <GradientButton
                   gradient={[colors.red, colors.redDeep]}
-                  onPress={() => navigation.navigate('Crops')}
+                  onPress={() => {
+                    navigation.navigate('Crops');
+                    manageCropContext?.actions?.setGrowInMonthIndex(m);
+                  }}
                 >
                   <View
                     style={{

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
+
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import notificationIcon from '../../assets/notification.png';
 import notificationActive from '../../assets/notification-active.png';
@@ -18,16 +20,24 @@ const { colors, screenHeight, screenWidth } = constants;
 const SideMenuOverlay = ({ toggleSideMenu }) => {
   const [coordinates, setCoordinates] = useState([]);
 
+  const manageCropContext = useContext(ManageCropContext);
+
   const navigation = useNavigation();
 
+  const containerRef = React.useRef();
+
   const handleNavigation = (index) => {
-    navigation.navigate('Settings', {
-      screen: 'Main-Profile',
-      params: {
-        indexOfItemToShow: index,
-      },
-    });
     toggleSideMenu();
+
+      navigation.navigate('Settings', {
+        screen: 'Main-Profile',
+        params: {
+          indexOfItemToShow: index,
+        },
+      });
+      // clear context state... and start from scratch...
+      manageCropContext.actions.cleanContextState();
+
   };
 
   const sideBarTabItems = [
@@ -125,27 +135,39 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
     },
   ];
 
+  // const moveBall = (index) => {
+  //   handleNavigation(index)
+
+  // }
+
   useEffect(() => {
     // get the positions of sidebar items/icons on the screen (basically their x and y coordinates)
-    const intialCoordinatesDetails = [];
-    sideBarTabItems.forEach((item) => {
-      //for each item on the side bar loop through and get their position
-      item.ref.current?.measureLayout(
-        containerRef.current,
-        (x, y, width, height) => {
-          intialCoordinatesDetails.push({
-            x,
-            y,
-            width,
-            height,
-            item: item.name,
-          });
-          intialCoordinatesDetails.length === sideBarTabItems.length &&
-            setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
-        }
-      );
-    });
-  }, []);
+    setTimeout(() => {
+      const intialCoordinatesDetails = [];
+      sideBarTabItems.forEach((item) => {
+        //for each item on the side bar loop through and get their position
+        item.ref.current?.measureLayout(
+          containerRef.current,
+          (x, y, width, height) => {
+            intialCoordinatesDetails.push({
+              x,
+              y,
+              width,
+              height,
+              item: item.name,
+            });
+            intialCoordinatesDetails.length === sideBarTabItems.length &&
+              setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
+            console.log(intialCoordinatesDetails, 'made your choice');
+          }
+        );
+      });
+    }, 500);
+  }, [coordinates.length, JSON.stringify(coordinates)]);
+
+  const lastItem = coordinates[coordinates?.length - 1];
+
+  console.log(coordinates, 'RO: coordinates', lastItem);
 
   return (
     <View style={styles.container}>
@@ -162,7 +184,7 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
         style={{
           flex: 1,
           backgroundColor: colors.white,
-          paddingTop: screenHeight * 0.049,
+          // paddingTop: screenHeight * 0.049,
         }}
       >
         <LinearGradient
@@ -177,36 +199,42 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
             overflow: 'visible',
           }}
         >
-          <View style={{ alignItems: 'center', marginBottom: 45 }}>
-            <TouchableOpacity style={styles.ellipse}>
-              <FontAwesome5
-                name='ellipsis-h'
-                size={24}
-                color={colors.white}
-                style={{ opacity: 0.5 }}
-              />
-            </TouchableOpacity>
+          <View ref={containerRef}>
+            <View style={{ alignItems: 'center', marginBottom: 45 }}>
+              <TouchableOpacity style={styles.ellipse}>
+                <FontAwesome5
+                  name='ellipsis-h'
+                  size={24}
+                  color={colors.white}
+                  style={{ opacity: 0.5 }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{ ...styles.ball, top: lastItem?.y, left: lastItem?.x }}
+            />
+            {sideBarTabItems.map((item, index) => (
+              <TouchableOpacity
+                style={[styles.tabIconWrapper, item.styles]}
+                onPress={item?.onclick}
+                // onPress={() => moveBall(index)}
+                key={index}
+                ref={item.ref}
+              >
+                {item.icon()}
+              </TouchableOpacity>
+            ))}
+            <View
+              style={{
+                position: 'absolute',
+                height: 1,
+                backgroundColor: colors.white,
+                top: screenHeight * 0.58,
+                width: '100%',
+                opacity: 0.5,
+              }}
+            />
           </View>
-          <View style={styles.ball} />
-          {sideBarTabItems.map((item, index) => (
-            <TouchableOpacity
-              style={[styles.tabIconWrapper, item.styles]}
-              onPress={item?.onclick}
-              key={index}
-            >
-              {item.icon()}
-            </TouchableOpacity>
-          ))}
-          <View
-            style={{
-              position: 'absolute',
-              height: 1,
-              backgroundColor: colors.white,
-              top: screenHeight * 0.58,
-              width: '100%',
-              opacity: 0.5,
-            }}
-          />
         </LinearGradient>
       </View>
     </View>
@@ -231,7 +259,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   ball: {
-    top: screenHeight * 0.740,
+    top: screenHeight * 0.74,
     zIndex: -10,
     backgroundColor: colors.white,
     borderRadius: 30,
@@ -243,7 +271,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     position: 'absolute',
-    left: -10,
+    left: -12,
   },
 });
 

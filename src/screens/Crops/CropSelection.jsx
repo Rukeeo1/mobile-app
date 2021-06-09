@@ -24,6 +24,8 @@ const CropSelection = ({ navigation, route }) => {
 
   const { cropName, sowTip, growLevel, cropId } = route?.params || {};
 
+  console.log(cropDetail,'RO: as a message')
+
   useEffect(() => {
     if (cropName) {
       dispatch(getCropVarieties(cropName));
@@ -47,7 +49,7 @@ const CropSelection = ({ navigation, route }) => {
                 onPress={() => navigation.goBack()}
               />
               <View style={{ alignItems: 'center' }}>
-                <Text style={[styles.titleTop]}>{cropName}</Text>
+                <Text style={[styles.titleTop]}>{cropName}-</Text>
 
                 <View style={[styles.titleTag]}>
                   <MaterialIcons name='star' size={20} color={colors.white} />
