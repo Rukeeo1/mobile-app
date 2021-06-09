@@ -1,8 +1,14 @@
-import { GET_USER_JOBS, LOADING_JOBS } from '../types/';
+import {
+  GET_USER_JOBS,
+  LOADING_JOBS,
+  GET_CURRENT_GROW_CROPS,
+  GET_PAST_HARVEST,
+} from '../types/';
 
 const initialState = {
   usersJobs: {},
   loadingJobs: false,
+  pastHarvest: {},
 };
 
 const cropsReducer = (state = initialState, { type, payload }) => {
@@ -16,6 +22,16 @@ const cropsReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         usersJobs: payload,
+      };
+    case GET_CURRENT_GROW_CROPS:
+      return {
+        ...state,
+        currentGrowCrops: payload,
+      };
+    case GET_PAST_HARVEST:
+      return {
+        ...state,
+        pastHarvest: payload,
       };
 
     default:

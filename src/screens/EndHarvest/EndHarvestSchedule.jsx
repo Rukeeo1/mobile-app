@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
+
+import ManageCropContext from '../../context/ManageCropsContext';
 
 import { GradientButton as Button } from '../../components';
 import { GrowCropCalender } from '../GrowCrop/GrowCropCalendar';
@@ -16,13 +18,15 @@ const { colors, months, monthsAbr, defaultCalendarDay, defaultCalendarYear } =
 
 const EndHarvestSchedule = ({ navigation }) => {
   const dispatch = useDispatch();
+  const manageCropContext = useContext(ManageCropContext);
+  const { actions } = manageCropContext;
 
   const { cropCycleDetails, user } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
     user: state?.auth?.user,
   }));
 
-  const sowMonth = cropCycleDetails?.sow_months.split(',')[0];
+  const sowMonth = cropCycleDetails?.sow_months?.split(',')[0];
 
   const [selectedDay, setSelectedDay] = useState(defaultCalendarDay);
   const [selectedYear, setSelectedYear] = useState(defaultCalendarYear);
@@ -48,51 +52,55 @@ const EndHarvestSchedule = ({ navigation }) => {
     const error = await dispatch(growCrop(cropInfo, Toast));
     setSubmitting(false);
     if (!error) {
-      handleNavigation('Settings', {
-        screen: 'Main-Profile',
-        params: {
-          indexOfItemToShow: 5,
-        },
-      });
+      handleNavigation('Crop-Card');
+      actions.setEndharvest(true);
+      actions.updateCropToGrowDetails({ fromJobs: false });
+      // handleNavigation('Settings', {
+      //   screen: 'Main-Profile',
+      //   screen: 'Crop-Card',
+      //   params: {
+      //     indexOfItemToShow: 5,
+      //   },
+      // });
     }
   };
   return (
     // <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient
-        style={styles.container}
-        colors={[colors.green, colors.greenDeep]}
-      >
-        <Text style={styles.title}>End Harvest</Text>
-        <Text style={styles.question}>
-          Let’s get it scheduled in the grow calendar?
-        </Text>
-        <Text style={styles.suggest}>
-          Suggested date is predicted from this harvest
-        </Text>
-        <GrowCropCalender
-          activeItemsContainerStyle={{ top: '80%' }}
-          calenderWrapperStyle={{ width: '95%' }}
-          textColor={colors.white}
-          handleDate={setSelectedDay}
-          handleMonth={setSelectedMonth}
-          handleYear={setSelectedYear}
-          selectedDay={selectedDay}
-          selectedYear={selectedYear}
-          selectedMonth={selectedMonth}
-          defaultMonthIndex={monthIndex}
-        />
+    <LinearGradient
+      style={styles.container}
+      colors={[colors.green, colors.greenDeep]}
+    >
+      <Text style={styles.title}>End Harvest</Text>
+      <Text style={styles.question}>
+        Let’s get it scheduled in the grow calendar?
+      </Text>
+      <Text style={styles.suggest}>
+        Suggested date is predicted from this harvest
+      </Text>
+      <GrowCropCalender
+        activeItemsContainerStyle={{ top: '80%' }}
+        calenderWrapperStyle={{ width: '95%' }}
+        textColor={colors.white}
+        handleDate={setSelectedDay}
+        handleMonth={setSelectedMonth}
+        handleYear={setSelectedYear}
+        selectedDay={selectedDay}
+        selectedYear={selectedYear}
+        selectedMonth={selectedMonth}
+        defaultMonthIndex={monthIndex}
+      />
 
-        <Button
-          title='Schedule it'
-          coverStyle={{ marginTop: '10%' }}
-          gradient={[colors.pink, colors.pinkDeep]}
-          onPress={scheduleCrop}
-          loading={submitting}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('Grow-Crop')}>
-          <Text style={styles.optOut}>Later</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+      <Button
+        title='Schedule it'
+        coverStyle={{ marginTop: '10%' }}
+        gradient={[colors.pink, colors.pinkDeep]}
+        onPress={scheduleCrop}
+        loading={submitting}
+      />
+      <TouchableOpacity onPress={() => navigation.navigate('Grow-Crop')}>
+        <Text style={styles.optOut}>Later</Text>
+      </TouchableOpacity>
+    </LinearGradient>
     // </SafeAreaView>
   );
 };

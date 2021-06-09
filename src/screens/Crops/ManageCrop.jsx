@@ -15,7 +15,11 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import { GradientButton, Text } from '../../components';
-import { getUserJobs } from '../../redux/actions';
+import {
+  getUserJobs,
+  getCurrentGrowing,
+  getPastHarvests,
+} from '../../redux/actions';
 
 import constants from '../../constants';
 
@@ -24,10 +28,11 @@ const { colors } = constants;
 const ManageCrops = () => {
   const navigation = useNavigation();
 
-  const { jobs, userId } = useSelector(
+  const { jobs, userId, pastHarvest } = useSelector(
     (state) => ({
       jobs: state.jobs?.usersJobs,
       userId: state.auth?.user?.id,
+      pastHarvest: state.jobs?.pastHarvest
     }),
     shallowEqual
   );
@@ -37,19 +42,30 @@ const ManageCrops = () => {
   const dispatch = useDispatch();
 
   const [fetchingJobs, setFechingJobs] = useState(false);
+  const [fectchingPastHarvest, setFetchingPastHarvest] = useState(false);
 
-  const getJobs = useCallback(async () => {
+  const getCurrentJobs = useCallback(async () => {
     setFechingJobs(true);
     if (userId) {
-      await dispatch(getUserJobs(userId));
+      // await dispatch(getUserJobs(userId));
+      await dispatch(getCurrentGrowing(userId));
     }
 
     setFechingJobs(false);
   }, []);
 
+  const getPreviousHarvest = useCallback(async () => {
+    setFetchingPastHarvest(true);
+    await dispatch(getPastHarvests(userId));
+    setFetchingPastHarvest(false);
+  }, []);
+
+ 
+
   useEffect(() => {
-    getJobs();
-  }, [getJobs]);
+    getCurrentJobs();
+    getPreviousHarvest();
+  }, [getCurrentJobs]);
 
   const handleNavigation = (path, details) => () => {
     navigation.navigate(path);
@@ -66,87 +82,71 @@ const ManageCrops = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       {/* <SafeAreaView> */}
-        <ScrollView>
-          <View style={[styles.titleContainer]}>
-            <Text style={styles.title}>Manage Crops</Text>
-          </View>
+      <ScrollView>
+        <View style={[styles.titleContainer]}>
+          <Text style={styles.title}>Manage Crops</Text>
+        </View>
 
-          <View style={{ paddingHorizontal: '5%' }}>
-            <View style={[styles.growCalendarCard]}>
-              {jobs?.jobs?.length < 1 && (
-                <Text
-                  style={{
-                    ...styles.growText,
-                    ...{ paddingRight: 80, paddingLeft: 80, fontSize: 18 },
-                  }}
-                >
-                  You aren’t growing anything yet!
-                </Text>
-              )}
+        <View style={{ paddingHorizontal: '5%' }}>
+          <View style={[styles.growCalendarCard]}>
+            {jobs?.jobs?.length < 1 && (
               <Text
                 style={{
                   ...styles.growText,
-                  ...{ paddingRight: 70, paddingLeft: 70, fontSize: 18 },
+                  ...{ paddingRight: 80, paddingLeft: 80, fontSize: 18 },
                 }}
               >
-                Add a crop to your{' '}
-                <Text fontType='bold' style={{ color: colors.green }}>
-                  Grow Calendar
-                </Text>{' '}
-                today
+                You aren’t growing anything yet!
               </Text>
-
-              <GradientButton
-                gradient={[colors.green, colors.greenDeep]}
-                onPress={() =>
-                  navigation.navigate('Main-Profile', {
-                    //this would be refactored later... when the sideBar component is refactored...
-                    indexOfItemToShow: 5,
-                  })
-                }
-              >
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    width: '100%',
-                    paddingHorizontal: 20,
-                  }}
-                >
-                  <Text style={styles.btnText}>Go to Grow Calendar</Text>
-                  <Ionicons name='calendar' size={24} color={colors.white} />
-                </View>
-              </GradientButton>
-            </View>
-          </View>
-
-          <View style={{ paddingHorizontal: '5%' }}>
-            {fetchingJobs ? (
-              <ActivityIndicator />
-            ) : (
-              <View>
-                <Text style={styles.growingCrops}>
-                  {jobs?.jobs?.length > 0 ? 'Current growing' : null}
-                </Text>
-                {jobs?.jobs?.map((job) => {
-                  return job.job_type !== 'harvest' ? (
-                    <PlantItem
-                      job={job}
-                      key={job.id}
-                      onPress={handleNavigation('Grow-Crop', job)}
-                    />
-                  ) : null;
-                })}
-              </View>
             )}
+            <Text
+              style={{
+                ...styles.growText,
+                ...{ paddingRight: 70, paddingLeft: 70, fontSize: 18 },
+              }}
+            >
+              Add a crop to your{' '}
+              <Text fontType='bold' style={{ color: colors.green }}>
+                Grow Calendar
+              </Text>{' '}
+              today
+            </Text>
+
+            <GradientButton
+              gradient={[colors.green, colors.greenDeep]}
+              onPress={() =>
+                navigation.navigate('Main-Profile', {
+                  //this would be refactored later... when the sideBar component is refactored...
+                  indexOfItemToShow: 5,
+                })
+              }
+            >
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  width: '100%',
+                  paddingHorizontal: 20,
+                }}
+              >
+                <Text style={styles.btnText}>Go to Grow Calendar</Text>
+                <Ionicons name='calendar' size={24} color={colors.white} />
+              </View>
+            </GradientButton>
+          </View>
+        </View>
+
+        <View style={{ paddingHorizontal: '5%' }}>
+          {fetchingJobs ? (
+            <ActivityIndicator />
+          ) : (
             <View>
               <Text style={styles.growingCrops}>
-                {' '}
-                {jobs?.jobs?.length > 0 ? 'Past Harvest' : null}
+                {jobs?.jobs?.length > 0 ? 'Current growing' : null}
               </Text>
               {jobs?.jobs?.map((job) => {
-                return job.job_type === 'harvest' ? (
+                return job.job_type !== 'harvest' ? (
                   <PlantItem
                     job={job}
                     key={job.id}
@@ -155,8 +155,24 @@ const ManageCrops = () => {
                 ) : null;
               })}
             </View>
+          )}
+          <View>
+            <Text style={styles.growingCrops}>
+              {' '}
+              {jobs?.jobs?.length > 0 ? 'Past Harvest' : null}
+            </Text>
+            {jobs?.jobs?.map((job) => {
+              return job.job_type === 'harvest' ? (
+                <PlantItem
+                  job={job}
+                  key={job.id}
+                  onPress={handleNavigation('Grow-Crop', job)}
+                />
+              ) : null;
+            })}
           </View>
-        </ScrollView>
+        </View>
+      </ScrollView>
       {/* </SafeAreaView> */}
     </View>
   );

@@ -392,7 +392,7 @@ const PostForm = ({
                   <Text style={{ fontSize: 18 }}>
                     {crop?.name}
                     {' '}
-                    {crop?.variety && crop?.variety !== 'N/A' && `(${crop?.variety})`}
+                    {crop?.variety && crop?.variety.toLowerCase() !== 'n/a' ? `(${crop?.variety})`: `Grow It`}
                   </Text>
                 </TouchableOpacity>
               )

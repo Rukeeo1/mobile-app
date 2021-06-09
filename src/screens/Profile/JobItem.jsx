@@ -48,6 +48,9 @@ export const JobItem = ({ job }) => {
       monthIndex,
       cropId: job?.crop_id,
       action: job?.job_type,
+      jobDate: job?.job_date,
+      fromJobs: true,
+      jobId: job.id
     });
   };
 

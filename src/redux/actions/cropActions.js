@@ -8,6 +8,7 @@ import {
   GET_SEARCH_RESULTS,
   GET_CROPS,
   LOADING,
+  GET_CURRENT_GROW_CROPS
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
@@ -15,6 +16,7 @@ import { API_URL } from '../../constants'
 export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/favourites?month=${month}`);
+    console.log(data,'RO: thisisdada')
     dispatch({
       type: GET_FAVORITE_CROPS_TO_GROW,
       payload: data,
@@ -42,6 +44,7 @@ export const getCrops = (crop) => async (dispatch) => {
 export const getCropVarieties = (crop) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/varieties?crop=${crop}`);
+
     dispatch({
       type: GET_CROP_VARIETIES,
       payload: data,
@@ -156,9 +159,9 @@ export const addCrop2 = (name, setCrop) => (dispatch) => {
     })
 }
 
-export const getCropSearchResults = (value) => async (dispatch) => {
+export const getCropSearchResults = (value, month='') => async (dispatch) => {
   try {
-    const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}`);
+    const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}&month=${month}`);
   
     dispatch({
       type: GET_SEARCH_RESULTS,
@@ -168,3 +171,21 @@ export const getCropSearchResults = (value) => async (dispatch) => {
     showApiError(error);
   }
 }
+
+export const getCurrentGrowing = (userId) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(
+      `/jobs/current_growing?user_id=${userId}`
+    );
+
+    dispatch({
+      type: GET_CURRENT_GROW_CROPS,
+      payload: data,
+    });
+
+    return;
+  } catch (error) {
+    return showApiError(error);
+  }
+};
+
