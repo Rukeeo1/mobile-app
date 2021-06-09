@@ -11,10 +11,12 @@ export const ManageCropProvider = ({ children }) => {
     monthIndex: 0,
     cropId: '',
     fromJobs: false,
-    jobId: ''
+    jobId: '',
   });
 
   const [endHarvest, setEndharvest] = useState(false);
+
+  const [growInMonthIndex, setGrowInMonthIndex] = useState(0);
 
   const cleanContextState = () => {
     setCropToGrowDetails((prevState) => ({
@@ -37,11 +39,12 @@ export const ManageCropProvider = ({ children }) => {
     }));
   };
   const values = {
-    data: { cropToGrowDetails, endHarvest },
+    data: { cropToGrowDetails, endHarvest, growInMonthIndex },
     actions: {
       updateCropToGrowDetails,
       setEndharvest,
       cleanContextState,
+      setGrowInMonthIndex,
     },
   };
   return (

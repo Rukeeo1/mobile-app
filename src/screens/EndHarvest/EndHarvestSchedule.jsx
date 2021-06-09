@@ -26,7 +26,7 @@ const EndHarvestSchedule = ({ navigation }) => {
     user: state?.auth?.user,
   }));
 
-  const sowMonth = cropCycleDetails?.sow_months.split(',')[0];
+  const sowMonth = cropCycleDetails?.sow_months?.split(',')[0];
 
   const [selectedDay, setSelectedDay] = useState(defaultCalendarDay);
   const [selectedYear, setSelectedYear] = useState(defaultCalendarYear);

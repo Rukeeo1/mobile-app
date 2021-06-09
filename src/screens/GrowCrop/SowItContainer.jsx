@@ -345,7 +345,6 @@ const ConfirmExistingJob = ({
   const manageCropContext = useContext(ManageCropContext);
   const { data } = manageCropContext;
   const { jobId, cropId, jobDate } = data.cropToGrowDetails;
-  console.log(data, 'ROL context');
 
   const dispatch = useDispatch();
 

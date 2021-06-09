@@ -27,15 +27,17 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
   const containerRef = React.useRef();
 
   const handleNavigation = (index) => {
-    navigation.navigate('Settings', {
-      screen: 'Main-Profile',
-      params: {
-        indexOfItemToShow: index,
-      },
-    });
     toggleSideMenu();
-    // clear context state... and start from scratch...
-    manageCropContext.actions.cleanContextState();
+
+      navigation.navigate('Settings', {
+        screen: 'Main-Profile',
+        params: {
+          indexOfItemToShow: index,
+        },
+      });
+      // clear context state... and start from scratch...
+      manageCropContext.actions.cleanContextState();
+
   };
 
   const sideBarTabItems = [
@@ -133,6 +135,11 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
     },
   ];
 
+  // const moveBall = (index) => {
+  //   handleNavigation(index)
+
+  // }
+
   useEffect(() => {
     // get the positions of sidebar items/icons on the screen (basically their x and y coordinates)
     setTimeout(() => {
@@ -155,17 +162,12 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
           }
         );
       });
-    }, 0);
-  }, [coordinates.length]);
+    }, 500);
+  }, [coordinates.length, JSON.stringify(coordinates)]);
 
-  let postion;
-  if (coordinates.length === sideBarTabItems.length) {
-    postion = coordinates[sideBarTabItems.length - 1];
-  }
-  console.log(sideBarTabItems, '***-__', '888', coordinates);
+  const lastItem = coordinates[coordinates?.length - 1];
 
-  // const lastCoordinate = coordinates[sideBarTabItems.length - 1];
-  // console.log(lastCoordinate,'hellp me')
+  console.log(coordinates, 'RO: coordinates', lastItem);
 
   return (
     <View style={styles.container}>
@@ -197,40 +199,42 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
             overflow: 'visible',
           }}
         >
-          <View
-            style={{ alignItems: 'center', marginBottom: 45 }}
-            ref={containerRef}
-          >
-            <TouchableOpacity style={styles.ellipse}>
-              <FontAwesome5
-                name='ellipsis-h'
-                size={24}
-                color={colors.white}
-                style={{ opacity: 0.5 }}
-              />
-            </TouchableOpacity>
+          <View ref={containerRef}>
+            <View style={{ alignItems: 'center', marginBottom: 45 }}>
+              <TouchableOpacity style={styles.ellipse}>
+                <FontAwesome5
+                  name='ellipsis-h'
+                  size={24}
+                  color={colors.white}
+                  style={{ opacity: 0.5 }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{ ...styles.ball, top: lastItem?.y, left: lastItem?.x }}
+            />
+            {sideBarTabItems.map((item, index) => (
+              <TouchableOpacity
+                style={[styles.tabIconWrapper, item.styles]}
+                onPress={item?.onclick}
+                // onPress={() => moveBall(index)}
+                key={index}
+                ref={item.ref}
+              >
+                {item.icon()}
+              </TouchableOpacity>
+            ))}
+            <View
+              style={{
+                position: 'absolute',
+                height: 1,
+                backgroundColor: colors.white,
+                top: screenHeight * 0.58,
+                width: '100%',
+                opacity: 0.5,
+              }}
+            />
           </View>
-          <View style={styles.ball} />
-          {sideBarTabItems.map((item, index) => (
-            <TouchableOpacity
-              style={[styles.tabIconWrapper, item.styles]}
-              onPress={item?.onclick}
-              key={index}
-              ref={item.ref}
-            >
-              {item.icon()}
-            </TouchableOpacity>
-          ))}
-          <View
-            style={{
-              position: 'absolute',
-              height: 1,
-              backgroundColor: colors.white,
-              top: screenHeight * 0.58,
-              width: '100%',
-              opacity: 0.5,
-            }}
-          />
         </LinearGradient>
       </View>
     </View>
@@ -267,7 +271,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     position: 'absolute',
-    left: -10,
+    left: -12,
   },
 });
 

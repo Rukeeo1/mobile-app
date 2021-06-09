@@ -8,6 +8,7 @@ import {
   GET_SEARCH_RESULTS,
   GET_CROPS,
   LOADING,
+  GET_CURRENT_GROW_CROPS
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
@@ -137,9 +138,9 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
 }
 
 
-export const getCropSearchResults = (value) => async (dispatch) => {
+export const getCropSearchResults = (value, month='') => async (dispatch) => {
   try {
-    const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}`);
+    const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}&month=${month}`);
   
     dispatch({
       type: GET_SEARCH_RESULTS,
@@ -156,7 +157,6 @@ export const getCurrentGrowing = (userId) => async (dispatch) => {
       `/jobs/current_growing?user_id=${userId}`
     );
 
-    console.log(data,'ROL thsis')
     dispatch({
       type: GET_CURRENT_GROW_CROPS,
       payload: data,
@@ -167,3 +167,4 @@ export const getCurrentGrowing = (userId) => async (dispatch) => {
     return showApiError(error);
   }
 };
+

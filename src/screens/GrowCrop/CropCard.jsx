@@ -92,12 +92,14 @@ const CropCard = ({ navigation }) => {
   const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
   const sowMonth =
-    cropToGrowDetails?.action === 'grow'
+    cropToGrowDetails?.action === 'SOW'
       ? monthsAbr[cropToGrowDetails?.monthIndex]
       : cropCycleDetails?.sow_months?.split(',')[0];
 
+      console.log(sowMonth,'RO: this is sow month',cropToGrowDetails)
+
   const plantMonth =
-    cropToGrowDetails?.action === 'plant'
+    cropToGrowDetails?.action === 'PLANT'
       ? monthsAbr[cropToGrowDetails?.monthIndex]
       : `${cropCycleDetails?.plant_start_month || ''} - ${
           cropCycleDetails?.plant_end_month || ''
@@ -117,14 +119,13 @@ const CropCard = ({ navigation }) => {
       crop_id: cropToGrowDetails?.cropId,
       user_id: user?.id,
       job_date: new Date(selectedDate),
-      status: 'pending'
+      status: 'PENDING'
     };
 
     setLoadingJobs(true);
 
     if (jobType === 'Sow') {
       jobInfo.title = 'Sow';
-      //add pending___
       await dispatch(growCrop(jobInfo, Toast));
     }
 
@@ -343,7 +344,8 @@ const CropCard = ({ navigation }) => {
                 renderCalenderConfirmIcon(itemToConfirm)
               }
               reminderText='Reminder to plant'
-              startMonth={cropToGrowDetails.month}
+              // startMonth={cropToGrowDetails.month}
+              startMonth={sowMonth}
               onSubmitSelected={(dateSelected) => {
                 handleGrowCrop(dateSelected, 'Sow');
               }}

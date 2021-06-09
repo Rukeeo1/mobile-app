@@ -60,6 +60,10 @@ export const HarevestDatePicker = ({
     }
   }, [harvestEnded]);
 
+  const endHarvestMonth = new Date().getMonth();
+  const endHarvestDay = new Date().getDate();
+  const endHarvestYear = new Date().getFullYear();
+
   return (
     <View>
       {showStartButton && (
@@ -127,9 +131,9 @@ export const HarevestDatePicker = ({
             title={dateStartedTitle} //set a condition if harvest ended
           />
           <SelectedDate
-            selectedDate={selectedDate}
-            selectedMonth={selectedMonth}
-            selectedYear={selectedYear}
+            selectedDate={endHarvestDay}
+            selectedMonth={months[endHarvestMonth]}
+            selectedYear={endHarvestYear}
             title={'Harvest Ended'} //set a condition if harvest ended
           />
         </>

@@ -15,7 +15,11 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import { GradientButton, Text } from '../../components';
-import { getUserJobs, getCurrentGrowing } from '../../redux/actions';
+import {
+  getUserJobs,
+  getCurrentGrowing,
+  getPastHarvests,
+} from '../../redux/actions';
 
 import constants from '../../constants';
 
@@ -24,10 +28,11 @@ const { colors } = constants;
 const ManageCrops = () => {
   const navigation = useNavigation();
 
-  const { jobs, userId } = useSelector(
+  const { jobs, userId, pastHarvest } = useSelector(
     (state) => ({
       jobs: state.jobs?.usersJobs,
       userId: state.auth?.user?.id,
+      pastHarvest: state.jobs?.pastHarvest
     }),
     shallowEqual
   );
@@ -37,6 +42,7 @@ const ManageCrops = () => {
   const dispatch = useDispatch();
 
   const [fetchingJobs, setFechingJobs] = useState(false);
+  const [fectchingPastHarvest, setFetchingPastHarvest] = useState(false);
 
   const getCurrentJobs = useCallback(async () => {
     setFechingJobs(true);
@@ -48,8 +54,17 @@ const ManageCrops = () => {
     setFechingJobs(false);
   }, []);
 
+  const getPreviousHarvest = useCallback(async () => {
+    setFetchingPastHarvest(true);
+    await dispatch(getPastHarvests(userId));
+    setFetchingPastHarvest(false);
+  }, []);
+
+ 
+
   useEffect(() => {
     getCurrentJobs();
+    getPreviousHarvest();
   }, [getCurrentJobs]);
 
   const handleNavigation = (path, details) => () => {

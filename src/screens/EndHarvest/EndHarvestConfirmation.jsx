@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { GradientButton as Button, Text } from '../../components';
-import { GrowCropCalender } from '../GrowCrop/GrowCropCalendar';
 
 import constants from '../../constants';
 
@@ -16,36 +15,36 @@ const EndHarvestConfirmation = ({ navigation }) => {
 
   return (
     // <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient
-        style={styles.container}
-        colors={[colors.green, colors.greenDeep]}
+    <LinearGradient
+      style={styles.container}
+      colors={[colors.green, colors.greenDeep]}
+    >
+      <Text style={styles.title} fontType='bold'>
+        End Harvest
+      </Text>
+      <Text style={styles.question} fontType='thin'>
+        Do you want to grow this again?
+      </Text>
+
+      <Button
+        title='YES!'
+        coverStyle={{ marginTop: '10%' }}
+        gradient={[colors.pink, colors.pinkDeep]}
+        onPress={handleNavigation('End-Harvest-Schedule')}
+      />
+      <TouchableOpacity
+        onPress={handleNavigation('Settings', {
+          screen: 'Main-Profile',
+          params: {
+            indexOfItemToShow: 5,
+          },
+        })}
       >
-        <Text style={styles.title} fontType='bold'>
-          End Harvest
+        <Text style={styles.optOut} fontType='bold'>
+          No thanks
         </Text>
-        <Text style={styles.question} fontType='thin'>
-          Do you want to grow this again?
-        </Text>
-       
-        <Button
-          title='YES!'
-          coverStyle={{ marginTop: '10%' }}
-          gradient={[colors.pink, colors.pinkDeep]}
-          onPress={handleNavigation('End-Harvest-Schedule')}
-        />
-        <TouchableOpacity
-          onPress={handleNavigation('Settings', {
-            screen: 'Main-Profile',
-            params: {
-              indexOfItemToShow: 5,
-            },
-          })}
-        >
-          <Text style={styles.optOut} fontType='bold'>
-            No thanks
-          </Text>
-        </TouchableOpacity>
-      </LinearGradient>
+      </TouchableOpacity>
+    </LinearGradient>
     // </SafeAreaView>
   );
 };
