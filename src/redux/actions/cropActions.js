@@ -137,6 +137,27 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
     })
 }
 
+export const addCrop2 = (name, setCrop) => (dispatch) => {
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  apiRequest('/crops/newCrop', 'post', { name })
+    .then(({ data }) => {
+      console.log('new crop', data)
+      setCrop(data?.data)
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(addCrop2(name, setCrop)))
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      })
+    })
+}
 
 export const getCropSearchResults = (value, month='') => async (dispatch) => {
   try {

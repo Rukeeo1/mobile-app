@@ -249,6 +249,7 @@ const FirstView = () => {
                   <Image
                     style={[styles.growMovementImg]}
                     source={require('../../assets/grow-movement.png')}
+                    resizeMode="contain"
                   />
                   <LinearGradient
                     colors={[colors.purshBlue, colors.blue]}
@@ -258,7 +259,9 @@ const FirstView = () => {
                       You joined the Grow It movement!
                     </Text>
                     <Text style={{ color: '#fff', marginTop: 7 }}>
-                      Feb 2020
+                      {constants.monthsAbr[new Date(user?.createdAt).getMonth()]}
+                      {' '}
+                          {new Date(user?.createdAt).getFullYear()}
                     </Text>
                   </LinearGradient>
                 </View>
@@ -320,8 +323,8 @@ const styles = StyleSheet.create({
   },
   growList: {
     backgroundColor: colors.nearWhite,
-    padding: 20,
-    paddingRight: 5,
+    paddingVertical: 20,
+    // paddingRight: 5,
     alignItems: 'center',
     fontFamily: 'Hero-New-Light',
   },
@@ -330,7 +333,7 @@ const styles = StyleSheet.create({
   },
   growCard: {
     alignItems: 'center',
-    marginHorizontal: 8,
+    marginHorizontal: 10,
   },
   growTitle: {
     textAlign: 'center',
@@ -391,6 +394,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     fontSize: 16,
+    marginBottom: 40,
   },
   postCard: {
     marginBottom: 40,
