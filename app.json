@@ -14,9 +14,8 @@
     "facebookScheme": "fb902344330564062",
     "facebookAppId": "902344330564062",
     "facebookDisplayName": "GrowIT",
-
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 3000
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
