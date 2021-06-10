@@ -33,6 +33,8 @@ const CropSelection = ({navigation, route}) => {
         dispatch(getCropsFavoriteToGrow(months[new Date().getMonth()]));
     }, [cropName]);
 
+    let tmpItem;
+
     return (
         <View style={{flex: 1, backgroundColor: colors.white}}>
             {/* <SafeAreaView> */}
@@ -118,31 +120,31 @@ const CropSelection = ({navigation, route}) => {
                                                     {crop?.variety}
                                                 </Text>
                                             </View>
-                                        </GradientButton>) : (
-                                            <GradientButton
-                                                gradient={[colors.blueLigth, colors.blue]}
-                                                onPress={() => {
-                                                    navigation.navigate('Success');
-                                                    ManageCropContext?.actions?.updateCropToGrowDetails({
-                                                        type: search,
-                                                        cropName,
-                                                        cropId,
-                                                    });
+                                        </GradientButton>): (
+                                            tmpItem = <GradientButton
+                                            gradient={[colors.blueLigth, colors.blue]}
+                                            onPress={() => {
+                                                navigation.navigate('Success');
+                                                ManageCropContext?.actions?.updateCropToGrowDetails({
+                                                    type: search,
+                                                    cropName,
+                                                    cropId,
+                                                });
+                                            }}
+                                        >
+                                            <View
+                                                style={{
+                                                    alignItems: 'center',
+                                                    width: '100%',
+                                                    paddingHorizontal: 20,
                                                 }}
                                             >
-                                                <View
-                                                    style={{
-                                                        alignItems: 'center',
-                                                        width: '100%',
-                                                        paddingHorizontal: 20,
-                                                    }}
-                                                >
-                                                    <Text style={[styles.btnText]}>Grow it</Text>
-                                                </View>
-                                            </GradientButton>
-                                        )
+                                                <Text style={[styles.btnText]}>Grow it</Text>
+                                            </View>
+                                        </GradientButton>)
                                     );
                                 })}
+
                         </View>
 
                     </LinearGradient>

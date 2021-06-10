@@ -92,7 +92,7 @@ export const ForgotPassword = ({ navigation }) => {
                 fontWeight: 'bold',
                 color: 'white',
                 textAlign: 'center',
-                bottom: 42,
+                bottom: 142,
                 left: 0,
                 right: 0,
                 position: 'absolute',

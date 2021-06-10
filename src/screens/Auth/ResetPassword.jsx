@@ -104,9 +104,10 @@ export const ResetPassword = ({ navigation }) => {
             <Text
               style={{
                 fontWeight: 'bold',
+                  position: 'relative',
                 color: 'white',
                 textAlign: 'center',
-                marginTop: '30%',
+                marginBottom: '30%',
               }}
               onPress={() => navigation.navigate("Login")}
             >
