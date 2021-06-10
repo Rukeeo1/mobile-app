@@ -46,6 +46,8 @@ export const GradientButton = ({
   title,
   gradient = ['#000000', '#000000'],
   coverStyle,
+  textStyle,
+  gradientStyle,
   onPress,
   loading = false,
   ...props
@@ -58,7 +60,7 @@ export const GradientButton = ({
     >
       <LinearGradient
         colors={gradient}
-        style={{ ...styles.defaultLinearGradient }}
+        style={{ ...styles.defaultLinearGradient, ...gradientStyle }}
       >
         {children
           ? children
@@ -69,7 +71,7 @@ export const GradientButton = ({
                 size="small"
                 animating
               />
-            ) : <Text style={styles.defaultText}>{title}</Text>}
+            ) : <Text style={{ ...styles.defaultText, ...textStyle }}>{title}</Text>}
       </LinearGradient>
     </TouchableOpacity>
   );

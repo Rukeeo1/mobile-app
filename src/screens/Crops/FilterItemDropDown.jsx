@@ -65,7 +65,14 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
           gradient={[colors.red, colors.redDeep]}
           title={activeItem}
           onPress={() => setShowDropDown(!showDropDown)}
-          coverStyle={{ maxWidth: 220, width: 'auto' }}
+          coverStyle={{ maxWidth: 220, width: 'auto', marginTop: -15, height: 40 }}
+          gradientStyle={{ borderRadius: 20 }}
+          textStyle={{
+            color: '#ffffff',
+            fontWeight: 'normal',
+            fontFamily: 'Hero-New-Medium',
+            fontSize: 14,
+          }}
         />
       )}
       {showDropDown && (
@@ -74,7 +81,7 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
             style={[styles.menuToGrow, menuToGrowButtonStyle, { width: 172.5 }]}
             onPress={showMenu}
           >
-            <Text style={{ color: colors.green, fontWeight: '500' }}>
+            <Text style={{ color: colors.green, fontWeight: '500', fontSize: 14 }}>
               {activeItem ?? placeholder}
             </Text>
             <TouchableOpacity onPress={showMenu}>
@@ -143,8 +150,7 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
 
 const styles = StyleSheet.create({
   menuToGrow: {
-    height: 50,
-    marginTop: 15,
+    height: 40,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: colors.white,

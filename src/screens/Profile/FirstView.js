@@ -32,7 +32,7 @@ const { colors } = constants;
 
 const FirstView = () => {
   const dispatch = useDispatch();
-  const { user, userData, growList, posts } = useSelector(
+  const { user, userData, growList, posts , following, followers } = useSelector(
     (state) => state.auth
   );
   const { loading, refreshing, fetchingMore } = useSelector(
@@ -125,7 +125,7 @@ const FirstView = () => {
                 onPress={() => navigation.navigate('Following')}
               >
                 <Text style={[styles.followsText]}>
-                  {userData?.following_count ?? 0} Following
+                  {following?.length ?? userData?.following_count ?? 0} Following
                 </Text>
               </TouchableOpacity>
               <Text>{'|'}</Text>
@@ -134,7 +134,7 @@ const FirstView = () => {
                 onPress={() => navigation.navigate('Followers')}
               >
                 <Text style={[styles.followsText]}>
-                  {userData?.follower_count ?? 0} Followers
+                  {followers?.length ?? userData?.follower_count ?? 0} Followers
                 </Text>
               </TouchableOpacity>
             </View>

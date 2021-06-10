@@ -131,6 +131,7 @@ export const socialAuth = (user, navigation) => async (dispatch) => {
     ...user,
   })
     .then(({ data }) => {
+      console.log('social auth', data)
       dispatch(saveUser(data.token, { ...data.user }))
       // navigation.navigate('Onboarding')
       // navigation.navigate('Splash')

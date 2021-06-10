@@ -3,12 +3,16 @@ import {
   LOADING_JOBS,
   GET_CURRENT_GROW_CROPS,
   GET_PAST_HARVEST,
+  GET_REMINDERS,
+  UPDATING_REMINDER,
 } from '../types/';
 
 const initialState = {
   usersJobs: {},
   loadingJobs: false,
   pastHarvest: {},
+  userReminders: {},
+  updatingReminder: null,
 };
 
 const cropsReducer = (state = initialState, { type, payload }) => {
@@ -33,7 +37,16 @@ const cropsReducer = (state = initialState, { type, payload }) => {
         ...state,
         pastHarvest: payload,
       };
-
+    case GET_REMINDERS:
+      return {
+        ...state,
+        userReminders: payload,
+      }
+    case UPDATING_REMINDER:
+      return {
+        ...state,
+        updatingReminder: payload
+      }
     default:
       return state;
   }

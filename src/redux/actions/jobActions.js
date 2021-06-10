@@ -3,7 +3,10 @@ import {
   LOADING_JOBS,
   GET_CURRENT_GROW_CROPS,
   GET_FAVORITE_CROPS_TO_GROW,
-  GET_PAST_HARVEST
+  GET_PAST_HARVEST,
+  GET_REMINDERS,
+  LOADING,
+  UPDATING_REMINDER,
 } from '../types';
 import { apiRequest, showApiError } from '../../config/api';
 
@@ -115,3 +118,76 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
     return showApiError(error);
   }
 };
+
+export const getUserReminders = () => (dispatch) => {
+  dispatch({
+    type: LOADING,
+    payload: true,
+  });
+
+  apiRequest(`/reminders/`)
+    .then(({ data }) => {
+      dispatch({
+        type: GET_REMINDERS,
+        payload: data,
+      });
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(getUserReminders()));
+      
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      });
+    })
+};
+
+export const addReminder = (data) => (dispatch, getState) => {
+  const { user: { id: user_id } } = getState().auth
+
+  dispatch({
+    type: LOADING,
+    payload: true,
+  });
+
+  apiRequest(`/reminders/new`, 'post', { ...data, user_id })
+    .then(({ data }) => {
+      console.log('get rmeminver', data)
+      dispatch(getUserReminders())
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(addReminder(data)));
+
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: true,
+      });
+    })
+}
+
+export const updateReminder = (id, status) => (dispatch) => {
+  dispatch({
+    type: UPDATING_REMINDER,
+    payload: id,
+  });
+
+  apiRequest(`/reminders/${id}`, 'put', { status })
+    .then(({ data }) => {
+      console.log('update rmeminver', data)
+      dispatch(getUserReminders())
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(getUserReminders()));
+
+    })
+    .finally(() => {
+      dispatch({
+        type: UPDATING_REMINDER,
+        payload: null,
+      });
+    })
+}
