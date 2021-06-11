@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import SmoothPicker from 'react-native-smooth-picker';
-import ScrollPicker from 'react-native-picker-scrollview'
+import ScrollPicker from 'react-native-picker-scrollview';
 
 import { View, StyleSheet } from 'react-native';
 import { Text } from '../../components';
@@ -64,7 +64,7 @@ const ItemToRender = (
   vertical,
   activeItemContainerStyle,
   activeTextColor,
-  textColor="#000"
+  textColor = '#000'
 ) => {
   const selected = index === indexSelected;
   const gap = Math.abs(index - indexSelected);
@@ -102,15 +102,11 @@ export const GrowCalendar = ({
   textColor,
   defaultSelectedItem,
 }) => {
-  const [selected, setSelected] = React.useState(2);
+  const [selected, setSelected] = React.useState(defaultSelectedItem);
 
   
-
-
   useEffect(() => {
-    if (defaultSelectedItem) {
-      setSelected(defaultSelectedItem);
-    }
+   
   }, [defaultSelectedItem]);
 
   function handleChange(index, item) {
@@ -162,10 +158,10 @@ export const GrowCalendar = ({
               activeItemContainerStyle,
               activeTextColor,
               textColor
-            )
+            );
           }}
           onValueChange={(item, index) => {
-            handleChange(index, item)
+            handleChange(index, item);
           }}
         />
       </View>

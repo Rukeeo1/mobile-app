@@ -51,6 +51,7 @@ const EndHarvestWarning = ({ navigation }) => {
           Toast
         )
       );
+  
       if (!errorResponse) {
         setTimeout(() => {
           navigation.navigate('End-Harvest-Confirmation');

@@ -30,7 +30,7 @@ import { SafeArea, GradientButton as Button, Text } from '../../components';
 
 import { MyCarousel as StepsCarousel } from './Carousel';
 import { EditableTitle } from './Title';
-import { SowItContainer, CropDatePickerContainer } from './SowItContainer';
+import { CropDatePickerContainer } from './SowItContainer';
 import { HarevestDatePicker } from './HarevestDatePicker';
 import { MonthGraph } from './MonthGraph';
 import { SkipStep } from './SkipStep';
@@ -55,13 +55,13 @@ const screenWidth = Dimensions.get('screen').width;
 const CropCard = ({ navigation }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
+  
 
   const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
     cropSteps: state.crops.cropSteps,
     user: state?.auth?.user,
   }));
-
 
   const dispatch = useDispatch();
 
@@ -98,7 +98,7 @@ const CropCard = ({ navigation }) => {
             cropCycleDetails?.sow_direct_to || ''
         }`;
 
-      console.log(sowMonth,'RO: this is sow month',cropToGrowDetails)
+  console.log(sowMonth, 'RO: this is sow month', cropToGrowDetails);
 
   const plantMonth =
     cropToGrowDetails?.action === 'PLANT'
@@ -121,7 +121,8 @@ const CropCard = ({ navigation }) => {
       crop_id: cropToGrowDetails?.cropId,
       user_id: user?.id,
       job_date: new Date(selectedDate),
-      status: 'PENDING'
+      status: 'PENDING',
+      variety: cropToGrowDetails.variety,
     };
 
     setLoadingJobs(true);
@@ -273,6 +274,8 @@ const CropCard = ({ navigation }) => {
     );
   };
 
+  console.log(sowMonth, 'from ______');
+
   return (
     <SafeArea containerStyle={{ flex: 1 }}>
       {!showSideMenu && (
@@ -346,8 +349,7 @@ const CropCard = ({ navigation }) => {
                 renderCalenderConfirmIcon(itemToConfirm)
               }
               reminderText='Reminder to sow'
-              // startMonth={cropToGrowDetails.month}
-              startMonth={sowMonth}
+              startMonth={cropToGrowDetails.month || 'Jan'}
               onSubmitSelected={(dateSelected) => {
                 handleGrowCrop(dateSelected, 'Sow');
               }}
@@ -456,41 +458,46 @@ const CropCard = ({ navigation }) => {
               {/* </Tooltip> */}
             </View>
           </View>
-            {cycleData?.summary && (<View>
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        fontSize: 24,
-                        marginVertical: 10,
-                        fontWeight: '100',
-                    }}
-                >
-                    {cycleData?.title}
-                </Text>
-                <Text style={{textAlign: 'center'}}>{cycleData?.summary}</Text>
-            </View>)}
-            {cycleData?.steps && (<View style={{marginTop: '4%'}}>
-                <Video
-                    ref={video}
-                    style={styles.video}
-                    source={{
-                        uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-                    }}
-                    useNativeControls
-                    resizeMode='contain'
-                    isLooping
-                    onPlaybackStatusUpdate={(status) => {
-                    }}
-                />
-            </View>)}
+          {cycleData?.summary && (
+            <View>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 24,
+                  marginVertical: 10,
+                  fontWeight: '100',
+                }}
+              >
+                {cycleData?.title}
+              </Text>
+              <Text style={{ textAlign: 'center' }}>{cycleData?.summary}</Text>
+            </View>
+          )}
+          {cycleData?.steps && (
+            <View style={{ marginTop: '4%' }}>
+              <Video
+                ref={video}
+                style={styles.video}
+                source={{
+                  uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+                }}
+                useNativeControls
+                resizeMode='contain'
+                isLooping
+                onPlaybackStatusUpdate={(status) => {}}
+              />
+            </View>
+          )}
           <StepsCarousel steps={cycleData?.steps} />
-            {cycleData?.tip && (<LinearGradient
-                style={styles.toolTip}
-                colors={[colors.green, colors.greenDeep]}
+          {cycleData?.tip && (
+            <LinearGradient
+              style={styles.toolTip}
+              colors={[colors.green, colors.greenDeep]}
             >
-                <Text style={styles.toolTipTitle}>Tool tip</Text>
-                <Text style={styles.toolTipContent}>{cycleData?.tip}</Text>
-            </LinearGradient>)}
+              <Text style={styles.toolTipTitle}>Tool tip</Text>
+              <Text style={styles.toolTipContent}>{cycleData?.tip}</Text>
+            </LinearGradient>
+          )}
           <View style={styles.companionContainer}>
             <Image
               source={{
@@ -504,7 +511,7 @@ const CropCard = ({ navigation }) => {
                   Companion Plant
                 </Text>
                 <Text style={styles.companionContainerText}>
-                    {cropCycleDetails?.companion_crops}
+                  {cropCycleDetails?.companion_crops}
                 </Text>
               </View>
             )}

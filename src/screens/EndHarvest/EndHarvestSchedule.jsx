@@ -26,7 +26,7 @@ const EndHarvestSchedule = ({ navigation }) => {
     user: state?.auth?.user,
   }));
 
-  const sowMonth = cropCycleDetails?.sow_months?.split(',')[0];
+  const sowMonth = cropCycleDetails?.sow_under_cover_from
 
   const [selectedDay, setSelectedDay] = useState(defaultCalendarDay);
   const [selectedYear, setSelectedYear] = useState(defaultCalendarYear);
@@ -44,9 +44,10 @@ const EndHarvestSchedule = ({ navigation }) => {
   const scheduleCrop = async () => {
     const growDate = selectedDay + ' ' + selectedMonth + ' ' + selectedYear;
     const cropInfo = {
-      crop_id: cropCycleDetails?.cropId,
+      crop_id: cropCycleDetails.id,
       user_id: user?.id,
       job_date: new Date(growDate),
+      status: 'PENDING'
     };
     setSubmitting(true);
     const error = await dispatch(growCrop(cropInfo, Toast));

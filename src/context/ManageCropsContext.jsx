@@ -11,6 +11,7 @@ export const ManageCropProvider = ({ children }) => {
     monthIndex: 0,
     cropId: '',
     fromJobs: false,
+    cropType:'',
     jobId: '',
   });
 
@@ -27,6 +28,7 @@ export const ManageCropProvider = ({ children }) => {
       monthIndex: 0,
       cropId: '',
       fromJobs: false,
+      category:''
     }));
 
     setEndharvest(false);
