@@ -94,15 +94,17 @@ const CropCard = ({ navigation }) => {
   const sowMonth =
     cropToGrowDetails?.action === 'SOW'
       ? monthsAbr[cropToGrowDetails?.monthIndex]
-      : cropCycleDetails?.sow_months?.split(',')[0];
+      : `${cropCycleDetails?.sow_under_cover_from || ''} - ${
+            cropCycleDetails?.sow_direct_to || ''
+        }`;
 
   console.log(sowMonth, 'RO: this is sow month', cropToGrowDetails);
 
   const plantMonth =
     cropToGrowDetails?.action === 'PLANT'
       ? monthsAbr[cropToGrowDetails?.monthIndex]
-      : `${cropCycleDetails?.plant_start_month || ''} - ${
-          cropCycleDetails?.plant_end_month || ''
+      : `${cropCycleDetails?.plant_end_month || ''} - ${
+          cropCycleDetails?.plant_start_month || ''
         }`;
 
   const harvestMonth =
@@ -346,7 +348,7 @@ const CropCard = ({ navigation }) => {
               renderIcon={(itemToConfirm) =>
                 renderCalenderConfirmIcon(itemToConfirm)
               }
-              reminderText='Reminder to plant'
+              reminderText='Reminder to sow'
               startMonth={cropToGrowDetails.month || 'Jan'}
               onSubmitSelected={(dateSelected) => {
                 handleGrowCrop(dateSelected, 'Sow');
@@ -366,7 +368,7 @@ const CropCard = ({ navigation }) => {
                 renderCalenderConfirmIcon(itemToConfirm)
               }
               reminderText='Reminder to plant'
-              startMonth={cropCycleDetails?.plant_start_month}
+              startMonth={cropCycleDetails?.plant_end_month}
               onSubmitSelected={(dateSelected) => {
                 handleGrowCrop(dateSelected, 'Plant');
               }}
@@ -416,7 +418,7 @@ const CropCard = ({ navigation }) => {
           >
             {activeScreen === 0 && (
               <MonthGraph
-                activeMonths={cropCycleDetails?.sow_months?.split(',')}
+                activeMonths={[`${cropCycleDetails?.sow_under_cover_from || ''}`, `${cropCycleDetails?.sow_under_cover_to || ''}`, `${cropCycleDetails?.sow_direct_to || ''}`, `${cropCycleDetails?.sow_direct_to || ''}`]}
                 title='When to sow guide'
                 bottomTextOne='Sow Under Cover'
                 bottomTextTwo='Sow Direct Outside'
@@ -425,8 +427,8 @@ const CropCard = ({ navigation }) => {
             {activeScreen === 1 && (
               <MonthGraph
                 activeMonths={[
-                  cropCycleDetails?.plant_start_month,
-                  cropCycleDetails?.plant_end_month,
+                    `${cropCycleDetails?.plant_end_month || ''}`,
+                  `${cropCycleDetails?.plant_start_month || ''}`
                 ]}
                 title='When to plant guide'
                 bottomTextOne='Plant out'
@@ -435,8 +437,8 @@ const CropCard = ({ navigation }) => {
             {activeScreen === 2 && (
               <MonthGraph
                 activeMonths={[
-                  cropCycleDetails?.harvest_start_month,
-                  cropCycleDetails?.harvest_end_month,
+                  `${cropCycleDetails?.harvest_start_month || ''}`,
+                  `${cropCycleDetails?.harvest_end_month || ''}`
                 ]}
                 title='When to harvest guide'
                 bottomTextOne='Harvest months'

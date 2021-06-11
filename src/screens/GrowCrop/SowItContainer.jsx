@@ -41,7 +41,7 @@ export const SowItContainer = ({
   const [selectedMonth, setSelectedMonth] = useState(
     months[monthsAbr.indexOf(startMonth)]
   );
-  const [selectedYear, setSelectedYear] = useState(defaultCalendarYear);
+  const [selectedYear, setSelectedYear] = useState(moment().year());
 
   const monthIndex = monthsAbr.indexOf(startMonth);
 
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 45,
     backgroundColor: 'white',
     flex: 1,
-    shadowColor: 'grey',
+    shadowColor: 'white',
     shadowOffset: {
       width: 0.5,
       height: 0.4,

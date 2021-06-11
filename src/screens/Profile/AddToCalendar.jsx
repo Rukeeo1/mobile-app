@@ -1,28 +1,30 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-    FlatList,
-    ActivityIndicator, Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  FlatList,
+  ActivityIndicator, Image,
+  TextInput,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { JobItem } from './JobItem';
 
 import {
-    GradientButton,
-    Text,
-    FavoriteCropItem,
-    SafeArea,
-    KeyboardAvoiding, Input,
+  GradientButton,
+  Text,
+  FavoriteCropItem,
+  SafeArea,
+  KeyboardAvoiding, Input,
 } from '../../components';
 
-import { getCropsFavoriteToGrow, getUserJobs } from '../../redux/actions';
+import { addReminder, getCropsFavoriteToGrow, getUserJobs, getUserReminders, updateReminder } from '../../redux/actions';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
@@ -44,10 +46,16 @@ const AddToCalendar = () => {
     favoriteCrops,
     user,
     jobs: userJobs,
+    loading,
+    reminders,
+    updatingReminder
   } = useSelector((state) => ({
     favoriteCrops: state.crops.favoriteCrops,
     user: state.auth?.user,
     jobs: state.jobs?.usersJobs,
+    reminders: state.jobs?.userReminders,
+    loading: state.loading.loading,
+    updatingReminder: state.jobs.updatingReminder
   }));
 
   const currentMonthIndex = new Date().getMonth();
@@ -58,9 +66,13 @@ const AddToCalendar = () => {
 
   const [jobs, setJobs] = useState(false);
   const [viewingMore, setViewingMore] = useState(false);
+  const [viewingMore2, setViewingMore2] = useState(false);
   const [cropToolTipIdToShow, setCropToolTipIdToShow] = useState('');
   const [fetchingFavoriteCrops, setFetchingFavoriteCrops] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
+
+  const [newJobTitle, setNewJobTitle] = useState('')
+  const [newJobDay, setNewJobDay] = useState('')
 
   const getFavoriteCrops = async () => {
     setFetchingFavoriteCrops(true);
@@ -71,6 +83,7 @@ const AddToCalendar = () => {
   const getJobs = async (userId) => {
     setLoadingJobs(true);
     await dispatch(getUserJobs(userId));
+    await dispatch(getUserReminders());
     setLoadingJobs(false);
   };
 
@@ -113,7 +126,9 @@ const AddToCalendar = () => {
   const pickCurrentMonth = () => {
     const currentMonth = new Date().getMonth();
     setMonth(currentMonth);
+    setY(currentYear);
   };
+  const noHarvest = Object.keys(userJobs).map(jobs => jobs.jobs);
 
   return (
     <KeyboardAvoiding>
@@ -160,9 +175,8 @@ const AddToCalendar = () => {
                           justifyContent: 'center',
                           marginHorizontal: 2,
                           marginVertical: 10,
-                          backgroundColor: `${
-                            index === m ? colors.green : 'white'
-                          }`,
+                          backgroundColor: `${index === m ? colors.green : 'white'
+                            }`,
                         }}
                         onPress={() => setMonth(index)}
                       >
@@ -268,7 +282,7 @@ const AddToCalendar = () => {
 
 
                 <View style={{ marginTop: 30 }}>
-                  {loadingJobs ? (
+                  {loadingJobs || loading ? (
                     <ActivityIndicator />
                   ) : (
                     userJobs?.jobs
@@ -281,33 +295,74 @@ const AddToCalendar = () => {
                         ) : null;
                       })
                   )}
-                    {jobs && (
-                        <TouchableOpacity activeOpacity={0.9} style={[styles.jobs]}>
-                            <View style={[styles.jobsChild]}>
-                                <Image source={require('../../assets/circle.png')} />
-                                <View style={[styles.jobsText]}>
-                                    <Input
-                                        inputStyle={{ width: screenWidth * 0.4, fontSize: 16 }}
-                                        // onChangeText={handleJobTextChange}
-                                        // value={jobTitle}
-                                        value='jobTitle'
-                                        placeholder='Enter Job...'
-                                        placeholderTextColor={colors.grey}
-                                    />
-                                    <Text style={styles.boldText}>
-                                        {/*{jobDate} {months[m]}*/}
-                                        {months[m]} {y}
-                                    </Text>
-                                </View>
-                            </View>
-                            <AntDesign
-                                name='right'
-                                size={24}
-                                color={colors.green}
-                                // onPress={addJob}
-                            />
+                  {jobs && (
+                    <View style={[styles.jobs]}>
+                      <View style={[styles.jobsChild]}>
+                        <Image
+                          source={require('../../assets/circle.png')}
+                          height={20}
+                          width={20}
+                        />
+                        <View style={[styles.jobsText]}>
+                          <TextInput
+                            style={{
+                              height: 30,
+                              width: '100%',
+                              color: constants.colors.black
+                            }}
+                            value={newJobTitle}
+                            onChangeText={(val) => setNewJobTitle(val)}
+                            placeholder='Enter Job...'
+                            placeholderTextColor={colors.greyDark}
+                          />
+                          {/* <Text style={styles.boldText}>
+                            {months[m]} {y}
+                          </Text> */}
+                          <TextInput
+                            style={{
+                              height: 30,
+                              width: '100%',
+                              color: constants.colors.black
+                            }}
+                            value={newJobDay}
+                            onChangeText={(val) => setNewJobDay(val)}
+                            placeholder='Enter Day...'
+                            placeholderTextColor={colors.greyDark}
+                            keyboardType="number-pad"
+                            maxLength={2}
+                          />
+                        </View>
+                        <TouchableOpacity onPress={() => {
+                          const day = parseInt(newJobDay);
+
+                          if (day < 1 || day > 31) {
+                            Alert.alert('', 'Your date is invalid. It should be between 1 and 31', [{ text: 'Dismiss' }])
+                          } else {
+                            const jobDate = new Date()
+                            jobDate.setDate(day)
+                            jobDate.setMonth(m)
+                            jobDate.setFullYear(y)
+
+                            dispatch(addReminder({
+                              reminder_date: jobDate,
+                              title: newJobTitle
+                            }));
+
+                              setNewJobDay('');
+                              setNewJobTitle('');
+                          }
+                        }}>
+                          <AntDesign
+                            name='right'
+                            size={24}
+                            color={colors.green}
+                          // onPress={addJob}
+                          />
                         </TouchableOpacity>
-                    )}
+                      </View>
+
+                    </View>
+                  )}
 
                   <TouchableOpacity
                     onPress={() => setViewingMore(!viewingMore)}
@@ -319,6 +374,62 @@ const AddToCalendar = () => {
                     )}
                   </TouchableOpacity>
                 </View>
+
+                {reminders?.reminders
+                  ?.slice(0, viewingMore2 ? reminders?.reminders.length : 3)
+                  .map((reminder, index) => {
+                    return (
+                      <TouchableOpacity
+                        style={[styles.jobs]}
+                        key={index}
+                        onPress={() => {
+                          if (!updatingReminder) dispatch(updateReminder(reminder.id, reminder.status === 'PENDING' ? 'DONE' : 'PENDING'))
+                        }}
+                      >
+                        <View style={[styles.jobsChild]}>
+                          <Image
+                            source={require('../../assets/job-indicator-pink.png')}
+                            style={{ height: 25, width: 25 }}
+                          />
+                          <View style={[styles.jobsText]}>
+                            <Text
+                              style={{
+                                textTransform: 'capitalize',
+                                color: reminder.status === 'PENDING' ? colors.black : colors.pink
+                              }}
+                            >{reminder?.title}</Text>
+                            <Text style={{ color: reminder.status === 'PENDING' ? colors.black : colors.pink }}>
+                              {`${new Date(reminder?.reminder_date).getDate()} ${monthsFull[new Date(reminder?.reminder_date).getMonth()]}`}
+                            </Text>
+                          </View>
+                          {updatingReminder === reminder.id
+                            ? (
+                              <ActivityIndicator
+                                color={colors.greyDark}
+                                size="small"
+                                animating
+                              />
+                            ) : (
+                              <MaterialIcons
+                                size={24}
+                                color={reminder.status === 'PENDING' ? colors.greyDark : colors.pink}
+                                name={reminder.status === 'PENDING' ? 'check-circle-outline' : 'check-circle'}
+                              />
+                            )}
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  })}
+
+                <TouchableOpacity
+                  onPress={() => setViewingMore2(!viewingMore2)}
+                >
+                  {reminders?.reminders?.length > 3 && (
+                    <Text style={styles.viewMore}>
+                        {viewingMore2 ? 'Hide reminders' : 'View more'}
+                    </Text>
+                  )}
+                </TouchableOpacity>
 
                 <GradientButton gradient={[colors.blueLigth, colors.blue]}>
                   <View
@@ -334,8 +445,24 @@ const AddToCalendar = () => {
                     <AntDesign name='info' size={28} color={colors.white} />
                   </View>
                 </GradientButton>
+                  <View>
+                      {noHarvest.indexOf(undefined) !== -1  && (<>
+
+                              <View style={styles.triangle} >
+                              </View>
+                              <View style={styles.rectangle} >
+                                  <Text style={{textAlignVertical: "center",textAlign: "center", color: "#085BAC", padding: 20}}>
+                                      Predicted harvests and crops{`\n`}
+                                      that you have marked as {`\n`}
+                                      harvesting will appear here
+                                  </Text>
+                              </View>
+                          </>
+                      )
+                      }
+                  </View>
                 <View>
-                  {loadingJobs ? (
+                  {loadingJobs || loading ? (
                     <ActivityIndicator />
                   ) : (
                     userJobs?.jobs
@@ -394,26 +521,26 @@ const AddToCalendar = () => {
 
                 <View style={{ marginBottom: 50 }}>
                   <Text style={styles.explore}>Continue to explore</Text>
-                  <GradientButton
-                    gradient={[colors.red, colors.redDeep]}
-                    onPress={onFabPress}
-                  >
-                    <View
-                      style={{
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        width: '100%',
-                        paddingHorizontal: 20,
-                      }}
+                    <GradientButton
+                        gradient={[colors.red, colors.redDeep]}
+                        onPress={() => {
+                            navigation.navigate('Crops');
+                            manageCropContext?.actions?.setGrowInMonthIndex(m);
+                        }}
                     >
-                      <Text style={styles.btnText}>
-                        Grow in {monthsFull[m]}{' '}
-                      </Text>
-
-                      <AntDesign name='plus' size={25} color={colors.white} />
-                    </View>
-                  </GradientButton>
+                        <View
+                            style={{
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                width: '100%',
+                                paddingHorizontal: 20,
+                            }}
+                        >
+                            <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
+                            <AntDesign name='search1' size={25} color={colors.white} />
+                        </View>
+                    </GradientButton>
                 </View>
               </View>
             </ScrollView>
@@ -443,10 +570,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     marginVertical: 5,
     borderRadius: 50,
-    height: 78,
+    // height: 78,
     backgroundColor: colors.white,
     // shadow iOS
     shadowColor: 'grey',
@@ -463,10 +590,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: screenWidth * 0.04,
+    // paddingLeft: screenWidth * 0.04,
   },
   jobsText: {
-    marginLeft: 15,
+    paddingHorizontal: 15,
+    flex: 1,
   },
   jobsImg: {
     width: 20,
@@ -540,6 +668,31 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
   },
+    triangle: {
+        width: 0,
+        height: 0,
+        backgroundColor: "transparent",
+        borderStyle: "solid",
+        borderLeftWidth: 15,
+        borderRightWidth: 15,
+        borderBottomWidth: 30,
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+        borderBottomColor: "#E4EDF6",
+        marginLeft: "auto",
+        marginRight: "auto",
+    },
+    rectangle: {
+        width: '100%',
+        height: 100,
+        backgroundColor: "#E4EDF6",
+        marginLeft: "auto",
+        marginRight: "auto",
+        borderRadius: 10,
+        textAlign: "center",
+        justifyContent: "center",
+        color: "#085BAC",
+    },
 });
 
 export default AddToCalendar;

@@ -28,6 +28,8 @@ const CropSearch = ({ navigation, route }) => {
   const [search, setSearch] = useState('');
   const [selectedMonth, setSelectedMonth] = useState(months[manageCropContext?.data.growInMonthIndex]);
   const [selectedLevel, setSelectedLevel] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedCycle, setSelectedCycle] = useState(null)
   const [hideMonthFilter, setHideMonthFilter] = useState(false)
 
   const dispatch = useDispatch();
@@ -61,24 +63,21 @@ const CropSearch = ({ navigation, route }) => {
             style={[styles.searchContainer]}
             colors={[colors.green, colors.greenDeep]}
           >
-            <View style={[styles.searchForm]}>
-              <Input
-                placeholder='Search crops'
-                containerStyle={styles.searchInputContainer}
-                inputStyle={{ marginTop: -10, paddingRight: 10 }}
-                onChangeText={(text) => handleSearch(text)}
-              >
+            <View style={styles.searchCover}>
+              <View style={[styles.searchForm]}>
+                <Input
+                  placeholder='Search crops'
+                  containerStyle={styles.searchInputContainer}
+                  inputStyle={{ marginTop: -10, paddingRight: 10, flex: 1 }}
+                  onChangeText={(text) => handleSearch(text)}
+                >
+                </Input>
                 <EvilIcons
                   name='search'
                   size={24}
                   color={colors.blue}
-                  style={{
-                    right: 10,
-                    top: '30%',
-                    position: 'absolute',
-                  }}
                 />
-              </Input>
+              </View>
               <Text
                 style={[styles.cancelText]}
                 onPress={() => navigation.goBack()}
@@ -86,8 +85,7 @@ const CropSearch = ({ navigation, route }) => {
                 Cancel
               </Text>
             </View>
-
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: 20 }}>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -105,7 +103,9 @@ const CropSearch = ({ navigation, route }) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     paddingTop: 10,
-                    marginLeft: 30,
+                    marginHorizontal: 20,
+                    marginTop: -15,
+                      height: 80,
                   }}
                 >
                   <Text
@@ -123,12 +123,27 @@ const CropSearch = ({ navigation, route }) => {
                   activeItem={selectedMonth ?? 'Select Month'}
                   onSelect={setSelectedMonth}
                   placeholder='Month to grow'
+                  style={{
+                    marginTop: 10,
+                }}
                 />
                 <FilterItemDropDown
                   items={['Beginner', 'Intermediate', 'Advanced']}
                   activeItem={selectedLevel ?? 'Select level'}
                   onSelect={setSelectedLevel}
                   placeholder='Grow level'
+                />
+                <FilterItemDropDown
+                  items={['Fruit', 'Vegetable', 'Herb', 'Microgreen', 'Flower']}
+                  activeItem={selectedCategory ?? 'Select category'}
+                  onSelect={setSelectedCategory}
+                  placeholder='Caregory'
+                />
+                <FilterItemDropDown
+                  items={['Annual', 'Biennial', 'Perennial']}
+                  activeItem={selectedCycle ?? 'Select cycle'}
+                  onSelect={setSelectedCycle}
+                  placeholder='Life Cycle'
                 />
                 {/* <FilterItemDropDown items={months} />
                 <View
@@ -170,10 +185,11 @@ const CropSearch = ({ navigation, route }) => {
           </View>
         ) : (
           <View style={[styles.cropSection]}>
-            {searchResults?.crops
-              ?.filter((crop) =>
-                selectedLevel ? crop?.grow_level == selectedLevel : true
-              )
+            {searchResults
+              ?.crops
+              ?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true)
+              ?.filter((crop) => selectedCategory ? crop?.category == selectedCategory : true)
+              ?.filter((crop) => selectedCycle ? crop?.life_cycle == selectedCycle : true)
               .map((crop) => {
                 return (
                   <TouchableOpacity
@@ -230,23 +246,32 @@ const CropSearch = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   searchContainer: {
-    paddingTop: '20%',
-    paddingBottom: '10%',
+    paddingVertical: 30,
     // paddingHorizontal: 25,
+  },
+  searchCover: {
+    marginHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   searchForm: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 25,
+    justifyContent: 'center',
+    // width: '100%',
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
+    borderRadius: 50 / 2,
+    flex: 1,
   },
   searchInputContainer: {
-    backgroundColor: colors.white,
+    // backgroundColor: colors.red,
     paddingHorizontal: 8,
     paddingVertical: 8,
     justifyContent: 'center',
-    borderRadius: 50 / 2,
-    width: '80%',
+    marginRight: 10,
+    flex: 1,
   },
   optionsContainer: {
     flexDirection: 'row',
@@ -304,7 +329,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cropName: {
-    fontSize: 20,
+    fontSize: 16,
   },
   arrow: {
     width: 20,
