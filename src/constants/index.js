@@ -59,7 +59,7 @@ const monthsAbr = [
 ];
 
 const defaultCalendarDay = new Date().getDate() + 1;
-const defaultCalendarYear = new Date().getFullYear() + 1;
+const defaultCalendarYear = new Date().getFullYear();
 
 export default {
   colors,

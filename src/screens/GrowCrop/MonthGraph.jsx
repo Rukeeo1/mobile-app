@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { GradientButton as Button, Text } from '../../components';
 
 import constants from '../../constants/';
+import {act} from "react-dom/test-utils";
 
 const { colors, months, screenHeight, screenWidth, monthsAbr } = constants;
 
@@ -12,12 +13,21 @@ const getMonthStripItemWidth = () => {
 };
 
 export const MonthGraph = ({
-  activeMonths,
+                               activeMonths,
   title,
   bottomTextOne,
   bottomTextTwo,
 }) => {
 
+    let checkIndexActive = [];
+    checkIndexActive.push(monthsAbr.indexOf(activeMonths[0])); //3
+    checkIndexActive.push(monthsAbr.indexOf(activeMonths[1])); //6
+    checkIndexActive.push(monthsAbr.indexOf(activeMonths[2]));
+    checkIndexActive.push(monthsAbr.indexOf(activeMonths[3])); //activeMonths?.(function(e) { return e.name; }).indexOf(activeMonths);
+
+
+    console.log({activeMonths});
+    console.log({checkIndexActive});
   return (
     <View>
       <Text>{title}</Text>
@@ -26,7 +36,9 @@ export const MonthGraph = ({
           <View
             style={[
               styles.montStripItem,
-              activeMonths?.includes(item) && { backgroundColor: colors.blue },
+                index >= checkIndexActive[0] && index <= checkIndexActive[1] && ({ backgroundColor: colors.blue }),
+                index >= checkIndexActive[2] && index <= checkIndexActive[3] && ({ backgroundColor: colors.blue100 }),
+                // activeMonths?.includes(item) && { backgroundColor: colors.blue },
               index === 0 && {
                 borderTopLeftRadius: 10,
                 borderBottomLeftRadius: 10,
@@ -58,8 +70,7 @@ export const MonthGraph = ({
             fontSize: 16,
             fontWeight: 'bold',
             color: colors.blue100,
-          }}
-          style={{ marginLeft: 20 }}
+              marginLeft: 20 }}
         >
           {bottomTextTwo}
         </Text>

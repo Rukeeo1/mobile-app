@@ -126,7 +126,9 @@ const AddToCalendar = () => {
   const pickCurrentMonth = () => {
     const currentMonth = new Date().getMonth();
     setMonth(currentMonth);
+    setY(currentYear);
   };
+  const noHarvest = Object.keys(userJobs).map(jobs => jobs.jobs);
 
   return (
     <KeyboardAvoiding>
@@ -331,7 +333,7 @@ const AddToCalendar = () => {
                           />
                         </View>
                         <TouchableOpacity onPress={() => {
-                          const day = parseInt(newJobDay)
+                          const day = parseInt(newJobDay);
 
                           if (day < 1 || day > 31) {
                             Alert.alert('', 'Your date is invalid. It should be between 1 and 31', [{ text: 'Dismiss' }])
@@ -344,7 +346,10 @@ const AddToCalendar = () => {
                             dispatch(addReminder({
                               reminder_date: jobDate,
                               title: newJobTitle
-                            }))
+                            }));
+
+                              setNewJobDay('');
+                              setNewJobTitle('');
                           }
                         }}>
                           <AntDesign
@@ -383,9 +388,8 @@ const AddToCalendar = () => {
                       >
                         <View style={[styles.jobsChild]}>
                           <Image
-                            source={require('../../assets/circle.png')}
-                            height={20}
-                            width={20}
+                            source={require('../../assets/job-indicator-pink.png')}
+                            style={{ height: 25, width: 25 }}
                           />
                           <View style={[styles.jobsText]}>
                             <Text
@@ -422,7 +426,7 @@ const AddToCalendar = () => {
                 >
                   {reminders?.reminders?.length > 3 && (
                     <Text style={styles.viewMore}>
-                      {viewingMore ? 'Hide reminders' : 'View more'}
+                        {viewingMore2 ? 'Hide reminders' : 'View more'}
                     </Text>
                   )}
                 </TouchableOpacity>
@@ -441,6 +445,22 @@ const AddToCalendar = () => {
                     <AntDesign name='info' size={28} color={colors.white} />
                   </View>
                 </GradientButton>
+                  <View>
+                      {noHarvest.indexOf(undefined) !== -1  && (<>
+
+                              <View style={styles.triangle} >
+                              </View>
+                              <View style={styles.rectangle} >
+                                  <Text style={{textAlignVertical: "center",textAlign: "center", color: "#085BAC", padding: 20}}>
+                                      Predicted harvests and crops{`\n`}
+                                      that you have marked as {`\n`}
+                                      harvesting will appear here
+                                  </Text>
+                              </View>
+                          </>
+                      )
+                      }
+                  </View>
                 <View>
                   {loadingJobs || loading ? (
                     <ActivityIndicator />
@@ -501,26 +521,26 @@ const AddToCalendar = () => {
 
                 <View style={{ marginBottom: 50 }}>
                   <Text style={styles.explore}>Continue to explore</Text>
-                  <GradientButton
-                    gradient={[colors.red, colors.redDeep]}
-                    onPress={onFabPress}
-                  >
-                    <View
-                      style={{
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        width: '100%',
-                        paddingHorizontal: 20,
-                      }}
+                    <GradientButton
+                        gradient={[colors.red, colors.redDeep]}
+                        onPress={() => {
+                            navigation.navigate('Crops');
+                            manageCropContext?.actions?.setGrowInMonthIndex(m);
+                        }}
                     >
-                      <Text style={styles.btnText}>
-                        Grow in {monthsFull[m]}{' '}
-                      </Text>
-
-                      <AntDesign name='plus' size={25} color={colors.white} />
-                    </View>
-                  </GradientButton>
+                        <View
+                            style={{
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                width: '100%',
+                                paddingHorizontal: 20,
+                            }}
+                        >
+                            <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
+                            <AntDesign name='search1' size={25} color={colors.white} />
+                        </View>
+                    </GradientButton>
                 </View>
               </View>
             </ScrollView>
@@ -648,6 +668,31 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
   },
+    triangle: {
+        width: 0,
+        height: 0,
+        backgroundColor: "transparent",
+        borderStyle: "solid",
+        borderLeftWidth: 15,
+        borderRightWidth: 15,
+        borderBottomWidth: 30,
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+        borderBottomColor: "#E4EDF6",
+        marginLeft: "auto",
+        marginRight: "auto",
+    },
+    rectangle: {
+        width: '100%',
+        height: 100,
+        backgroundColor: "#E4EDF6",
+        marginLeft: "auto",
+        marginRight: "auto",
+        borderRadius: 10,
+        textAlign: "center",
+        justifyContent: "center",
+        color: "#085BAC",
+    },
 });
 
 export default AddToCalendar;
