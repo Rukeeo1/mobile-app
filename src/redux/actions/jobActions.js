@@ -169,13 +169,13 @@ export const addReminder = (data) => (dispatch, getState) => {
     })
 }
 
-export const updateReminder = (id, status) => (dispatch) => {
+export const updateReminder = (reminder, status) => (dispatch) => {
   dispatch({
     type: UPDATING_REMINDER,
-    payload: id,
+    payload: reminder?.id,
   });
 
-  apiRequest(`/reminders/${id}`, 'put', { status })
+  apiRequest(`/reminders/${reminder?.id}`, 'put', { status })
     .then(({ data }) => {
       console.log('update rmeminver', data)
       dispatch(getUserReminders())
