@@ -24,6 +24,7 @@ const monthsForCalender = [
   'November',
   'December',
 ];
+const currentThisYear = new Date().getFullYear();
 
 const getYears = () => {
   const currentYear = new Date().getFullYear();
@@ -97,7 +98,7 @@ export const GrowCropCalender = ({
           data={getYears()}
           onSelectItem={handleYear}
           textColor={textColor}
-          defaultSelectedItem={1}
+          defaultSelectedItem={-1}
         />
       </View>
       {renderIcon(confirmCallback)}
@@ -107,17 +108,17 @@ export const GrowCropCalender = ({
 
 const styles = StyleSheet.create({
   calenderWrapper: {
-    marginTop: 32,
+    marginTop: 12,
     flexDirection: 'row',
     justifyContent: 'center',
-    width: '85%',
+    width: '80%',
   },
   activeItemsIndicator: {
     height: 50,
     position: 'absolute',
     backgroundColor: colors.white,
-    width: '90%',
-    top: '83.5%',
+    width: '95%',
+    top: '26%',
     borderTopLeftRadius: 45,
     borderTopRightRadius: 45,
     borderBottomLeftRadius: 45,

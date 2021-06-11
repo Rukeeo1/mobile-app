@@ -102,9 +102,10 @@ const CropSearch = ({ navigation, route }) => {
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
-                    // paddingTop: 10,
+                    paddingTop: 10,
                     marginHorizontal: 20,
                     marginTop: -15,
+                      height: 80,
                   }}
                 >
                   <Text
@@ -122,6 +123,9 @@ const CropSearch = ({ navigation, route }) => {
                   activeItem={selectedMonth ?? 'Select Month'}
                   onSelect={setSelectedMonth}
                   placeholder='Month to grow'
+                  style={{
+                    marginTop: 10,
+                }}
                 />
                 <FilterItemDropDown
                   items={['Beginner', 'Intermediate', 'Advanced']}

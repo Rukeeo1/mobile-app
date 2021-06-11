@@ -328,9 +328,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontFamily: 'Hero-New-Light',
   },
-  btnText: {
-    color: colors.white,
-  },
   growCard: {
     alignItems: 'center',
     marginHorizontal: 10,
@@ -346,7 +343,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Hero-New-Light',
   },
   growText: {
-    maxWidth: 120,
     textAlign: 'center',
     fontFamily: 'Hero-New-Light',
     fontSize: 11,

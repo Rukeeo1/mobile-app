@@ -148,12 +148,11 @@ export const GrowCalendar = ({
           // ref={(sp) => { this.sp = sp }}
           dataSource={data}
           selectedIndex={selected}
-          wrapperColor="#fff"
-          highlightColor="#fff"
-          // itemHeight={50}
-          wrapperHeight={200}
+          wrapperColor="transparent"
+          itemHeight={50}
+          wrapperHeight={150}
           animateToSelectedIndex
-          highlightColor={colors.pink}
+          highlightColor={colors.white}
           renderItem={(option, index) => {
             // console.warn(option)
             return ItemToRender(
@@ -184,17 +183,17 @@ const styles = StyleSheet.create({
   renderItemText: {},
   //
   container: {
-    paddingTop: 60,
+    paddingTop: 30,
     paddingBottom: 30,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'transparent',
   },
   wrapperVertical: {
     width: '30%',
-    height: 200,
+    height: 150,
     color: 'black',
   },
   OptionWrapper: {
