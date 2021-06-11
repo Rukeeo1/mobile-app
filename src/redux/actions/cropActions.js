@@ -12,6 +12,8 @@ import {
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
+import ManageCropContext from "../../context/ManageCropsContext";
+import {updateAvatar} from "./authActions";
 
 export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   try {
@@ -81,7 +83,7 @@ export const getCropSteps = (cropId) => async (dispatch) => {
 
 
 export const addCrop = (cropData, navigation) => (dispatch, getState) => {
-  const formData = new FormData()
+  let formData = new FormData();
 
   formData.append('name', cropData.name)
   formData.append('grow_level', cropData.level)
@@ -101,6 +103,10 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
     })
   }
 
+
+    // formData = JSON.stringify(formData);
+    // console.log('timz', formData)
+
   const { token } = getState().auth
 
   dispatch({
@@ -108,11 +114,20 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
     payload: true,
   })
 
-  axios
-    .post(`${API_URL}/crops/newCrop`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  // axios
+  //   .post(`${API_URL}/crops/newCrop`, formData, {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+    fetch(`${API_URL}/crops/newCrop`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        method: 'POST',
+        body: formData
     })
     .then(({ data }) => {
       console.log('update crop', data)

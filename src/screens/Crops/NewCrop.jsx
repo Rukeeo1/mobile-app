@@ -42,6 +42,7 @@ const NeCrop = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loading } = useSelector((state) => state.loading)
 
+    console.log({state})
   return (
     <View style={{ flex: 1 }}>
       {/* <SafeAreaView style={{ flex: 1 }}> */}
