@@ -32,13 +32,17 @@ export const getUserJobs = (userId) => (dispatch, getState) => {
 export const growCrop = (cropDetails, toast) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/jobs/growit`, 'post', cropDetails);
+    console.log(data,'data___')
     toast.show({
       text1: data?.message,
     });
+    console.log(data,'we are cool right')
 
     dispatch(getUserJobs(cropDetails?.user_id));
     return;
   } catch (error) {
+    console.log(data,'data___error')
+
     showApiError(error);
     return error;
   }

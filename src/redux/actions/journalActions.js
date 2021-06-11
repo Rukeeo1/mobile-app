@@ -27,7 +27,7 @@ export const addJournal = (newJournal, userInfo) => async (dispatch) => {
           Authorization: `Bearer ${userInfo?.token}`,
         },
       })
-      
+
 
     // dispatch({
     //   type: ADD_JOURNAL,

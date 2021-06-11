@@ -29,15 +29,14 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
   const handleNavigation = (index) => {
     toggleSideMenu();
 
-      navigation.navigate('Settings', {
-        screen: 'Main-Profile',
-        params: {
-          indexOfItemToShow: index,
-        },
-      });
-      // clear context state... and start from scratch...
-      manageCropContext.actions.cleanContextState();
-
+    navigation.navigate('Settings', {
+      screen: 'Main-Profile',
+      params: {
+        indexOfItemToShow: index,
+      },
+    });
+    // clear context state... and start from scratch...
+    manageCropContext.actions.cleanContextState();
   };
 
   const sideBarTabItems = [
@@ -158,7 +157,6 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
             });
             intialCoordinatesDetails.length === sideBarTabItems.length &&
               setCoordinates(intialCoordinatesDetails); // only setCoordinates state...if we've looped through all the items...remember at this point we are still in the loop
-            console.log(intialCoordinatesDetails, 'made your choice');
           }
         );
       });
