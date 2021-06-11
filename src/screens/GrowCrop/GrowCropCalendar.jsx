@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { View, StyleSheet } from 'react-native';
 
 import { GrowCalendar } from '../../components'; //calendarScrollItem
 
@@ -60,7 +59,7 @@ export const GrowCropCalender = ({
   calenderWrapperStyle = {},
   textColor,
   renderIcon = () => {},
-  defaultMonthIndex,
+  defaultMonthIndex = 0,
   selectedYear,
   selectedMonth,
   selectedDay,
@@ -89,15 +88,14 @@ export const GrowCropCalender = ({
           data={months}
           onSelectItem={handleMonth}
           textColor={textColor}
-          defaultSelectedItem={defaultMonthIndex}
-          
+          defaultSelectedItem={defaultMonthIndex || 0}
         />
         <GrowCalendar
           type='years'
           data={getYears()}
           onSelectItem={handleYear}
           textColor={textColor}
-          defaultSelectedItem={1}
+          defaultSelectedItem={0}
         />
       </View>
       {renderIcon(confirmCallback)}

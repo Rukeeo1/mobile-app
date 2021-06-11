@@ -24,8 +24,6 @@ const CropSelection = ({navigation, route}) => {
 
     const {cropName, sowTip, growLevel, cropId} = route?.params || {};
 
-    console.log(cropDetail, 'RO: as a message')
-
     useEffect(() => {
         if (cropName) {
             dispatch(getCropVarieties(cropName));
@@ -101,6 +99,7 @@ const CropSelection = ({navigation, route}) => {
                                                 setSearch(crop?.variety)
                                                 manageCropContext?.actions?.updateCropToGrowDetails(
                                                     {
+                                                        category: crop?.variety,
                                                         variety: search,
                                                         cropName,
                                                         cropId: crop?.id,
@@ -109,6 +108,7 @@ const CropSelection = ({navigation, route}) => {
                                                 navigation.navigate('Success');
                                             }}
                                         >
+                                            {console.log(crop,'from maping stuff')}
                                             <View
                                                 style={{
                                                     alignItems: 'center',
@@ -126,7 +126,7 @@ const CropSelection = ({navigation, route}) => {
                                             onPress={() => {
                                                 navigation.navigate('Success');
                                                 ManageCropContext?.actions?.updateCropToGrowDetails({
-                                                    type: search,
+                                                    variety: search,
                                                     cropName,
                                                     cropId,
                                                 });
