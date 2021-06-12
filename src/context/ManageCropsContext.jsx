@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 const ManageCropContext = React.createContext(null);
 
@@ -55,5 +55,7 @@ export const ManageCropProvider = ({ children }) => {
     </ManageCropContext.Provider>
   );
 };
+
+export const useManageCropContext = () => useContext(ManageCropContext)
 
 export default ManageCropContext;

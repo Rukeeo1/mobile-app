@@ -16,6 +16,8 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 
+import { useManageCropContext } from '../../context/ManageCropsContext';
+
 import {
   getUserFollowers,
   getUserFollowing,
@@ -28,16 +30,17 @@ import constants from '../../constants';
 import ShareModal from './ShareModal';
 import { getUserJobs } from '../../redux/actions';
 
-const { colors } = constants;
+const { colors, monthsAbr } = constants;
 
 const FirstView = () => {
   const dispatch = useDispatch();
-  const { user, userData, growList, posts , following, followers } = useSelector(
+  const { user, userData, posts, following, followers } = useSelector(
     (state) => state.auth
   );
   const { loading, refreshing, fetchingMore } = useSelector(
     (state) => state.loading
   );
+
   const { jobs, loadingJobs } = useSelector(
     (state) => ({
       jobs: state.jobs.usersJobs,
@@ -46,23 +49,45 @@ const FirstView = () => {
     shallowEqual
   );
 
+  const { actions } = useManageCropContext();
+
   const [showShare, setShowShare] = useState(false);
   const [postToShare, setPostToShare] = useState(null);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    dispatch(getUserGrowList());
+    dispatch(getUserPosts());
+    dispatch(getUserJobs(user?.id));
+    dispatch(getUserFollowers(false, true));
+    dispatch(getUserFollowing(false, true));
+  }, []);
 
   const toggleModal = (postId) => {
     setShowShare((prevState) => !prevState);
     setPostToShare(postId);
   };
 
-  useEffect(() => {
-    dispatch(getUserGrowList());
-    dispatch(getUserPosts());
-    dispatch(getUserJobs(user?.id));
-    dispatch(getUserFollowers(false, true))
-    dispatch(getUserFollowing(false, true))
-  }, []);
+  const handleNavigation = (path, params) => {
+    navigation.navigate(path, params);
+  };
+
+  const handleCurrentGrowingNav = (job) => () => {
+    actions?.updateCropToGrowDetails({
+      cropName: job?.name,
+      month: monthsAbr[new Date(job.job_date).getMonth()],
+      variety: job?.variety,
+      monthIndex: new Date(job.job_date).getMonth(),
+      cropId: job?.crop_id,
+      action: job?.job_type,
+      jobDate: job?.job_date,
+      fromJobs: true,
+      jobId: job.id,
+    });
+
+    handleNavigation('Grow-Crop');
+  };
 
   return (
     <View style={{ backgroundColor: colors.white }}>
@@ -125,7 +150,8 @@ const FirstView = () => {
                 onPress={() => navigation.navigate('Following')}
               >
                 <Text style={[styles.followsText]}>
-                  {following?.length ?? userData?.following_count ?? 0} Following
+                  {following?.length ?? userData?.following_count ?? 0}{' '}
+                  Following
                 </Text>
               </TouchableOpacity>
               <Text>{'|'}</Text>
@@ -149,16 +175,20 @@ const FirstView = () => {
                   >
                     {jobs?.jobs?.map((crop) => {
                       return (
-                        <View style={[styles.growCard]}>
-                          <Image
-                            source={{ uri: crop.thumbnail_url }}
-                            style={{ height: 60, width: 60, borderRadius: 30 }}
-                          />
-                          <Text style={[styles.growText]}>
-                            {crop.name}{' '}
-                            {crop.variety ? `“${crop?.variety}”` : ''}
-                          </Text>
-                        </View>
+                        // <View style={[styles.growCard]}>
+                        //   <Image
+                        //     source={{ uri: crop.thumbnail_url }}
+                        //     style={{ height: 60, width: 60, borderRadius: 30 }}
+                        //   />
+                        //   <Text style={[styles.growText]}>
+                        //     {crop.name}{' '}
+                        //     {crop.variety ? `“${crop?.variety}”` : ''}
+                        //   </Text>
+                        // </View>
+                        <CurrentGrowList
+                          crop={crop}
+                          onPress={handleCurrentGrowingNav(crop)}
+                        />
                       );
                     })}
                   </ScrollView>
@@ -249,7 +279,7 @@ const FirstView = () => {
                   <Image
                     style={[styles.growMovementImg]}
                     source={require('../../assets/grow-movement.png')}
-                    resizeMode="contain"
+                    resizeMode='contain'
                   />
                   <LinearGradient
                     colors={[colors.purshBlue, colors.blue]}
@@ -259,9 +289,12 @@ const FirstView = () => {
                       You joined the Grow It movement!
                     </Text>
                     <Text style={{ color: '#fff', marginTop: 7 }}>
-                      {constants.monthsAbr[new Date(user?.createdAt).getMonth()]}
-                      {' '}
-                          {new Date(user?.createdAt).getFullYear()}
+                      {
+                        constants.monthsAbr[
+                          new Date(user?.createdAt).getMonth()
+                        ]
+                      }{' '}
+                      {new Date(user?.createdAt).getFullYear()}
                     </Text>
                   </LinearGradient>
                 </View>
@@ -284,6 +317,20 @@ const FirstView = () => {
   );
 };
 
+const CurrentGrowList = ({ crop, onPress }) => {
+  return (
+    <TouchableOpacity style={[styles.growCard]} onPress={onPress}>
+      <Image
+        source={{ uri: crop.thumbnail_url }}
+        style={{ height: 60, width: 60, borderRadius: 30 }}
+      />
+      <Text style={[styles.growText]}>
+        {crop.name} {crop.variety ? `“${crop?.variety}”` : ''}
+      </Text>
+    </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   profileImg: {
     width: '100%',
@@ -301,7 +348,7 @@ const styles = StyleSheet.create({
     lineHeight: 45,
     marginVertical: 10,
     fontFamily: 'Hero-New-Thin',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   edit: {
     marginVertical: 15,

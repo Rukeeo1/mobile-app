@@ -349,16 +349,6 @@ const ConfirmExistingJob = ({
 
   const dispatch = useDispatch();
 
-  //   action: "SOW"
-  // cropId: "60391d3d-10a2-48a7-8137-a2addc0fc767"
-  // cropName: "Tomatoes"
-  // fromJobs: true
-  // jobDate: "2022-06-06T23:00:00.000Z"
-  // jobId: "eea07701-d956-434b-b73b-264740bdae5b"
-  // month: "Jun"
-  // monthIndex: 5
-  // variety: undefined
-
   const onConfirm = () => {
     setShowConfirmed(true);
     setShowQuestion(false);
@@ -384,7 +374,7 @@ const ConfirmExistingJob = ({
     <View>
       {showQuestion && (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={[styles.showSelectedDateItem]}>
+          <View style={styles.showSelectedDateItem}>
             <Text fontType='light'>{exisitngJobConfirmQuestion}</Text>
             <Text
               style={{ color: colors.pink, fontSize: 18, marginTop: '2%' }}
@@ -394,7 +384,7 @@ const ConfirmExistingJob = ({
             </Text>
           </View>
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity style={styles.circularButton} onPress={onCancel}>
+            <TouchableOpacity style={{...styles.circularButton, marginRight:4}} onPress={onCancel}>
               <AntDesign name='close' size={24} color={colors.white} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.circularButton} onPress={onConfirm}>

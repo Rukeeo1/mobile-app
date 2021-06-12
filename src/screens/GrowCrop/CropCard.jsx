@@ -45,7 +45,7 @@ import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
 import harvestIcon from '../../assets/harvest-icon.png';
 
-const { colors, monthsAbr } = constants;
+const { colors, monthsAbr, PLANT, SOW, HARVEST } = constants;
 
 const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
@@ -55,13 +55,13 @@ const screenWidth = Dimensions.get('screen').width;
 const CropCard = ({ navigation }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
-  
 
   const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
     cropSteps: state.crops.cropSteps,
     user: state?.auth?.user,
   }));
+
 
   const dispatch = useDispatch();
 
@@ -95,10 +95,14 @@ const CropCard = ({ navigation }) => {
     cropToGrowDetails?.action === 'SOW'
       ? monthsAbr[cropToGrowDetails?.monthIndex]
       : `${cropCycleDetails?.sow_under_cover_from || ''} - ${
-            cropCycleDetails?.sow_direct_to || ''
+          cropCycleDetails?.sow_direct_to || ''
         }`;
 
   console.log(sowMonth, 'RO: this is sow month', cropToGrowDetails);
+  console.log(
+    cropToGrowDetails?.fromJobs && cropToGrowDetails.action === HARVEST,
+    '**********9999'
+  );
 
   const plantMonth =
     cropToGrowDetails?.action === 'PLANT'
@@ -274,7 +278,6 @@ const CropCard = ({ navigation }) => {
     );
   };
 
-  console.log(sowMonth, 'from ______');
 
   return (
     <SafeArea containerStyle={{ flex: 1 }}>
@@ -354,7 +357,9 @@ const CropCard = ({ navigation }) => {
                 handleGrowCrop(dateSelected, 'Sow');
               }}
               submitting={loadingJobs}
-              fromJobs={cropToGrowDetails?.fromJobs}
+              fromJobs={
+                cropToGrowDetails?.fromJobs && cropToGrowDetails.action === SOW
+              }
               exisitngJobConfirmQuestion='Did you sow?'
               confirmedJobText='Sown'
             />
@@ -373,7 +378,10 @@ const CropCard = ({ navigation }) => {
                 handleGrowCrop(dateSelected, 'Plant');
               }}
               submitting={loadingJobs}
-              fromJobs={cropToGrowDetails?.fromJobs}
+              fromJobs={
+                cropToGrowDetails?.fromJobs &&
+                cropToGrowDetails.action === PLANT
+              }
               exisitngJobConfirmQuestion='Did you plant?'
               confirmedJobText='Planted'
             />
@@ -418,7 +426,12 @@ const CropCard = ({ navigation }) => {
           >
             {activeScreen === 0 && (
               <MonthGraph
-                activeMonths={[`${cropCycleDetails?.sow_under_cover_from || ''}`, `${cropCycleDetails?.sow_under_cover_to || ''}`, `${cropCycleDetails?.sow_direct_to || ''}`, `${cropCycleDetails?.sow_direct_to || ''}`]}
+                activeMonths={[
+                  `${cropCycleDetails?.sow_under_cover_from || ''}`,
+                  `${cropCycleDetails?.sow_under_cover_to || ''}`,
+                  `${cropCycleDetails?.sow_direct_to || ''}`,
+                  `${cropCycleDetails?.sow_direct_to || ''}`,
+                ]}
                 title='When to sow guide'
                 bottomTextOne='Sow Under Cover'
                 bottomTextTwo='Sow Direct Outside'
@@ -427,8 +440,8 @@ const CropCard = ({ navigation }) => {
             {activeScreen === 1 && (
               <MonthGraph
                 activeMonths={[
-                    `${cropCycleDetails?.plant_end_month || ''}`,
-                  `${cropCycleDetails?.plant_start_month || ''}`
+                  `${cropCycleDetails?.plant_end_month || ''}`,
+                  `${cropCycleDetails?.plant_start_month || ''}`,
                 ]}
                 title='When to plant guide'
                 bottomTextOne='Plant out'
@@ -438,7 +451,7 @@ const CropCard = ({ navigation }) => {
               <MonthGraph
                 activeMonths={[
                   `${cropCycleDetails?.harvest_start_month || ''}`,
-                  `${cropCycleDetails?.harvest_end_month || ''}`
+                  `${cropCycleDetails?.harvest_end_month || ''}`,
                 ]}
                 title='When to harvest guide'
                 bottomTextOne='Harvest months'

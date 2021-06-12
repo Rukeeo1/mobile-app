@@ -331,7 +331,7 @@ export const updateProfile = (userData, navigation) => (dispatch, getState) => {
       // dispatch(getUserProfile(true))
       navigation.navigate('Main-Profile', {
         //this would be refactored later... when the sideBar component is refactored...
-        indexOfItemToShow: 2,
+        indexOfItemToShow: 3,
       })
     })
     .catch((err) => {
