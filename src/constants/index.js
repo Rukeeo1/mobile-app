@@ -61,6 +61,11 @@ const monthsAbr = [
 const defaultCalendarDay = new Date().getDate() + 1;
 const defaultCalendarYear = new Date().getFullYear();
 
+const PLANT = 'PLANT';
+const SOW = 'SOW';
+const HARVEST = 'HARVEST'
+
+
 export default {
   colors,
   screenHeight,
@@ -68,7 +73,10 @@ export default {
   months,
   monthsAbr,
   defaultCalendarDay,
-  defaultCalendarYear
+  defaultCalendarYear,
+  PLANT,
+  SOW,
+  HARVEST
 };
 
 export const API_URL = 'http://api.growit-app.co.uk:3000/api/v1'

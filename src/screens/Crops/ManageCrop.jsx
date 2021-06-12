@@ -16,7 +16,7 @@ import ManageCropContext from '../../context/ManageCropsContext';
 
 import { GradientButton, Text } from '../../components';
 import {
-  getUserJobs,
+  // getUserJobs,
   getCurrentGrowing,
   getPastHarvests,
 } from '../../redux/actions';
@@ -76,13 +76,15 @@ const ManageCrops = () => {
       variety: details?.variety,
       cropId: details?.crop_id,
       action: details?.job_type,
+      jobDate: details?.job_date,
+      fromJobs: true,
     });
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       {/* <SafeAreaView> */}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={[styles.titleContainer]}>
           <Text style={styles.title}>Manage Crops</Text>
         </View>

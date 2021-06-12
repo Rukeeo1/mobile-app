@@ -9,8 +9,14 @@ import { GrowCropCalender } from './GrowCropCalendar';
 
 import constants from '../../constants';
 
-const { colors, months, monthsAbr, defaultCalendarDay, defaultCalendarYear } =
-  constants;
+const {
+  colors,
+  months,
+  monthsAbr,
+  defaultCalendarDay,
+  defaultCalendarYear,
+  HARVEST,
+} = constants;
 
 export const HarevestDatePicker = ({
   startButtonTitle,
@@ -43,7 +49,7 @@ export const HarevestDatePicker = ({
   const monthIndex = monthsAbr.indexOf(startMonth);
 
   useEffect(() => {
-    if (cropToGrowDetails.fromJobs) {
+    if (cropToGrowDetails.fromJobs && cropToGrowDetails.action === HARVEST) {
       setShowEndHarvestButton(true);
       setShowStartButton(false);
       setShowFullSelectedDate(true);
