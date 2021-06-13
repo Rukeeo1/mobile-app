@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Dimensions,
   Image,
@@ -8,12 +8,26 @@ import {
   StyleSheet,
   Text,
   View,
+  RefreshControl,
+  TouchableOpacity,
 } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { getArticles, selectArticle } from '../../redux/actions/articlesActions'
+
 import { SafeArea } from '../../components'
 import constants from '../../constants'
 
 const { colors } = constants
 const ArticleGuide = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const { loading, refreshing } = useSelector((state) => state.loading)
+  const { all: articles = [] } = useSelector((state) => state.articles)
+
+  useEffect(() => {
+    dispatch(getArticles())
+  }, [])
+
   return (
     <>
       <SafeArea>
@@ -42,6 +56,14 @@ const ArticleGuide = ({ navigation }) => {
           <ScrollView
             style={styles.content}
             showsVerticalScrollIndicator={false}
+            refreshControl={(
+              <RefreshControl
+                refreshing={loading || refreshing}
+                onRefresh={() => dispatch(getArticles(true))}
+                colors={[colors.green]}
+                tintColor={colors.green}
+              />
+            )}
           >
             <View>
               <View>
@@ -58,98 +80,49 @@ const ArticleGuide = ({ navigation }) => {
                   Grow It guides and articles
                 </Text>
               </View>
+              {articles?.map((article) => {
+                return (
+                  <TouchableOpacity
+                    style={{ marginTop: 15 }}
+                    key={article?.id}
+                    onPress={() => {
+                      dispatch(selectArticle(article))
+                      navigation.navigate('ArticleContent')
+                    }}
+                  >
+                    <View>
+                      <Image
+                        style={{ height: 181 }}
+                        source={{ uri: article?.image_url }}
+                      />
+                    </View>
 
-              <View style={{ marginTop: 15 }}>
-                <View>
-                  <Image
-                    style={{ height: 181 }}
-                    source={require('../../assets/g1.png')}
-                  />
-                </View>
-
-                <View style={{ marginTop: 15 }}>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    }}
-                  >
-                    Your Beginners Guide
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      textAlign: 'center',
-                      marginTop: 5,
-                      paddingHorizontal: 40,
-                    }}
-                  >
-                    5 Things to remember when learning to grow you own
-                  </Text>
-                </View>
-              </View>
-              <View style={{ marginTop: 15 }}>
-                <View>
-                  <Image
-                    style={{ height: 181 }}
-                    source={require('../../assets/g2.png')}
-                  />
-                </View>
-
-                <View style={{ marginTop: 15 }}>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    }}
-                  >
-                    Jargon Buster
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      textAlign: 'center',
-                      marginTop: 5,
-                      paddingHorizontal: 40,
-                    }}
-                  >
-                    Get up to speed, with some of the most common gardening
-                    jargon explained
-                  </Text>
-                </View>
-              </View>
-              <View style={{ marginTop: 15 }}>
-                <View>
-                  <Image
-                    style={{ height: 181 }}
-                    source={require('../../assets/g3.png')}
-                  />
-                </View>
-
-                <View style={{ marginTop: 15 }}>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    }}
-                  >
-                    Getting started with Grow It
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      textAlign: 'center',
-                      marginTop: 5,
-                      paddingHorizontal: 40,
-                    }}
-                  >
-                    Text
-                  </Text>
-                </View>
-              </View>
+                    <View style={{ marginTop: 15 }}>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        {article?.title}
+                      </Text>
+                      {/* <Text
+                        style={{
+                          fontSize: 16,
+                          textAlign: 'center',
+                          marginTop: 5,
+                          paddingHorizontal: 40,
+                        }}
+                      >
+                        5 Things to remember when learning to grow you own
+                      </Text> */}
+                    </View>
+                  </TouchableOpacity>
+                )
+              })}
+              
             </View>
             <View style={{ height: 50, backgroundColor: colors.white }} />
           </ScrollView>

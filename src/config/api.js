@@ -21,7 +21,7 @@ export const apiRequest = async (endpoint, method = 'get', body = {}, contentTyp
 
     return Promise.resolve(request)
   } catch (error) {
-    console.log(endpoint, error)
+    console.log(endpoint, error?.response ?? error?.message)
 
     return Promise.reject(error)
   }

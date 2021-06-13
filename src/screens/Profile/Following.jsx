@@ -22,6 +22,7 @@ const { colors } = constants;
 
 const Following = ({ navigation }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [search, setSearch] = useState('')
 
   const dispatch = useDispatch()
   const { loading } = useSelector((state) => state.loading)
@@ -52,6 +53,8 @@ const Following = ({ navigation }) => {
                 placeholder='Search'
                 containerStyle={styles.searchInputContainer}
                 inputStyle={{ marginTop: -10, paddingRight: 10 }}
+                onChangeText={(val) => setSearch(val)}
+                value={search}
               >
                 <EvilIcons
                   name='search'
@@ -69,12 +72,14 @@ const Following = ({ navigation }) => {
               </TouchableOpacity>
             </View>
             <ScrollView style={styles.main}>
-              {following?.map((item, index) => (
-                <View style={styles.followItem} key={index}>
-                  <Image source={{ uri: item.avatar }} style={styles.image} />
-                  <Text style={styles.followItemText}>{item.fullname}</Text>
-                </View>
-              ))}
+              {following
+                ?.filter((item) => item?.fullname?.toLowerCase()?.includes(search.toLowerCase()))
+                ?.map((item, index) => (
+                  <View style={styles.followItem} key={index}>
+                    <Image source={{ uri: item.avatar }} style={styles.image} />
+                    <Text style={styles.followItemText}>{item.fullname}</Text>
+                  </View>
+                ))}
               <BottomSheet visible={showBottomSheet}>
                 <View style={styles.bottomSheetItemWrapper}>
                   {/* <View style={styles.optionsContainer}>

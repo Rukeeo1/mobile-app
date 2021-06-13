@@ -6,6 +6,7 @@ import ProfileMain from './ProfileMain';
 import ProfileSettings from './Settings';
 import GrowItCalendar from './AddToCalendar'
 import Articles from "../Articles/ArticleGuide";
+import ArticleContent from "../Articles/ArticleContent";
 import UserDetails from "./UserDetails";
 import Logout from "./Logout";
 import SinglePost from './SinglePost';
@@ -29,6 +30,7 @@ const ProfileNavigator = () => {
       <Screen name='Followers' component={Followers} />
       <Screen name='GrowItCalendar' component={GrowItCalendar} />
       <Screen name='Article-guide' component={Articles} />
+      <Screen name='ArticleContent' component={ArticleContent} />
       <Screen name='User-details' component={UserDetails} />
         <Screen name='Single-Post' component={SinglePost} />
         <Screen name='Explore-screen' component={Explore} />

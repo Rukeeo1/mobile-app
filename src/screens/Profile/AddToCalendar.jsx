@@ -383,7 +383,7 @@ const AddToCalendar = () => {
                         style={[styles.jobs]}
                         key={index}
                         onPress={() => {
-                          if (!updatingReminder) dispatch(updateReminder(reminder.id, reminder.status === 'PENDING' ? 'DONE' : 'PENDING'))
+                          if (!updatingReminder) dispatch(updateReminder(reminder, reminder.status === 'PENDING' ? 'DONE' : 'PENDING'))
                         }}
                       >
                         <View style={[styles.jobsChild]}>

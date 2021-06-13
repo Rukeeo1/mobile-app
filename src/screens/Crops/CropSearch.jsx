@@ -105,7 +105,7 @@ const CropSearch = ({ navigation, route }) => {
                     paddingTop: 10,
                     marginHorizontal: 20,
                     marginTop: -15,
-                      height: 80,
+                    height: 80,
                   }}
                 >
                   <Text
@@ -125,7 +125,7 @@ const CropSearch = ({ navigation, route }) => {
                   placeholder='Month to grow'
                   style={{
                     marginTop: 10,
-                }}
+                  }}
                 />
                 <FilterItemDropDown
                   items={['Beginner', 'Intermediate', 'Advanced']}
@@ -137,7 +137,7 @@ const CropSearch = ({ navigation, route }) => {
                   items={['Fruit', 'Vegetable', 'Herb', 'Microgreen', 'Flower']}
                   activeItem={selectedCategory ?? 'Select category'}
                   onSelect={setSelectedCategory}
-                  placeholder='Caregory'
+                  placeholder='Category'
                 />
                 <FilterItemDropDown
                   items={['Annual', 'Biennial', 'Perennial']}
@@ -187,9 +187,7 @@ const CropSearch = ({ navigation, route }) => {
           <View style={[styles.cropSection]}>
             {searchResults
               ?.crops
-              ?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true)
-              ?.filter((crop) => selectedCategory ? crop?.category == selectedCategory : true)
-              ?.filter((crop) => selectedCycle ? crop?.life_cycle == selectedCycle : true)
+              ?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true && selectedCategory ? crop?.category == selectedCategory : true && selectedCycle ? crop?.life_cycle == selectedCycle : true)
               .map((crop) => {
                 return (
                   <TouchableOpacity

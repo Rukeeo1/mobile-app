@@ -1,0 +1,2 @@
+export const FETCH_ARTICLES = 'FETCH_ARTICLES'
+export const SELECT_ARTICLE = 'SELECT_ARTICLE'

@@ -5,6 +5,7 @@ import {
   LOADING,
   REFRESHING,
   SELECT_POST,
+  GET_POST_USER,
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
@@ -15,7 +16,7 @@ export const getPosts = (refreshing = false) => (dispatch) => {
     payload: true,
   })
 
-  apiRequest('/posts/allposts')
+  apiRequest('/posts/public')
     .then(({ data }) => {
       console.log(data)
 
@@ -71,3 +72,40 @@ export const selectPost = (payload) => ({
   type: SELECT_POST,
   payload,
 })
+
+export const getPostUser = (userId) => async (dispatch) => {
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  try {
+    // get user posts
+    const userPosts = (await apiRequest(`/users/${userId}/posts`)).data
+    console.log({ userPosts })
+
+    // get user growlist
+    const userGrowList = (await apiRequest(`/jobs/growlist?user_id=${userId}`)).data
+    console.log({ userGrowList })
+
+    // get user data
+    const userData = (await apiRequest(`/users/${userId}`)).data
+    console.log({ userData })
+
+    dispatch({
+      type: GET_POST_USER,
+      payload: {
+        posts: userPosts?.posts,
+        growitList: userGrowList?.crops,
+        data: userData?.user?.[0],
+      }
+    })
+  } catch (err) {
+    showApiError(err, true, () => dispatch(getPosts(refreshing)))
+  } finally {
+    dispatch({
+      type: LOADING,
+      payload: false,
+    })
+  }
+}
