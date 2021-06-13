@@ -18,7 +18,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getPosts, selectPost } from '../../redux/actions/postsActions'
+import { getPosts, getPostUser, selectPost } from '../../redux/actions/postsActions'
 import { followUser } from '../../redux/actions/authActions'
 
 const { colors } = constants
@@ -33,6 +33,7 @@ const Explore = () => {
   const [spinner, setSpinnner] = useState(true)
   // const [refreshing, setRefreshing] = React.useState(false)
   const [text, setText] = useState(false)
+  const [search, setSearch] = useState('')
 
   // let spinValue = new Animated.Value(0)
   // const onRefresh = React.useCallback(() => {
@@ -69,42 +70,44 @@ const Explore = () => {
   return (
     <View style={{ backgroundColor: colors.white, flex: 1, }}>
       <View style={{ flex: 1 }}>
-      <ScrollView
-        nestedScrollEnabled
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing || loading}
-            onRefresh={() => dispatch(getPosts(true))}
-            tintColor={colors.blue}
-            colors={[colors.blue]}
-          />
-        }
-      >
-        <View style={[styles.container]}>
-          <View style={styles.searchBarWrapper}>
-            <Input
-              placeholder="Find"
-              containerStyle={styles.searchInputContainer}
-              inputStyle={{ marginTop: -10, paddingRight: 10 }}
-            >
-              <EvilIcons
-                name="search"
-                size={24}
-                color={colors.blue}
-                style={{
-                  right: 10,
-                  top: '30%',
-                  position: 'absolute',
-                }}
-              />
-            </Input>
-          </View>
+        <ScrollView
+          nestedScrollEnabled
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing || loading}
+              onRefresh={() => dispatch(getPosts(true))}
+              tintColor={colors.blue}
+              colors={[colors.blue]}
+            />
+          }
+        >
+          <View style={[styles.container]}>
+            <View style={styles.searchBarWrapper}>
+              <Input
+                placeholder="Find"
+                containerStyle={styles.searchInputContainer}
+                inputStyle={{ marginTop: -10, paddingRight: 10 }}
+                onChangeText={(val) => setSearch(val)}
+                value={search}
+              >
+                <EvilIcons
+                  name="search"
+                  size={24}
+                  color={colors.blue}
+                  style={{
+                    right: 10,
+                    top: '30%',
+                    position: 'absolute',
+                  }}
+                />
+              </Input>
+            </View>
 
-          {/* <View style={[styles.flowercircle]}>
+            {/* <View style={[styles.flowercircle]}>
             {spinner && (
               <Animated.Image
                 style={{ transform: [{ rotate: spin }] }}
@@ -113,104 +116,108 @@ const Explore = () => {
             )}
           </View> */}
 
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={{
-              backgroundColor: '#002B55',
-              height: 88,
-              alignItems: 'center',
-              paddingLeft: 19,
-              flexDirection: 'row',
-              marginTop: 10,
-              marginBottom: 10,
-            }}
-            onPress={() => navigation.navigate('Article-guide')}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={require('../../assets/book-w.png')} />
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: 'white',
-                  marginRight: 20,
-                  width: 210,
-                  paddingLeft: 25,
-                }}
-              >
-                Explore the latest Grow It guides and articles
-              </Text>
-            </View>
-            <View>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="white"
-              />
-            </View>
-          </TouchableOpacity>
-          {!loading && posts?.map((post) => {
-            let isFollowing = !!(following?.find((user) => user?.id === post?.user_id)) ?? false
-
-            return (
-              <View
-                style={[styles.postCard]}
-                key={post.id}
-              >
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={[styles.userDetail]}
-                  onPress={() => {
-                    dispatch(selectPost(post))
-                    navigation.navigate('Single-Post')
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: '#002B55',
+                height: 88,
+                alignItems: 'center',
+                paddingLeft: 19,
+                flexDirection: 'row',
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+              onPress={() => navigation.navigate('Article-guide')}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={require('../../assets/book-w.png')} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: 'white',
+                    marginRight: 20,
+                    width: 210,
+                    paddingLeft: 25,
                   }}
-                  // onPress={() => navigation.navigate('User-details')}
                 >
-                  <Image
-                    style={[styles.imgAvatar]}
-                    source={{ uri: post?.avatar }}
-                  />
-                  <Text style={[styles.imgText]}>{post?.fullname}</Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (!isFollowing) {
-                        isFollowing = true
-                        dispatch(followUser(post?.user_id))
-                      }
-                    }}
+                  Explore the latest Grow It guides and articles
+                </Text>
+              </View>
+              <View>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  size={24}
+                  color="white"
+                />
+              </View>
+            </TouchableOpacity>
+            {posts
+              ?.filter((post) => post?.fullname?.toLowerCase()?.includes(search.toLowerCase()) || post?.title?.toLowerCase()?.includes(search.toLowerCase()) || post?.content?.toLowerCase()?.includes(search.toLowerCase()))
+              ?.map((post) => {
+                let isFollowing = !!(following?.find((user) => user?.id === post?.user_id)) ?? false
+
+                return (
+                  <View
+                    style={[styles.postCard]}
+                    key={post.id}
                   >
-                    <Text>
-                      {' • '}
-                      <Text style={{ textDecorationLine: isFollowing ? 'none' : 'underline' }}>
-                        {isFollowing ? 'Following' : 'Follow'}
-                      </Text>
-                    </Text>
-                  </TouchableOpacity>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      style={[styles.userDetail]}
+                      onPress={() => {
+                        dispatch(selectPost(post))
+                        // navigation.navigate('Single-Post')
+                        dispatch(getPostUser(post?.user_id))
+                        navigation.navigate('User-details')
+                      }}
+                    // onPress={() => navigation.navigate('User-details')}
+                    >
+                      <Image
+                        style={[styles.imgAvatar]}
+                        source={{ uri: post?.avatar }}
+                      />
+                      <Text style={[styles.imgText]}>{post?.fullname}</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (!isFollowing) {
+                            isFollowing = true
+                            dispatch(followUser(post?.user_id))
+                          }
+                        }}
+                      >
+                        <Text>
+                          {' • '}
+                          <Text style={{ textDecorationLine: isFollowing ? 'none' : 'underline' }}>
+                            {isFollowing ? 'Following' : 'Follow'}
+                          </Text>
+                        </Text>
+                      </TouchableOpacity>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                  activeOpacity={1}
-                  // onPress={() => navigation.navigate('User-details')}
-                  onPress={() => {
-                    dispatch(selectPost(post))
-                    navigation.navigate('Single-Post')
-                  }}
-                >
-                  <Image
-                    style={[styles.postImg]}
-                    source={{ uri: post?.media_url }}
-                  />
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      // onPress={() => navigation.navigate('User-details')}
+                      onPress={() => {
+                        dispatch(selectPost(post))
+                        navigation.navigate('Single-Post')
+                      }}
+                    >
+                      <Image
+                        style={[styles.postImg]}
+                        source={{ uri: post?.media_url }}
+                      />
+                    </TouchableOpacity>
 
-                <View style={[styles.dateTime]}>
-                  <Text style={[styles.date]}>{new Date(post?.created_at).toDateString()}</Text>
-                  {/* <Text>...</Text> */}
-                </View>
+                    <View style={[styles.dateTime]}>
+                      <Text style={[styles.date]}>{new Date(post?.created_at).toDateString()}</Text>
+                      {/* <Text>...</Text> */}
+                    </View>
 
-                <View style={[styles.postText]}>
-                  <Text style={[styles.boldContainer, {}]}>
-                    {' '}
-                    <Text style={[styles.bold]}>{post?.fullname}</Text>{' '}{post?.title}
-                {/* {!text && (
+                    <View style={[styles.postText]}>
+                      <Text style={[styles.boldContainer, {}]}>
+                        {' '}
+                        <Text style={[styles.bold]}>{post?.fullname}</Text>{' '}{post?.title}
+                        {/* {!text && (
                       <Text
                         style={{ color: '#085BAC' }}
                         onPress={() => setText(!text)}
@@ -219,14 +226,14 @@ const Explore = () => {
                       </Text>
                     )}
                     {text && <Text> yes, patient is golden any time!</Text>} */}
-                  </Text>
-                </View>
-              </View>
+                      </Text>
+                    </View>
+                  </View>
 
-            )
-          })}
-        </View>
-      </ScrollView>
+                )
+              })}
+          </View>
+        </ScrollView>
       </View>
     </View>
   )

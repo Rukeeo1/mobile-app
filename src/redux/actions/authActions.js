@@ -19,6 +19,7 @@ import {
 } from '../types'
 import { apiRequest, showApiError } from '../../config/api'
 import { API_URL } from '../../constants'
+import { getPostUser } from './postsActions'
 
 export const signOut = () => ({
   type: LOG_OUT,
@@ -355,11 +356,11 @@ export const getUserProfile = (silent = false) => (dispatch, getState) => {
 
   apiRequest(`/users/${user?.id}`)
     .then(({ data }) => {
-  
+      console.log('user profile', data)
 
       dispatch({
         type: GET_USER_DATA,
-        payload: data.details,
+        payload: data?.user?.[0],
       })
     })
     .catch((err) => {
@@ -433,12 +434,13 @@ export const getUserFollowers = (refreshing = false, silent = false) => (dispatc
     })
 }
 
-export const followUser = (user_id) => (dispatch) => {
+export const followUser = (user_id, isMyProfile = true) => (dispatch) => {
   apiRequest('/users/follows', 'post', { user_id })
     .then(({ data }) => {
       console.log('follow user', data)
 
-      dispatch(getUserFollowing(false, true))
+      if (isMyProfile) dispatch(getUserFollowing(false, true))
+      else dispatch(getPostUser(user_id))
     })
     .catch((err) => {
       console.log('follow user error', err?.response ?? err.data)

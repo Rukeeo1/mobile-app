@@ -9,12 +9,15 @@ import {
   Text,
   View,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native'
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { SafeArea } from '../../components'
 import { GradientButton, SmallGradientButton } from '../../components/Button'
 import constants from '../../constants'
+import { followUser } from '../../redux/actions/authActions'
+import { getPostUser } from '../../redux/actions/postsActions'
 
 const { colors } = constants
 const UserDetails = ({ navigation }) => {
@@ -22,6 +25,13 @@ const UserDetails = ({ navigation }) => {
   const [follow, setFollow] = useState(false)
   const [grow, setGrow] = useState(false)
   const toggleModal = () => setShowShare((prevState) => !prevState)
+
+  const dispatch = useDispatch()
+  const { selectedUser: { data, posts, growitList } } = useSelector((state) => state.posts)
+  const { following = [] } = useSelector((state) => state.auth)
+  const { loading } = useSelector((state) => state.loading)
+  let isFollowing = !!(following?.find((user) => user?.id === data?.id)) ?? false
+
   return (
     <>
       <SafeArea>
@@ -50,190 +60,155 @@ const UserDetails = ({ navigation }) => {
           <ScrollView
             style={styles.content}
             showsVerticalScrollIndicator={false}
+            refreshControl={(
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => dispatch(getPostUser(data?.id))}
+                tintColor={colors.purshBlue}
+                colors={[colors.purshBlue]}
+              />
+            )}
           >
             <View>
               <View>
                 <View>
                   <Image
-                    source={require('../../assets/details.png')}
+                    source={{ uri: data?.avatar }}
+                    // source={require('../../assets/details.png')}
                     style={[styles.profileImg]}
                   />
                 </View>
                 <View style={[styles.detailsContainer, styles.detaileText]}>
-                  <Text style={[styles.title]}>Garden_of_Riley</Text>
+                  <Text style={[styles.title]}>{data?.fullname}</Text>
                   <Text>
-                    {'<'}User bio grow baby grow{'>'}
+                    {data?.biography}
                   </Text>
-                  <Text>🇬🇧 Buckinghamshire</Text>
+                  <Text>{data?.location}</Text>
                 </View>
 
                 {!follow && (
                   <View style={{ paddingHorizontal: '6%' }}>
                     <SmallGradientButton
-                      gradient={[colors.red, colors.redDeep]}
-                      onPress={() => setFollow(!follow)}
+                      gradient={isFollowing ? [colors.purshBlue, colors.blue] : [colors.red, colors.redDeep]}
+                      onPress={() => {
+                        if (isFollowing) {
+                          // TODO: undollow
+                        } else {
+                          setFollow(true)
+                          dispatch(followUser(data?.id, false))
+                        }
+                      }}
                     >
-                      <Text style={[styles.btnText]}>Follow</Text>
+                      <Text style={[styles.btnText]}>
+                        {isFollowing ? 'Following' : 'Follow'}
+                      </Text>
                     </SmallGradientButton>
                   </View>
                 )}
 
                 {follow && (
-                  <TouchableOpacity
+                  <View
                     activeOpacity={0.7}
                     style={[
                       styles.detailsContainer,
                       styles.follows,
                       { marginTop: 30 },
                     ]}
-                    onPress={() => setFollow(!follow)}
+                    // onPress={() => setFollow(!follow)}
                   >
                     <View activeOpacity={0.7}>
-                      <Text style={[styles.followsText]}>0 Following</Text>
+                      <Text style={[styles.followsText]}>{data?.following_count} Following</Text>
                     </View>
                     <Text>{'|'}</Text>
                     <View activeOpacity={0.7}>
-                      <Text style={[styles.followsText]}>0 Followers</Text>
+                      <Text style={[styles.followsText]}>{data?.follower_count} Followers</Text>
                     </View>
-                  </TouchableOpacity>
+                  </View>
                 )}
 
-                {!grow && (
-                  <View style={{ paddingHorizontal: '6%', backgroundColor: '#F7F7F7', paddingVertical: 20, marginTop: 10 }}>
-                    <Text style={{textAlign: 'center'}}>You aren't growing anything!</Text>
-                    <SmallGradientButton
-                      gradient={[colors.green, colors.greenDeep]}
-                      onPress={() => setGrow(!grow)}
-                    >
-                      <View
-                        style={{
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                          width: '100%',
-                          paddingHorizontal: 20,
-                        }}
+                {growitList?.length < 1
+                  ? (
+                    <View style={{ paddingHorizontal: '6%', backgroundColor: '#F7F7F7', paddingVertical: 20, marginTop: 10 }}>
+                      <Text style={{textAlign: 'center'}}>{data?.fullname} isn't growing anything!</Text>
+                      {/* <SmallGradientButton
+                        gradient={[colors.green, colors.greenDeep]}
+                        onPress={() => setGrow(!grow)}
                       >
-                        <Text style={[styles.btnText]}>Add to Grow Calendar</Text>
-                        <Ionicons
-                          name="calendar"
-                          size={24}
-                          color={colors.white}
-                        />
-                      </View>
-                    </SmallGradientButton>
-                  </View>
-                )}
-
-                {grow && (
-                  <TouchableOpacity
-                    activeOpacity={0.9}
-                    style={{ marginTop: 30, backgroundColor: '#F7F7F7', paddingVertical: 20 }}
-                    onPress={() => setGrow(!grow)}
-                  >
-                    <Text style={[styles.growTitle]}>Current grow list</Text>
-                    <ScrollView horizontal={true}>
-                      <View style={[styles.growCard]}>
+                        <View
+                          style={{
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            width: '100%',
+                            paddingHorizontal: 20,
+                          }}
+                        >
+                          <Text style={[styles.btnText]}>Add to Grow Calendar</Text>
+                          <Ionicons
+                            name="calendar"
+                            size={24}
+                            color={colors.white}
+                          />
+                        </View>
+                      </SmallGradientButton> */}
+                    </View>
+                  ) : growitList?.map((item, i) => {
+                    return (
+                      <View style={[styles.growCard]} key={item?.id ?? i}>
                         <Image
                           style={{
                             height: 70,
                             width: 70,
                             borderRadius: 70 / 2,
                           }}
-                          source={require('../../assets/growavatar.png')}
+                          source={item?.thumbnail_url ? { uri: item?.thumbnail_url } : require('../../assets/growavatar.png')}
                         />
                         <Text style={[styles.growText]}>
-                          {'<'}New Crop Name{'>'} “Variety Name”
+                          {item?.name}{' '}
+                          {item?.variety ? `“${item?.variety}”` : ''}
                         </Text>
                       </View>
-                      <View style={[styles.growCard]}>
+                    )
+                  })}
+                {posts?.map((post) => {
+                  return (
+                    <View style={[styles.postCard]}>
+                      <View style={[styles.postAvatarContainer]}>
                         <Image
-                          style={{
-                            height: 70,
-                            width: 70,
-                            borderRadius: 70 / 2,
-                          }}
-                          source={require('../../assets/tomatoe.png')}
+                          style={[styles.postAvatarImg]}
+                          source={{ uri: data?.avatar }}
                         />
-                        <Text style={[styles.growText]}>
-                          Chillies “Variety Name”
-                        </Text>
+                        <Text style={[styles.postTitle]}>{data?.fullname}</Text>
                       </View>
-                      <View style={[styles.growCard]}>
+
+                      <View>
                         <Image
-                          style={{
-                            height: 70,
-                            width: 70,
-                            borderRadius: 70 / 2,
-                          }}
-                          source={require('../../assets/tomatoe1.png')}
+                          style={[styles.postImg]}
+                          source={{ uri: post?.media_url }}
                         />
-                        <Text style={[styles.growText]}>
-                          Peppers “Variety Name”
+                      </View>
+
+                      <View style={[styles.postDateTime]}>
+                        <Text>
+                          {new Date(post.created_at).toDateString()}
+                        </Text>
+                        {/* <TouchableOpacity onPress={toggleModal}>
+                          <Text>...</Text>
+                        </TouchableOpacity> */}
+                      </View>
+
+                      <View style={{ marginLeft: 15 }}>
+                        <Text style={{ fontFamily: 'Hero-New-Light' }}>
+                          <Text style={{ fontFamily: 'Hero-New-Medium' }}>
+                            {post?.title}
+                          </Text>
+                          {/* {' '}
+                          {post.content} */}
                         </Text>
                       </View>
-                      <View style={[styles.growCard]}>
-                        <Image
-                          style={{
-                            height: 70,
-                            width: 70,
-                            borderRadius: 70 / 2,
-                          }}
-                          source={require('../../assets/tomatoe2.png')}
-                        />
-                        <Text style={[styles.growText]}>
-                          Dahlias “Variety Name”
-                        </Text>
-                      </View>
-                      <View style={[styles.growCard]}>
-                        <Image
-                          style={{
-                            height: 70,
-                            width: 70,
-                            borderRadius: 70 / 2,
-                          }}
-                          source={require('../../assets/tomatoe3.png')}
-                        />
-                        <Text style={[styles.growText]}>
-                          Corn “Variety Name”
-                        </Text>
-                      </View>
-                    </ScrollView>
-                  </TouchableOpacity>
-                )}
-
-                <View style={[styles.postCard]}>
-                  <View style={[styles.postAvatarContainer]}>
-                    <Image
-                      style={[styles.postAvatarImg]}
-                      source={require('../../assets/profileAvatar.png')}
-                    />
-                    <Text style={[styles.postTitle]}>Garden_of_Riley</Text>
-                  </View>
-
-                  <View>
-                    <Image
-                      style={[styles.postImg]}
-                      source={require('../../assets/profile.png')}
-                    />
-                  </View>
-
-                  <View style={[styles.postDateTime]}>
-                    <Text>23 July 2020</Text>
-                    <TouchableOpacity onPress={toggleModal}>
-                      <Text>...</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ marginLeft: 15 }}>
-                    <Text>
-                      <Text style={[styles.bold]}>Garden_of_Riley</Text> First
-                      handful of tomatoes!! Well worth the wait!
-                    </Text>
-
-                    <Text style={[styles.bold]}>Tomatoes - ‘Sungold’</Text>
-                  </View>
-                </View>
+                    </View>
+                  )
+                })}
               </View>
             </View>
             <View style={{ height: 50, backgroundColor: colors.white }} />
@@ -260,6 +235,7 @@ const styles = StyleSheet.create({
   },
   profileImg: {
     width: '100%',
+    height: Dimensions.get('window').height / 3,
   },
   detailsContainer: {
     alignItems: 'center',

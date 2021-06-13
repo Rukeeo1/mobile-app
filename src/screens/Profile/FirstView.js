@@ -21,6 +21,7 @@ import {
   getUserFollowing,
   getUserGrowList,
   getUserPosts,
+  getUserProfile,
 } from '../../redux/actions/authActions';
 
 import { GradientButton } from '../../components/Button';
@@ -57,6 +58,7 @@ const FirstView = () => {
   };
 
   useEffect(() => {
+    dispatch(getUserProfile())
     dispatch(getUserGrowList());
     dispatch(getUserPosts());
     dispatch(getUserJobs(user?.id));
@@ -204,7 +206,7 @@ const FirstView = () => {
                     <View style={[styles.postAvatarContainer]}>
                       <Image
                         style={[styles.postAvatarImg]}
-                        source={require('../../assets/profileAvatar.png')}
+                        source={{ uri: user?.avatar }}
                       />
                       <Text style={[styles.postTitle]}>{user?.fullname}</Text>
                     </View>
@@ -234,8 +236,9 @@ const FirstView = () => {
                       <Text style={{ fontFamily: 'Hero-New-Light' }}>
                         <Text style={{ fontFamily: 'Hero-New-Medium' }}>
                           {post?.title}
-                        </Text>{' '}
-                        {post.content}
+                        </Text>
+                        {/* {' '}
+                        {post.content} */}
                       </Text>
 
                       {/* <Text style={{ fontFamily: 'Hero-New-Medium' }}>Tomatoes - ‘Sungold’</Text> */}
