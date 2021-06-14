@@ -18,6 +18,7 @@ import { GrowCropCalender } from './GrowCropCalendar';
 import { updateJob } from '../../redux/actions';
 
 import constants from '../../constants';
+// import moment from "moment";
 
 const { colors, months, monthsAbr, defaultCalendarDay, defaultCalendarYear } =
   constants;
@@ -41,11 +42,28 @@ export const SowItContainer = ({
   const [selectedMonth, setSelectedMonth] = useState(
     months[monthsAbr.indexOf(startMonth)]
   );
-  const [selectedYear, setSelectedYear] = useState(moment().year());
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const monthIndex = monthsAbr.indexOf(startMonth);
 
-  return (
+    const ourMonths = [
+        'dummyMonth',
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ]
+    const ourMonthIndex = (correctMonth) => ourMonths.indexOf(correctMonth) < 10 ? '0' + ourMonths.indexOf(correctMonth) : ourMonths.indexOf(correctMonth);
+
+    return (
     <View>
       {showSowItButton && (
         <Button
@@ -76,7 +94,7 @@ export const SowItContainer = ({
               setShowSowItButton(false);
               setShowFullSelectedDate(true);
               onSubmitSelected(
-                `${selectedYear} ${selectedMonth} ${selectedDate} `
+                `${selectedYear}-${ourMonthIndex(selectedMonth)}-${selectedDate}`
               );
             }}
             renderIcon={renderIcon}
@@ -191,6 +209,23 @@ export const CropDatePickerContainer = ({
 
   const monthIndex = monthsAbr.indexOf(startMonth);
 
+    const ourMonths = [
+        'dummyMonth',
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ]
+    const ourMonthIndex = (correctMonth) => ourMonths.indexOf(correctMonth) < 10 ? '0' + ourMonths.indexOf(correctMonth) : ourMonths.indexOf(correctMonth);
+
   useEffect(() => {
     if (fromJobs) {
       setShowSowItButton(false);
@@ -203,6 +238,11 @@ export const CropDatePickerContainer = ({
     setShowCalender(true);
   };
 
+    // console.log({onSubmitSelected});
+    const justMonth = ourMonthIndex(selectedMonth);
+    console.log('ourmonth', justMonth);
+    // console.log(moment.utc(`${selectedYear} ${selectedMonth} ${selectedDate}`));
+    // console.log('moment test', moment(`${selectedYear} ${selectedMonth} ${selectedDate}`,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss'))
   return (
     <View>
       <View>
@@ -244,7 +284,7 @@ export const CropDatePickerContainer = ({
               setShowSowItButton(false);
               setShowFullSelectedDate(true);
               onSubmitSelected(
-                `${selectedYear} ${selectedMonth} ${selectedDate} `
+                `${selectedYear}-${ourMonthIndex(selectedMonth)}-${selectedDate}`
               );
             }}
             renderIcon={renderIcon}

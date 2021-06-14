@@ -165,7 +165,7 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
 
   const lastItem = coordinates[coordinates?.length - 1];
 
-  console.log(coordinates, 'RO: coordinates', lastItem);
+  // console.log(coordinates, 'RO: coordinates', lastItem);
 
   return (
     <View style={styles.container}>

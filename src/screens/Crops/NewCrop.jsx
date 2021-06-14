@@ -42,89 +42,89 @@ const NeCrop = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loading } = useSelector((state) => state.loading)
 
-    console.log({state})
+  // console.log({state})
   return (
     <View style={{ flex: 1 }}>
       {/* <SafeAreaView style={{ flex: 1 }}> */}
-        <ScrollView>
-          <LinearGradient
-            style={[styles.topSection]}
-            colors={[colors.green, colors.greenDeep]}
-          >
-            <View>
-              <Text style={[styles.title]}>New Crop</Text>
-            </View>
-          </LinearGradient>
+      <ScrollView>
+        <LinearGradient
+          style={[styles.topSection]}
+          colors={[colors.green, colors.greenDeep]}
+        >
+          <View>
+            <Text style={[styles.title]}>New Crop</Text>
+          </View>
+        </LinearGradient>
 
-          <View style={{ padding: 22, flexDirection: 'column' }}>
-            <TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>
-              {state.image ? (
-                <Image
-                  source={{ uri: state.image }}
-                  style={{ height: '100%', width: '100%' }}
-                />
-              ) : (
-                <Ionicons
-                  name='ios-camera-outline'
-                  size={45}
-                  color={colors.white}
-                />
-              )}
-            </TouchableOpacity>
-            <View>
-              <View style={[styles.inputContainer]}>
-                <Input
-                  placeholder="Enter the crop name"
-                  labelText="Name"
-                  labelStyle={styles.labelText}
-                  value={state.name}
-                  onChangeText={(name) => handleState({ name })}
-                />
-              </View>
-              <View style={[styles.inputContainer]}>
-                <Text style={styles.labelText}>Variety</Text>
-                <Text>You can find this on your seed pack</Text>
-                <Input
-                  placeholder="Enter the variety"
-                  labelStyle={styles.labelText}
-                  value={state.variety}
-                  onChangeText={(variety) => handleState({ variety })}
-                />
-              </View>
-              <View style={[styles.inputContainer]}>
-                <Text style={styles.labelText}>Select grow level</Text>
-                <DropDownPicker
-                  items={[
-                    { label: 'Beginner', value: 'Beginner' },
-                    { label: 'Intermediate', value: 'Intermediate' },
-                    { label: 'Advanced', value: 'Advanced' },
-                  ]}
-                  defaultValue={state.level}
-                  containerStyle={{ height: 40 }}
-                  style={{ backgroundColor: '#fafafa', zIndex: 1000 }}
-                  itemStyle={{ justifyContent: 'flex-start' }}
-                  dropDownStyle={{ backgroundColor: '#fafafa' }}
-                  onChangeItem={(item) => handleState({ level: item.value })}
-                />
-                <GradientButton
-                  title="Grow It"
-                  gradient={[colors.green, colors.greenDeep]}
-                  coverStyle={styles.button}
-                  // onPress={() => navigation.navigate('Success')}
-                  loading={loading}
-                  onPress={() => dispatch(addCrop(state, navigation))}
-                />
-              </View>
-              
+        <View style={{ padding: 22, flexDirection: 'column' }}>
+          <TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>
+            {state.image ? (
+              <Image
+                source={{ uri: state.image }}
+                style={{ height: '100%', width: '100%' }}
+              />
+            ) : (
+              <Ionicons
+                name='ios-camera-outline'
+                size={45}
+                color={colors.white}
+              />
+            )}
+          </TouchableOpacity>
+          <View>
+            <View style={[styles.inputContainer]}>
+              <Input
+                placeholder="Enter the crop name"
+                labelText="Name"
+                labelStyle={styles.labelText}
+                value={state.name}
+                onChangeText={(name) => handleState({ name })}
+              />
             </View>
-            {/* <GradientButton
+            <View style={[styles.inputContainer]}>
+              <Text style={styles.labelText}>Variety</Text>
+              <Text>You can find this on your seed pack</Text>
+              <Input
+                placeholder="Enter the variety"
+                labelStyle={styles.labelText}
+                value={state.variety}
+                onChangeText={(variety) => handleState({ variety })}
+              />
+            </View>
+            <View style={[styles.inputContainer]}>
+              <Text style={styles.labelText}>Select grow level</Text>
+              <DropDownPicker
+                items={[
+                  { label: 'Beginner', value: 'Beginner' },
+                  { label: 'Intermediate', value: 'Intermediate' },
+                  { label: 'Advanced', value: 'Advanced' },
+                ]}
+                defaultValue={state.level}
+                containerStyle={{ height: 40 }}
+                style={{ backgroundColor: '#fafafa', zIndex: 1000 }}
+                itemStyle={{ justifyContent: 'flex-start' }}
+                dropDownStyle={{ backgroundColor: '#fafafa' }}
+                onChangeItem={(item) => handleState({ level: item.value })}
+              />
+              <GradientButton
+                title="Grow It"
+                gradient={[colors.green, colors.greenDeep]}
+                coverStyle={styles.button}
+                // onPress={() => navigation.navigate('Success')}
+                loading={loading}
+                onPress={() => dispatch(addCrop(state, navigation))}
+              />
+            </View>
+
+          </View>
+          {/* <GradientButton
               title="Grow It"
               gradient={[colors.green, colors.greenDeep]}
               coverStyle={styles.button}
               onPress={() => navigation.navigate('Success')}
             /> */}
-          </View>
-        </ScrollView>
+        </View>
+      </ScrollView>
       {/* </SafeAreaView> */}
     </View>
   )

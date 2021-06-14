@@ -40,6 +40,7 @@ import { getCropCardData } from '../../utils/index';
 
 import home from '../../assets/home-icon.png';
 // import pencil from '../../assets/pencil_circle.png';
+import moment from "moment";
 
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
@@ -55,6 +56,7 @@ const screenWidth = Dimensions.get('screen').width;
 const CropCard = ({ navigation }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
+  console.log('timidee', cropToGrowDetails);
 
   const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
@@ -119,16 +121,22 @@ const CropCard = ({ navigation }) => {
         }`;
 
   const cropSeasons = [sowMonth, plantMonth, harvestMonth];
-
+let ourDate;
   const handleGrowCrop = async (selectedDate, jobType) => {
+      ourDate = new Date(selectedDate);// 2020 January 5
     const jobInfo = {
       crop_id: cropToGrowDetails?.cropId,
       user_id: user?.id,
-      job_date: new Date(selectedDate),
+      // job_date: new Date('2017-09-13 00:13:28'.replace(' ', 'T')),
+      // job_date: ourDate.toString(),
+      job_date: ourDate,
       status: 'PENDING',
       variety: cropToGrowDetails.variety,
     };
+    console.log('selected jara', jobInfo.job_date);
+    // console.log('selected jara2', ourDate);
 
+    console.log({jobType, selectedDate});
     setLoadingJobs(true);
 
     if (jobType === 'Sow') {
@@ -471,7 +479,7 @@ const CropCard = ({ navigation }) => {
               {/* </Tooltip> */}
             </View>
           </View>
-          {cycleData?.summary && (
+          {cycleData?.summary && cycleData?.summary.toLowerCase() !== 'n/a' &&  (
             <View>
               <Text
                 style={{
@@ -486,7 +494,7 @@ const CropCard = ({ navigation }) => {
               <Text style={{ textAlign: 'center' }}>{cycleData?.summary}</Text>
             </View>
           )}
-          {cycleData?.steps && (
+          {cycleData?.tip && cycleData?.tip.toLowerCase() !== 'n/a' && (
             <View style={{ marginTop: '4%' }}>
               <Video
                 ref={video}
@@ -502,7 +510,7 @@ const CropCard = ({ navigation }) => {
             </View>
           )}
           <StepsCarousel steps={cycleData?.steps} />
-          {cycleData?.tip && (
+          {cycleData?.tip && cycleData?.tip.toLowerCase() !== 'n/a' &&  (
             <LinearGradient
               style={styles.toolTip}
               colors={[colors.green, colors.greenDeep]}

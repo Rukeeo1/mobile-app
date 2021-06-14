@@ -27,6 +27,7 @@ import ManageCropContext from '../../context/ManageCropsContext';
 import { addJournal } from '../../redux/actions';
 
 import constants from '../../constants/';
+import { addPost } from "../../redux/actions/postsActions";
 
 const { colors } = constants;
 
@@ -48,6 +49,14 @@ const CreateJournal = ({ navigation }) => {
       .min(2, 'Too Short!')
       .max(1000, 'Too Long!'),
   });
+  const goBack = () => {
+    navigation.navigate('Settings', {
+      screen: 'Main-Profile',
+      params: {
+        indexOfItemToShow: 3,
+      },
+    });
+  };
 
   const {
     handleChange,
@@ -72,13 +81,13 @@ const CreateJournal = ({ navigation }) => {
 
     validationSchema: createJournalSchema,
     onSubmit: async (data) => {
-      console.log(data)
-      
-      const { user_id, crop_id, isPublic, content, journalImageUri } = data;
+        const journalFormData = new FormData()
 
-      const journalFormData = new FormData();
+      const { user_id, crop_id, isPublic, content, journalImageUri } = data;
+console.log({ user_id, crop_id, isPublic, content, journalImageUri });
       journalFormData.append('user_id', user_id);
-      journalFormData.append('crop_id', crop_id);
+        journalFormData.append('title', crop_id);
+        journalFormData.append('crop_id', crop_id);
       journalFormData.append('post_type', isPublic ? 'public' : 'private');
       journalFormData.append('content', content);
       journalFormData.append('thumbnail_url', {
@@ -92,13 +101,17 @@ const CreateJournal = ({ navigation }) => {
         type: 'image/*',
       });
 
-      setAddingJournal(true);
-      await dispatch(addJournal(journalFormData, user));
-      setAddingJournal(false);
+        console.log('journaldata 2', data);
+
+      // setAddingJournal(true);
+      await dispatch(addPost(journalFormData));
+      // setAddingJournal(false);
+      navigation.goBack();
     },
 
     enableReinitialize: true,
   });
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -110,11 +123,35 @@ const CreateJournal = ({ navigation }) => {
     });
 
     if (!result.cancelled) {
-      setFieldValue('journalImageUri', result?.uri);
+      await setFieldValue('journalImageUri', result?.uri);
     }
   };
   const disableForm = !isValid || !values.content || !values.journalImageUri;
 
+    const submit = () => {
+        const data = new FormData()
+
+        data.append('title', values.content)
+        data.append('content', values.content)
+        data.append('post_type', values.isPublic ? 'public' : 'private')
+        data.append('crop_id', values.crop_id)
+        data.append('variety', values.plantVariety)
+        data.append('user_id', values.user_id)
+        data.append('thumbnail_url', {
+            name: values.journalImageUri?.split('/').pop(),
+            uri: values.journalImageUri,
+            type: 'image/*',
+        })
+        data.append('media_url', {
+            name: values.journalImageUri?.split('/').pop(),
+            uri: values.journalImageUri,
+            type: 'image/*',
+        })
+
+        dispatch(addPost(data))
+        // navigation.goBack()
+        goBack()
+    }
   return (
     <SafeArea>
       <ScrollView
@@ -179,7 +216,8 @@ const CreateJournal = ({ navigation }) => {
               : [colors.green, colors.greenDeep]
           }
           loading={addingJournal}
-          onPress={handleSubmit}
+          // onPress={handleSubmit}
+          onPress={submit}
         />
       </View>
     </SafeArea>

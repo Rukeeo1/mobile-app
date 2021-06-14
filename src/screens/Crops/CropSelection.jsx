@@ -1,28 +1,28 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {AntDesign, MaterialIcons} from '@expo/vector-icons';
-import {LinearGradient} from 'expo-linear-gradient';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useState, useEffect, useContext } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch } from 'react-redux';
 
-import {getCropsFavoriteToGrow, getCropVarieties} from '../../redux/actions';
+import { getCropsFavoriteToGrow, getCropVarieties } from '../../redux/actions';
 
-import {Input, GradientButton} from '../../components/';
-import {CropItem} from './CropItem';
+import { Input, GradientButton } from '../../components/';
+import { CropItem } from './CropItem';
 
 import constants from '../../constants';
 import ManageCropContext from '../../context/ManageCropsContext';
 
-const {colors, months} = constants;
+const { colors, months } = constants;
 
-const CropSelection = ({navigation, route}) => {
+const CropSelection = ({ navigation, route }) => {
     const [search, setSearch] = useState('');
 
     const dispatch = useDispatch();
     const manageCropContext = useContext(ManageCropContext);
 
-    const {cropDetail, favoriteCrops} = useSelector((state) => state.crops);
+    const { cropDetail, favoriteCrops } = useSelector((state) => state.crops);
 
-    const {cropName, sowTip, growLevel, cropId} = route?.params || {};
+    const { cropName, sowTip, growLevel, cropId } = route?.params || {};
 
     useEffect(() => {
         if (cropName) {
@@ -34,7 +34,7 @@ const CropSelection = ({navigation, route}) => {
     let tmpItem;
 
     return (
-        <View style={{flex: 1, backgroundColor: colors.white}}>
+        <View style={{ flex: 1, backgroundColor: colors.white }}>
             {/* <SafeAreaView> */}
             <ScrollView>
                 <View>
@@ -48,12 +48,12 @@ const CropSelection = ({navigation, route}) => {
                             color={colors.white}
                             onPress={() => navigation.goBack()}
                         />
-                        <View style={{alignItems: 'center'}}>
+                        <View style={{ alignItems: 'center' }}>
                             <Text style={[styles.titleTop]}>{cropName}</Text>
 
                             <View style={[styles.titleTag]}>
-                                <MaterialIcons name='star' size={20} color={colors.white}/>
-                                <Text style={{color: colors.white, marginHorizontal: 4}}>
+                                <MaterialIcons name='star' size={20} color={colors.white} />
+                                <Text style={{ color: colors.white, marginHorizontal: 4 }}>
                                     {growLevel}
                                 </Text>
                             </View>
@@ -73,12 +73,12 @@ const CropSelection = ({navigation, route}) => {
                             ></Input>
                         </View>
 
-                        <View style={{alignItems: 'center', marginVertical: 15}}>
-                            <Text style={{color: colors.white, marginVertical: 4}}>
+                        <View style={{ alignItems: 'center', marginVertical: 15 }}>
+                            <Text style={{ color: colors.white, marginVertical: 4 }}>
                                 You can find this on your seed pack
                             </Text>
                             {search.length > 2 && (
-                                <Text style={{fontWeight: 'bold', color: colors.white}}>
+                                <Text style={{ fontWeight: 'bold', color: colors.white }}>
                                     What type is the variety you have chosen
                                 </Text>
                             )}
@@ -120,28 +120,28 @@ const CropSelection = ({navigation, route}) => {
                                                     {crop?.variety}
                                                 </Text>
                                             </View>
-                                        </GradientButton>): (
+                                        </GradientButton>) : (
                                             tmpItem = <GradientButton
-                                            gradient={[colors.blueLigth, colors.blue]}
-                                            onPress={() => {
-                                                navigation.navigate('Success');
-                                                ManageCropContext?.actions?.updateCropToGrowDetails({
-                                                    variety: search,
-                                                    cropName,
-                                                    cropId,
-                                                });
-                                            }}
-                                        >
-                                            <View
-                                                style={{
-                                                    alignItems: 'center',
-                                                    width: '100%',
-                                                    paddingHorizontal: 20,
+                                                gradient={[colors.blueLigth, colors.blue]}
+                                                onPress={() => {
+                                                    navigation.navigate('Success');
+                                                    ManageCropContext?.actions?.updateCropToGrowDetails({
+                                                        variety: search,
+                                                        cropName,
+                                                        cropId,
+                                                    });
                                                 }}
                                             >
-                                                <Text style={[styles.btnText]}>Grow it</Text>
-                                            </View>
-                                        </GradientButton>)
+                                                <View
+                                                    style={{
+                                                        alignItems: 'center',
+                                                        width: '100%',
+                                                        paddingHorizontal: 20,
+                                                    }}
+                                                >
+                                                    <Text style={[styles.btnText]}>Grow it</Text>
+                                                </View>
+                                            </GradientButton>)
                                     );
                                 })}
 
@@ -151,19 +151,27 @@ const CropSelection = ({navigation, route}) => {
                 </View>
 
 
-                <View style={{alignItems: 'center', marginVertical: 20}}>
-                    {sowTip.toLowerCase() !== 'n/a' && (
-                        <>
-                            <Text style={{fontSize: 20}}>Grow it Recommends</Text>
-                            <Text style={{width: '80%', textAlign: 'center'}}>{sowTip}</Text>
-                        </>
-                    )}
+                <View style={{ alignItems: 'center', marginVertical: 20 }}>
+                    {cropDetail?.crops?.map((crop1, index1) => (
+                        Object.keys.recommendations && (sowTip.toLowerCase() !== 'n/a' && (
+                            <>
+                                <Text style={{ fontSize: 20 }}>Grow it Recommends</Text>
+                                <Text style={{ width: '80%', textAlign: 'center' }}>{sowTip}</Text>
+                            </>
+                        ))
+
+
+                    ))}
+
                 </View>
 
                 <View style={[styles.cropSection]}>
-                    {favoriteCrops?.crops?.map((crop, index) => (
-                        <CropItem key={index} crop={crop}/>
-                    ))}
+                    {cropDetail?.crops?.map((crop1, index1) => (
+                        Object.keys.recommendations && (favoriteCrops?.crops?.map((crop, index) => (
+                            <CropItem key={index} crop={crop} />
+                        )))
+                    )
+                    )}
                 </View>
             </ScrollView>
             {/* </SafeAreaView> */}
@@ -183,7 +191,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontWeight: '100',
     },
-    titleTag: {flexDirection: 'row', alignItems: 'center', marginBottom: 30},
+    titleTag: { flexDirection: 'row', alignItems: 'center', marginBottom: 30 },
     searchForm: {
         flexDirection: 'row',
         alignItems: 'center',

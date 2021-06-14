@@ -18,7 +18,7 @@ export const getPosts = (refreshing = false) => (dispatch) => {
 
   apiRequest('/posts/public')
     .then(({ data }) => {
-      console.log(data)
+      // console.log(data)
 
       dispatch({
         type: FETCH_POSTS,
@@ -38,27 +38,36 @@ export const getPosts = (refreshing = false) => (dispatch) => {
 
 export const addPost = (formData) => (dispatch, getState) => {
   const { token } = getState().auth
-  console.log(formData)
+  // console.log(formData)
 
   dispatch({
     type: LOADING,
     payload: true,
   })
 
-  axios
-    .post(`${API_URL}/posts/newpost`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  // axios
+  //   .post(`${API_URL}/posts/newpost`, formData, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+    fetch(`${API_URL}/posts/newpost`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        method: 'POST',
+        body: formData
     })
     .then(({ data }) => {
-      console.log('add post', data)
+      // console.log('add post', data)
 
       dispatch(getPosts(true))
     })
     .catch((err) => {
       // showApiError(err, true, () => dispatch(addPost(formData)))
-      console.log('add post error', err?.response ?? err.message)
+      // console.log('add post error', err?.response ?? err.message)
     })
     .finally(() => {
       dispatch({
@@ -82,15 +91,15 @@ export const getPostUser = (userId) => async (dispatch) => {
   try {
     // get user posts
     const userPosts = (await apiRequest(`/users/${userId}/posts`)).data
-    console.log({ userPosts })
+    // console.log({ userPosts })
 
     // get user growlist
     const userGrowList = (await apiRequest(`/jobs/growlist?user_id=${userId}`)).data
-    console.log({ userGrowList })
+    // console.log({ userGrowList })
 
     // get user data
     const userData = (await apiRequest(`/users/${userId}`)).data
-    console.log({ userData })
+    // console.log({ userData })
 
     dispatch({
       type: GET_POST_USER,

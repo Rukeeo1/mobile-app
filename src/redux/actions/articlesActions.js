@@ -14,7 +14,7 @@ export const getArticles = (refreshing = false) => (dispatch) => {
 
   apiRequest('/articles/all')
     .then(({ data }) => {
-      console.log('articles', data)
+      // console.log('articles', data)
 
       dispatch({
         type: FETCH_ARTICLES,

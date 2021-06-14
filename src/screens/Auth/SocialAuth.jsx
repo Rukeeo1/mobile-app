@@ -60,7 +60,7 @@ export const Login = ({ navigation }) => {
     try {
       await GoogleSignIn.askForPlayServicesAsync();
       const { type, user } = await GoogleSignIn.signInAsync();
-      
+
       if (type === 'success') {
         const { email, firstName, lastName } = user
         const username = `${email.split('@')[0]}-${getRand()}`

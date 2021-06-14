@@ -181,7 +181,7 @@ export const updateReminder = (reminder, status) => (dispatch) => {
 
   console.log(reminder)
 
-  apiRequest(`/reminders/${reminder?.id}`, 'put', { ...reminder, status })
+  apiRequest(`/reminders/${reminder?.id}`, 'delete', { ...reminder, status })
     .then(({ data }) => {
       console.log('update rmeminver', data)
       dispatch(getUserReminders())
