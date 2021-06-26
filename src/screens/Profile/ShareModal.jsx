@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { useDispatch } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 
 import { deleteUserPosts } from '../../redux/actions/authActions'
 
@@ -9,8 +10,9 @@ import constants from '../../constants';
 
 const { colors } = constants;
 
-export const ShareModal = ({ showBottomSheet, setShowShare, postId, Toast }) => {
+export const ShareModal = ({ showBottomSheet, setShowShare, post, Toast }) => {
   const dispatch = useDispatch()
+  const navigation = useNavigation()
 
   return (
     <BottomSheet
@@ -22,14 +24,23 @@ export const ShareModal = ({ showBottomSheet, setShowShare, postId, Toast }) => 
           <View style={styles.optionItem}>
             <Text>Share to...</Text>
           </View>
-          {/* <View style={styles.optionItem}>
-            <Text>Edit Post</Text>
-          </View> */}
           <TouchableOpacity
             style={styles.optionItem}
             onPress={() => {
               setShowShare(false)
-              dispatch(deleteUserPosts(postId, Toast))
+              navigation.navigate('Posts', {
+                screen: 'posts-form',
+                params: { post }
+              })
+            }}
+          >
+            <Text>Edit Post</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.optionItem}
+            onPress={() => {
+              setShowShare(false)
+              dispatch(deleteUserPosts(post?.id, Toast))
             }}
           >
             <Text style={{ color: colors.red, fontWeight: '500' }}>

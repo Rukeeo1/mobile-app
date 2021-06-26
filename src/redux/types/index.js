@@ -5,5 +5,6 @@ export * from './journalTypes'
 export * from './postsTypes'
 export * from './jobTypes'
 export * from './articlesTypes'
+export * from './notificationTypes'
 
 

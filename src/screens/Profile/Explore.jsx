@@ -61,7 +61,7 @@ const Explore = () => {
   const dispatch = useDispatch()
   const { loading, refreshing } = useSelector((state) => state.loading)
   const { all: posts = [] } = useSelector((state) => state.posts)
-  const { following = [] } = useSelector((state) => state.auth)
+  const { following = [], user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     dispatch(getPosts())
@@ -177,21 +177,23 @@ const Explore = () => {
                         source={{ uri: post?.avatar }}
                       />
                       <Text style={[styles.imgText]}>{post?.fullname}</Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (!isFollowing) {
-                            isFollowing = true
-                            dispatch(followUser(post?.user_id))
-                          }
-                        }}
-                      >
-                        <Text>
-                          {' • '}
-                          <Text style={{ textDecorationLine: isFollowing ? 'none' : 'underline' }}>
-                            {isFollowing ? 'Following' : 'Follow'}
+                      {post?.user_id !== user?.id && (
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (!isFollowing) {
+                              isFollowing = true
+                              dispatch(followUser(post?.user_id))
+                            }
+                          }}
+                        >
+                          <Text>
+                            {' • '}
+                            <Text style={{ textDecorationLine: isFollowing ? 'none' : 'underline' }}>
+                              {isFollowing ? 'Following' : 'Follow'}
+                            </Text>
                           </Text>
-                        </Text>
-                      </TouchableOpacity>
+                        </TouchableOpacity>
+                      )}
                     </TouchableOpacity>
 
                     <TouchableOpacity
