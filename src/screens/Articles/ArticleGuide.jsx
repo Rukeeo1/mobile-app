@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getArticles, selectArticle } from '../../redux/actions/articlesActions'
+import { getCategories, getArticles } from '../../redux/actions/articlesActions'
 
 import { SafeArea } from '../../components'
 import constants from '../../constants'
@@ -22,10 +22,10 @@ const { colors } = constants
 const ArticleGuide = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loading, refreshing } = useSelector((state) => state.loading)
-  const { all: articles = [] } = useSelector((state) => state.articles)
+  const { categories = [] } = useSelector((state) => state.articles)
 
   useEffect(() => {
-    dispatch(getArticles())
+    dispatch(getCategories())
   }, [])
 
   return (
@@ -59,7 +59,7 @@ const ArticleGuide = ({ navigation }) => {
             refreshControl={(
               <RefreshControl
                 refreshing={loading || refreshing}
-                onRefresh={() => dispatch(getArticles(true))}
+                onRefresh={() => dispatch(getCategories(true))}
                 colors={[colors.green]}
                 tintColor={colors.green}
               />
@@ -80,13 +80,13 @@ const ArticleGuide = ({ navigation }) => {
                   Grow It guides and articles
                 </Text>
               </View>
-              {articles?.map((article) => {
+              {categories?.map((article) => {
                 return (
                   <TouchableOpacity
                     style={{ marginTop: 15 }}
                     key={article?.id}
                     onPress={() => {
-                      dispatch(selectArticle(article))
+                      dispatch(getArticles(article?.id))
                       navigation.navigate('ArticleContent')
                     }}
                   >
@@ -108,7 +108,7 @@ const ArticleGuide = ({ navigation }) => {
                       >
                         {article?.title}
                       </Text>
-                      {/* <Text
+                      <Text
                         style={{
                           fontSize: 16,
                           textAlign: 'center',
@@ -116,8 +116,8 @@ const ArticleGuide = ({ navigation }) => {
                           paddingHorizontal: 40,
                         }}
                       >
-                        5 Things to remember when learning to grow you own
-                      </Text> */}
+                        {article?.summary}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 )

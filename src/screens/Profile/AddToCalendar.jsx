@@ -130,6 +130,8 @@ const AddToCalendar = () => {
   };
   const noHarvest = Object.keys(userJobs).map(jobs => jobs.jobs);
 
+  console.log({ m, y })
+
   return (
     <KeyboardAvoiding>
       <SafeArea>
@@ -280,59 +282,47 @@ const AddToCalendar = () => {
                   </View>
                 </GradientButton>
 
-
-                <View style={{ marginTop: 30 }}>
-                  {loadingJobs || loading ? (
-                    <ActivityIndicator />
-                  ) : (
-                    userJobs?.jobs
-                      ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
-                      .map((job, index) => {
-                        return job.job_type !== 'harvest' ? (
-                          <React.Fragment key={index}>
-                            <JobItem job={job} />
-                          </React.Fragment>
-                        ) : null;
-                      })
-                  )}
-                  {jobs && (
-                    <View style={[styles.jobs]}>
-                      <View style={[styles.jobsChild]}>
-                        <Image
-                          source={require('../../assets/circle.png')}
-                          height={20}
-                          width={20}
+                {jobs && (
+                  <View style={[styles.jobs]}>
+                    <View style={[styles.jobsChild]}>
+                      {/* <Image
+                        source={require('../../assets/circle.png')}
+                        height={20}
+                        width={20}
+                      /> */}
+                      <View style={[styles.jobsText]}>
+                        <TextInput
+                          style={{
+                            height: 20,
+                            width: '100%',
+                            color: colors.black,
+                            fontSize: 18,
+                            marginBottom: 5,
+                          }}
+                          value={newJobTitle}
+                          onChangeText={(val) => setNewJobTitle(val)}
+                          placeholder='Job Text'
+                          placeholderTextColor={colors.black}
                         />
-                        <View style={[styles.jobsText]}>
-                          <TextInput
-                            style={{
-                              height: 30,
-                              width: '100%',
-                              color: constants.colors.black
-                            }}
-                            value={newJobTitle}
-                            onChangeText={(val) => setNewJobTitle(val)}
-                            placeholder='Enter Job...'
-                            placeholderTextColor={colors.greyDark}
-                          />
-                          {/* <Text style={styles.boldText}>
+                        {/* <Text style={styles.boldText}>
                             {months[m]} {y}
                           </Text> */}
-                          <TextInput
-                            style={{
-                              height: 30,
-                              width: '100%',
-                              color: constants.colors.black
-                            }}
-                            value={newJobDay}
-                            onChangeText={(val) => setNewJobDay(val)}
-                            placeholder='Enter Day...'
-                            placeholderTextColor={colors.greyDark}
-                            keyboardType="number-pad"
-                            maxLength={2}
-                          />
-                        </View>
-                        <TouchableOpacity onPress={() => {
+                        <TextInput
+                          style={{
+                            height: 20,
+                            width: '100%',
+                            color: colors.green,
+                          }}
+                          value={newJobDay}
+                          onChangeText={(val) => setNewJobDay(val)}
+                          placeholder='Enter day of the month'
+                          placeholderTextColor={colors.green}
+                          keyboardType="number-pad"
+                          maxLength={2}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => {
                           const day = parseInt(newJobDay);
 
                           if (day < 1 || day > 31) {
@@ -348,22 +338,52 @@ const AddToCalendar = () => {
                               title: newJobTitle
                             }));
 
-                              setNewJobDay('');
-                              setNewJobTitle('');
+                            setNewJobDay('');
+                            setNewJobTitle('');
                           }
-                        }}>
-                          <AntDesign
-                            name='right'
-                            size={24}
-                            color={colors.green}
-                          // onPress={addJob}
-                          />
-                        </TouchableOpacity>
-                      </View>
-
+                        }}
+                        style={{
+                          borderRadius: 50,
+                          height: 60,
+                          width: 60,
+                          backgroundColor: colors.green,
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Text style={{ color: '#fff', fontSize: 17 }}>Set</Text>
+                        {/* <AntDesign
+                          name='right'
+                          size={24}
+                          color={colors.green}
+                        // onPress={addJob}
+                        /> */}
+                      </TouchableOpacity>
                     </View>
-                  )}
 
+                  </View>
+                )}
+
+
+                <View style={{ marginTop: 0 }}>
+                  {loadingJobs || loading ? (
+                    <ActivityIndicator />
+                  ) : (
+                    userJobs?.jobs
+                      ?.filter((job) => {
+                        const date = new Date(job?.job_date)
+
+                        return y ==date.getFullYear() && m == date.getMonth()
+                      })
+                      ?.slice(0, viewingMore ? userJobs?.jobs.length : 3)
+                      ?.map((job, index) => {
+                        return job.job_type !== 'harvest' ? (
+                          <React.Fragment key={index}>
+                            <JobItem job={job} />
+                          </React.Fragment>
+                        ) : null;
+                      })
+                  )}
                   <TouchableOpacity
                     onPress={() => setViewingMore(!viewingMore)}
                   >
@@ -376,6 +396,11 @@ const AddToCalendar = () => {
                 </View>
 
                 {reminders?.reminders
+                  ?.filter((reminder) => {
+                    const date = new Date(reminder?.reminder_date)
+
+                    return y == date.getFullYear() && m == date.getMonth()
+                  })
                   ?.slice(0, viewingMore2 ? reminders?.reminders.length : 3)
                   .map((reminder, index) => {
                     return (
@@ -426,7 +451,7 @@ const AddToCalendar = () => {
                 >
                   {reminders?.reminders?.length > 3 && (
                     <Text style={styles.viewMore}>
-                        {viewingMore2 ? 'Hide reminders' : 'View more'}
+                      {viewingMore2 ? 'Hide reminders' : 'View more'}
                     </Text>
                   )}
                 </TouchableOpacity>
@@ -445,22 +470,22 @@ const AddToCalendar = () => {
                     <AntDesign name='info' size={28} color={colors.white} />
                   </View>
                 </GradientButton>
-                  <View>
-                      {noHarvest.indexOf(undefined) !== -1  && (<>
+                <View>
+                  {noHarvest.indexOf(undefined) !== -1 && (<>
 
-                              <View style={styles.triangle} >
-                              </View>
-                              <View style={styles.rectangle} >
-                                  <Text style={{textAlignVertical: "center",textAlign: "center", color: "#085BAC", padding: 20}}>
-                                      Predicted harvests and crops{`\n`}
-                                      that you have marked as {`\n`}
-                                      harvesting will appear here
-                                  </Text>
-                              </View>
-                          </>
-                      )
-                      }
-                  </View>
+                    <View style={styles.triangle} >
+                    </View>
+                    <View style={styles.rectangle} >
+                      <Text style={{ textAlignVertical: "center", textAlign: "center", color: "#085BAC", padding: 20 }}>
+                        Predicted harvests and crops{`\n`}
+                        that you have marked as {`\n`}
+                        harvesting will appear here
+                      </Text>
+                    </View>
+                  </>
+                  )
+                  }
+                </View>
                 <View>
                   {loadingJobs || loading ? (
                     <ActivityIndicator />
@@ -521,26 +546,26 @@ const AddToCalendar = () => {
 
                 <View style={{ marginBottom: 50 }}>
                   <Text style={styles.explore}>Continue to explore</Text>
-                    <GradientButton
-                        gradient={[colors.red, colors.redDeep]}
-                        onPress={() => {
-                            navigation.navigate('Crops');
-                            manageCropContext?.actions?.setGrowInMonthIndex(m);
-                        }}
+                  <GradientButton
+                    gradient={[colors.red, colors.redDeep]}
+                    onPress={() => {
+                      navigation.navigate('Crops');
+                      manageCropContext?.actions?.setGrowInMonthIndex(m);
+                    }}
+                  >
+                    <View
+                      style={{
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        width: '100%',
+                        paddingHorizontal: 20,
+                      }}
                     >
-                        <View
-                            style={{
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                width: '100%',
-                                paddingHorizontal: 20,
-                            }}
-                        >
-                            <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
-                            <AntDesign name='search1' size={25} color={colors.white} />
-                        </View>
-                    </GradientButton>
+                      <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
+                      <AntDesign name='search1' size={25} color={colors.white} />
+                    </View>
+                  </GradientButton>
                 </View>
               </View>
             </ScrollView>
@@ -571,7 +596,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 10,
     paddingHorizontal: 15,
-    marginVertical: 5,
+    marginTop: 10,
     borderRadius: 50,
     // height: 78,
     backgroundColor: colors.white,
@@ -668,31 +693,31 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
   },
-    triangle: {
-        width: 0,
-        height: 0,
-        backgroundColor: "transparent",
-        borderStyle: "solid",
-        borderLeftWidth: 15,
-        borderRightWidth: 15,
-        borderBottomWidth: 30,
-        borderLeftColor: "transparent",
-        borderRightColor: "transparent",
-        borderBottomColor: "#E4EDF6",
-        marginLeft: "auto",
-        marginRight: "auto",
-    },
-    rectangle: {
-        width: '100%',
-        height: 100,
-        backgroundColor: "#E4EDF6",
-        marginLeft: "auto",
-        marginRight: "auto",
-        borderRadius: 10,
-        textAlign: "center",
-        justifyContent: "center",
-        color: "#085BAC",
-    },
+  triangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderStyle: "solid",
+    borderLeftWidth: 15,
+    borderRightWidth: 15,
+    borderBottomWidth: 30,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#E4EDF6",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  rectangle: {
+    width: '100%',
+    height: 100,
+    backgroundColor: "#E4EDF6",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 10,
+    textAlign: "center",
+    justifyContent: "center",
+    color: "#085BAC",
+  },
 });
 
 export default AddToCalendar;

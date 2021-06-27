@@ -15,6 +15,7 @@ import {
   Modal,
   RefreshControl,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFormik } from 'formik';
@@ -23,9 +24,10 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import Autocomplete from 'react-native-autocomplete-input'
+// import { useNavigation } from '@react-navigation/native'
 
 import { getCropVarieties, getCrops, addCrop2 } from '../../redux/actions/cropActions'
-import { addPost } from '../../redux/actions/postsActions'
+import { addPost, editPost } from '../../redux/actions/postsActions'
 
 import { GradientButton as Button, Header, Input } from '../../components/';
 import constants from '../../constants/';
@@ -38,12 +40,20 @@ const PostForm = ({
   defaultPostImage = '',
   currentIndex,
 }) => {
+  const postData = route?.params?.post
   const PostSchema = Yup.object().shape({
     post: Yup.string()
       .required('Required')
       .min(2, 'Too Short!')
       .max(1000, 'Too Long!'),
   });
+  const dispatch = useDispatch()
+  const { loading } = useSelector((state) => state.loading)
+  const { crops, cropDetail } = useSelector((state) => state.crops)
+  const { user } = useSelector((state) => state.auth)
+
+  const prevCrop = crops?.crops?.find((crop) => crop?.id === postData?.crop_id)
+
   const {
     handleChange,
     handleBlur,
@@ -54,22 +64,22 @@ const PostForm = ({
     postImageUri,
   } = useFormik({
     initialValues: {
-      post: '',
-      plantName: '',
-      plantVariety: '',
-      postImageUri: defaultPostImage || '',
-      isPublic: false,
+      post: postData?.content ?? '',
+      plantName: postData ? prevCrop?.name ?? '' : '',
+      plantVariety: postData?.variety ?? '',
+      postImageUri: postData?.media_url ?? defaultPostImage ?? '',
+      isPublic: true,
     },
     validationSchema: PostSchema,
     // enableReinitialize: true,
   });
 
   const [post, setPost] = useState({
-    post: '',
-    plantName: '',
-    plantVariety: '',
-    postImageUri: '',
-    isPublic: false,
+    post: postData?.content ?? '',
+    plantName: postData ? prevCrop : '',
+    plantVariety: postData?.variety ?? '',
+    postImageUri: postData?.media_url ?? defaultPostImage ?? '',
+    isPublic: true,
   })
   const [crop, setCrop] = useState(null)
   const [selectModal, setSelectModal] = useState(false)
@@ -94,11 +104,6 @@ const PostForm = ({
     }
   };
 
-  const dispatch = useDispatch()
-  const { loading } = useSelector((state) => state.loading)
-  const { crops, cropDetail } = useSelector((state) => state.crops)
-  const { user } = useSelector((state) => state.auth)
-
   const rbSheet = useRef()
 
   useEffect(() => {
@@ -117,12 +122,13 @@ const PostForm = ({
   }, [defaultPostImage, currentIndex]);
 
   const goBack = () => {
-    navigation.navigate('Settings', {
-      screen: 'Main-Profile',
-      params: {
-        indexOfItemToShow: 3,
-      },
-    });
+    // navigation.navigate('Settings', {
+    //   screen: 'Main-Profile',
+    //   params: {
+    //     indexOfItemToShow: 3,
+    //   },
+    // });
+    navigation.goBack()
   };
 
   const submit = () => {
@@ -130,24 +136,47 @@ const PostForm = ({
 
     data.append('title', values.post)
     data.append('content', values.post)
-    data.append('post_type', post.isPublic ? 'public' : 'private')
-    data.append('crop_id', post.plantName?.id)
+    if (!postData) data.append('post_type', post.isPublic ? 'public' : 'private')
+    data.append('crop_id', post.plantName?.id ?? postData?.crop_id)
     data.append('variety', values.plantVariety)
     data.append('user_id', user?.id)
-    data.append('thumbnail_url', {
-      name: post.postImageUri?.split('/').pop(),
-      uri: post.postImageUri,
-      type: 'image/*',
-    })
-    data.append('media_url', {
-      name: post.postImageUri?.split('/').pop(),
-      uri: post.postImageUri,
-      type: 'image/*',
-    })
+    if (!postData) {
+      if (post.isPublic && post.postImageUri === '') {
+        Alert.alert('', 'You\'ve not added an image', [{ text: 'Dismiss' }])
+      } else {
+        data.append('thumbnail_url', {
+          name: post.postImageUri?.split('/').pop(),
+          uri: post.postImageUri,
+          type: 'image/*',
+        })
+        data.append('media_url', {
+          name: post.postImageUri?.split('/').pop(),
+          uri: post.postImageUri,
+          type: 'image/*',
+        })
+      }
 
-    dispatch(addPost(data))
+      dispatch(addPost(data))
+      goBack()
+    } else {
+      if (post.postImageUri !== postData.media_url) {
+        data.append('thumbnail_url', {
+          name: post.postImageUri?.split('/').pop(),
+          uri: post.postImageUri,
+          type: 'image/*',
+        })
+        data.append('media_url', {
+          name: post.postImageUri?.split('/').pop(),
+          uri: post.postImageUri,
+          type: 'image/*',
+        })
+      }
+
+      dispatch(editPost(data, postData?.id, navigation))
+    }
+    
     // navigation.goBack()
-    goBack()
+    // goBack()
   }
 
   return (
@@ -321,19 +350,21 @@ const PostForm = ({
             onChangeText={handleChange('plantVariety')}
             placeholder='Plant variety e.g. Sungold'
           />
-          <View style={styles.switchContainer}>
-            <Text>Add to public profile</Text>
-            <Switch
-              trackColor={{ false: '#767577', true: colors.pink }}
-              value={post.isPublic}
-              onValueChange={(value) => {
-                setPost((prevState) => ({
-                  ...prevState,
-                  isPublic: value,
-                }));
-              }}
-            />
-          </View>
+          {!post && (
+            <View style={styles.switchContainer}>
+              <Text>Add to public profile</Text>
+              <Switch
+                trackColor={{ false: '#767577', true: colors.pink }}
+                value={post.isPublic}
+                onValueChange={(value) => {
+                  setPost((prevState) => ({
+                    ...prevState,
+                    isPublic: value,
+                  }));
+                }}
+              />
+            </View>
+          )}
           <View style={styles.footer}>
             <Button
               title='Share'
@@ -341,6 +372,7 @@ const PostForm = ({
               //the "settings title for this would be refactored to profile"
               // onPress={() => goBack()}
               onPress={submit}
+              loading={loading}
             />
           </View>
         </View>

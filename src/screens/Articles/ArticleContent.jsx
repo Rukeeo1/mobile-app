@@ -19,7 +19,7 @@ import constants from '../../constants'
 
 const { colors } = constants
 const ArticleGuide = ({ navigation }) => {
-  const { selected: article } = useSelector((state) => state.articles)
+  const { all: articles, selected: categoryId } = useSelector((state) => state.articles)
 
   return (
     <>
@@ -53,38 +53,41 @@ const ArticleGuide = ({ navigation }) => {
             <View>
               <View>
               </View>
-              <View>
-                <Image
-                  style={{
-                    height: Dimensions.get('window').height / 3,
-                    borderTopLeftRadius: 15,
-                  }}
-                  source={{ uri: article?.image_url }}
-                />
-              </View>
-
-              <View style={{ marginTop: 15 }}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    paddingHorizontal: 20,
-                    marginBottom: 30,
-                    textAlign: 'center',
-                  }}
-                >
-                  {article?.title}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    marginTop: 5,
-                    paddingHorizontal: 20,
-                  }}
-                >
-                  {article?.content}
-                </Text>
-              </View>
+              {articles[categoryId]?.map((article) => {
+                return (
+                  <View
+                    // style={{ marginTop: 15 }}
+                    key={article?.id}
+                  >
+                    <Image
+                      style={{ height: 181 }}
+                      source={{ uri: article?.media_url }}
+                    />
+                    <View style={{ marginTop: 15 }}>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          marginHorizontal: 20,
+                        }}
+                      >
+                        {article?.title}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          // textAlign: 'center',
+                          marginVertical: 15,
+                          paddingHorizontal: 20,
+                        }}
+                      >
+                        {article?.content}
+                      </Text>
+                    </View>
+                  </View>
+                )
+              })}
             </View>
             <View style={{ height: 50, backgroundColor: colors.white }} />
           </ScrollView>

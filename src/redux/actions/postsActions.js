@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Alert } from 'react-native'
 
 import {
   FETCH_POSTS,
@@ -62,6 +63,49 @@ export const addPost = (formData) => (dispatch, getState) => {
     })
     .then(({ data }) => {
       // console.log('add post', data)
+
+      dispatch(getPosts(true))
+    })
+    .catch((err) => {
+      // showApiError(err, true, () => dispatch(addPost(formData)))
+      // console.log('add post error', err?.response ?? err.message)
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      })
+    })
+}
+
+export const editPost = (formData, postId, navigation) => (dispatch, getState) => {
+  const { token } = getState().auth
+  // console.log(formData)
+
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  // axios
+  //   .post(`${API_URL}/posts/newpost`, formData, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  fetch(`${API_URL}/posts/${postId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data'
+    },
+    method: 'PUT',
+    body: formData
+  })
+    .then(({ data }) => {
+      // console.log('add post', data)
+      Alert.alert('', 'Post updated successfully',[{ text: 'Dismiss' }])
+      navigation?.goBack()
 
       dispatch(getPosts(true))
     })
