@@ -80,9 +80,9 @@ const AddToCalendar = () => {
     setFetchingFavoriteCrops(false);
   };
 
-  const getJobs = async (userId) => {
+  const getJobs = async (userId,month, year) => {
     setLoadingJobs(true);
-    await dispatch(getUserJobs(userId));
+    await dispatch(getUserJobs(userId,month, year));
     await dispatch(getUserReminders());
     setLoadingJobs(false);
   };
@@ -90,9 +90,9 @@ const AddToCalendar = () => {
   useEffect(() => {
     getFavoriteCrops();
     if (user?.id) {
-      getJobs(user?.id);
+      getJobs(user?.id, months[m], y);
     }
-  }, [m, user?.id, JSON.stringify(userJobs)]);
+  }, [m, user?.id, JSON.stringify(userJobs), m]);
 
   const nextItem = () => {
     if (m > months.length - 2) {
