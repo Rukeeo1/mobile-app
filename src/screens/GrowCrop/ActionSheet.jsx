@@ -16,7 +16,6 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
     actions: { cleanContextState },
   } = useManageCropContext();
 
-  console.log(cropToGrowDetails, 'I am rwanda tutsi');
 
   const handleNavigation = (path, params = {}) => {
     navigation.navigate(path, params);

@@ -126,7 +126,6 @@ export const editJobWithPatch =
   (jobId, jobDetails, toast) => async (dispatch) => {
     try {
       const { data } = await apiRequest(`/jobs/${jobId}`, 'patch', jobDetails);
-      console.log(data, 'from patch', jobDetails);
       toast.show({
         text1: data?.message,
       });
