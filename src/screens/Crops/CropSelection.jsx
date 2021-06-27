@@ -125,7 +125,7 @@ const CropSelection = ({ navigation, route }) => {
                                                 gradient={[colors.blueLigth, colors.blue]}
                                                 onPress={() => {
                                                     navigation.navigate('Success');
-                                                    ManageCropContext?.actions?.updateCropToGrowDetails({
+                                                    manageCropContext?.actions?.updateCropToGrowDetails({
                                                         variety: search,
                                                         cropName,
                                                         cropId,

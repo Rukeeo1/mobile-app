@@ -20,6 +20,8 @@ import {
   growCrop,
   harvestCrop,
   plantCrop,
+  updateJob,
+  editJobWithPatch
 } from '../../redux/actions/';
 import ManageCropContext from '../../context/ManageCropsContext';
 
@@ -39,8 +41,8 @@ import constants from '../../constants';
 import { getCropCardData } from '../../utils/index';
 
 import home from '../../assets/home-icon.png';
-// import pencil from '../../assets/pencil_circle.png';
-import moment from "moment";
+import pencil from '../../assets/pencil_circle.png';
+import moment from 'moment';
 
 import plant from '../../assets/plant.png';
 import growingSeed from '../../assets/growing-seed.png';
@@ -56,14 +58,12 @@ const screenWidth = Dimensions.get('screen').width;
 const CropCard = ({ navigation }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
-  console.log('timidee', cropToGrowDetails);
 
   const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
     cropSteps: state.crops.cropSteps,
     user: state?.auth?.user,
   }));
-
 
   const dispatch = useDispatch();
 
@@ -100,11 +100,6 @@ const CropCard = ({ navigation }) => {
           cropCycleDetails?.sow_direct_to || ''
         }`;
 
-  console.log(sowMonth, 'RO: this is sow month', cropToGrowDetails);
-  console.log(
-    cropToGrowDetails?.fromJobs && cropToGrowDetails.action === HARVEST,
-    '**********9999'
-  );
 
   const plantMonth =
     cropToGrowDetails?.action === 'PLANT'
@@ -121,9 +116,9 @@ const CropCard = ({ navigation }) => {
         }`;
 
   const cropSeasons = [sowMonth, plantMonth, harvestMonth];
-let ourDate;
+  let ourDate;
   const handleGrowCrop = async (selectedDate, jobType) => {
-      ourDate = new Date(selectedDate);// 2020 January 5
+    ourDate = new Date(selectedDate); // 2020 January 5
     const jobInfo = {
       crop_id: cropToGrowDetails?.cropId,
       user_id: user?.id,
@@ -134,9 +129,8 @@ let ourDate;
       variety: cropToGrowDetails.variety,
     };
     console.log('selected jara', jobInfo.job_date);
-    // console.log('selected jara2', ourDate);
 
-    console.log({jobType, selectedDate});
+    console.log({ jobType, selectedDate });
     setLoadingJobs(true);
 
     if (jobType === 'Sow') {
@@ -147,6 +141,37 @@ let ourDate;
     if (jobType === 'Plant') {
       jobInfo.title = 'Plant';
       await dispatch(plantCrop(jobInfo, Toast));
+    }
+
+    if (jobType === 'Harvest') {
+      jobInfo.title = 'Harvest';
+      await dispatch(harvestCrop(jobInfo, Toast));
+    }
+
+    setLoadingJobs(false);
+  };
+
+  const handleUpdateCrop = async (selectedDate, jobType) => {
+    ourDate = new Date(selectedDate); // 2020 January 5
+    const jobInfo = {
+      crop_id: cropToGrowDetails?.cropId,
+      user_id: user?.id,
+      job_date: ourDate,
+      status: 'PENDING',
+      variety: cropToGrowDetails.variety,
+    };
+  
+    
+    setLoadingJobs(true);
+
+    if (jobType === 'Sow') {
+      jobInfo.title = 'Sow';
+      await dispatch(updateJob(cropToGrowDetails.jobId, jobInfo, Toast));
+    }
+
+    if (jobType === 'Plant') {
+      jobInfo.title = 'Plant';
+      await dispatch(editJobWithPatch(cropToGrowDetails.jobId, jobInfo, Toast));
     }
 
     if (jobType === 'Harvest') {
@@ -286,7 +311,6 @@ let ourDate;
     );
   };
 
-
   return (
     <SafeArea containerStyle={{ flex: 1 }}>
       {!showSideMenu && (
@@ -331,9 +355,9 @@ let ourDate;
               marginTop: '10%',
             }}
           >
-            {/* <TouchableOpacity onPress={() => toggleBtmSheet()}>
+            <TouchableOpacity onPress={() => toggleBtmSheet()}>
               <Image source={pencil} style={{ height: 37, width: 37 }} />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
           <EditableTitle cropToGrowDetails={cropToGrowDetails} />
 
@@ -383,7 +407,9 @@ let ourDate;
               reminderText='Reminder to plant'
               startMonth={cropCycleDetails?.plant_end_month}
               onSubmitSelected={(dateSelected) => {
-                handleGrowCrop(dateSelected, 'Plant');
+                cropToGrowDetails?.fromJobs
+                  ? handleUpdateCrop(dateSelected, 'Plant')
+                  : handleGrowCrop(dateSelected, 'Plant');
               }}
               submitting={loadingJobs}
               fromJobs={
@@ -479,7 +505,7 @@ let ourDate;
               {/* </Tooltip> */}
             </View>
           </View>
-          {cycleData?.summary && cycleData?.summary.toLowerCase() !== 'n/a' &&  (
+          {cycleData?.summary && cycleData?.summary.toLowerCase() !== 'n/a' && (
             <View>
               <Text
                 style={{
@@ -510,7 +536,7 @@ let ourDate;
             </View>
           )}
           <StepsCarousel steps={cycleData?.steps} />
-          {cycleData?.tip && cycleData?.tip.toLowerCase() !== 'n/a' &&  (
+          {cycleData?.tip && cycleData?.tip.toLowerCase() !== 'n/a' && (
             <LinearGradient
               style={styles.toolTip}
               colors={[colors.green, colors.greenDeep]}
