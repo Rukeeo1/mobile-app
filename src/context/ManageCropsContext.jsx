@@ -28,7 +28,8 @@ export const ManageCropProvider = ({ children }) => {
       monthIndex: 0,
       cropId: '',
       fromJobs: false,
-      category:''
+      category:'',
+      jobId: ''
     }));
 
     setEndharvest(false);

@@ -10,15 +10,16 @@ import {
 } from '../types';
 import { apiRequest, showApiError } from '../../config/api';
 
-export const getUserJobs = (userId) => (dispatch, getState) => {
+export const getUserJobs = (userId, month="", year="") => (dispatch, getState) => {
   dispatch({
     type: LOADING_JOBS,
   });
-  apiRequest(`/jobs/list?user_id=${userId}`)
-    .then(({ data }) => {
+  apiRequest(`/jobs/list?user_id=${userId}&month=${month}&year=${year}`)
+    .then((response) => {
+      console.log(response,'mr president')
       dispatch({
         type: GET_USER_JOBS,
-        payload: data,
+        payload: response.data,
       });
       dispatch({
         type: LOADING_JOBS,
@@ -35,16 +36,14 @@ export const getUserJobs = (userId) => (dispatch, getState) => {
 export const growCrop = (cropDetails, toast) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/jobs/growit`, 'post', cropDetails);
-    console.log(data,'data___')
     toast.show({
       text1: data?.message,
     });
-    console.log(data,'we are cool right')
 
     dispatch(getUserJobs(cropDetails?.user_id));
     return;
   } catch (error) {
-    console.log(data,'data___error')
+    console.log(data, 'data___error');
 
     showApiError(error);
     return error;
@@ -123,6 +122,38 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
   }
 };
 
+export const editJobWithPatch =
+  (jobId, jobDetails, toast) => async (dispatch) => {
+    try {
+      const { data } = await apiRequest(`/jobs/${jobId}`, 'patch', jobDetails);
+      toast.show({
+        text1: data?.message,
+      });
+
+      dispatch(getUserJobs(jobDetails?.user_id));
+      return;
+    } catch (error) {
+      console.log(error, 'from job update');
+      return showApiError(error);
+    }
+  };
+
+export const deleteJob = (jobId, userId, toast) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/jobs/${jobId}`, 'delete');
+
+    toast.show({
+      text1: data?.message,
+    });
+
+    dispatch(getUserJobs(userId));
+    return;
+  } catch (error) {
+    console.log(error, 'from job update');
+    return showApiError(error);
+  }
+};
+
 export const getUserReminders = () => (dispatch) => {
   dispatch({
     type: LOADING,
@@ -138,18 +169,19 @@ export const getUserReminders = () => (dispatch) => {
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(getUserReminders()));
-      
     })
     .finally(() => {
       dispatch({
         type: LOADING,
         payload: false,
       });
-    })
+    });
 };
 
 export const addReminder = (data) => (dispatch, getState) => {
-  const { user: { id: user_id } } = getState().auth
+  const {
+    user: { id: user_id },
+  } = getState().auth;
 
   dispatch({
     type: LOADING,
@@ -158,20 +190,19 @@ export const addReminder = (data) => (dispatch, getState) => {
 
   apiRequest(`/reminders/new`, 'post', { ...data, user_id })
     .then(({ data }) => {
-      console.log('get rmeminver', data)
-      dispatch(getUserReminders())
+      console.log('get rmeminver', data);
+      dispatch(getUserReminders());
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(addReminder(data)));
-
     })
     .finally(() => {
       dispatch({
         type: LOADING,
         payload: true,
       });
-    })
-}
+    });
+};
 
 export const updateReminder = (reminder, status) => (dispatch) => {
   dispatch({
@@ -179,21 +210,20 @@ export const updateReminder = (reminder, status) => (dispatch) => {
     payload: reminder?.id,
   });
 
-  console.log(reminder)
+  console.log(reminder);
 
   apiRequest(`/reminders/${reminder?.id}`, 'delete', { ...reminder, status })
     .then(({ data }) => {
-      console.log('update rmeminver', data)
-      dispatch(getUserReminders())
+      console.log('update rmeminver', data);
+      dispatch(getUserReminders());
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(getUserReminders()));
-
     })
     .finally(() => {
       dispatch({
         type: UPDATING_REMINDER,
         payload: null,
       });
-    })
-}
+    });
+};

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -8,13 +9,32 @@ import {
   View,
 } from 'react-native';
 import constants from '../../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { getNotifications } from '../../redux/actions/notificationsActions'
 
 const { colors } = constants;
 const Notification = () => {
+  const dispatch = useDispatch()
+  const { loading, refreshing } = useSelector((state) => state.loading)
+
+  useEffect(() => {
+    dispatch(getNotifications())
+  }, [])
+
   return (
     <View style={{ flex: 1 }}>
       {/* <SafeAreaView> */}
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={(
+            <RefreshControl
+              refreshing={loading || refreshing}
+              onRefresh={() => dispatch(getNotifications(true))}
+              colors={[colors.green]}
+              tintColor={colors.green}
+            />
+          )}
+        >
           <View>
             <View style={[styles.topSection]}>
               <Text style={[styles.title]}>Notifications</Text>

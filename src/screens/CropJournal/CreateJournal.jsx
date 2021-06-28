@@ -8,6 +8,7 @@ import {
   Switch,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useFormik } from 'formik';
@@ -81,27 +82,30 @@ const CreateJournal = ({ navigation }) => {
 
     validationSchema: createJournalSchema,
     onSubmit: async (data) => {
-        const journalFormData = new FormData()
+      const journalFormData = new FormData()
 
       const { user_id, crop_id, isPublic, content, journalImageUri } = data;
-console.log({ user_id, crop_id, isPublic, content, journalImageUri });
+      console.log({ user_id, crop_id, isPublic, content, journalImageUri });
       journalFormData.append('user_id', user_id);
-        journalFormData.append('title', crop_id);
-        journalFormData.append('crop_id', crop_id);
+      journalFormData.append('title', crop_id);
+      journalFormData.append('crop_id', crop_id);
       journalFormData.append('post_type', isPublic ? 'public' : 'private');
       journalFormData.append('content', content);
-      journalFormData.append('thumbnail_url', {
-        name: journalImageUri?.split('/').pop(),
-        uri: journalImageUri,
-        type: 'image/*',
-      });
-      journalFormData.append('media_url', {
-        name: journalImageUri?.split('/').pop(),
-        uri: journalImageUri,
-        type: 'image/*',
-      });
+      if (isPublic && journalImageUri === '') Alert.alert('', 'You\'ve not added an image', [{ text: 'Dismiss' }])
+      else {
+        if (journalImageUri !== '') journalFormData.append('thumbnail_url', {
+          name: journalImageUri?.split('/').pop(),
+          uri: journalImageUri,
+          type: 'image/*',
+        });
+        if (journalImageUri !== '') journalFormData.append('media_url', {
+          name: journalImageUri?.split('/').pop(),
+          uri: journalImageUri,
+          type: 'image/*',
+        });
+      }
 
-        console.log('journaldata 2', data);
+      console.log('journaldata 2', data);
 
       // setAddingJournal(true);
       await dispatch(addPost(journalFormData));
@@ -128,30 +132,30 @@ console.log({ user_id, crop_id, isPublic, content, journalImageUri });
   };
   const disableForm = !isValid || !values.content || !values.journalImageUri;
 
-    const submit = () => {
-        const data = new FormData()
+  const submit = () => {
+    const data = new FormData()
 
-        data.append('title', values.content)
-        data.append('content', values.content)
-        data.append('post_type', values.isPublic ? 'public' : 'private')
-        data.append('crop_id', values.crop_id)
-        data.append('variety', values.plantVariety)
-        data.append('user_id', values.user_id)
-        data.append('thumbnail_url', {
-            name: values.journalImageUri?.split('/').pop(),
-            uri: values.journalImageUri,
-            type: 'image/*',
-        })
-        data.append('media_url', {
-            name: values.journalImageUri?.split('/').pop(),
-            uri: values.journalImageUri,
-            type: 'image/*',
-        })
+    data.append('title', values.content)
+    data.append('content', values.content)
+    data.append('post_type', values.isPublic ? 'public' : 'private')
+    data.append('crop_id', values.crop_id)
+    data.append('variety', values.plantVariety)
+    data.append('user_id', values.user_id)
+    data.append('thumbnail_url', {
+      name: values.journalImageUri?.split('/').pop(),
+      uri: values.journalImageUri,
+      type: 'image/*',
+    })
+    data.append('media_url', {
+      name: values.journalImageUri?.split('/').pop(),
+      uri: values.journalImageUri,
+      type: 'image/*',
+    })
 
-        dispatch(addPost(data))
-        // navigation.goBack()
-        goBack()
-    }
+    dispatch(addPost(data))
+    // navigation.goBack()
+    goBack()
+  }
   return (
     <SafeArea>
       <ScrollView

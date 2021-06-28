@@ -7,6 +7,7 @@ import journal from './JournalReducer';
 import posts from './postsReducer';
 import jobs from './jobReducer';
 import articles from './articlesReducer'
+import notifications from './notificationReducer'
 
 export default combineReducers({
   loading,
@@ -16,4 +17,5 @@ export default combineReducers({
   posts,
   jobs,
   articles,
+  notifications,
 });

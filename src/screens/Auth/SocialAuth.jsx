@@ -69,6 +69,8 @@ export const Login = ({ navigation }) => {
           full_name: `${firstName} ${lastName}`,
           username,
         }, navigation))
+      } else {
+        alert(type)
       }
     } catch ({ message }) {
       let errorMessage = 'An error occurred. Please try again later'
@@ -94,11 +96,11 @@ export const Login = ({ navigation }) => {
       })
 
       console.log('apple', appleCredential)
-      const { email, fullName: full_name } = appleCredential
+      const { email, fullName } = appleCredential
       const username = `${email.split('@')[0]}-${getRand()}`
       dispatch(socialAuth({
         auth_id: email,
-        full_name: full_name,
+        full_name: `${fullName.givenName} ${fullName.familyName}`,
         username,
       }, navigation))
     } catch (err) {

@@ -240,7 +240,7 @@ export const CropDatePickerContainer = ({
 
     // console.log({onSubmitSelected});
     const justMonth = ourMonthIndex(selectedMonth);
-    console.log('ourmonth', justMonth);
+
     // console.log(moment.utc(`${selectedYear} ${selectedMonth} ${selectedDate}`));
     // console.log('moment test', moment(`${selectedYear} ${selectedMonth} ${selectedDate}`,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss'))
   return (

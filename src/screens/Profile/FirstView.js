@@ -66,9 +66,9 @@ const FirstView = () => {
     dispatch(getUserFollowing(false, true));
   }, []);
 
-  const toggleModal = (postId) => {
+  const toggleModal = (post) => {
     setShowShare((prevState) => !prevState);
-    setPostToShare(postId);
+    setPostToShare(post);
   };
 
   const handleNavigation = (path, params) => {
@@ -257,7 +257,7 @@ const FirstView = () => {
                       >
                         {new Date(post.created_at).toDateString()}
                       </Text>
-                      <TouchableOpacity onPress={() => toggleModal(post?.id)}>
+                      <TouchableOpacity onPress={() => toggleModal(post)}>
                         <Text>...</Text>
                       </TouchableOpacity>
                     </View>
@@ -311,7 +311,7 @@ const FirstView = () => {
         <ShareModal
           showBottomSheet={showShare}
           setShowShare={toggleModal}
-          postId={postToShare}
+          post={postToShare}
           Toast={Toast}
         />
       </ScrollView>
