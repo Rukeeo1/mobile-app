@@ -71,7 +71,10 @@ const AddToCalendar = () => {
   const [fetchingFavoriteCrops, setFetchingFavoriteCrops] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
 
-  const [newJobTitle, setNewJobTitle] = useState('')
+    const [showTipHarvest, setShowTipHarvest] = useState(false);       // STATE FOR THE INPUT VALUE
+    const timeoutRef = useRef(null);
+
+    const [newJobTitle, setNewJobTitle] = useState('')
   const [newJobDay, setNewJobDay] = useState('')
 
   const getFavoriteCrops = async () => {
@@ -115,6 +118,16 @@ const AddToCalendar = () => {
   const setMonth = (index) => {
     setM(index);
   };
+    useEffect(() => {
+        if (timeoutRef.current !== null) {          // IF THERE'S A RUNNING TIMEOUT
+            clearTimeout(timeoutRef.current);         // THEN, CANCEL IT
+        }
+        timeoutRef.current = setTimeout(() => {
+            timeoutRef.current = null;
+            setShowTipHarvest(false);
+        }, 3000)                                    // AFTER 500ms
+    },[showTipHarvest]);
+
 
   const onFabPress = () => {
     scrollRef.current.scrollTo({
@@ -431,7 +444,9 @@ const AddToCalendar = () => {
                   )}
                 </TouchableOpacity>
 
-                <GradientButton gradient={[colors.blueLigth, colors.blue]}>
+                <GradientButton gradient={[colors.blueLigth, colors.blue]}  onPress={() => {
+                    setShowTipHarvest(!showTipHarvest);
+                }}>
                   <View
                     style={{
                       justifyContent: 'space-between',
@@ -446,7 +461,7 @@ const AddToCalendar = () => {
                   </View>
                 </GradientButton>
                   <View>
-                      {noHarvest.indexOf(undefined) !== -1  && (<>
+                      {showTipHarvest && noHarvest.indexOf(undefined) !== -1  && (<>
 
                               <View style={styles.triangle} >
                               </View>

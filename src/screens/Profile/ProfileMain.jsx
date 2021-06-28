@@ -47,8 +47,7 @@ const MainProfile = ({ navigation, route }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [showBottomSheet, setShowBottomSheet] = useState(false);
-
-  const { indexOfItemToShow } = route.params;
+     const { indexOfItemToShow } = route?.params || 3;
 
   //this sets the default sidebar item when comeing from another screen... we need to look for a way to clean it up...
   const handleNavigation = (destination) => {
@@ -79,7 +78,7 @@ const MainProfile = ({ navigation, route }) => {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             //indexofitemtoshow ==> should be refactored to take itemName instead
-            indexOfItemToShow={indexOfItemToShow}
+            indexOfItemToShow={route?.params ? indexOfItemToShow : 3}
             navigation={navigation}
             setDefaultPostImage={setDefaultPostImage}
             currentIndex={currentIndex}

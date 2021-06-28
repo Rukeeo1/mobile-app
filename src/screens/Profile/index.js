@@ -24,8 +24,9 @@ const ProfileNavigator = () => {
         headerShown: false,
       }}
     >
-      <Screen name='Profile-Settings' component={ProfileSettings} />
+
       <Screen name='Main-Profile' component={ProfileMain} />
+        <Screen name='Explore' component={Explore} />
       <Screen name='Following' component={Following} />
       <Screen name='Followers' component={Followers} />
       <Screen name='GrowItCalendar' component={GrowItCalendar} />
@@ -33,7 +34,7 @@ const ProfileNavigator = () => {
       <Screen name='ArticleContent' component={ArticleContent} />
       <Screen name='User-details' component={UserDetails} />
         <Screen name='Single-Post' component={SinglePost} />
-        <Screen name='Explore-screen' component={Explore} />
+        <Screen name='Profile-Settings' component={ProfileSettings} />
       <Screen name='Logout' component={Logout} />
     </Navigator>
   );
