@@ -500,6 +500,32 @@ export const getUserPosts = () => (dispatch, getState) => {
       })
     })
 }
+export const getUserJournals = () => (dispatch, getState) => {
+  const { user } = getState().auth
+
+  dispatch({
+    type: FETCHING_MORE,
+    payload: true,
+  })
+
+  apiRequest(`/journals/personal`)
+    .then(({ data }) => {
+
+      dispatch({
+        type: GET_USER_POSTS,
+        payload: data.posts,
+      })
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(getUserJournals()))
+    })
+    .finally(() => {
+      dispatch({
+        type: FETCHING_MORE,
+        payload: false,
+      })
+    })
+}
 
 export const deleteUserPosts = (postId, toast) => (dispatch, getState) => {
   const { posts = [] } = getState().auth

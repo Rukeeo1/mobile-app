@@ -17,6 +17,7 @@ import {
   SplashScreen,
 } from '../screens';
 import Launch from './AuthLoading';
+import SinglePost from "../screens/Profile/SinglePost";
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,7 @@ const RootNavigator = () => {
         <Screen name='Crops' component={Crops} />
         <Screen name='Grow-Crop' component={GrowCropNavigator} />
         <Screen name='Crop-Journal' component={CropJournalNavigator} />
+          <Screen name='Single-Post2' component={SinglePost} />
         <Screen name='End-Harvest' component={EndHarvestNavigator} />
         <Screen name='Splash' component={SplashScreen} />
         <Screen name='Settings' component={ProfileNavigator} />

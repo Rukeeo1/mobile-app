@@ -42,6 +42,9 @@ const CropSearch = ({ navigation, route }) => {
   const clearFilter = () => {
     setSelectedLevel(null);
     setSelectedMonth(null);
+      setSelectedLevel(null);
+      setSelectedCategory(null);
+      setSelectedCycle(null);
   };
 
   const handleSearch = (value) => {
@@ -140,7 +143,7 @@ const CropSearch = ({ navigation, route }) => {
                   placeholder='Category'
                 />
                 <FilterItemDropDown
-                  items={['Annual', 'Biennial', 'Perennial']}
+                  items={['Annual', 'Biennial', 'Perennial', 'Tender Perennial']}
                   activeItem={selectedCycle ?? 'Select cycle'}
                   onSelect={setSelectedCycle}
                   placeholder='Life Cycle'
@@ -187,9 +190,15 @@ const CropSearch = ({ navigation, route }) => {
           <View style={[styles.cropSection]}>
             {searchResults
               ?.crops
-              ?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true && selectedCategory ? crop?.category == selectedCategory : true && selectedCycle ? crop?.life_cycle == selectedCycle : true)
+              ?.filter((crop) => selectedLevel ? crop?.grow_level === selectedLevel : true )
+              ?.filter((crop) => selectedCategory ? crop?.category === selectedCategory : true)
+              ?.filter((crop) => selectedCycle ? crop?.life_cycle === selectedCycle : true)
               .map((crop) => {
-                return (
+                  // let input_string = crop?.name;
+                  // let left_text = input_string.substring(0, input_string.indexOf("_CoverPhoto")) ;
+                  // let parts = left_text.split("/");
+                  // let cropNameModified = crop?.name === 'string' ? parts[parts.length - 1] : crop?.name;
+                  return (
                   <TouchableOpacity
                     key={crop?.id}
                     activeOpacity={0.9}

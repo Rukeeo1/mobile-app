@@ -67,7 +67,10 @@ export const JobItem = ({ job }) => {
           style={{ height: screenHeight * 0.06, width: screenWidth * 0.05 }}
         />
         <View style={styles.jobsText}>
-          <Text>{`${job?.title} ${job?.name}`}</Text>
+          <Text>{`${job?.title?.replace(
+              /(\w)(\w*)/g,
+              (_, firstChar, rest) => firstChar + rest.toLowerCase()
+          )} ${job?.name}`}</Text>
           <Text fontType='bold' style={styles.boldText}>
             {new Date(job.job_date).toDateString()}
           </Text>

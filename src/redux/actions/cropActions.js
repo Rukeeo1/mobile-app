@@ -176,7 +176,7 @@ export const addCrop2 = (name, setCrop) => (dispatch) => {
 
 export const getCropSearchResults = (value, month='') => async (dispatch) => {
   try {
-    const { data } = await apiRequest(`/crops/grow/varieties?crop=${value}&month=${month}`);
+    const { data } = await apiRequest(`/crops/grow/favourites?crop=${value}&month=${month}`);
   
     dispatch({
       type: GET_SEARCH_RESULTS,

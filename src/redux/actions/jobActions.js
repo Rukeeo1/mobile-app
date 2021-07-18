@@ -1,12 +1,12 @@
 import {
-  GET_USER_JOBS,
-  LOADING_JOBS,
-  GET_CURRENT_GROW_CROPS,
-  GET_FAVORITE_CROPS_TO_GROW,
-  GET_PAST_HARVEST,
-  GET_REMINDERS,
-  LOADING,
-  UPDATING_REMINDER,
+    GET_USER_JOBS,
+    LOADING_JOBS,
+    GET_CURRENT_GROW_CROPS,
+    GET_FAVORITE_CROPS_TO_GROW,
+    GET_PAST_HARVEST,
+    GET_REMINDERS,
+    LOADING,
+    UPDATING_REMINDER, CHECK_EXISTING_JOB,
 } from '../types';
 import { apiRequest, showApiError } from '../../config/api';
 
@@ -190,7 +190,6 @@ export const addReminder = (data) => (dispatch, getState) => {
 
   apiRequest(`/reminders/new`, 'post', { ...data, user_id })
     .then(({ data }) => {
-      console.log('get rmeminver', data);
       dispatch(getUserReminders());
     })
     .catch((err) => {

@@ -11,18 +11,18 @@ import constants from '../../constants';
 
 const { colors, screenHeight } = constants;
 
-export const CropItem = ({ crop }) => {
+export const CropItem = ({ crop, currentVariety }) => {
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
-  const { thumbnail_url, name, category, variety } = crop || {};
+  const { thumbnail_url, name, category, variety, affiliate_links, recommendation } = crop || {}; //{affiliate_links, thumbnail_url, recommendation}
 
   const manageCropContext = useContext(ManageCropContext);
 
   const handleNavigation = (path, extraInfo) => () => {
     navigation.navigate(path);
     manageCropContext?.actions?.updateCropToGrowDetails({
-      variety,
-      cropName: name,
+      variety: currentVariety,
+      cropName: recommendation,
       cropId: crop?.id,
     });
   };
@@ -37,8 +37,8 @@ export const CropItem = ({ crop }) => {
         <View style={[styles.cropDetails]}>
           <Image style={[styles.cropAvatar]} source={{ uri: thumbnail_url }} />
           <View style={[styles.cropText]}>
-            <Text style={[styles.cropName]}>{name}</Text>
-            <Text>{category}</Text>
+            <Text style={[styles.cropName]}>{recommendation}</Text>
+            <Text>{currentVariety}</Text>
           </View>
         </View>
         <AntDesign name='right' size={24} color={colors.green} />

@@ -45,6 +45,8 @@ const EndHarvestSchedule = ({ navigation }) => {
     const growDate = selectedDay + ' ' + selectedMonth + ' ' + selectedYear;
     const cropInfo = {
       crop_id: cropCycleDetails.id,
+        title: 'SOW',
+        job_type: 'SOW',
       user_id: user?.id,
       job_date: new Date(growDate),
       status: 'PENDING'

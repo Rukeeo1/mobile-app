@@ -1,13 +1,14 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { GradientButton, Input } from '../../components/'
+import React, {useContext, useState} from 'react'
+import {SafeAreaView, ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions} from 'react-native'
+import {GradientButton, Header, Input} from '../../components/'
 import constants from '../../constants'
 import DropDownPicker from 'react-native-dropdown-picker'
-import { Ionicons } from '@expo/vector-icons';
+import {AntDesign, Ionicons} from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCrop } from '../../redux/actions'
+import ManageCropContext from "../../context/ManageCropsContext";
 
 const { colors } = constants
 const NeCrop = ({ navigation }) => {
@@ -40,8 +41,34 @@ const NeCrop = ({ navigation }) => {
   }
 
   const dispatch = useDispatch()
+    const manageCropContext = useContext(ManageCropContext);
+    const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
   const { loading } = useSelector((state) => state.loading)
+    const getCurrentDate=()=>{
 
+        const date = new Date().getDate();
+        const month = `0${new Date().getMonth() + 1}`;
+        const year = new Date().getFullYear();
+
+        //Alert.alert(date + '-' + month + '-' + year);
+        // You can turn it in to your desired format
+        // return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
+        return year + '-' + month + '-' + date;//format: yyyy-mm-dd;
+    }
+    const cropDate = getCurrentDate();
+const createNewCrop = () => {
+    manageCropContext?.actions?.updateCropToGrowDetails(
+        {
+            title: 'PENDING',
+            cropName: state.name,
+            variety: state.variety,
+            action: 'PENDING',
+            job_type: 'PENDING',
+            job_date: cropDate,
+        }
+    );
+      return dispatch(addCrop(state, navigation))
+}
   // console.log({state})
   return (
     <View style={{ flex: 1 }}>
@@ -51,26 +78,36 @@ const NeCrop = ({ navigation }) => {
           style={[styles.topSection]}
           colors={[colors.green, colors.greenDeep]}
         >
+
           <View>
+              <AntDesign
+                  name='left'
+                  size={24}
+                  color={colors.white}
+                  style={{ top: 10, left: 0, position: "absolute" }}
+                  onPress={() => navigation.goBack()}
+              />
             <Text style={[styles.title]}>New Crop</Text>
           </View>
         </LinearGradient>
 
         <View style={{ padding: 22, flexDirection: 'column' }}>
-          <TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>
-            {state.image ? (
-              <Image
-                source={{ uri: state.image }}
-                style={{ height: '100%', width: '100%' }}
-              />
-            ) : (
-              <Ionicons
-                name='ios-camera-outline'
-                size={45}
-                color={colors.white}
-              />
-            )}
-          </TouchableOpacity>
+          {/*<TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>*/}
+          {/*  {state.image ? (*/}
+          {/*    <Image*/}
+          {/*      source={{ uri: state.image }}*/}
+          {/*      style={{ height: '100%', width: '100%' }}*/}
+          {/*    />*/}
+          {/*  ) : (*/}
+          {/*    <Ionicons*/}
+          {/*      name='ios-camera-outline'*/}
+          {/*      size={45}*/}
+          {/*      color={colors.white}*/}
+          {/*    />*/}
+          {/*  )}*/}
+          {/*</TouchableOpacity>*/}
+
+
           <View>
             <View style={[styles.inputContainer]}>
               <Input
@@ -82,7 +119,7 @@ const NeCrop = ({ navigation }) => {
               />
             </View>
             <View style={[styles.inputContainer]}>
-              <Text style={styles.labelText}>Variety</Text>
+              <Text style={styles.labelText}>Enter the variety name</Text>
               <Text>You can find this on your seed pack</Text>
               <Input
                 placeholder="Enter the variety"
@@ -112,7 +149,7 @@ const NeCrop = ({ navigation }) => {
                 coverStyle={styles.button}
                 // onPress={() => navigation.navigate('Success')}
                 loading={loading}
-                onPress={() => dispatch(addCrop(state, navigation))}
+                onPress={createNewCrop}
               />
             </View>
 
@@ -135,12 +172,12 @@ const styles = StyleSheet.create({
     height: 143,
     paddingLeft: 10,
     paddingRight: 10,
-    alignItems: 'center',
+    alignContent: 'space-between',
     justifyContent: 'center',
   },
   title: {
     fontSize: 42,
-    fontWeight: '100',
+      fontWeight: '100',
     color: colors.white,
     textAlign: 'center',
   },

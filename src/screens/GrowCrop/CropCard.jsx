@@ -64,10 +64,13 @@ const CropCard = ({ navigation }) => {
     cropSteps: state.crops.cropSteps,
     user: state?.auth?.user,
   }));
-
   const dispatch = useDispatch();
 
   const [activeScreen, setActiveScreen] = useState(0);
+  const [toUseJobDetails, setToUseJobDetails] = useState({});
+  const [toUseCropDetails, setToUseCropDetails] = useState({});
+  const [toUseVariety, setToUseVariety] = useState('');
+  const [toUseJobType, setToUseJobType] = useState('');
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
@@ -104,12 +107,12 @@ const CropCard = ({ navigation }) => {
   const plantMonth =
     cropToGrowDetails?.action === 'PLANT'
       ? monthsAbr[cropToGrowDetails?.monthIndex]
-      : `${cropCycleDetails?.plant_end_month || ''} - ${
-          cropCycleDetails?.plant_start_month || ''
+      : `${cropCycleDetails?.plant_start_month || ''} - ${
+          cropCycleDetails?.plant_end_month || ''
         }`;
 
   const harvestMonth =
-    cropToGrowDetails?.action === 'harvest'
+    cropToGrowDetails?.action === 'HARVEST'
       ? monthsAbr[cropToGrowDetails?.monthIndex]
       : `${cropCycleDetails?.harvest_start_month || ''} - ${
           cropCycleDetails?.harvest_end_month || ''
@@ -118,69 +121,69 @@ const CropCard = ({ navigation }) => {
   const cropSeasons = [sowMonth, plantMonth, harvestMonth];
   let ourDate;
   const handleGrowCrop = async (selectedDate, jobType) => {
-    ourDate = new Date(selectedDate); // 2020 January 5
+     ourDate = selectedDate || new Date; // 2020 January 5
+      // ourDate = new Date(selectedDate); // 2020 January 5
     const jobInfo = {
       crop_id: cropToGrowDetails?.cropId,
       user_id: user?.id,
       // job_date: new Date('2017-09-13 00:13:28'.replace(' ', 'T')),
       // job_date: ourDate.toString(),
       job_date: ourDate,
+        job_type: 'PENDING',
       status: 'PENDING',
-      variety: cropToGrowDetails.variety,
+      variety: cropToGrowDetails?.variety,
     };
-    console.log('selected jara', jobInfo.job_date);
-
-    console.log({ jobType, selectedDate });
+    setToUseJobType(jobType);
+      setToUseVariety(cropToGrowDetails?.variety);
     setLoadingJobs(true);
 
-    if (jobType === 'Sow') {
-      jobInfo.title = 'Sow';
-      await dispatch(growCrop(jobInfo, Toast));
+    if (jobType === 'SOW') {
+        jobInfo.title = 'SOW';
+        jobInfo.status = 'STARTED';
+        jobInfo.job_type = 'SOW';
+        await manageCropContext?.actions?.updateCropToGrowDetails({
+                fromJobs: true,
+                jobId: cropToGrowDetails.jobId,
+                job_type: 'SOW',
+                action: 'STARTED',
+            jobStatus: 'STARTED'
+            }
+        );
+        await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
     }
 
-    if (jobType === 'Plant') {
-      jobInfo.title = 'Plant';
-      await dispatch(plantCrop(jobInfo, Toast));
+    if (jobType === 'PLANT') {
+        jobInfo.title = 'PLANT';
+        jobInfo.status = 'STARTED';
+        jobInfo.job_type = 'PLANT';
+        await manageCropContext?.actions?.updateCropToGrowDetails({
+                fromJobs: true,
+                jobId: cropToGrowDetails.jobId,
+                job_type: 'PLANT',
+                action: 'STARTED',
+            jobStatus: 'STARTED'
+            }
+        );
+        await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
     }
 
-    if (jobType === 'Harvest') {
-      jobInfo.title = 'Harvest';
-      await dispatch(harvestCrop(jobInfo, Toast));
+    if (jobType === 'HARVEST') {
+      jobInfo.title = 'HARVEST';
+        jobInfo.status = 'STARTED';
+        jobInfo.job_type = 'HARVEST';
+
+        manageCropContext?.actions?.updateCropToGrowDetails({
+            fromJobs: true,
+            job_type: 'HARVEST',
+            jobStatus: 'PENDING',
+        })
+        await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
+      // await dispatch(harvestCrop(jobInfo, Toast));
     }
 
     setLoadingJobs(false);
   };
 
-  const handleUpdateCrop = async (selectedDate, jobType) => {
-    ourDate = new Date(selectedDate); // 2020 January 5
-    const jobInfo = {
-      crop_id: cropToGrowDetails?.cropId,
-      user_id: user?.id,
-      job_date: ourDate,
-      status: 'PENDING',
-      variety: cropToGrowDetails.variety,
-    };
-  
-    
-    setLoadingJobs(true);
-
-    if (jobType === 'Sow') {
-      jobInfo.title = 'Sow';
-      await dispatch(updateJob(cropToGrowDetails.jobId, jobInfo, Toast));
-    }
-
-    if (jobType === 'Plant') {
-      jobInfo.title = 'Plant';
-      await dispatch(editJobWithPatch(cropToGrowDetails.jobId, jobInfo, Toast));
-    }
-
-    if (jobType === 'Harvest') {
-      jobInfo.title = 'Harvest';
-      await dispatch(harvestCrop(jobInfo, Toast));
-    }
-
-    setLoadingJobs(false);
-  };
 
   const renderTab = (season, index) => (
     <>
@@ -375,28 +378,42 @@ const CropCard = ({ navigation }) => {
             ))}
           </View>
         </LinearGradient>
-        <View style={{ paddingHorizontal: '5%' }}>
+        <View style={{ paddingHorizontal: '1%' }}>
           {activeScreen === 0 && (
-            <CropDatePickerContainer
-              buttonTitle='Sow It!'
-              tip='Enter the date you plan to sow your seeds'
-              renderIcon={(itemToConfirm) =>
-                renderCalenderConfirmIcon(itemToConfirm)
-              }
-              reminderText='Reminder to sow'
-              startMonth={cropToGrowDetails.month || 'Jan'}
-              onSubmitSelected={(dateSelected) => {
-                handleGrowCrop(dateSelected, 'Sow');
-              }}
-              submitting={loadingJobs}
-              fromJobs={
-                cropToGrowDetails?.fromJobs && cropToGrowDetails.action === SOW
-              }
-              exisitngJobConfirmQuestion='Did you sow?'
-              confirmedJobText='Sown'
-            />
-          )}
+            <>
+                <CropDatePickerContainer
+                    buttonTitle='Sow It!'
+                    tip='Enter the date you plan to sow your seeds'
+                    renderIcon={(itemToConfirm) =>
+                        renderCalenderConfirmIcon(itemToConfirm)
+                    }
+                    reminderText='Reminder to sow'
+                    startMonth={cropToGrowDetails.month || 'Jan'}
+                    // onSubmitSelected={(dateSelected) => {
+                    //     handleGrowCrop(dateSelected, 'SOW').catch(error => console.error(error));
+                    // }}
 
+                    onSubmitSelected={(dateSelected) => {
+                        cropToGrowDetails?.fromJobs
+                            ? handleGrowCrop(dateSelected, 'SOW').catch(error => console.error(error))
+                            : handleGrowCrop(dateSelected, 'SOW').catch(error => console.error(error));
+                    }}
+
+                    jobType ="SOW"
+                    jobTitle ="SOW"
+                    jobStatus ="SOW"
+                    jobStatus2 ="SOW"
+                    jobInfo ={toUseJobDetails}
+                    submitting={loadingJobs}
+                    fromJobs={
+                        activeScreen === 0 && cropToGrowDetails?.action === SOW
+                    }
+                    jobStatusLevel = {activeScreen === 0 && cropToGrowDetails.action ===  SOW}
+                    exisitngJobConfirmQuestion='Did you sow?'
+                    confirmedJobText='Sown'
+                />
+            </>
+          )}
           {activeScreen === 1 && (
             <CropDatePickerContainer
               buttonTitle='Plant It!'
@@ -405,16 +422,22 @@ const CropCard = ({ navigation }) => {
                 renderCalenderConfirmIcon(itemToConfirm)
               }
               reminderText='Reminder to plant'
-              startMonth={cropCycleDetails?.plant_end_month}
+              reminderText='Reminder to plant'
+              startMonth={cropCycleDetails?.plant_end_month || cropCycleDetails?.plant_start_month}
               onSubmitSelected={(dateSelected) => {
                 cropToGrowDetails?.fromJobs
-                  ? handleUpdateCrop(dateSelected, 'Plant')
-                  : handleGrowCrop(dateSelected, 'Plant');
+                  ? handleGrowCrop(dateSelected, 'PLANT').catch(error => console.error(error))
+                  : handleGrowCrop(dateSelected, 'PLANT').catch(error => console.error(error));
               }}
+              jobType ="PLANT"
+              jobTitle ="PLANT"
+              jobStatus ="PLANT"
+              jobStatus2 ="PLANT"
+              jobInfo ={toUseJobDetails}
+              jobStatusLevel = {activeScreen === 1 && cropToGrowDetails.action === PLANT}
               submitting={loadingJobs}
               fromJobs={
-                cropToGrowDetails?.fromJobs &&
-                cropToGrowDetails.action === PLANT
+                  activeScreen === 1 && cropToGrowDetails?.fromJobs && cropToGrowDetails.action === PLANT
               }
               exisitngJobConfirmQuestion='Did you plant?'
               confirmedJobText='Planted'
@@ -430,7 +453,7 @@ const CropCard = ({ navigation }) => {
                   renderCalenderConfirmIcon(itemToConfirm)
                 }
                 onSubmitSelected={(dateSelected) =>
-                  handleGrowCrop(dateSelected, 'Harvest')
+                  handleGrowCrop(dateSelected, 'HARVEST')
                 }
                 startMonth={cropCycleDetails?.harvest_start_month}
                 dateStartedTitle='Harvest started'
@@ -458,37 +481,37 @@ const CropCard = ({ navigation }) => {
               backgroundColor: colors.white,
             }}
           >
-            {activeScreen === 0 && (
+            {activeScreen === 0 && (cropCycleDetails?.sow_under_cover_from !== null || cropCycleDetails?.sow_under_cover_to !== null || cropCycleDetails?.sow_direct_from !== null || cropCycleDetails?.sow_direct_to !== null) && (
               <MonthGraph
                 activeMonths={[
                   `${cropCycleDetails?.sow_under_cover_from || ''}`,
                   `${cropCycleDetails?.sow_under_cover_to || ''}`,
-                  `${cropCycleDetails?.sow_direct_to || ''}`,
+                  `${cropCycleDetails?.sow_direct_from || ''}`,
                   `${cropCycleDetails?.sow_direct_to || ''}`,
                 ]}
                 title='When to sow guide'
-                bottomTextOne='Sow Under Cover'
-                bottomTextTwo='Sow Direct Outside'
+                bottomTextOne={cropCycleDetails?.sow_under_cover_from !== null || cropCycleDetails?.sow_under_cover_to !== null ? 'Sow Under Cover' : ''}
+                bottomTextTwo={cropCycleDetails?.sow_direct_from !== null || cropCycleDetails?.sow_direct_to !== null ? 'Sow Direct Outside' : ''}
               />
             )}
-            {activeScreen === 1 && (
-              <MonthGraph
+            {activeScreen === 1 && (cropCycleDetails?.plant_end_month !== null || cropCycleDetails?.plant_start_month !== null ) && (
+                <MonthGraph
                 activeMonths={[
-                  `${cropCycleDetails?.plant_end_month || ''}`,
                   `${cropCycleDetails?.plant_start_month || ''}`,
+                  `${cropCycleDetails?.plant_end_month || ''}`,
                 ]}
                 title='When to plant guide'
-                bottomTextOne='Plant out'
+                bottomTextOne={cropCycleDetails?.plant_end_month !== null || cropCycleDetails?.plant_start_month !== null ? 'Plant out' : ''}
               />
             )}
-            {activeScreen === 2 && (
+            {activeScreen === 2 && (cropCycleDetails?.harvest_start_month !== null || cropCycleDetails?.harvest_end_month !== null ) && (
               <MonthGraph
                 activeMonths={[
                   `${cropCycleDetails?.harvest_start_month || ''}`,
                   `${cropCycleDetails?.harvest_end_month || ''}`,
                 ]}
                 title='When to harvest guide'
-                bottomTextOne='Harvest months'
+                bottomTextOne={cropCycleDetails?.harvest_start_month !== null || cropCycleDetails?.harvest_end_month !== null ? 'Harvest months' : ''}
               />
             )}
 
@@ -498,7 +521,7 @@ const CropCard = ({ navigation }) => {
                 title='Add to Journal'
                 onPress={() =>
                   navigation.navigate('Crop-Journal', {
-                    screen: 'Create-Journal',
+                    screen: 'Crop-Journal',
                   })
                 }
               />

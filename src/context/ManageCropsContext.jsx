@@ -6,13 +6,14 @@ export const ManageCropProvider = ({ children }) => {
   const [cropToGrowDetails, setCropToGrowDetails] = useState({
     cropName: '',
     month: '',
-    action: 'Sow',
+    action: 'PENDING',
     variety: '',
     monthIndex: 0,
     cropId: '',
     fromJobs: false,
     cropType:'',
     jobId: '',
+      jobDate: ''
   });
 
   const [endHarvest, setEndharvest] = useState(false);
@@ -23,13 +24,18 @@ export const ManageCropProvider = ({ children }) => {
     setCropToGrowDetails((prevState) => ({
       cropName: '',
       month: '',
-      action: 'Sow',
+      action: 'PENDING',
       variety: '',
       monthIndex: 0,
       cropId: '',
       fromJobs: false,
       category:'',
-      jobId: ''
+      jobId: '',
+        jobDate: '',
+        job_type: 'PENDING',
+        jobStatus: 'PENDING',
+        currentlySetToRemind: false,
+        currentlySetToRemindStage: 'PENDING',
     }));
 
     setEndharvest(false);

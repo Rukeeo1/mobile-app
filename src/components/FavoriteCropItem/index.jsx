@@ -13,7 +13,7 @@ const FavoriteCropItem = ({
   tipToShowId,
   onNavigate,
 }) => {
-  const { sow_tip, media_url, grow_level, id, name } = crop || {};
+  const { suggestion, media_url, grow_level, id, name } = crop || {};
   const showTip = (cropId) => () => onSetTipToShow(cropId);
   return (
     <View>
@@ -32,7 +32,7 @@ const FavoriteCropItem = ({
       </TouchableOpacity>
       {id === tipToShowId && (
         <View style={{ marginBottom: 25 }}>
-          <Text style={styles.quote}>{sow_tip}</Text>
+          <Text style={styles.quote}>{suggestion}</Text>
 
           <GradientButton
             gradient={[colors.green, colors.greenDeep]}

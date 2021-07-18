@@ -5,9 +5,10 @@ import { apiRequest, showApiError } from '../../config/api';
 import { API_URL } from '../../constants'
 import {getPosts} from "./postsActions";
 
-export const getJournals = (userId, pageNumber) => async (dispatch) => {
+export const getJournals = (crop_id) => async (dispatch) => {
   try {
-    const { data } = await apiRequest(`/users/${userId}/posts`);
+    // const { data } = await apiRequest(`/users/${userId}/posts`);
+    const { data } = await apiRequest(`/journals/crop_id=${crop_id}`);
     dispatch({
       type: GET_JOURNALS,
       payload: data,

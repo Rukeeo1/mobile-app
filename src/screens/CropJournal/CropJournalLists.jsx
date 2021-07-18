@@ -1,37 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AntDesign } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, {useContext, useEffect, useState} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {AntDesign} from '@expo/vector-icons';
+import {LinearGradient} from 'expo-linear-gradient';
 import {
-  Dimensions,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Animated,
+    Dimensions,
+    Easing,
+    Image,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import globe from '../../assets/globe.png';
-import { SafeArea } from '../../components';
+import {SafeArea} from '../../components';
 import constants from '../../constants';
 import ModalSheet from './ModalSheet';
 import DeleteModal from './DeleteModal';
 
-import { getJournals } from '../../redux/actions';
+import {getUserJobs} from '../../redux/actions';
+import ShareModal from "../Profile/ShareModal";
+import Toast from "react-native-toast-message";
+import ManageCropContext, {useManageCropContext} from "../../context/ManageCropsContext";
+import {
+    getUserFollowers,
+    getUserFollowing,
+    getUserGrowList,
+    getUserPosts,
+    getUserProfile
+} from "../../redux/actions/authActions";
+import {getPosts, selectPost} from "../../redux/actions/postsActions";
 
 const { colors } = constants;
 
 const CropJournalLists = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { user, journal } = useSelector((state) => ({
+    const [spinner, setSpinnner] = useState(true)
+    const [ refreshing2, setRefreshing2] = React.useState(false)
+    const { loading, refreshing } = useSelector((state) => state.loading);
+    const [text, setText] = useState(false)
+    const [search, setSearch] = useState('')
+
+    let spinValue = new Animated.Value(0)
+    const onRefresh = React.useCallback(() => {
+        setRefreshing2(true)
+        wait(2000).then(() => setRefreshing2(false))
+    }, [])
+    // First set up animation
+    Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 3000,
+        easing: Easing.linear, // Easing is an additional import from react-native
+        useNativeDriver: true, // To make use of native driver for performance
+    }).start()
+
+    // Next, interpolate beginning and end values (in this case 0 and 1)
+    const spin = spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    })
+
+    setTimeout(() => {
+        setSpinnner(false)
+    }, 1000)
+
+    const { actions } = useManageCropContext();
+
+    const manageCropContext = useContext(ManageCropContext);
+    const { cropToGrowDetails } = manageCropContext?.data;
+
+    const [showShare, setShowShare] = useState(false);
+    const [postToShare, setPostToShare] = useState(null);
+    const { user, userData, posts, following, followers } = useSelector(
+        (state) => state.auth
+    );
+  const { journal } = useSelector((state) => ({
     user: state?.auth.user,
-    journal: state?.journal?.journals,
+    journal: state,
   }));
+    const toggleModal = (post) => {
+        setShowShare((prevState) => !prevState);
+        setPostToShare(post);
+    };
+
+    useEffect(() => {
+        dispatch(getUserProfile())
+        dispatch(getUserGrowList());
+        dispatch(getUserPosts());
+        dispatch(getUserJobs(user?.id));
+        dispatch(getUserFollowers(false, true));
+        dispatch(getUserFollowing(false, true));
+        dispatch(getPosts(true));
+        console.log({timxxt: posts})
+    }, []);
 
 
-  useEffect(() => {
-    dispatch(getJournals(user?.id));
-  }, []);
+    useEffect(() => {
+        return navigation.addListener('focus', () => {
+            dispatch(getPosts());
+        });
+    }, []);
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let cleanedUp = false;
+
+            dispatch(getPosts());
+
+            return () => {
+                cleanedUp = true;
+            };
+        }, [])
+    );
 
   return (
     <SafeArea>
@@ -86,12 +170,83 @@ const CropJournalLists = ({ navigation }) => {
           />
         </View>
 
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <JournalCard uri='https://images.pexels.com/photos/1030913/pexels-photo-1030913.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
-          <JournalCard uri='https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
-          <JournalCard uri='https://images.pexels.com/photos/4503732/pexels-photo-4503732.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500' />
-          <View style={{ height: 50, backgroundColor: colors.white }} />
-        </ScrollView>
+        <ScrollView
+            nestedScrollEnabled
+            style={styles.content}
+            showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing || loading}
+                            onRefresh={() => dispatch(getPosts(true))}
+                            tintColor={colors.blue}
+                            colors={[colors.blue]}
+                        />
+                    }>
+            {posts?.length > 0 && (
+                posts?.filter((post) => post?.crop_id === cropToGrowDetails.cropId)
+                    .filter((post) => post?.post_type === "private")
+                .map((post) => {
+                        return (
+                            <View style={[styles.postCard]}>
+                                <View style={[styles.postAvatarContainer]}>
+                                    <Image
+                                        style={[styles.postAvatarImg]}
+                                        source={{ uri: user?.avatar }}
+                                    />
+                                    <Text style={[styles.postTitle]}>{user?.fullname}</Text>
+                                </View>
+
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    // onPress={() => navigation.navigate('User-details')}
+                                    onPress={() => {
+                                        dispatch(selectPost(post))
+                                        navigation.navigate('Single-Post2')
+                                    }}
+                                >
+                                    {post?.media_url ? (<Image
+                                        style={[styles.postImg]}
+                                        source={{uri: post.media_url}}
+                                    />) : <></>}
+                                </TouchableOpacity>
+
+                                <View style={[styles.postDateTime]}>
+                                    <Text
+                                        style={{
+                                            fontFamily: 'Hero-New-Light-Italic',
+                                            color: '#9B9B9B',
+                                        }}
+                                    >
+                                        {new Date(post.created_at).toDateString()}
+                                    </Text>
+                                    <TouchableOpacity onPress={() => toggleModal(post)}>
+                                        <Text>...</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={{ marginLeft: 15 }}>
+                                    <Text style={{ fontFamily: 'Hero-New-Light' }}>
+                                        <Text style={{ fontFamily: 'Hero-New-Medium' }}>
+                                            {post?.title}
+                                        </Text>
+
+                                    </Text>
+
+                                     <Text style={{ fontFamily: 'Hero-New-Medium' }}>{cropToGrowDetails.cropName} {cropToGrowDetails.variety !== null && <>{`- ‘${cropToGrowDetails.variety}’`}</>}</Text>
+                                </View>
+                            </View>
+                        );
+                    })
+                )}
+            <ShareModal
+            showBottomSheet={showShare}
+            setShowShare={toggleModal}
+            post={postToShare}
+            Toast={Toast}
+        />
+                </ScrollView>
+
+          <Toast ref={(ref) => Toast.setRef(ref)} />
       </LinearGradient>
     </SafeArea>
   );
@@ -122,84 +277,149 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 423,
   },
+    profileImg: {
+        width: '100%',
+        height: Dimensions.get('window').height / 3,
+    },
+    detailsContainer: {
+        alignItems: 'center',
+        textAlign: 'center',
+    },
+    detaileText: {
+        fontSize: 14,
+    },
+    title: {
+        fontSize: 32,
+        lineHeight: 45,
+        marginVertical: 10,
+        fontFamily: 'Hero-New-Thin',
+        textAlign: 'center',
+    },
+    edit: {
+        marginVertical: 15,
+        fontWeight: 'bold',
+        fontFamily: 'Hero-New-Medium',
+    },
+    follows: {
+        width: 200,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+        fontFamily: 'Hero-New-Medium',
+    },
+    followsText: {
+        fontWeight: 'bold',
+    },
+    growList: {
+        backgroundColor: colors.nearWhite,
+        paddingVertical: 20,
+        // paddingRight: 5,
+        alignItems: 'center',
+        fontFamily: 'Hero-New-Light',
+    },
+    growCard: {
+        alignItems: 'center',
+        marginHorizontal: 10,
+    },
+    growTitle: {
+        textAlign: 'center',
+        marginBottom: 15,
+        fontFamily: 'Hero-New-Medium',
+    },
+    growTitle2: {
+        textAlign: 'center',
+        marginBottom: 15,
+        fontFamily: 'Hero-New-Light',
+    },
+    growText: {
+        textAlign: 'center',
+        fontFamily: 'Hero-New-Light',
+        fontSize: 11,
+        maxWidth: 100,
+    },
+    btnText: {
+        color: colors.white,
+        fontWeight: 'bold',
+    },
+    growMovement: {
+        height: 350,
+    },
+    growMovementImgContainer: {
+        position: 'relative',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+    },
+    growMovementImg: {
+        width: 255,
+        height: 255,
+        position: 'absolute',
+    },
+    growMoveTextContainer: {
+        position: 'absolute',
+        width: 160,
+        height: 160,
+        borderRadius: 160 / 2,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.blue,
+    },
+    growMoveText: {
+        textAlign: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginHorizontal: 5,
+        maxWidth: 90,
+    },
+    growMoveFooterText: {
+        textAlign: 'center',
+        width: '60%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        fontSize: 16,
+        marginBottom: 40,
+    },
+    postCard: {
+        marginBottom: 40,
+    },
+    postAvatarImg: {
+        width: 30,
+        height: 30,
+        borderRadius: 30 / 2,
+    },
+    postAvatarContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+        marginLeft: 15,
+    },
+    postTitle: {
+        fontWeight: 'bold',
+        marginLeft: 10,
+        fontSize: 14,
+        fontFamily: 'Hero-New-Medium',
+    },
+    postImg: {
+        width: '100%',
+        height: 353,
+    },
+    postDateTime: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: 10,
+        marginLeft: 15,
+        fontFamily: 'Hero-New-Light-Italic',
+    },
+    bold: {
+        fontWeight: 'bold',
+    },
 });
 
-const JournalCard = ({ uri }) => {
-  const [show, setShow] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const open = () => {
-    setShow(false);
-  };
-
-  const opeDeletModal = () => {
-    setDeleteModal(false);
-  };
-
-  const openDelete = () => {
-    setShow(false);
-    setDeleteModal(true);
-  };
-
-  return (
-    <View style={{ marginVertical: 10 }}>
-      <View style={{ alignItems: 'flex-end', paddingHorizontal: '5%' }}>
-        <LinearGradient
-          style={{ width: 96, padding: 14, borderRadius: 23 }}
-          colors={[colors.purshBlue, colors.blue]}
-        >
-          <Text
-            style={{ fontSize: 14, textAlign: 'center', color: colors.white }}
-          >
-            Jul 2020
-          </Text>
-        </LinearGradient>
-      </View>
-      <Image
-        source={{
-          uri,
-        }}
-        style={{ height: 300, marginTop: '3%' }}
-      />
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: '5%',
-        }}
-      >
-        <Text style={{ color: colors.greyDark, fontStyle: 'italic' }}>
-          23 July 2020
-        </Text>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => setShow(!show)}>
-          <AntDesign name='ellipsis1' size={24} color={'#9B9B9B'} />
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          paddingHorizontal: '4%',
-          marginTop: 5,
-        }}
-      >
-        <Image source={globe} style={{ height: 17, width: 17 }} />
-        <Text style={{ width: '92%', marginLeft: 5 }}>
-          <Text style={{ fontWeight: 'bold' }}>Garden_of_Riley</Text>{' '}
-          <Text>First handful of tomatoes!! Well worth the wait!</Text>
-        </Text>
-        <Text style={{ fontWeight: 'bold', marginLeft: 5, marginTop: 10 }}>
-          Tomatoes - ‘Sungold’
-        </Text>
-      </View>
-      <ModalSheet
-        showBottomSheet={show}
-        onClose={open}
-        showDelete={openDelete}
-      ></ModalSheet>
-      <DeleteModal showBottomSheet={deleteModal} onClose={opeDeletModal} />
-    </View>
-  );
-};
 
 export default CropJournalLists;

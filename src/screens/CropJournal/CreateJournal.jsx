@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
   Text,
@@ -28,7 +28,7 @@ import ManageCropContext from '../../context/ManageCropsContext';
 import { addJournal } from '../../redux/actions';
 
 import constants from '../../constants/';
-import { addPost } from "../../redux/actions/postsActions";
+import {addPost, getPosts} from "../../redux/actions/postsActions";
 
 const { colors } = constants;
 
@@ -51,12 +51,17 @@ const CreateJournal = ({ navigation }) => {
       .max(1000, 'Too Long!'),
   });
   const goBack = () => {
-    navigation.navigate('Settings', {
-      screen: 'Main-Profile',
-      params: {
-        indexOfItemToShow: 3,
-      },
-    });
+    // navigation.navigate('Settings', {
+    //   screen: 'Main-Profile',
+    //   params: {
+    //     indexOfItemToShow: 3,
+    //   },
+    // });
+    //   navigation?.goBack()
+      dispatch(getPosts());
+      navigation.navigate('Crop-Journal', {
+          screen: 'Crop-Journal',
+      })
   };
 
   const {
@@ -77,40 +82,47 @@ const CreateJournal = ({ navigation }) => {
       post_type: 'private', //public
       isPublic: false,
       journalImageUri: '',
+        media_url: '',
+        thumbnail_url: '',
+
       isCoverImage: false,
     },
 
     validationSchema: createJournalSchema,
     onSubmit: async (data) => {
-      const journalFormData = new FormData()
+      const journalFormData = new FormData();
 
-      const { user_id, crop_id, isPublic, content, journalImageUri } = data;
-      console.log({ user_id, crop_id, isPublic, content, journalImageUri });
+      const { user_id, crop_id, isPublic, content, journalImageUri = '' } = data;
+
       journalFormData.append('user_id', user_id);
       journalFormData.append('title', crop_id);
       journalFormData.append('crop_id', crop_id);
       journalFormData.append('post_type', isPublic ? 'public' : 'private');
       journalFormData.append('content', content);
-      if (isPublic && journalImageUri === '') Alert.alert('', 'You\'ve not added an image', [{ text: 'Dismiss' }])
-      else {
-        if (journalImageUri !== '') journalFormData.append('thumbnail_url', {
-          name: journalImageUri?.split('/').pop(),
-          uri: journalImageUri,
-          type: 'image/*',
-        });
-        if (journalImageUri !== '') journalFormData.append('media_url', {
-          name: journalImageUri?.split('/').pop(),
-          uri: journalImageUri,
-          type: 'image/*',
-        });
+      if (isPublic && journalImageUri === '' ) {
+          Alert.alert('', 'You\'ve not added an image', [{ text: 'Dismiss' }])
+      } else {
+        if (journalImageUri && journalImageUri !== '') {
+            journalFormData.append('thumbnail_url', {
+                name: journalImageUri?.split('/').pop(),
+                uri: journalImageUri,
+                type: 'image/*',
+            });
+            journalFormData.append('media_url', {
+                name: journalImageUri?.split('/').pop(),
+                uri: journalImageUri,
+                type: 'image/*',
+            });
+        }
       }
 
-      console.log('journaldata 2', data);
-
-      // setAddingJournal(true);
+    setAddingJournal(true);
       await dispatch(addPost(journalFormData));
-      // setAddingJournal(false);
-      navigation.goBack();
+      setAddingJournal(false);
+        navigation.navigate('Crop-Journal', {
+            screen: 'Crop-Journal',
+        })
+         dispatch(getPosts(true));
     },
 
     enableReinitialize: true,
@@ -130,8 +142,13 @@ const CreateJournal = ({ navigation }) => {
       await setFieldValue('journalImageUri', result?.uri);
     }
   };
-  const disableForm = !isValid || !values.content || !values.journalImageUri;
-
+  const disableForm = !isValid || !values.content || (values.isPublic && !values.journalImageUri && true); //|| !values.journalImageUri;
+  //
+    useEffect(() => {
+        return navigation.addListener('focus', () => {
+            dispatch(getPosts());
+        });
+    }, [navigation]);
   const submit = () => {
     const data = new FormData()
 
@@ -141,18 +158,23 @@ const CreateJournal = ({ navigation }) => {
     data.append('crop_id', values.crop_id)
     data.append('variety', values.plantVariety)
     data.append('user_id', values.user_id)
-    data.append('thumbnail_url', {
-      name: values.journalImageUri?.split('/').pop(),
-      uri: values.journalImageUri,
-      type: 'image/*',
-    })
-    data.append('media_url', {
-      name: values.journalImageUri?.split('/').pop(),
-      uri: values.journalImageUri,
-      type: 'image/*',
-    })
+
+      if(values.journalImageUri && values.journalImageUri !== ''){
+          data.append('thumbnail_url', {
+              name: values.journalImageUri?.split('/').pop(),
+              uri: values.journalImageUri,
+              type: 'image/*',
+          })
+          data.append('media_url', {
+              name: values.journalImageUri?.split('/').pop(),
+              uri: values.journalImageUri,
+              type:'image/*',
+          })
+      }
+
 
     dispatch(addPost(data))
+      dispatch(getPosts());
     // navigation.goBack()
     goBack()
   }
@@ -164,7 +186,9 @@ const CreateJournal = ({ navigation }) => {
       >
         <Header
           title='Journal entry'
-          onIconPress={() => navigation.goBack()}
+          onIconPress={() =>   navigation.navigate('Crop-Journal', {
+              screen: 'Crop-Journal',
+          })}
           containerStyle={styles.headerStyle}
         />
         <View style={styles.postInput}>
@@ -221,7 +245,7 @@ const CreateJournal = ({ navigation }) => {
           }
           loading={addingJournal}
           // onPress={handleSubmit}
-          onPress={submit}
+          onPress={disableForm ? '' : submit}
         />
       </View>
     </SafeArea>

@@ -18,6 +18,7 @@ const DeleteCrop = ({ navigation }) => {
     data: { cropToGrowDetails, jobId },
     value,
   } = useManageCropContext();
+  console.log({cropToGrowDetails})
 
   const { user } = useSelector((state) => ({
     user: state.auth.user,

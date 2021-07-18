@@ -4,13 +4,14 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getCropsFavoriteToGrow, getCropVarieties } from '../../redux/actions';
+import {getCropsFavoriteToGrow, getCropVarieties, growCrop, harvestCrop, plantCrop} from '../../redux/actions';
 
 import { Input, GradientButton } from '../../components/';
 import { CropItem } from './CropItem';
 
 import constants from '../../constants';
 import ManageCropContext from '../../context/ManageCropsContext';
+import Toast from "react-native-toast-message";
 
 const { colors, months } = constants;
 
@@ -19,16 +20,65 @@ const CropSelection = ({ navigation, route }) => {
 
     const dispatch = useDispatch();
     const manageCropContext = useContext(ManageCropContext);
+    const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
 
     const { cropDetail, favoriteCrops } = useSelector((state) => state.crops);
-
+    const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
+        cropCycleDetails: state.crops.cropCycleDetails[0],
+        cropSteps: state.crops.cropSteps,
+        user: state?.auth?.user,
+    }));
     const { cropName, sowTip, growLevel, cropId } = route?.params || {};
+    const getCurrentDate=()=>{
+
+        const date = new Date().getDate();
+        const month = `0${new Date().getMonth() + 1}`;
+        const year = new Date().getFullYear();
+
+        //Alert.alert(date + '-' + month + '-' + year);
+        // You can turn it in to your desired format
+        // return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
+        return year + '-' + month + '-' + date;//format: yyyy-mm-dd;
+    }
+
+    let ourDate;
+    let jobInfo = {};
+    const handleGrowCrop = async (selectedDate, cropIdx, jobType) => {
+    // ourDate = new Date(); // 2020 January 5
+    ourDate = getCurrentDate(); // 2020 January 5
+    // ourDate = new Date(selectedDate); // 2020 January 5
+       jobInfo = {
+           cropName,
+        crop_id: cropIdx,
+        user_id: user?.id,
+        job_date: ourDate,
+           status: 'PENDING',
+           job_type: jobType,
+        variety: cropToGrowDetails.variety,
+    };
+
+        console.log({testTimixxx: jobInfo})
+
+        jobInfo.title = 'PENDING';
+        manageCropContext?.actions?.updateCropToGrowDetails(
+            {
+                title: 'PENDING',
+                cropName,
+                action: 'PENDING',
+                job_type: 'PENDING',
+                jobDate: jobInfo.job_date,
+            }
+        );
+       return await dispatch(growCrop(jobInfo, false))
+
+};
 
     useEffect(() => {
         if (cropName) {
             dispatch(getCropVarieties(cropName));
         }
         dispatch(getCropsFavoriteToGrow(months[new Date().getMonth()]));
+
     }, [cropName]);
 
     let tmpItem;
@@ -83,7 +133,7 @@ const CropSelection = ({ navigation, route }) => {
                                 </Text>
                             )}
                         </View>
-                        <View>
+                        <>
                             {cropDetail?.crops
                                 // ?.filter((crop) =>
                                 //   search === '' ? true : crop?.variety
@@ -92,7 +142,7 @@ const CropSelection = ({ navigation, route }) => {
                                 // )
                                 ?.map((crop) => {
                                     return (
-                                        crop?.variety && crop?.variety.toLowerCase() !== 'n/a' ? (<GradientButton
+                                        (crop?.variety && crop?.variety?.toLowerCase() !== '')   && (<GradientButton
                                             key={crop?.id}
                                             gradient={[colors.blueLigth, colors.blue]}
                                             onPress={() => {
@@ -105,10 +155,11 @@ const CropSelection = ({ navigation, route }) => {
                                                         cropId: crop?.id,
                                                     }
                                                 );
+                                                handleGrowCrop(getCurrentDate(), crop?.id, 'Pending');
                                                 navigation.navigate('Success');
                                             }}
                                         >
-                                            {console.log(crop,'from maping stuff')}
+                                            {/* {console.log(crop,'from maping stuff')} */}
                                             <View
                                                 style={{
                                                     alignItems: 'center',
@@ -117,13 +168,27 @@ const CropSelection = ({ navigation, route }) => {
                                                 }}
                                             >
                                                 <Text style={[styles.btnText]}>
-                                                    {crop?.variety}
+                                                    {crop?.variety === 'N/A' ? 'Grow it' : crop?.variety }
                                                 </Text>
                                             </View>
-                                        </GradientButton>) : (
-                                            tmpItem = <GradientButton
+                                        </GradientButton>)
+                                )})}
+
+                            {cropDetail?.crops
+                                // ?.filter((crop) =>
+                                //   search === '' ? true : crop?.variety
+                                //     ?.toLowerCase()
+                                //     .includes(search?.toLowerCase())
+                                // )
+                                ?.map((crop) => {
+                                     ((crop && crop?.variety === null) | (crop && crop?.variety === '') && (
+
+                                        tmpItem = <>
+
+                                            <GradientButton
                                                 gradient={[colors.blueLigth, colors.blue]}
                                                 onPress={() => {
+                                                    handleGrowCrop(getCurrentDate, crop?.id, 'Pending');
                                                     navigation.navigate('Success');
                                                     manageCropContext?.actions?.updateCropToGrowDetails({
                                                         variety: search,
@@ -141,11 +206,17 @@ const CropSelection = ({ navigation, route }) => {
                                                 >
                                                     <Text style={[styles.btnText]}>Grow it</Text>
                                                 </View>
-                                            </GradientButton>)
-                                    );
+                                            </GradientButton>
+
+                                        </>
+                                    ));
                                 })}
 
-                        </View>
+                            <View>
+                                { tmpItem }
+                            </View>
+
+                        </>
 
                     </LinearGradient>
                 </View>
@@ -166,11 +237,14 @@ const CropSelection = ({ navigation, route }) => {
                 </View>
 
                 <View style={[styles.cropSection]}>
-                    {cropDetail?.crops?.map((crop1, index1) => (
-                        Object.keys.recommendations && (favoriteCrops?.crops?.map((crop, index) => (
-                            <CropItem key={index} crop={crop} />
-                        )))
-                    )
+                    {cropDetail?.crops?.map(( item) => (
+                        // Object.keys.recommendations && (favoriteCrops?.crops?.map((crop, index) => (
+                        item.recommendations && item.recommendations.length !== 0 && (item.recommendations.map ((crop, index) => (
+
+                                    crop.recommendation !== 0 && (<CropItem key={index} crop={crop} currentVariety={item.variety}/>)
+                            ))
+
+                        ))
                     )}
                 </View>
             </ScrollView>

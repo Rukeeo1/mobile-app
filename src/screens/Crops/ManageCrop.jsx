@@ -76,6 +76,7 @@ const ManageCrops = () => {
       variety: details?.variety,
       cropId: details?.crop_id,
       action: details?.job_type,
+        jobId: details?.id,
       jobDate: details?.job_date,
       fromJobs: true,
     });
@@ -148,7 +149,7 @@ const ManageCrops = () => {
                 {jobs?.jobs?.length > 0 ? 'Current growing' : null}
               </Text>
               {jobs?.jobs?.map((job) => {
-                return job.job_type !== 'harvest' ? (
+                return job.job_type !== 'HARVEST' ? (
                   <PlantItem
                     job={job}
                     key={job.id}
@@ -164,7 +165,7 @@ const ManageCrops = () => {
               {jobs?.jobs?.length > 0 ? 'Past Harvest' : null}
             </Text>
             {jobs?.jobs?.map((job) => {
-              return job.job_type === 'harvest' ? (
+              return job.job_type === 'HARVEST' ? (
                 <PlantItem
                   job={job}
                   key={job.id}
@@ -181,7 +182,10 @@ const ManageCrops = () => {
 };
 
 const PlantItem = ({ job, onPress = () => {} }) => {
-  return (
+    const myDate = new Date(job.job_date).toDateString();
+    const dateIndex = myDate.split(' ');
+
+    return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={styles.cropCardContainer}
@@ -190,12 +194,17 @@ const PlantItem = ({ job, onPress = () => {} }) => {
       <View style={[styles.cropDetails]}>
         <Image
           style={[styles.cropAvatar]}
-          source={require('../../assets/avatarimg.png')}
+          source={{ uri: job?.thumbnail_url }}
         />
-        <View style={[styles.cropText]}>
-          <Text style={styles.cropName}>{job?.name}</Text>
-          <Text>{job?.grow_level}</Text>
-        </View>
+          <View style={styles.cropText}>
+              <Text>{`${job?.name}`}</Text>
+              <Text fontType='bold' style={styles.boldText}>
+                  {`${job?.title?.replace(
+                      /(\w)(\w*)/g,
+                      (_, firstChar, rest) => firstChar + rest.toLowerCase()
+                  )}ed ${dateIndex[2]} ${dateIndex[1]}`}
+              </Text>
+          </View>
       </View>
       <AntDesign name='right' size={24} color={colors.green} />
     </TouchableOpacity>

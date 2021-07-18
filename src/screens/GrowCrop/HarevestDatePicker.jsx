@@ -49,7 +49,7 @@ export const HarevestDatePicker = ({
   const monthIndex = monthsAbr.indexOf(startMonth);
 
   useEffect(() => {
-    if (cropToGrowDetails.fromJobs && cropToGrowDetails.action === HARVEST) {
+    if (cropToGrowDetails.fromJobs && cropToGrowDetails?.action === HARVEST) {
       setShowEndHarvestButton(true);
       setShowStartButton(false);
       setShowFullSelectedDate(true);

@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width * 0.5,
     borderTopLeftRadius: 8,
     marginRight: screenWidth * 0.06,
+      marginBottom: 10
   },
   carouselText: {
     width: '100%',

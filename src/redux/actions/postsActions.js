@@ -62,7 +62,7 @@ export const addPost = (formData) => (dispatch, getState) => {
         body: formData
     })
     .then(({ data }) => {
-      // console.log('add post', data)
+      console.log('add post', data)
 
       dispatch(getPosts(true))
     })
@@ -74,7 +74,49 @@ export const addPost = (formData) => (dispatch, getState) => {
       dispatch({
         type: LOADING,
         payload: false,
-      })
+      });
+        dispatch(getPosts(true))
+    })
+}
+export const addAltPost = (formData) => (dispatch, getState) => {
+  const { token } = getState().auth
+  // console.log(formData)
+
+  dispatch({
+    type: LOADING,
+    payload: true,
+  })
+
+  // axios
+  //   .post(`${API_URL}/posts/newpost`, formData, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+    fetch(`${API_URL}/posts/new_alternate_post`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        method: 'POST',
+        body: formData
+    })
+    .then(({ data }) => {
+      console.log('add post', data)
+
+      dispatch(getPosts(true))
+    })
+    .catch((err) => {
+      // showApiError(err, true, () => dispatch(addPost(formData)))
+      // console.log('add post error', err?.response ?? err.message)
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      });
+        dispatch(getPosts(true))
     })
 }
 

@@ -46,7 +46,8 @@ const EndHarvestWarning = ({ navigation }) => {
             crop_id: cropId,
             user_id: userId,
             job_date: jobDate,
-            title: '',
+              job_type: 'HARVEST',
+            title: 'HARVEST',
           },
           Toast
         )
