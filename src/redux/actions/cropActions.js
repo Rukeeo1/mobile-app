@@ -176,7 +176,16 @@ export const addCrop2 = (name, setCrop) => (dispatch) => {
 
 export const getCropSearchResults = (value, month='') => async (dispatch) => {
   try {
-    const { data } = await apiRequest(`/crops/grow/favourites?crop=${value}&month=${month}`);
+    const url = month
+      ? `/crops/grow/favourites?crop=${value}${month ? `&month=${month}` : ''}`
+      : `/crops?crop=${value}`
+
+    dispatch({
+      type: LOADING,
+      payload: true
+    })
+
+    const { data } = await apiRequest(url);
   
     dispatch({
       type: GET_SEARCH_RESULTS,
@@ -184,6 +193,11 @@ export const getCropSearchResults = (value, month='') => async (dispatch) => {
     });
   } catch (error) {
     showApiError(error);
+  } finally {
+    dispatch({
+      type: LOADING,
+      payload: false
+    })
   }
 }
 
