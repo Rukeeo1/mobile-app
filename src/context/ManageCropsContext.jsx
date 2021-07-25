@@ -4,16 +4,22 @@ const ManageCropContext = React.createContext(null);
 
 export const ManageCropProvider = ({ children }) => {
   const [cropToGrowDetails, setCropToGrowDetails] = useState({
-    cropName: '',
-    month: '',
-    action: 'PENDING',
-    variety: '',
-    monthIndex: 0,
-    cropId: '',
-    fromJobs: false,
-    cropType:'',
-    jobId: '',
-      jobDate: ''
+      cropName: '',
+      month: '',
+      action: 'PENDING',
+      variety: '', //user variety
+      cropVariety: '', //original
+      monthIndex: 0,
+      cropId: '',
+      fromJobs: false,
+      category:'',
+      jobId: '',
+      jobDate: '',
+      job_type: 'PENDING',
+      jobStatus: 'PENDING',
+      currentlySetToRemind: false,
+      currentlySetToRemindStage: 'PENDING',
+      editCropName: false,
   });
 
   const [endHarvest, setEndharvest] = useState(false);
@@ -25,7 +31,8 @@ export const ManageCropProvider = ({ children }) => {
       cropName: '',
       month: '',
       action: 'PENDING',
-      variety: '',
+        variety: '', //user variety
+        cropVariety: '', //original
       monthIndex: 0,
       cropId: '',
       fromJobs: false,
@@ -36,6 +43,7 @@ export const ManageCropProvider = ({ children }) => {
         jobStatus: 'PENDING',
         currentlySetToRemind: false,
         currentlySetToRemindStage: 'PENDING',
+        editCropName: false,
     }));
 
     setEndharvest(false);

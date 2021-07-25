@@ -3,28 +3,86 @@ import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 
-import ManageCropContext from '../../context/ManageCropsContext';
-
 import { GradientButton, Text } from '../../components/';
 
 import constants from '../../constants';
+import {growCrop, updateJob} from "../../redux/actions";
+import Toast from "react-native-toast-message";
+import {useDispatch, useSelector} from "react-redux";
 
 const { colors, screenHeight } = constants;
 
-export const CropItem = ({ crop, currentVariety }) => {
+export const CropItem = ({ crop, currentVariety, currentName, currentCropId, manageCropContext, route }) => {
+    const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
+    const { cropName, sowTip, growLevel, cropId } = route?.params || {};
   const { thumbnail_url, name, category, variety, affiliate_links, recommendation } = crop || {}; //{affiliate_links, thumbnail_url, recommendation}
+    const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
+        cropCycleDetails: state?.crops?.cropCycleDetails[0],
+        cropSteps: state?.crops?.cropSteps,
+        user: state?.auth?.user,
+    }));
 
-  const manageCropContext = useContext(ManageCropContext);
+    const getCurrentDate = () => {
+        const date = new Date().getDate();
+        const month = `0${new Date().getMonth() + 1}`;
+        const year = new Date().getFullYear();
+        return year + "-" + month + "-" + date; //format: yyyy-mm-dd;
+    };
+    let ourDate;
+    let jobInfo = {};
+    const handleGrowCrop = (selectedDate, cropIdx, jobType) => {
+        // ourDate = new Date(); // 2020 January 5
+        ourDate = getCurrentDate(); // 2020 January 5
+        // ourDate = new Date(selectedDate); // 2020 January 5
+        jobInfo = {
+            cropName,
+            crop_id: currentCropId,
+            user_id: user?.id,
+            job_date: ourDate,
+            title: "PENDING",
+            status: "PENDING",
+            job_type: jobType,
+            variety: recommendation,
+            cropType: currentVariety,
+        };
+        console.log({oluwadurotimi: {
+                cropName,
+                crop_id: currentCropId,
+                user_id: user?.id,
+                job_date: ourDate,
+                status: "PENDING",
+                job_type: jobType,
+                variety: recommendation,
+                cropType: currentVariety,
+            }})
 
-  const handleNavigation = (path, extraInfo) => () => {
-    navigation.navigate(path);
+
+        manageCropContext?.actions?.updateCropToGrowDetails({
+            title: "PENDING",
+            cropName: currentName,
+            action: "PENDING",
+            job_type: "PENDING",
+            jobDate: jobInfo.job_date,
+            variety: recommendation,
+            CropVariety: currentVariety,
+            cropId: currentCropId,
+        });
+
+        // handleNavigation('Success')
+        return dispatch(growCrop(jobInfo, false));
+    };
+  const handleNavigation = (path) => () => {
+
     manageCropContext?.actions?.updateCropToGrowDetails({
-      variety: currentVariety,
-      cropName: recommendation,
-      cropId: crop?.id,
+      variety: recommendation,
+      cropName: currentName,
+        CropVariety: currentVariety,
+      cropId: currentCropId,
     });
+
+      navigation.navigate(path);
   };
 
   return (
@@ -55,7 +113,11 @@ export const CropItem = ({ crop, currentVariety }) => {
         >
           <GradientButton
             gradient={[colors.blueLigth, colors.blue]}
-            onPress={handleNavigation('Success', {})}
+            onPress={ () => {
+                 handleGrowCrop('1234', currentCropId, "PENDING");
+                navigation.navigate("Success");
+
+            }}
           >
             <View
               style={{
@@ -87,6 +149,7 @@ export const CropItem = ({ crop, currentVariety }) => {
         </View>
       )}
     </View>
+
   );
 };
 

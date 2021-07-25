@@ -190,9 +190,7 @@ const CropSearch = ({ navigation, route }) => {
           <View style={[styles.cropSection]}>
             {searchResults
               ?.crops
-              ?.filter((crop) => selectedLevel ? crop?.grow_level === selectedLevel : true )
-              ?.filter((crop) => selectedCategory ? crop?.category === selectedCategory : true)
-              ?.filter((crop) => selectedCycle ? crop?.life_cycle === selectedCycle : true)
+              ?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true && selectedCategory ? crop?.category == selectedCategory : true && selectedCycle ? crop?.life_cycle == selectedCycle : true)
               .map((crop) => {
                   // let input_string = crop?.name;
                   // let left_text = input_string.substring(0, input_string.indexOf("_CoverPhoto")) ;

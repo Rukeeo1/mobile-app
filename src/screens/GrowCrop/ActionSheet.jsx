@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
 import { useNavigation } from '@react-navigation/native';
 
-import { useManageCropContext } from '../../context/ManageCropsContext';
+import ManageCropContext, { useManageCropContext } from '../../context/ManageCropsContext';
 
 import constants from '../../constants/';
 
@@ -11,6 +11,7 @@ const { colors } = constants;
 
 const ActionSheet = ({ showBottomSheet, onClose }) => {
   const navigation = useNavigation();
+    const manageCropContext = useContext(ManageCropContext);
   const {
     data: { cropToGrowDetails },
     actions: { cleanContextState },
@@ -28,6 +29,10 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
     {
       title: 'Edit name/variety name',
       onClick: () => {
+          manageCropContext?.actions?.updateCropToGrowDetails({
+              editCropName: true
+          });
+          //editCropName
         navigation.navigate('Crops', {
           screen: 'Crop-selection',
           params: {

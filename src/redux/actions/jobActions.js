@@ -111,8 +111,20 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/jobs/${jobId}`, 'put', jobDetails);
     toast.show({
-      text1: data?.message,
+      text1: data?.message || 'successful',
     });
+
+    dispatch(getUserJobs(jobDetails?.user_id));
+    return;
+  } catch (error) {
+    console.log(error, 'from job update');
+    return showApiError(error);
+  }
+};
+export const updateJob2 = (jobId, jobDetails) => async (dispatch) => {
+  try {
+    const { data } = await apiRequest(`/jobs/${jobId}`, 'put', jobDetails);
+
 
     dispatch(getUserJobs(jobDetails?.user_id));
     return;

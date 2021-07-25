@@ -516,7 +516,7 @@ const AddToCalendar = () => {
                   <TouchableOpacity
                     onPress={() => setViewingMore(!viewingMore)}
                   >
-                    {userJobLength > 1 && (
+                    {userJobLength > 3 || reminders?.reminders?.length > 3 && (
                       <Text style={styles.viewMore}>
                         {viewingMore ? 'Hide jobs' : 'View more'}
                       </Text>
