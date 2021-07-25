@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -15,6 +17,10 @@ import { GradientButton } from '../../components/';
 import constants from '../../constants';
 
 const { colors, screenWidth } = constants;
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder }) => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -32,24 +38,29 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
   };
 
   let hideMenu = () => {
-    _menu.hide();
+    // _menu.hide();
     setShowDropDown(false);
     setMenuToGrowButtonStyle({
       borderBottomLeftRadius: 25,
       borderBottomRightRadius: 25,
     });
+
+    LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 300 })
   };
 
   let showMenu = () => {
-    if (!showDropDownItems) {
-      _menu.show();
-      setMenuToGrowButtonStyle({
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-      });
+    if (!showDropDown) {
+      // _menu.show();
+      // setMenuToGrowButtonStyle({
+      //   borderBottomLeftRadius: 0,
+      //   borderBottomRightRadius: 0,
+      // });
+      setShowDropDown(true)
     } else {
       setShowDropDown(false);
     }
+
+    LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 300 })
   };
 
   const handleSelectedItem = (item) => {
@@ -65,20 +76,23 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
           gradient={[colors.red, colors.redDeep]}
           title={activeItem}
           onPress={() => setShowDropDown(!showDropDown)}
-          coverStyle={{ maxWidth: 220, width: 'auto', marginTop: -15, height: 40 }}
-          gradientStyle={{ borderRadius: 20 }}
+          coverStyle={{ width: '100%', marginTop: 10 }}
           textStyle={{
             color: '#ffffff',
             fontWeight: 'normal',
             fontFamily: 'Hero-New-Medium',
             fontSize: 14,
           }}
+          activeOpacity={1}
         />
       )}
       {showDropDown && (
-        <View style={{ width: '100%' }}>
+        <View style={{ width: '100%', marginTop: 10 }}>
           <TouchableOpacity
-            style={[styles.menuToGrow, menuToGrowButtonStyle, { width: 172.5 }]}
+            style={[styles.menuToGrow, {
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+            }]}
             onPress={showMenu}
           >
             <Text style={{ color: colors.green, fontWeight: '500', fontSize: 14 }}>
@@ -92,10 +106,36 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
               )}
             </TouchableOpacity>
           </TouchableOpacity>
-          <Menu
+          {showDropDown && (
+            <View style={{
+              backgroundColor: '#fff',
+              borderBottomLeftRadius: 25,
+              borderBottomRightRadius: 25,
+              paddingHorizontal: 10,
+              paddingBottom: 10,
+            }}>
+              {items.map((month) => (
+                <TouchableOpacity
+                  // style={{ marginLeft: screenWidth * 0.045, color: 'red' }}
+                  key={month}
+                  onPress={() => handleSelectedItem(month)}
+                  style={{ paddingVertical: 5 }}
+                >
+                  <Text
+                    style={{
+                      color: selectedItems === month ? colors.pink : 'black',
+                      fontSize: 14,
+                    }}
+                  >
+                    {month}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+          {/* <Menu
             ref={setMenuRef}
             style={{
-              width: 172.5,
               marginTop: -10,
               borderBottomLeftRadius: 25,
               borderBottomRightRadius: 25,
@@ -141,7 +181,7 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
                 </MenuItem>
               ))}
             </ScrollView>
-          </Menu>
+          </Menu> */}
         </View>
       )}
     </View>
@@ -150,12 +190,12 @@ export const FilterItemDropDown = ({ items, activeItem, onSelect, placeholder })
 
 const styles = StyleSheet.create({
   menuToGrow: {
-    height: 40,
+    height: 50,
+    paddingHorizontal: 10,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: colors.white,
     justifyContent: 'space-between',
-    paddingHorizontal: screenWidth * 0.05,
     alignItems: 'center',
     flexDirection: 'row',
   },

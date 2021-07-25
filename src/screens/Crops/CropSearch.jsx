@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -31,6 +32,7 @@ const CropSearch = ({ navigation, route }) => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCycle, setSelectedCycle] = useState(null)
   const [hideMonthFilter, setHideMonthFilter] = useState(false)
+  const [filterModal, setFilterModal] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -49,13 +51,29 @@ const CropSearch = ({ navigation, route }) => {
 
   const handleSearch = (value) => {
     setSearch(value);
-    if (value !== '') dispatch(getCropSearchResults(value));
+    if (value !== '' && selectedMonth) dispatch(getCropSearchResults(value, selectedMonth));
   };
 
   useEffect(() => {
     dispatch(getCropSearchResults('', selectedMonth));
   }, [selectedMonth]);
 
+  const getFilterCount = () => {
+    let count = 0
+
+    if (selectedMonth) count++
+    if (selectedLevel) count++
+    if (selectedCategory) count++
+    if (selectedCycle) count++
+
+    return count
+  }
+
+  const filtered = (searchResults?.crops ?? [])
+    .filter((crop) => !selectedMonth ? crop?.name?.toLowerCase()?.includes(search?.toLowerCase()) : true)
+    .filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true)
+    .filter((crop) => selectedCategory ? crop?.category == selectedCategory : true)
+    .filter((crop) => selectedCycle ? crop?.life_cycle == selectedCycle : true)
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -88,8 +106,27 @@ const CropSearch = ({ navigation, route }) => {
                 Cancel
               </Text>
             </View>
-            <View style={{ flex: 1, paddingTop: 20 }}>
-              <ScrollView
+            <View style={{ flex: 1, paddingHorizontal: 20 }}>
+              <GradientButton
+                gradient={[colors.red, colors.redDeep]}
+                onPress={() => setFilterModal(true)}
+              >
+                <View style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 20,
+                  flex: 1,
+                }}>
+                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>Filter</Text>
+                  <Text style={{ color: '#fff' }}>
+                    {getFilterCount() > 0
+                      ? getFilterCount()
+                      : ''}
+                  </Text>
+                </View>
+              </GradientButton>
+              {/* <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={{
@@ -148,16 +185,7 @@ const CropSearch = ({ navigation, route }) => {
                   onSelect={setSelectedCycle}
                   placeholder='Life Cycle'
                 />
-                {/* <FilterItemDropDown items={months} />
-                <View
-                  style={{
-                    marginRight: 20,
-                    width: 200,
-                    height: 100,
-                    backgroundColor: 'red',
-                  }}
-                /> */}
-              </ScrollView>
+              </ScrollView> */}
             </View>
           </LinearGradient>
         </View>
@@ -169,7 +197,7 @@ const CropSearch = ({ navigation, route }) => {
             style={{ paddingVertical: 10 }}
           />
         )}
-        {searchResults?.crops?.length < 1 ? (
+        {filtered?.length < 1 ? (
           <View style={{ marginTop: 30 }}>
             {search !== '' && (
               <>
@@ -188,9 +216,7 @@ const CropSearch = ({ navigation, route }) => {
           </View>
         ) : (
           <View style={[styles.cropSection]}>
-            {searchResults
-              ?.crops
-              ?.filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true && selectedCategory ? crop?.category == selectedCategory : true && selectedCycle ? crop?.life_cycle == selectedCycle : true)
+            {filtered
               .map((crop) => {
                   // let input_string = crop?.name;
                   // let left_text = input_string.substring(0, input_string.indexOf("_CoverPhoto")) ;
@@ -245,6 +271,68 @@ const CropSearch = ({ navigation, route }) => {
         </View>
       </ScrollView>
       {/* </SafeAreaView> */}
+      <Modal
+        animationType="slide"
+        visible={filterModal}
+        onDismiss={() => setFilterModal(false)}
+        onRequestClose={() => setFilterModal(false)}
+      >
+        <LinearGradient
+          style={{ flex: 1 }}
+          colors={[colors.green, colors.greenDeep]}
+        >
+          <View style={{
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingVertical: 50,
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <View style={{ width: '100%', marginTop: 20 }}>
+              <FilterItemDropDown
+                items={months}
+                activeItem={selectedMonth ?? 'Select Month'}
+                onSelect={setSelectedMonth}
+                placeholder='Month to grow'
+              />
+              <FilterItemDropDown
+                items={['Beginner', 'Intermediate', 'Advanced']}
+                activeItem={selectedLevel ?? 'Select level'}
+                onSelect={setSelectedLevel}
+                placeholder='Grow level'
+              />
+              <FilterItemDropDown
+                items={['Fruit', 'Vegetable', 'Herb', 'Microgreen', 'Flower']}
+                activeItem={selectedCategory ?? 'Select category'}
+                onSelect={setSelectedCategory}
+                placeholder='Category'
+              />
+              <FilterItemDropDown
+                items={['Annual', 'Biennial', 'Perennial', 'Tender Perennial']}
+                activeItem={selectedCycle ?? 'Select cycle'}
+                onSelect={setSelectedCycle}
+                placeholder='Life Cycle'
+              />
+            </View>
+            <View style={{ width: '100%' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  clearFilter()
+                  // setFilterModal(false)
+                }}
+                style={{ alignSelf: 'center', marginBottom: 20 }}
+              >
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Clear all filters</Text>
+              </TouchableOpacity>
+              <GradientButton
+                gradient={[colors.red, colors.redDeep]}
+                onPress={() => setFilterModal(false)}
+                title="View crops"
+              />
+            </View>
+          </View>
+        </LinearGradient>
+      </Modal>
     </View>
   );
 };
