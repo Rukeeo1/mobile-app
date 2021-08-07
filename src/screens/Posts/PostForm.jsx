@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -12,40 +12,40 @@ import {
   RefreshControl,
   Dimensions,
   Alert,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useFormik } from "formik";
-import * as ImagePicker from "expo-image-picker";
-import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFormik } from 'formik';
+import * as ImagePicker from 'expo-image-picker';
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getCrops } from "../../redux/actions/cropActions";
-import { addAltPost, editPost } from "../../redux/actions/postsActions";
+import { getCrops } from '../../redux/actions/cropActions';
+import { addAltPost, editPost } from '../../redux/actions/postsActions';
 
-import { GradientButton as Button, Header, Input } from "../../components/";
-import constants from "../../constants/";
+import { GradientButton as Button, Header, Input } from '../../components/';
+import constants from '../../constants/';
 
 const { colors } = constants;
 
 const PostForm = ({
   navigation,
   route,
-  defaultPostImage = "",
+  defaultPostImage = '',
   currentIndex,
 }) => {
   const postData = route?.params?.post;
   const PostSchema = Yup.object().shape({
     post: Yup.string()
-      .required("Required")
-      .min(2, "Too Short!")
-      .max(1000, "Too Long!"),
+      .required('Required')
+      .min(2, 'Too Short!')
+      .max(1000, 'Too Long!'),
   });
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.loading);
   const { crops, cropDetail } = useSelector((state) => state.crops);
   const { user } = useSelector((state) => state.auth);
 
-  const prevCrop = "";
+  const prevCrop = '';
 
   const {
     handleChange,
@@ -57,10 +57,10 @@ const PostForm = ({
     postImageUri,
   } = useFormik({
     initialValues: {
-      post: postData?.content ?? "",
-      crop_name: "",
-      plantVariety: "",
-      postImageUri: postData?.media_url ?? defaultPostImage ?? "",
+      post: postData?.content ?? '',
+      crop_name: '',
+      plantVariety: '',
+      postImageUri: postData?.media_url ?? defaultPostImage ?? '',
       isPublic: true,
     },
     validationSchema: PostSchema,
@@ -68,10 +68,10 @@ const PostForm = ({
   });
 
   const [post, setPost] = useState({
-    post: postData?.content ?? "",
-    crop_name: "",
-    plantVariety: "",
-    postImageUri: postData?.media_url ?? defaultPostImage ?? "",
+    post: postData?.content ?? '',
+    crop_name: '',
+    plantVariety: '',
+    postImageUri: postData?.media_url ?? defaultPostImage ?? '',
     isPublic: true,
   });
   const [crop, setCrop] = useState(null);
@@ -105,7 +105,7 @@ const PostForm = ({
 
   useEffect(() => {
     if (defaultPostImage) {
-      setFieldValue("postImageUri", defaultPostImage);
+      setFieldValue('postImageUri', defaultPostImage);
       setPost((prevState) => ({
         ...prevState,
         postImageUri: defaultPostImage,
@@ -115,10 +115,10 @@ const PostForm = ({
   }, [defaultPostImage, currentIndex]);
 
   const goBack = () => {
-    navigation.navigate("Explore", {
-      screen: "Explore",
+    navigation.navigate('Settings', {
+      screen: 'Main-Profile',
       params: {
-        indexOfItemToShow: 1,
+        indexOfItemToShow: 3,
       },
     });
   };
@@ -126,27 +126,27 @@ const PostForm = ({
   const submit = () => {
     const data = new FormData();
 
-    data.append("title", values.post);
-    data.append("content", values.post);
-    data.append("post_type", "PUBLIC");
-    data.append("crop_name", values.crop_name);
-    data.append("variety", values.plantVariety);
-    data.append("user_id", user?.id);
+    data.append('title', values.post);
+    data.append('content', values.post);
+    data.append('post_type', 'PUBLIC');
+    data.append('crop_name', values.crop_name);
+    data.append('variety', values.plantVariety);
+    data.append('user_id', user?.id);
 
     if (!postData) {
-      if (post.isPublic && post.postImageUri === "") {
-        Alert.alert("", "You've not added an image", [{ text: "Dismiss" }]);
+      if (post.isPublic && post.postImageUri === '') {
+        Alert.alert('', "You've not added an image", [{ text: 'Dismiss' }]);
       } else {
-        if (post.postImageUri && post.postImageUri !== "") {
-          data.append("thumbnail_url", {
-            name: post.postImageUri?.split("/").pop(),
+        if (post.postImageUri && post.postImageUri !== '') {
+          data.append('thumbnail_url', {
+            name: post.postImageUri?.split('/').pop(),
             uri: post.postImageUri,
-            type: "image/*",
+            type: 'image/*',
           });
-          data.append("media_url", {
-            name: post.postImageUri?.split("/").pop(),
+          data.append('media_url', {
+            name: post.postImageUri?.split('/').pop(),
             uri: post.postImageUri,
-            type: "image/*",
+            type: 'image/*',
           });
         }
       }
@@ -155,15 +155,15 @@ const PostForm = ({
       // goBack()
     } else {
       if (post.postImageUri !== postData.media_url) {
-        data.append("thumbnail_url", {
-          name: post.postImageUri?.split("/").pop(),
+        data.append('thumbnail_url', {
+          name: post.postImageUri?.split('/').pop(),
           uri: post.postImageUri,
-          type: "image/*",
+          type: 'image/*',
         });
-        data.append("media_url", {
-          name: post.postImageUri?.split("/").pop(),
+        data.append('media_url', {
+          name: post.postImageUri?.split('/').pop(),
           uri: post.postImageUri,
-          type: "image/*",
+          type: 'image/*',
         });
       }
 
@@ -182,9 +182,9 @@ const PostForm = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView keyboardShouldPersistTaps="never">
+      <ScrollView keyboardShouldPersistTaps='never'>
         <Header
-          title="Post"
+          title='Post'
           onIconPress={() => goBack()}
           containerStyle={styles.headerStyle}
         />
@@ -193,11 +193,11 @@ const PostForm = ({
             {post.postImageUri ? (
               <Image
                 source={{ uri: post.postImageUri }}
-                style={{ height: "100%", width: "100%" }}
+                style={{ height: '100%', width: '100%' }}
               />
             ) : (
               <Ionicons
-                name="ios-camera-outline"
+                name='ios-camera-outline'
                 size={45}
                 color={constants.colors.white}
               />
@@ -205,8 +205,8 @@ const PostForm = ({
           </TouchableOpacity>
           <View style={{ flex: 1 }}>
             <Input
-              placeholder="Write a journal entry…"
-              onChangeText={handleChange("post")}
+              placeholder='Write a journal entry…'
+              onChangeText={handleChange('post')}
               value={values.post}
               // numberOfLines={4}
               // inputStyle={{ flexWrap: 'wrap' }}
@@ -219,26 +219,26 @@ const PostForm = ({
           <Input
             inputStyle={styles.inputStyle}
             labelStyle={styles.labelText}
-            labelText="Plant Name"
+            labelText='Plant Name'
             value={values.crop_name}
-            onChangeText={handleChange("crop_name")}
+            onChangeText={handleChange('crop_name')}
             // onBlur={() => dispatch(getCropVarieties(values.plantName))}
-            placeholder="Plant Name e.g. Tomatoes "
+            placeholder='Plant Name e.g. Tomatoes '
           />
           <Input
             containerStyle={{ marginTop: 20 }}
             inputStyle={styles.inputStyle}
             labelStyle={styles.labelText}
-            labelText="Plant variety"
+            labelText='Plant variety'
             value={values.plantVariety}
-            onChangeText={handleChange("plantVariety")}
-            placeholder="Plant variety e.g. Sungold"
+            onChangeText={handleChange('plantVariety')}
+            placeholder='Plant variety e.g. Sungold'
           />
           {!post && (
             <View style={styles.switchContainer}>
               <Text>Add to public profile</Text>
               <Switch
-                trackColor={{ false: "#767577", true: colors.pink }}
+                trackColor={{ false: '#767577', true: colors.pink }}
                 value={post.isPublic}
                 onValueChange={(value) => {
                   setPost((prevState) => ({
@@ -251,7 +251,7 @@ const PostForm = ({
           )}
           <View style={styles.footer}>
             <Button
-              title="Share"
+              title='Share'
               gradient={
                 disableForm
                   ? [colors.grey, colors.grey]
@@ -259,7 +259,7 @@ const PostForm = ({
               }
               //the "settings title for this would be refactored to profile"
               // onPress={() => goBack()}
-              onPress={disableForm ? "" : submit}
+              onPress={disableForm ? '' : submit}
               loading={loading}
             />
           </View>
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   postInput: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 22,
     borderBottomColor: colors.grey100,
     borderBottomWidth: 1,
@@ -284,8 +284,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grey100,
     height: 131,
     width: 131,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 15,
   },
   postDetails: {
@@ -300,9 +300,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   switchContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 22,
     marginTop: 10,
     borderBottomColor: colors.grey100,
@@ -310,8 +310,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 22,
-    justifyContent: "flex-end",
-    marginTop: "auto",
+    justifyContent: 'flex-end',
+    marginTop: 'auto',
   },
 });
 
