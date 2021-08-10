@@ -1,31 +1,40 @@
-import { LinearGradient } from 'expo-linear-gradient'
-import React, {useContext, useState} from 'react'
-import {SafeAreaView, ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions} from 'react-native'
-import {GradientButton, Header, Input} from '../../components/'
-import constants from '../../constants'
-import DropDownPicker from 'react-native-dropdown-picker'
-import {AntDesign, Ionicons} from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker'
-import { useDispatch, useSelector } from 'react-redux'
-import { addCrop } from '../../redux/actions'
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useContext, useState } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { GradientButton, Header, Input } from "../../components/";
+import constants from "../../constants";
+import DropDownPicker from "react-native-dropdown-picker";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { addCrop } from "../../redux/actions";
 import ManageCropContext from "../../context/ManageCropsContext";
-import {getPosts} from "../../redux/actions/postsActions";
+import { getPosts } from "../../redux/actions/postsActions";
 
-const { colors } = constants
+const { colors } = constants;
 const NeCrop = ({ navigation }) => {
   const [state, setState] = useState({
-    name: '',
-    variety: '',
+    name: "",
+    variety: "",
     level: null,
     image: null,
-  })
+  });
 
   const handleState = (value) => {
     setState({
       ...state,
       ...value,
-    })
-  }
+    });
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -37,49 +46,45 @@ const NeCrop = ({ navigation }) => {
     });
 
     if (!result.cancelled) {
-      handleState({ image: result?.uri })
+      handleState({ image: result?.uri });
     }
-  }
+  };
 
-  const dispatch = useDispatch()
-    const manageCropContext = useContext(ManageCropContext);
-    const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
-  const { loading } = useSelector((state) => state.loading)
-    const getCurrentDate=()=>{
+  const dispatch = useDispatch();
+  const manageCropContext = useContext(ManageCropContext);
+  const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
+  const { loading } = useSelector((state) => state.loading);
+  const getCurrentDate = () => {
+    const date = new Date().getDate();
+    const month = `0${new Date().getMonth() + 1}`;
+    const year = new Date().getFullYear();
 
-        const date = new Date().getDate();
-        const month = `0${new Date().getMonth() + 1}`;
-        const year = new Date().getFullYear();
+    //Alert.alert(date + '-' + month + '-' + year);
+    // You can turn it in to your desired format
+    // return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
+    return year + "-" + month + "-" + date; //format: yyyy-mm-dd;
+  };
+  const cropDate = getCurrentDate();
+  const createNewCrop = () => {
+    manageCropContext?.actions?.updateCropToGrowDetails({
+      title: "PENDING",
+      cropName: state.name,
+      variety: state.variety,
+      action: "PENDING",
+      job_type: "PENDING",
+      job_date: cropDate,
+    });
+    return dispatch(addCrop(state, navigation));
+  };
 
-        //Alert.alert(date + '-' + month + '-' + year);
-        // You can turn it in to your desired format
-        // return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
-        return year + '-' + month + '-' + date;//format: yyyy-mm-dd;
-    }
-    const cropDate = getCurrentDate();
-const createNewCrop = () => {
-    manageCropContext?.actions?.updateCropToGrowDetails(
-        {
-            title: 'PENDING',
-            cropName: state.name,
-            variety: state.variety,
-            action: 'PENDING',
-            job_type: 'PENDING',
-            job_date: cropDate,
-        }
-    );
-      return dispatch(addCrop(state, navigation))
-}
-
-
-    const goBack = () => {
-        navigation.navigate('Settings', {
-            screen: 'Main-Profile',
-            params: {
-                indexOfItemToShow: 3,
-            },
-        });
-    };
+  const goBack = () => {
+    navigation.navigate("Settings", {
+      screen: "Main-Profile",
+      params: {
+        indexOfItemToShow: 3,
+      },
+    });
+  };
   // console.log({state})
   return (
     <View style={{ flex: 1 }}>
@@ -89,25 +94,25 @@ const createNewCrop = () => {
           style={[styles.topSection]}
           colors={[colors.green, colors.greenDeep]}
         >
-
           <View>
-              <AntDesign
-                  name='left'
-                  size={24}
-                  color={colors.white}
-                  style={{ top: 10, left: 0, position: "absolute" }}
-                  onPress={() => navigation.goBack()}
-              />
+            <AntDesign
+              name="left"
+              size={24}
+              color={colors.white}
+              style={{ top: 10, left: 0, position: "absolute" }}
+              onPress={() => navigation.goBack()}
+            />
           </View>
-          <View style={{
+          <View
+            style={{
               marginTop: 50,
-          }}>
-
-              <Text style={[styles.title]}>New Crop</Text>
+            }}
+          >
+            <Text style={[styles.title]}>New Crop</Text>
           </View>
         </LinearGradient>
 
-        <View style={{ padding: 22, flexDirection: 'column' }}>
+        <View style={{ padding: 22, flexDirection: "column" }}>
           {/*<TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>*/}
           {/*  {state.image ? (*/}
           {/*    <Image*/}
@@ -122,7 +127,6 @@ const createNewCrop = () => {
           {/*    />*/}
           {/*  )}*/}
           {/*</TouchableOpacity>*/}
-
 
           <View>
             <View style={[styles.inputContainer]}>
@@ -148,15 +152,15 @@ const createNewCrop = () => {
               <Text style={styles.labelText}>Select grow level</Text>
               <DropDownPicker
                 items={[
-                  { label: 'Beginner', value: 'Beginner' },
-                  { label: 'Intermediate', value: 'Intermediate' },
-                  { label: 'Advanced', value: 'Advanced' },
+                  { label: "Beginner", value: "Beginner" },
+                  { label: "Intermediate", value: "Intermediate" },
+                  { label: "Advanced", value: "Advanced" },
                 ]}
                 defaultValue={state.level}
                 containerStyle={{ height: 40 }}
-                style={{ backgroundColor: '#fafafa', zIndex: 1000 }}
-                itemStyle={{ justifyContent: 'flex-start' }}
-                dropDownStyle={{ backgroundColor: '#fafafa' }}
+                style={{ backgroundColor: "#fafafa", zIndex: 1000 }}
+                itemStyle={{ justifyContent: "flex-start" }}
+                dropDownStyle={{ backgroundColor: "#fafafa" }}
                 onChangeItem={(item) => handleState({ level: item.value })}
               />
               <GradientButton
@@ -168,7 +172,6 @@ const createNewCrop = () => {
                 onPress={createNewCrop}
               />
             </View>
-
           </View>
           {/* <GradientButton
               title="Grow It"
@@ -180,26 +183,26 @@ const createNewCrop = () => {
       </ScrollView>
       {/* </SafeAreaView> */}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   topSection: {
     height: 143,
     paddingLeft: 10,
     paddingRight: 10,
-    alignContent: 'space-between',
-    justifyContent: 'center',
+    alignContent: "space-between",
+    justifyContent: "center",
   },
   title: {
     fontSize: 42,
-      fontWeight: '100',
+    fontWeight: "100",
     color: colors.white,
-    textAlign: 'center',
+    textAlign: "center",
   },
   labelText: {
     color: colors.green,
-    fontWeight: 'normal',
+    fontWeight: "normal",
     fontSize: 16,
     marginBottom: 10,
   },
@@ -207,16 +210,16 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   button: {
-    marginTop: 30
+    marginTop: 30,
   },
   imageWrapper: {
     backgroundColor: colors.grey100,
     height: 131,
     width: 131,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 15,
   },
-})
+});
 
-export default NeCrop
+export default NeCrop;

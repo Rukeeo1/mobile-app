@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import {
   Image,
   SafeAreaView,
@@ -7,21 +7,21 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
-} from 'react-native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+} from "react-native";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
-import ManageCropContext from '../../context/ManageCropsContext';
+import ManageCropContext from "../../context/ManageCropsContext";
 
-import { GradientButton, Text } from '../../components';
+import { GradientButton, Text } from "../../components";
 import {
   // getUserJobs,
   getCurrentGrowing,
   getPastHarvests,
-} from '../../redux/actions';
+} from "../../redux/actions";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors } = constants;
 
@@ -32,7 +32,7 @@ const ManageCrops = () => {
     (state) => ({
       jobs: state.jobs?.usersJobs,
       userId: state.auth?.user?.id,
-      pastHarvest: state.jobs?.pastHarvest
+      pastHarvest: state.jobs?.pastHarvest,
     }),
     shallowEqual
   );
@@ -60,8 +60,6 @@ const ManageCrops = () => {
     setFetchingPastHarvest(false);
   }, []);
 
- 
-
   useEffect(() => {
     getCurrentJobs();
     getPreviousHarvest();
@@ -76,21 +74,21 @@ const ManageCrops = () => {
       variety: details?.variety,
       cropId: details?.crop_id,
       action: details?.job_type,
-        jobId: details?.id,
+      jobId: details?.id,
       jobDate: details?.job_date,
       fromJobs: true,
     });
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* <SafeAreaView> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={[styles.titleContainer]}>
           <Text style={styles.title}>Manage Crops</Text>
         </View>
 
-        <View style={{ paddingHorizontal: '5%' }}>
+        <View style={{ paddingHorizontal: "5%" }}>
           <View style={[styles.growCalendarCard]}>
             {jobs?.jobs?.length < 1 && (
               <Text
@@ -108,17 +106,17 @@ const ManageCrops = () => {
                 ...{ paddingRight: 70, paddingLeft: 70, fontSize: 18 },
               }}
             >
-              Add a crop to your{' '}
-              <Text fontType='bold' style={{ color: colors.green }}>
+              Add a crop to your{" "}
+              <Text fontType="bold" style={{ color: colors.green }}>
                 Grow Calendar
-              </Text>{' '}
+              </Text>{" "}
               today
             </Text>
 
             <GradientButton
               gradient={[colors.green, colors.greenDeep]}
               onPress={() =>
-                navigation.navigate('Main-Profile', {
+                navigation.navigate("Main-Profile", {
                   //this would be refactored later... when the sideBar component is refactored...
                   indexOfItemToShow: 5,
                 })
@@ -126,34 +124,34 @@ const ManageCrops = () => {
             >
               <View
                 style={{
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  width: '100%',
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  width: "100%",
                   paddingHorizontal: 20,
                 }}
               >
                 <Text style={styles.btnText}>Go to Grow Calendar</Text>
-                <Ionicons name='calendar' size={24} color={colors.white} />
+                <Ionicons name="calendar" size={24} color={colors.white} />
               </View>
             </GradientButton>
           </View>
         </View>
 
-        <View style={{ paddingHorizontal: '5%' }}>
+        <View style={{ paddingHorizontal: "5%" }}>
           {fetchingJobs ? (
             <ActivityIndicator />
           ) : (
             <View>
               <Text style={styles.growingCrops}>
-                {jobs?.jobs?.length > 0 ? 'Current growing' : null}
+                {jobs?.jobs?.length > 0 ? "Current growing" : null}
               </Text>
               {jobs?.jobs?.map((job) => {
-                return job.job_type !== 'HARVEST' ? (
+                return job.job_type !== "HARVEST" ? (
                   <PlantItem
                     job={job}
                     key={job.id}
-                    onPress={handleNavigation('Grow-Crop', job)}
+                    onPress={handleNavigation("Grow-Crop", job)}
                   />
                 ) : null;
               })}
@@ -161,15 +159,15 @@ const ManageCrops = () => {
           )}
           <View>
             <Text style={styles.growingCrops}>
-              {' '}
-              {jobs?.jobs?.length > 0 ? 'Past Harvest' : null}
+              {" "}
+              {jobs?.jobs?.length > 0 ? "Past Harvest" : null}
             </Text>
             {jobs?.jobs?.map((job) => {
-              return job.job_type === 'HARVEST' && job.status === 'DONE' ? (
+              return job.job_type === "HARVEST" && job.status === "DONE" ? (
                 <PlantItem
                   job={job}
                   key={job.id}
-                  onPress={handleNavigation('Grow-Crop', job)}
+                  onPress={handleNavigation("Grow-Crop", job)}
                 />
               ) : null;
             })}
@@ -182,10 +180,10 @@ const ManageCrops = () => {
 };
 
 const PlantItem = ({ job, onPress = () => {} }) => {
-    const myDate = new Date(job.job_date).toDateString();
-    const dateIndex = myDate.split(' ');
+  const myDate = new Date(job.job_date).toDateString();
+  const dateIndex = myDate.split(" ");
 
-    return (
+  return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={styles.cropCardContainer}
@@ -196,39 +194,43 @@ const PlantItem = ({ job, onPress = () => {} }) => {
           style={[styles.cropAvatar]}
           source={{ uri: job?.thumbnail_url }}
         />
-          <View style={styles.cropText}>
-              <Text>{`${job?.name}`}</Text>
-              {job?.title === 'SOW' || job?.title === 'PLANT' || job?.title === 'HARVEST' && job?.title === 'PENDING' && (<Text fontType='bold' style={styles.boldText}>
-                  {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
-              </Text>)}
-              {job?.title === 'PENDING' && job?.title === 'PENDING' && (
-                  <Text fontType='bold' style={styles.boldText}>
-                      {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
-                  </Text>
-              ) }
-              {job?.title === 'SOW' && job?.title !== 'PENDING' && (
-                  <Text fontType='bold' style={styles.boldText}>
-                      {`Sown ${dateIndex[2]} ${dateIndex[1]}`}
-                  </Text>
-              ) }
-              {job?.title === 'PLANT' && job?.title !== 'PENDING' && (
-                  <Text fontType='bold' style={styles.boldText}>
-                      {`Planted ${dateIndex[2]} ${dateIndex[1]}`}
-                  </Text>
-              ) }
-              {job?.job_type === 'HARVEST' &&  job?.status === 'STARTED' && (
-                  <Text fontType='bold' style={styles.boldText}>
-                      {`Harvest started ${dateIndex[2]} ${dateIndex[1]}`}
-                  </Text>
-              ) }
-              {job?.job_type === 'HARVEST' &&  job?.status === 'DONE' && (
-                  <Text fontType='bold' style={styles.boldText}>
-                      {`Harvest ended ${dateIndex[2]} ${dateIndex[1]}`}
-                  </Text>
-              ) }
-          </View>
+        <View style={styles.cropText}>
+          <Text>{`${job?.name}`}</Text>
+          {job?.title === "SOW" ||
+            job?.title === "PLANT" ||
+            (job?.title === "HARVEST" && job?.title === "PENDING" && (
+              <Text fontType="bold" style={styles.boldText}>
+                {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
+              </Text>
+            ))}
+          {job?.title === "PENDING" && job?.title === "PENDING" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
+            </Text>
+          )}
+          {job?.title === "SOW" && job?.title !== "PENDING" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Sown ${dateIndex[2]} ${dateIndex[1]}`}
+            </Text>
+          )}
+          {job?.title === "PLANT" && job?.title !== "PENDING" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Planted ${dateIndex[2]} ${dateIndex[1]}`}
+            </Text>
+          )}
+          {job?.job_type === "HARVEST" && job?.status === "STARTED" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Harvest started ${dateIndex[2]} ${dateIndex[1]}`}
+            </Text>
+          )}
+          {job?.job_type === "HARVEST" && job?.status === "DONE" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Harvest ended ${dateIndex[2]} ${dateIndex[1]}`}
+            </Text>
+          )}
+        </View>
       </View>
-      <AntDesign name='right' size={24} color={colors.green} />
+      <AntDesign name="right" size={24} color={colors.green} />
     </TouchableOpacity>
   );
 };
@@ -240,8 +242,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 40,
-    textAlign: 'center',
-    fontWeight: '100',
+    textAlign: "center",
+    fontWeight: "100",
   },
   growCalendarCard: {
     backgroundColor: colors.greenTransparent,
@@ -249,24 +251,24 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   growingCrops: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
     marginTop: 40,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   cropCardContainer: {
     backgroundColor: colors.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '98%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "98%",
     borderRadius: 100 / 2,
     height: 70,
     paddingRight: 20,
     marginVertical: 10,
     // shadow iOS
-    shadowColor: 'grey',
+    shadowColor: "grey",
     shadowOffset: {
       width: 0.5,
       height: 0.4,
@@ -277,8 +279,8 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
   cropDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   cropAvatar: {
     width: 70,
@@ -292,14 +294,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   growText: {
-    textAlign: 'center',
+    textAlign: "center",
     color: colors.green,
     marginVertical: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   btnText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

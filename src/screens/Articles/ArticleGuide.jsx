@@ -1,6 +1,6 @@
-import { AntDesign } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useEffect } from 'react'
+import { AntDesign } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect } from "react";
 import {
   Dimensions,
   Image,
@@ -10,23 +10,26 @@ import {
   View,
   RefreshControl,
   TouchableOpacity,
-} from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getCategories, getArticles } from '../../redux/actions/articlesActions'
+import {
+  getCategories,
+  getArticles,
+} from "../../redux/actions/articlesActions";
 
-import { SafeArea } from '../../components'
-import constants from '../../constants'
+import { SafeArea } from "../../components";
+import constants from "../../constants";
 
-const { colors } = constants
+const { colors } = constants;
 const ArticleGuide = ({ navigation }) => {
-  const dispatch = useDispatch()
-  const { loading, refreshing } = useSelector((state) => state.loading)
-  const { categories = [] } = useSelector((state) => state.articles)
+  const dispatch = useDispatch();
+  const { loading, refreshing } = useSelector((state) => state.loading);
+  const { categories = [] } = useSelector((state) => state.articles);
 
   useEffect(() => {
-    dispatch(getCategories())
-  }, [])
+    dispatch(getCategories());
+  }, []);
 
   return (
     <>
@@ -37,11 +40,11 @@ const ArticleGuide = ({ navigation }) => {
         >
           <View
             style={{
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              justifyContent: "space-between",
+              alignItems: "center",
               flexGrow: 1,
-              width: Dimensions.get('screen').width * 0.1,
-              overflow: 'visible',
+              width: Dimensions.get("screen").width * 0.1,
+              overflow: "visible",
             }}
           >
             <AntDesign
@@ -56,24 +59,24 @@ const ArticleGuide = ({ navigation }) => {
           <ScrollView
             style={styles.content}
             showsVerticalScrollIndicator={false}
-            refreshControl={(
+            refreshControl={
               <RefreshControl
                 refreshing={loading || refreshing}
                 onRefresh={() => dispatch(getCategories(true))}
                 colors={[colors.green]}
                 tintColor={colors.green}
               />
-            )}
+            }
           >
             <View>
               <View>
                 <Text
                   style={{
                     fontSize: 32,
-                    fontWeight: '100',
-                    textAlign: 'center',
+                    fontWeight: "100",
+                    textAlign: "center",
                     paddingHorizontal: 70,
-                    marginTop: '20%',
+                    marginTop: "20%",
                     marginBottom: 27,
                   }}
                 >
@@ -86,8 +89,8 @@ const ArticleGuide = ({ navigation }) => {
                     style={{ marginTop: 15 }}
                     key={article?.id}
                     onPress={() => {
-                      dispatch(getArticles(article?.id))
-                      navigation.navigate('ArticleContent')
+                      dispatch(getArticles(article?.id));
+                      navigation.navigate("ArticleContent");
                     }}
                   >
                     <View>
@@ -101,8 +104,8 @@ const ArticleGuide = ({ navigation }) => {
                       <Text
                         style={{
                           fontSize: 20,
-                          fontWeight: 'bold',
-                          textAlign: 'center',
+                          fontWeight: "bold",
+                          textAlign: "center",
                           marginHorizontal: 20,
                         }}
                       >
@@ -111,7 +114,7 @@ const ArticleGuide = ({ navigation }) => {
                       <Text
                         style={{
                           fontSize: 16,
-                          textAlign: 'center',
+                          textAlign: "center",
                           marginTop: 5,
                           paddingHorizontal: 40,
                         }}
@@ -120,32 +123,31 @@ const ArticleGuide = ({ navigation }) => {
                       </Text>
                     </View>
                   </TouchableOpacity>
-                )
+                );
               })}
-              
             </View>
             <View style={{ height: 50, backgroundColor: colors.white }} />
           </ScrollView>
         </LinearGradient>
       </SafeArea>
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    overflow: 'visible',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    overflow: "visible",
   },
   content: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 15,
-    width: Dimensions.get('screen').width * 0.8,
+    width: Dimensions.get("screen").width * 0.8,
     paddingBottom: 50,
-    overflow: 'visible',
+    overflow: "visible",
   },
-})
+});
 
-export default ArticleGuide
+export default ArticleGuide;

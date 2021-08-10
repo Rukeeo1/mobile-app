@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
+import React, { useState } from "react";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
-import { useManageCropContext } from '../../context/ManageCropsContext';
-import { deleteJob } from '../../redux/actions';
+import { useManageCropContext } from "../../context/ManageCropsContext";
+import { deleteJob } from "../../redux/actions";
 
-import { GradientButton as Button } from '../../components';
-import constants from '../../constants';
+import { GradientButton as Button } from "../../components";
+import constants from "../../constants";
 
 const { colors } = constants;
 
@@ -18,7 +18,7 @@ const DeleteCrop = ({ navigation }) => {
     data: { cropToGrowDetails, jobId },
     value,
   } = useManageCropContext();
-  console.log({cropToGrowDetails})
+  console.log({ cropToGrowDetails });
 
   const { user } = useSelector((state) => ({
     user: state.auth.user,
@@ -36,8 +36,8 @@ const DeleteCrop = ({ navigation }) => {
       deleteJob(cropToGrowDetails.jobId, userId, Toast)
     );
     if (!error) {
-      navigation.navigate('Settings', {
-        screen: 'Main-Profile',
+      navigation.navigate("Settings", {
+        screen: "Main-Profile",
         params: {
           indexOfItemToShow: 5,
         },
@@ -45,7 +45,7 @@ const DeleteCrop = ({ navigation }) => {
     }
     setDeletingJob(false);
   };
-  console.log(cropToGrowDetails.jobId, 'this is the jobId');
+  console.log(cropToGrowDetails.jobId, "this is the jobId");
 
   return (
     // <SafeAreaView style={{ flex: 1 }}>
@@ -60,8 +60,8 @@ const DeleteCrop = ({ navigation }) => {
         and remove this crop from your manage crop list completely.
       </Text>
       <Button
-        title='Yes please, delete'
-        coverStyle={{ marginTop: '10%' }}
+        title="Yes please, delete"
+        coverStyle={{ marginTop: "10%" }}
         gradient={[colors.pink, colors.pinkDeep]}
         onPress={onDelete}
         loading={deletingJob}
@@ -78,31 +78,31 @@ const DeleteCrop = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: '5%',
+    alignItems: "center",
+    paddingHorizontal: "5%",
   },
   title: {
-    marginTop: '45%',
+    marginTop: "45%",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.white,
   },
   question: {
-    marginTop: '10%',
+    marginTop: "10%",
     color: colors.white,
     fontSize: 30,
-    fontWeight: '100',
+    fontWeight: "100",
   },
   warning: {
-    marginTop: '5%',
+    marginTop: "5%",
     color: colors.white,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 20,
   },
   optOut: {
     color: colors.white,
-    marginTop: '10%',
+    marginTop: "10%",
     fontSize: 16,
   },
 });

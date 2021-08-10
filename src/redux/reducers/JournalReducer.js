@@ -1,4 +1,4 @@
-import { GET_JOURNALS } from '../types/';
+import { GET_JOURNALS } from "../types/";
 
 const initialState = {
   journals: {},

@@ -1,23 +1,23 @@
-import React from 'react';
-import { Text as NativeText } from 'react-native';
+import React from "react";
+import { Text as NativeText } from "react-native";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors } = constants;
 
 export const Text = ({ style, children, fontType, ...props }) => {
   const getFontFamily = (type) => {
     switch (type) {
-      case 'light':
-        return 'Hero-New-Light';
-      case 'bold':
-        return 'Hero-New-Bold';
-      case 'italic':
-        return 'Hero-New-Regular-Italic';
-      case 'thin':
-        return 'Hero-New-Thin';
+      case "light":
+        return "Hero-New-Light";
+      case "bold":
+        return "Hero-New-Bold";
+      case "italic":
+        return "Hero-New-Regular-Italic";
+      case "thin":
+        return "Hero-New-Thin";
       default:
-        return 'Hero-New-Regular';
+        return "Hero-New-Regular";
     }
   };
 

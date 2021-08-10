@@ -1,7 +1,6 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import ArticleView from './ArticleViews';
-
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import ArticleView from "./ArticleViews";
 
 const Stack = createStackNavigator();
 
@@ -14,8 +13,7 @@ const Article = () => {
         headerShown: false,
       }}
     >
-      <Screen name='Article' component={ArticleView} />
-      
+      <Screen name="Article" component={ArticleView} />
     </Navigator>
   );
 };

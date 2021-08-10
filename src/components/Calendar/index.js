@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import SmoothPicker from 'react-native-smooth-picker';
-import ScrollPicker from 'react-native-picker-scrollview';
+import React, { useEffect } from "react";
+import SmoothPicker from "react-native-smooth-picker";
+import ScrollPicker from "react-native-picker-scrollview";
 
-import { View, StyleSheet } from 'react-native';
-import { Text } from '../../components';
+import { View, StyleSheet } from "react-native";
+import { Text } from "../../components";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors } = constants;
 
@@ -42,14 +42,14 @@ const Item = React.memo(
             opacity,
             // borderColor: selected ? 'grey' : 'transparent',
             // borderWidth: 2,
-            backgroundColor: 'transparent',
-            width: 'auto',
+            backgroundColor: "transparent",
+            width: "auto",
           },
         ]}
       >
         <Text
           style={{ fontSize, color: selected ? activeTextColor : colors.black }}
-          fontType={selected ? 'bold' : 'thin'}
+          fontType={selected ? "bold" : "thin"}
         >
           {name}
         </Text>
@@ -64,7 +64,7 @@ const ItemToRender = (
   vertical,
   activeItemContainerStyle,
   activeTextColor,
-  textColor = '#000'
+  textColor = "#000"
 ) => {
   const selected = index === indexSelected;
   const gap = Math.abs(index - indexSelected);
@@ -104,10 +104,7 @@ export const GrowCalendar = ({
 }) => {
   const [selected, setSelected] = React.useState(defaultSelectedItem);
 
-  
-  useEffect(() => {
-   
-  }, [defaultSelectedItem]);
+  useEffect(() => {}, [defaultSelectedItem]);
 
   function handleChange(index, item) {
     setSelected(index);
@@ -115,7 +112,7 @@ export const GrowCalendar = ({
   }
   return (
     <React.Fragment>
-      <View style={styles.wrapperVertical} keyboardShouldPersistTaps='always'>
+      <View style={styles.wrapperVertical} keyboardShouldPersistTaps="always">
         {/* <SmoothPicker
           initialScrollToIndex={selected}
           onScrollToIndexFailed={() => {}}
@@ -171,9 +168,9 @@ export const GrowCalendar = ({
 const styles = StyleSheet.create({
   renderItemView: {
     height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "red",
     zIndex: 2323,
   },
   renderItemText: {},
@@ -182,25 +179,25 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
   wrapperVertical: {
-    width: '30%',
+    width: "30%",
     height: 150,
-    color: 'black',
+    color: "black",
   },
   OptionWrapper: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     // marginTop: 10,
     // marginBottom: 10,
     // paddingTop: 10,
     // paddingBottom: 10,
     // height: 50,
-    width: '100%',
+    width: "100%",
   },
 });
 

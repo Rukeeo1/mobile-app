@@ -1,4 +1,4 @@
-import { FETCH_ARTICLES, SELECT_ARTICLE, FETCH_CATEGORIES } from '../types';
+import { FETCH_ARTICLES, SELECT_ARTICLE, FETCH_CATEGORIES } from "../types";
 
 const initialState = {
   categories: null,
@@ -12,7 +12,7 @@ const articlesReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         categories: payload,
-      }
+      };
     case FETCH_ARTICLES:
       return {
         ...state,
@@ -25,7 +25,7 @@ const articlesReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         selected: payload,
-      }
+      };
     default:
       return state;
   }

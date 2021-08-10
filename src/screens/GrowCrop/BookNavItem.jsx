@@ -1,16 +1,14 @@
-import React from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { View, TouchableOpacity, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-import houseIcon from '../../assets/house-fill.png';
+import houseIcon from "../../assets/house-fill.png";
 
-import constants from '../../constants';
-
-
+import constants from "../../constants";
 
 const { colors } = constants;
 
-const BookNavItem = ({onPress}) => {
+const BookNavItem = ({ onPress }) => {
   return (
     <View
       style={{
@@ -19,8 +17,8 @@ const BookNavItem = ({onPress}) => {
         borderTopLeftRadius: 64,
         marginLeft: 23,
         borderBottomLeftRadius: 64,
-        overflow: 'hidden',
-        position: 'absolute',
+        overflow: "hidden",
+        position: "absolute",
         top: 650,
         zIndex: 2323,
         right: -100,
@@ -28,8 +26,8 @@ const BookNavItem = ({onPress}) => {
     >
       <LinearGradient
         style={{
-          height: '100%',
-          justifyContent: 'center',
+          height: "100%",
+          justifyContent: "center",
 
           borderTopLeftRadius: 4,
         }}
@@ -42,8 +40,8 @@ const BookNavItem = ({onPress}) => {
             borderRadius: 35,
             backgroundColor: colors.white,
             marginLeft: 13,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
           }}
           onPress={onPress}
         >

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios";
 
 import {
   GET_FAVORITE_CROPS_TO_GROW,
@@ -8,22 +8,22 @@ import {
   GET_SEARCH_RESULTS,
   GET_CROPS,
   LOADING,
-  GET_CURRENT_GROW_CROPS
-} from '../types'
-import { apiRequest, showApiError } from '../../config/api'
-import { API_URL } from '../../constants'
+  GET_CURRENT_GROW_CROPS,
+} from "../types";
+import { apiRequest, showApiError } from "../../config/api";
+import { API_URL } from "../../constants";
 import ManageCropContext from "../../context/ManageCropsContext";
-import {updateAvatar} from "./authActions";
+import { updateAvatar } from "./authActions";
 
 export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/favourites?month=${month}`);
-    console.log(data,'RO: thisisdada')
+    console.log(data, "RO: thisisdada");
     dispatch({
       type: GET_FAVORITE_CROPS_TO_GROW,
       payload: data,
     });
-  
+
     return;
   } catch (error) {
     showApiError(error);
@@ -80,39 +80,36 @@ export const getCropSteps = (cropId) => async (dispatch) => {
   }
 };
 
-
-
 export const addCrop = (cropData, navigation) => (dispatch, getState) => {
   let formData = new FormData();
 
-  formData.append('name', cropData.name)
-  formData.append('grow_level', cropData.level)
-  formData.append('variety', cropData.variety)
+  formData.append("name", cropData.name);
+  formData.append("grow_level", cropData.level);
+  formData.append("variety", cropData.variety);
 
   if (cropData.image) {
-    formData.append('media_url', {
-      name: cropData.image?.split('/').pop(),
+    formData.append("media_url", {
+      name: cropData.image?.split("/").pop(),
       uri: cropData.image,
-      type: 'image/*',
-    })
+      type: "image/*",
+    });
 
-    formData.append('thumbnail_url', {
-      name: cropData.image?.split('/').pop(),
+    formData.append("thumbnail_url", {
+      name: cropData.image?.split("/").pop(),
       uri: cropData.image,
-      type: 'image/*',
-    })
+      type: "image/*",
+    });
   }
 
+  // formData = JSON.stringify(formData);
+  // console.log('timz', formData)
 
-    // formData = JSON.stringify(formData);
-    // console.log('timz', formData)
-
-  const { token } = getState().auth
+  const { token } = getState().auth;
 
   dispatch({
     type: LOADING,
     payload: true,
-  })
+  });
 
   // axios
   //   .post(`${API_URL}/crops/newCrop`, formData, {
@@ -121,85 +118,89 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
   //       Authorization: `Bearer ${token}`,
   //     },
   //   })
-    fetch(`${API_URL}/crops/newCrop`, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data'
-        },
-        method: 'POST',
-        body: formData
-    })
+  fetch(`${API_URL}/crops/newCrop`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+    method: "POST",
+    body: formData,
+  })
     .then(({ data }) => {
-      console.log('update crop', data)
+      console.log("update crop", data);
 
       ManageCropContext?.actions?.updateCropToGrowDetails({
         variety: cropData.variety,
         cropName: cropData.name,
         cropId: data?.id,
       });
-      navigation.navigate('Success');
+      navigation.navigate("Success");
       // dispatch(updateProfile(userData, navigation))
       // navigation.navigate('Crop-selection', { cropName: cropData?.name, growLevel: cropData?.level, sowTip: data?.sow_tip })
     })
     .catch((err) => {
-      showApiError(err, true, () => dispatch(updateAvatar(image, navigation)))
+      showApiError(err, true, () => dispatch(updateAvatar(image, navigation)));
     })
     .finally(() => {
       dispatch({
         type: LOADING,
         payload: false,
-      })
-    })
-}
+      });
+    });
+};
 
 export const addCrop2 = (name, setCrop) => (dispatch) => {
   dispatch({
     type: LOADING,
     payload: true,
-  })
+  });
 
-  apiRequest('/crops/newCrop', 'post', { name })
+  apiRequest("/crops/newCrop", "post", { name })
     .then(({ data }) => {
-      console.log('new crop', data)
-      setCrop(data?.data)
+      console.log("new crop", data);
+      setCrop(data?.data);
     })
     .catch((err) => {
-      showApiError(err, true, () => dispatch(addCrop2(name, setCrop)))
+      showApiError(err, true, () => dispatch(addCrop2(name, setCrop)));
     })
     .finally(() => {
       dispatch({
         type: LOADING,
         payload: false,
-      })
-    })
-}
-
-export const getCropSearchResults = (value, month='') => async (dispatch) => {
-  try {
-    const url = month
-      ? `/crops/grow/favourites?crop=${value}${month ? `&month=${month}` : ''}`
-      : `/crops?crop=${value}`
-
-    dispatch({
-      type: LOADING,
-      payload: true
-    })
-
-    const { data } = await apiRequest(url);
-  
-    dispatch({
-      type: GET_SEARCH_RESULTS,
-      payload: data,
+      });
     });
-  } catch (error) {
-    showApiError(error);
-  } finally {
-    dispatch({
-      type: LOADING,
-      payload: false
-    })
-  }
-}
+};
+
+export const getCropSearchResults =
+  (value, month = "") =>
+  async (dispatch) => {
+    try {
+      const url = month
+        ? `/crops/grow/favourites?crop=${value}${
+            month ? `&month=${month}` : ""
+          }`
+        : `/crops?crop=${value}`;
+
+      dispatch({
+        type: LOADING,
+        payload: true,
+      });
+
+      const { data } = await apiRequest(url);
+
+      dispatch({
+        type: GET_SEARCH_RESULTS,
+        payload: data,
+      });
+    } catch (error) {
+      showApiError(error);
+    } finally {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      });
+    }
+  };
 
 export const getCurrentGrowing = (userId) => async (dispatch) => {
   try {
@@ -217,4 +218,3 @@ export const getCurrentGrowing = (userId) => async (dispatch) => {
     return showApiError(error);
   }
 };
-

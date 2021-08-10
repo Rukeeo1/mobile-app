@@ -1,27 +1,27 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
 
-import { GrowCalendar } from '../../components'; //calendarScrollItem
+import { GrowCalendar } from "../../components"; //calendarScrollItem
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors, months } = constants;
 
 const start = 2000;
 
 const monthsForCalender = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 const currentThisYear = new Date().getFullYear();
 
@@ -72,27 +72,27 @@ export const GrowCropCalender = ({
   const daysOfTheMonth = getDays(selectedYear, selectedMonth);
 
   return (
-    <View style={{ flexDirection: 'row', height: 200, alignItems: 'center' }}>
+    <View style={{ flexDirection: "row", height: 200, alignItems: "center" }}>
       <View style={[styles.calenderWrapper, calenderWrapperStyle]}>
         <View
           style={[styles.activeItemsIndicator, activeItemsContainerStyle]}
         />
         <GrowCalendar
-          type='days'
+          type="days"
           data={daysOfTheMonth}
           onSelectItem={handleDate}
           textColor={textColor}
           defaultSelectedItem={daysOfTheMonth.indexOf(parseInt(selectedDay))}
         />
         <GrowCalendar
-          type='month'
+          type="month"
           data={months}
           onSelectItem={handleMonth}
           textColor={textColor}
           defaultSelectedItem={defaultMonthIndex || 0}
         />
         <GrowCalendar
-          type='years'
+          type="years"
           data={getYears()}
           onSelectItem={handleYear}
           textColor={textColor}
@@ -107,21 +107,21 @@ export const GrowCropCalender = ({
 const styles = StyleSheet.create({
   calenderWrapper: {
     marginTop: 12,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '80%',
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "80%",
   },
   activeItemsIndicator: {
     height: 50,
-    position: 'absolute',
+    position: "absolute",
     backgroundColor: colors.white,
-    width: '95%',
-    top: '26%',
+    width: "95%",
+    top: "26%",
     borderTopLeftRadius: 45,
     borderTopRightRadius: 45,
     borderBottomLeftRadius: 45,
     borderBottomRightRadius: 45,
-    shadowColor: 'grey',
+    shadowColor: "grey",
     shadowOffset: {
       width: 0.5,
       height: 0.4,

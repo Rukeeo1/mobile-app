@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Image,
   SafeAreaView,
@@ -9,14 +9,14 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
-import Toast from 'react-native-toast-message';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
-import { useManageCropContext } from '../../context/ManageCropsContext';
+import { useManageCropContext } from "../../context/ManageCropsContext";
 
 import {
   getUserFollowers,
@@ -24,12 +24,12 @@ import {
   getUserGrowList,
   getUserPosts,
   getUserProfile,
-} from '../../redux/actions/authActions';
+} from "../../redux/actions/authActions";
 
-import { GradientButton } from '../../components/Button';
-import constants from '../../constants';
-import ShareModal from './ShareModal';
-import { getUserJobs } from '../../redux/actions';
+import { GradientButton } from "../../components/Button";
+import constants from "../../constants";
+import ShareModal from "./ShareModal";
+import { getUserJobs } from "../../redux/actions";
 
 const { colors, monthsAbr } = constants;
 
@@ -58,7 +58,7 @@ const FirstView = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch(getUserProfile())
+    dispatch(getUserProfile());
     dispatch(getUserGrowList());
     dispatch(getUserPosts());
     dispatch(getUserJobs(user?.id));
@@ -88,7 +88,7 @@ const FirstView = () => {
       jobId: job.id,
     });
 
-    handleNavigation('Grow-Crop');
+    handleNavigation("Grow-Crop");
   };
 
   return (
@@ -105,14 +105,14 @@ const FirstView = () => {
         ) : (
           <View
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
               backgroundColor: colors.grey100,
               ...styles.profileImg,
             }}
           >
             <Ionicons
-              name='ios-person-outline'
+              name="ios-person-outline"
               size={45}
               color={colors.white}
             />
@@ -122,25 +122,25 @@ const FirstView = () => {
           <View
             style={{
               paddingVertical: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <ActivityIndicator color={colors.green} animating size='small' />
+            <ActivityIndicator color={colors.green} animating size="small" />
           </View>
         ) : (
           <>
             <View style={[styles.detailsContainer, styles.detaileText]}>
               <Text style={[styles.title]}>{user?.fullname}</Text>
-              <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14 }}>
+              <Text style={{ fontFamily: "Hero-New-Light", fontSize: 14 }}>
                 {user?.biography}
               </Text>
-              <Text style={{ fontFamily: 'Hero-New-Light', fontSize: 14 }}>
+              <Text style={{ fontFamily: "Hero-New-Light", fontSize: 14 }}>
                 {user?.location}
               </Text>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => navigation.navigate('Profile-Settings')}
+                onPress={() => navigation.navigate("Profile-Settings")}
               >
                 <Text style={styles.edit}>Edit profile</Text>
               </TouchableOpacity>
@@ -149,17 +149,17 @@ const FirstView = () => {
             <View style={[styles.detailsContainer, styles.follows]}>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => navigation.navigate('Following')}
+                onPress={() => navigation.navigate("Following")}
               >
                 <Text style={[styles.followsText]}>
-                  {following?.length ?? userData?.following_count ?? 0}{' '}
+                  {following?.length ?? userData?.following_count ?? 0}{" "}
                   Following
                 </Text>
               </TouchableOpacity>
-              <Text>{'|'}</Text>
+              <Text>{"|"}</Text>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => navigation.navigate('Followers')}
+                onPress={() => navigation.navigate("Followers")}
               >
                 <Text style={[styles.followsText]}>
                   {followers?.length ?? userData?.follower_count ?? 0} Followers
@@ -175,14 +175,14 @@ const FirstView = () => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                   >
-                      {jobs?.jobs?.map((crop) => {
-                          return crop.job_type !== 'HARVEST' ? (
-                              <CurrentGrowList
-                                  crop={crop}
-                                  onPress={handleCurrentGrowingNav(crop)}
-                              />
-                          ) : null;
-                      })}
+                    {jobs?.jobs?.map((crop) => {
+                      return crop.job_type !== "HARVEST" ? (
+                        <CurrentGrowList
+                          crop={crop}
+                          onPress={handleCurrentGrowingNav(crop)}
+                        />
+                      ) : null;
+                    })}
                   </ScrollView>
                 </>
               ) : (
@@ -193,25 +193,25 @@ const FirstView = () => {
                   <GradientButton
                     gradient={[colors.green, colors.greenDeep]}
                     onPress={() =>
-                      navigation.navigate('Main-Profile', {
-                        screen: 'Main-Profile',
+                      navigation.navigate("Main-Profile", {
+                        screen: "Main-Profile",
                         indexOfItemToShow: 5,
                       })
                     }
                   >
                     <View
                       style={{
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        width: '100%',
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        width: "100%",
                         paddingHorizontal: 30,
                       }}
                     >
                       <Text style={[styles.btnText]}>Add to Grow Calendar</Text>
                       <Image
                         style={{ width: 25, height: 25 }}
-                        source={require('../../assets/calendar-page.png')}
+                        source={require("../../assets/calendar-page.png")}
                       />
                     </View>
                   </GradientButton>
@@ -241,8 +241,8 @@ const FirstView = () => {
                     <View style={[styles.postDateTime]}>
                       <Text
                         style={{
-                          fontFamily: 'Hero-New-Light-Italic',
-                          color: '#9B9B9B',
+                          fontFamily: "Hero-New-Light-Italic",
+                          color: "#9B9B9B",
                         }}
                       >
                         {new Date(post.created_at).toDateString()}
@@ -253,8 +253,8 @@ const FirstView = () => {
                     </View>
 
                     <View style={{ marginLeft: 15 }}>
-                      <Text style={{ fontFamily: 'Hero-New-Light' }}>
-                        <Text style={{ fontFamily: 'Hero-New-Medium' }}>
+                      <Text style={{ fontFamily: "Hero-New-Light" }}>
+                        <Text style={{ fontFamily: "Hero-New-Medium" }}>
                           {post?.title}
                         </Text>
                         {/* {' '}
@@ -271,8 +271,8 @@ const FirstView = () => {
                 <View style={[styles.growMovementImgContainer]}>
                   <Image
                     style={[styles.growMovementImg]}
-                    source={require('../../assets/grow-movement.png')}
-                    resizeMode='contain'
+                    source={require("../../assets/grow-movement.png")}
+                    resizeMode="contain"
                   />
                   <LinearGradient
                     colors={[colors.purshBlue, colors.blue]}
@@ -281,12 +281,12 @@ const FirstView = () => {
                     <Text style={[styles.growMoveText]}>
                       You joined the Grow It movement!
                     </Text>
-                    <Text style={{ color: '#fff', marginTop: 7 }}>
+                    <Text style={{ color: "#fff", marginTop: 7 }}>
                       {
                         constants.monthsAbr[
                           new Date(user?.createdAt).getMonth()
                         ]
-                      }{' '}
+                      }{" "}
                       {new Date(user?.createdAt).getFullYear()}
                     </Text>
                   </LinearGradient>
@@ -318,7 +318,7 @@ const CurrentGrowList = ({ crop, onPress }) => {
         style={{ height: 60, width: 60, borderRadius: 30 }}
       />
       <Text style={[styles.growText]}>
-        {crop.name} {crop.variety ? `“${crop?.variety}”` : ''}
+        {crop.name} {crop.variety ? `“${crop?.variety}”` : ""}
       </Text>
     </TouchableOpacity>
   );
@@ -326,12 +326,12 @@ const CurrentGrowList = ({ crop, onPress }) => {
 
 const styles = StyleSheet.create({
   profileImg: {
-    width: '100%',
-    height: Dimensions.get('window').height / 3,
+    width: "100%",
+    height: Dimensions.get("window").height / 3,
   },
   detailsContainer: {
-    alignItems: 'center',
-    textAlign: 'center',
+    alignItems: "center",
+    textAlign: "center",
   },
   detaileText: {
     fontSize: 14,
@@ -340,95 +340,95 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 45,
     marginVertical: 10,
-    fontFamily: 'Hero-New-Thin',
-    textAlign: 'center',
+    fontFamily: "Hero-New-Thin",
+    textAlign: "center",
   },
   edit: {
     marginVertical: 15,
-    fontWeight: 'bold',
-    fontFamily: 'Hero-New-Medium',
+    fontWeight: "bold",
+    fontFamily: "Hero-New-Medium",
   },
   follows: {
     width: 200,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    marginLeft: "auto",
+    marginRight: "auto",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
-    fontFamily: 'Hero-New-Medium',
+    fontFamily: "Hero-New-Medium",
   },
   followsText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   growList: {
     backgroundColor: colors.nearWhite,
     paddingVertical: 20,
     // paddingRight: 5,
-    alignItems: 'center',
-    fontFamily: 'Hero-New-Light',
+    alignItems: "center",
+    fontFamily: "Hero-New-Light",
   },
   growCard: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 10,
   },
   growTitle: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 15,
-    fontFamily: 'Hero-New-Medium',
+    fontFamily: "Hero-New-Medium",
   },
   growTitle2: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 15,
-    fontFamily: 'Hero-New-Light',
+    fontFamily: "Hero-New-Light",
   },
   growText: {
-    textAlign: 'center',
-    fontFamily: 'Hero-New-Light',
+    textAlign: "center",
+    fontFamily: "Hero-New-Light",
     fontSize: 11,
     maxWidth: 100,
   },
   btnText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   growMovement: {
     height: 350,
   },
   growMovementImgContainer: {
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
   },
   growMovementImg: {
     width: 255,
     height: 255,
-    position: 'absolute',
+    position: "absolute",
   },
   growMoveTextContainer: {
-    position: 'absolute',
+    position: "absolute",
     width: 160,
     height: 160,
     borderRadius: 160 / 2,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.blue,
   },
   growMoveText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: 'bold',
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
     marginHorizontal: 5,
     maxWidth: 90,
   },
   growMoveFooterText: {
-    textAlign: 'center',
-    width: '60%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    textAlign: "center",
+    width: "60%",
+    marginLeft: "auto",
+    marginRight: "auto",
     fontSize: 16,
     marginBottom: 40,
   },
@@ -441,31 +441,31 @@ const styles = StyleSheet.create({
     borderRadius: 30 / 2,
   },
   postAvatarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 10,
     marginLeft: 15,
   },
   postTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
     fontSize: 14,
-    fontFamily: 'Hero-New-Medium',
+    fontFamily: "Hero-New-Medium",
   },
   postImg: {
-    width: '100%',
+    width: "100%",
     height: 353,
   },
   postDateTime: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     margin: 10,
     marginLeft: 15,
-    fontFamily: 'Hero-New-Light-Italic',
+    fontFamily: "Hero-New-Light-Italic",
   },
   bold: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

@@ -47,20 +47,20 @@ export const CropDatePickerContainer = ({
   stageOneComplete,
   stageTwoComplete,
 }) => {
-    const manageCropContext = useContext(ManageCropContext);
-    const { data } = manageCropContext;
-    const { growItStarted, action, notNewCalendar, jobStatus } =
-        data.cropToGrowDetails;
+  const manageCropContext = useContext(ManageCropContext);
+  const { data } = manageCropContext;
+  const { growItStarted, action, notNewCalendar, jobStatus } =
+    data.cropToGrowDetails;
 
   const [showSowItButton, setShowSowItButton] = useState(false);
   const [showCalender, setShowCalender] = useState(false);
-  const [afterCancelDateConfirmed, setAfterCancelDateConfirmed] = useState(notNewCalendar);
+  const [afterCancelDateConfirmed, setAfterCancelDateConfirmed] =
+    useState(notNewCalendar);
   const [showFullSelectedDate, setShowFullSelectedDate] = useState(false);
   // const [notNewCalendar, setNotNewCalendar] = useState(false);
   const [showConfirmExisingJob, setShowConfirmExistingBox] = useState(false);
   const [showConfirmed, setShowConfirmed] = useState(true);
   const [showQuestion, setShowQuestion] = useState(true);
-
 
   //refactor: note change selectedDate to selectedDay to avoid confusion
   const [selectedDate, setSelectedDate] = useState(defaultCalendarDay);
@@ -218,14 +218,19 @@ export const CropDatePickerContainer = ({
           setShowQuestion(false);
         }
 
-          if (jobType === "PLANT" && !stageOneComplete && !stageTwoComplete) {
-              setShowSowItButton(true);
-              setShowFullSelectedDate(false);
-              setShowConfirmExistingBox(false);
-              setShowConfirmed(true);
-              setShowQuestion(false);
-          }
-          if (jobType === "SOW" && !stageOneComplete && !stageTwoComplete && afterCancelDateConfirmed) {
+        if (jobType === "PLANT" && !stageOneComplete && !stageTwoComplete) {
+          setShowSowItButton(true);
+          setShowFullSelectedDate(false);
+          setShowConfirmExistingBox(false);
+          setShowConfirmed(true);
+          setShowQuestion(false);
+        }
+        if (
+          jobType === "SOW" &&
+          !stageOneComplete &&
+          !stageTwoComplete &&
+          afterCancelDateConfirmed
+        ) {
           setShowSowItButton(false);
           setShowFullSelectedDate(true);
           setShowConfirmExistingBox(false);
@@ -233,13 +238,18 @@ export const CropDatePickerContainer = ({
           setShowQuestion(false);
         }
 
-          if (jobType === "PLANT" && !stageOneComplete && !stageTwoComplete && afterCancelDateConfirmed) {
-              setShowSowItButton(false);
-              setShowFullSelectedDate(true);
-              setShowConfirmExistingBox(false);
-              setShowConfirmed(true);
-              setShowQuestion(false);
-          }
+        if (
+          jobType === "PLANT" &&
+          !stageOneComplete &&
+          !stageTwoComplete &&
+          afterCancelDateConfirmed
+        ) {
+          setShowSowItButton(false);
+          setShowFullSelectedDate(true);
+          setShowConfirmExistingBox(false);
+          setShowConfirmed(true);
+          setShowQuestion(false);
+        }
 
         if (jobType === "SOW" && !stageOneComplete && stageTwoComplete) {
           setShowSowItButton(true);
@@ -323,7 +333,7 @@ export const CropDatePickerContainer = ({
       stageOneComplete,
       jobType,
       notNewCalendar,
-        afterCancelDateConfirmed,
+      afterCancelDateConfirmed,
     });
   }, [
     fromJobs,
@@ -332,7 +342,7 @@ export const CropDatePickerContainer = ({
     stageTwoComplete,
     jobType,
     notNewCalendar,
-      afterCancelDateConfirmed,
+    afterCancelDateConfirmed,
   ]);
   useEffect(() => {
     console.log({ lebron2: data });
@@ -416,7 +426,7 @@ export const CropDatePickerContainer = ({
               manageCropContext?.actions?.updateCropToGrowDetails({
                 notNewCalendar: true,
               });
-                setAfterCancelDateConfirmed(true)
+              setAfterCancelDateConfirmed(true);
               onSubmitSelected(
                 `${selectedYear}-${ourMonthIndex(
                   selectedMonth

@@ -1,8 +1,8 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import CropJournalList from './CropJournalLists';
-import CreateJournal from './CreateJournal'
+import CropJournalList from "./CropJournalLists";
+import CreateJournal from "./CreateJournal";
 
 const Stack = createStackNavigator();
 
@@ -15,8 +15,8 @@ const CropJournalNavigator = () => {
         headerShown: false,
       }}
     >
-      <Screen name='Crop-Journal' component={CropJournalList} />
-      <Screen name='Create-Journal' component={CreateJournal} />
+      <Screen name="Crop-Journal" component={CropJournalList} />
+      <Screen name="Create-Journal" component={CreateJournal} />
     </Navigator>
   );
 };

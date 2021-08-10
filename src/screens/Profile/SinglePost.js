@@ -1,6 +1,6 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
 import {
   Dimensions,
   Image,
@@ -9,21 +9,21 @@ import {
   Text,
   View,
   TouchableOpacity,
-} from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
-import { SafeArea } from '../../components'
-import { GradientButton, SmallGradientButton } from '../../components/Button'
-import constants from '../../constants'
+import { SafeArea } from "../../components";
+import { GradientButton, SmallGradientButton } from "../../components/Button";
+import constants from "../../constants";
 
-const { colors } = constants
+const { colors } = constants;
 
 const SinglePost = ({ navigation }) => {
   // const [showShare, setShowShare] = useState(false)
   // const [follow, setFollow] = useState(false)
   // const [grow, setGrow] = useState(false)
   // const toggleModal = () => setShowShare((prevState) => !prevState)
-  const { selected: post } = useSelector((state) => state.posts)
+  const { selected: post } = useSelector((state) => state.posts);
 
   return (
     <>
@@ -34,11 +34,11 @@ const SinglePost = ({ navigation }) => {
         >
           <View
             style={{
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              justifyContent: "space-between",
+              alignItems: "center",
               flexGrow: 1,
-              width: Dimensions.get('screen').width * 0.1,
-              overflow: 'visible',
+              width: Dimensions.get("screen").width * 0.1,
+              overflow: "visible",
             }}
           >
             <AntDesign
@@ -50,19 +50,13 @@ const SinglePost = ({ navigation }) => {
             />
           </View>
           {/* </View> */}
-          <View
-            style={styles.content}
-            showsVerticalScrollIndicator={false}
-          >
-            <View
-              style={[styles.postCard]}
-              key={post.id}
-            >
+          <View style={styles.content} showsVerticalScrollIndicator={false}>
+            <View style={[styles.postCard]} key={post.id}>
               <View
                 activeOpacity={0.8}
                 style={[styles.userDetail]}
                 // onPress={() => navigation.navigate('Single-Post')}
-              // onPress={() => navigation.navigate('User-details')}
+                // onPress={() => navigation.navigate('User-details')}
               >
                 <Image
                   style={[styles.imgAvatar]}
@@ -83,14 +77,17 @@ const SinglePost = ({ navigation }) => {
               </View>
 
               <View style={[styles.dateTime]}>
-                <Text style={[styles.date]}>{new Date(post?.created_at).toDateString()}</Text>
+                <Text style={[styles.date]}>
+                  {new Date(post?.created_at).toDateString()}
+                </Text>
                 {/* <Text>...</Text> */}
               </View>
 
               <View style={[styles.postText]}>
                 <Text style={[styles.boldContainer, {}]}>
-                  {' '}
-                  <Text style={[styles.bold]}>{post?.fullname}</Text>{' '}{post?.title}
+                  {" "}
+                  <Text style={[styles.bold]}>{post?.fullname}</Text>{" "}
+                  {post?.title}
                   {/* {!text && (
                       <Text
                         style={{ color: '#085BAC' }}
@@ -107,34 +104,34 @@ const SinglePost = ({ navigation }) => {
         </LinearGradient>
       </SafeArea>
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    overflow: 'visible',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    overflow: "visible",
   },
   content: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 15,
-    width: Dimensions.get('screen').width * 0.8,
+    width: Dimensions.get("screen").width * 0.8,
     paddingBottom: 50,
-    overflow: 'visible',
+    overflow: "visible",
   },
   flowercircle: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10,
   },
   postCard: {
     marginVertical: 10,
   },
   userDetail: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 20,
   },
   imgAvatar: {
@@ -143,18 +140,18 @@ const styles = StyleSheet.create({
     borderRadius: 30 / 2,
   },
   imgText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
   },
   postImg: {
-    width: '100%',
+    width: "100%",
     height: 356,
     marginVertical: 10,
   },
   dateTime: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginHorizontal: 20,
   },
   date: {
@@ -167,24 +164,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   bold: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   /// search relate ===. to be pulled out
   searchBarWrapper: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: "5%",
     paddingTop: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   searchInputContainer: {
     backgroundColor: colors.grey,
-    justifyContent: 'center',
+    justifyContent: "center",
     borderRadius: 20,
     height: 46,
     paddingLeft: 15,
     paddingRight: 25,
     flex: 1,
   },
-})
+});
 
-export default SinglePost
+export default SinglePost;

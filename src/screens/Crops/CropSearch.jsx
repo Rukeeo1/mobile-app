@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Image,
   ScrollView,
@@ -8,31 +8,33 @@ import {
   View,
   ActivityIndicator,
   Modal,
-} from 'react-native';
-import { AntDesign, EvilIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useDispatch, useSelector } from 'react-redux';
+} from "react-native";
+import { AntDesign, EvilIcons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getCropSearchResults } from '../../redux/actions/cropActions';
-import ManageCropContext from '../../context/ManageCropsContext';
+import { getCropSearchResults } from "../../redux/actions/cropActions";
+import ManageCropContext from "../../context/ManageCropsContext";
 
-import { GradientButton, Input } from '../../components/';
-import { FilterItemDropDown } from './FilterItemDropDown';
+import { GradientButton, Input } from "../../components/";
+import { FilterItemDropDown } from "./FilterItemDropDown";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors, months } = constants;
 
 const CropSearch = ({ navigation, route }) => {
   const manageCropContext = useContext(ManageCropContext);
 
-  const [search, setSearch] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState(months[manageCropContext?.data.growInMonthIndex]);
+  const [search, setSearch] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState(
+    months[manageCropContext?.data.growInMonthIndex]
+  );
   const [selectedLevel, setSelectedLevel] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [selectedCycle, setSelectedCycle] = useState(null)
-  const [hideMonthFilter, setHideMonthFilter] = useState(false)
-  const [filterModal, setFilterModal] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCycle, setSelectedCycle] = useState(null);
+  const [hideMonthFilter, setHideMonthFilter] = useState(false);
+  const [filterModal, setFilterModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -44,39 +46,50 @@ const CropSearch = ({ navigation, route }) => {
   const clearFilter = () => {
     setSelectedLevel(null);
     setSelectedMonth(null);
-      setSelectedLevel(null);
-      setSelectedCategory(null);
-      setSelectedCycle(null);
+    setSelectedLevel(null);
+    setSelectedCategory(null);
+    setSelectedCycle(null);
   };
 
   const handleSearch = (value) => {
     setSearch(value);
-    if (value !== '' && selectedMonth) dispatch(getCropSearchResults(value, selectedMonth));
+    if (value !== "" && selectedMonth)
+      dispatch(getCropSearchResults(value, selectedMonth));
   };
 
   useEffect(() => {
-    dispatch(getCropSearchResults('', selectedMonth));
+    dispatch(getCropSearchResults("", selectedMonth));
   }, [selectedMonth]);
 
   const getFilterCount = () => {
-    let count = 0
+    let count = 0;
 
-    if (selectedMonth) count++
-    if (selectedLevel) count++
-    if (selectedCategory) count++
-    if (selectedCycle) count++
+    if (selectedMonth) count++;
+    if (selectedLevel) count++;
+    if (selectedCategory) count++;
+    if (selectedCycle) count++;
 
-    return count
-  }
+    return count;
+  };
 
   const filtered = (searchResults?.crops ?? [])
-    .filter((crop) => !selectedMonth ? crop?.name?.toLowerCase()?.includes(search?.toLowerCase()) : true)
-    .filter((crop) => selectedLevel ? crop?.grow_level == selectedLevel : true)
-    .filter((crop) => selectedCategory ? crop?.category == selectedCategory : true)
-    .filter((crop) => selectedCycle ? crop?.life_cycle == selectedCycle : true)
+    .filter((crop) =>
+      !selectedMonth
+        ? crop?.name?.toLowerCase()?.includes(search?.toLowerCase())
+        : true
+    )
+    .filter((crop) =>
+      selectedLevel ? crop?.grow_level == selectedLevel : true
+    )
+    .filter((crop) =>
+      selectedCategory ? crop?.category == selectedCategory : true
+    )
+    .filter((crop) =>
+      selectedCycle ? crop?.life_cycle == selectedCycle : true
+    );
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* <SafeAreaView> */}
       <ScrollView>
         <View>
@@ -87,17 +100,12 @@ const CropSearch = ({ navigation, route }) => {
             <View style={styles.searchCover}>
               <View style={[styles.searchForm]}>
                 <Input
-                  placeholder='Search crops'
+                  placeholder="Search crops"
                   containerStyle={styles.searchInputContainer}
                   inputStyle={{ marginTop: -10, paddingRight: 10, flex: 1 }}
                   onChangeText={(text) => handleSearch(text)}
-                >
-                </Input>
-                <EvilIcons
-                  name='search'
-                  size={24}
-                  color={colors.blue}
-                />
+                ></Input>
+                <EvilIcons name="search" size={24} color={colors.blue} />
               </View>
               <Text
                 style={[styles.cancelText]}
@@ -111,18 +119,20 @@ const CropSearch = ({ navigation, route }) => {
                 gradient={[colors.red, colors.redDeep]}
                 onPress={() => setFilterModal(true)}
               >
-                <View style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 20,
-                  flex: 1,
-                }}>
-                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>Filter</Text>
-                  <Text style={{ color: '#fff' }}>
-                    {getFilterCount() > 0
-                      ? getFilterCount()
-                      : ''}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingHorizontal: 20,
+                    flex: 1,
+                  }}
+                >
+                  <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                    Filter
+                  </Text>
+                  <Text style={{ color: "#fff" }}>
+                    {getFilterCount() > 0 ? getFilterCount() : ""}
                   </Text>
                 </View>
               </GradientButton>
@@ -191,7 +201,7 @@ const CropSearch = ({ navigation, route }) => {
         </View>
         {loading && (
           <ActivityIndicator
-            size='large'
+            size="large"
             color={colors.green}
             animating
             style={{ paddingVertical: 10 }}
@@ -199,15 +209,15 @@ const CropSearch = ({ navigation, route }) => {
         )}
         {filtered?.length < 1 ? (
           <View style={{ marginTop: 30 }}>
-            {search !== '' && (
+            {search !== "" && (
               <>
-                <Text style={{ textAlign: 'center' }}>No matches found</Text>
+                <Text style={{ textAlign: "center" }}>No matches found</Text>
 
                 <View style={{ marginTop: 50 }}>
-                  <Text style={{ textAlign: 'center' }}>
+                  <Text style={{ textAlign: "center" }}>
                     Looks like you are getting adventurous!
                   </Text>
-                  <Text style={{ textAlign: 'center' }}>
+                  <Text style={{ textAlign: "center" }}>
                     Create a new crop below
                   </Text>
                 </View>
@@ -216,52 +226,51 @@ const CropSearch = ({ navigation, route }) => {
           </View>
         ) : (
           <View style={[styles.cropSection]}>
-            {filtered
-              .map((crop) => {
-                  // let input_string = crop?.name;
-                  // let left_text = input_string.substring(0, input_string.indexOf("_CoverPhoto")) ;
-                  // let parts = left_text.split("/");
-                  // let cropNameModified = crop?.name === 'string' ? parts[parts.length - 1] : crop?.name;
-                  return (
-                  <TouchableOpacity
-                    key={crop?.id}
-                    activeOpacity={0.9}
-                    style={[styles.cropCardContainer]}
-                    onPress={() =>
-                      navigation.navigate('Crop-selection', {
-                        cropName: crop?.name,
-                        growLevel: crop?.grow_level,
-                        sowTip: crop?.sow_tip,
-                        cropId: crop?.id,
-                      })
-                    }
-                  >
-                    <View style={[styles.cropDetails]}>
-                      <Image
-                        style={[styles.cropAvatar]}
-                        source={{ uri: crop?.thumbnail_url }}
-                      />
-                      <View style={[styles.cropText]}>
-                        <Text style={[styles.cropName]}>{crop?.name}</Text>
-                        <Text>{crop?.grow_level}</Text>
-                      </View>
+            {filtered.map((crop) => {
+              // let input_string = crop?.name;
+              // let left_text = input_string.substring(0, input_string.indexOf("_CoverPhoto")) ;
+              // let parts = left_text.split("/");
+              // let cropNameModified = crop?.name === 'string' ? parts[parts.length - 1] : crop?.name;
+              return (
+                <TouchableOpacity
+                  key={crop?.id}
+                  activeOpacity={0.9}
+                  style={[styles.cropCardContainer]}
+                  onPress={() =>
+                    navigation.navigate("Crop-selection", {
+                      cropName: crop?.name,
+                      growLevel: crop?.grow_level,
+                      sowTip: crop?.sow_tip,
+                      cropId: crop?.id,
+                    })
+                  }
+                >
+                  <View style={[styles.cropDetails]}>
+                    <Image
+                      style={[styles.cropAvatar]}
+                      source={{ uri: crop?.thumbnail_url }}
+                    />
+                    <View style={[styles.cropText]}>
+                      <Text style={[styles.cropName]}>{crop?.name}</Text>
+                      <Text>{crop?.grow_level}</Text>
                     </View>
-                    <AntDesign name='right' size={24} color={colors.green} />
-                  </TouchableOpacity>
-                );
-              })}
+                  </View>
+                  <AntDesign name="right" size={24} color={colors.green} />
+                </TouchableOpacity>
+              );
+            })}
           </View>
         )}
 
         <View style={[styles.createNewCropBtn]}>
           <GradientButton
             gradient={[colors.green, colors.greenDeep]}
-            onPress={() => navigation.navigate('New-crop')}
+            onPress={() => navigation.navigate("New-crop")}
           >
             <View
               style={{
-                alignItems: 'center',
-                width: '100%',
+                alignItems: "center",
+                width: "100%",
                 paddingHorizontal: 20,
               }}
             >
@@ -281,48 +290,52 @@ const CropSearch = ({ navigation, route }) => {
           style={{ flex: 1 }}
           colors={[colors.green, colors.greenDeep]}
         >
-          <View style={{
-            flex: 1,
-            paddingHorizontal: 20,
-            paddingVertical: 50,
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <View style={{ width: '100%', marginTop: 20 }}>
+          <View
+            style={{
+              flex: 1,
+              paddingHorizontal: 20,
+              paddingVertical: 50,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View style={{ width: "100%", marginTop: 20 }}>
               <FilterItemDropDown
                 items={months}
-                activeItem={selectedMonth ?? 'Select Month'}
+                activeItem={selectedMonth ?? "Select Month"}
                 onSelect={setSelectedMonth}
-                placeholder='Month to grow'
+                placeholder="Month to grow"
               />
               <FilterItemDropDown
-                items={['Beginner', 'Intermediate', 'Advanced']}
-                activeItem={selectedLevel ?? 'Select level'}
+                items={["Beginner", "Intermediate", "Advanced"]}
+                activeItem={selectedLevel ?? "Select level"}
                 onSelect={setSelectedLevel}
-                placeholder='Grow level'
+                placeholder="Grow level"
               />
               <FilterItemDropDown
-                items={['Fruit', 'Vegetable', 'Herb', 'Microgreen', 'Flower']}
-                activeItem={selectedCategory ?? 'Select category'}
+                items={["Fruit", "Vegetable", "Herb", "Microgreen", "Flower"]}
+                activeItem={selectedCategory ?? "Select category"}
                 onSelect={setSelectedCategory}
-                placeholder='Category'
+                placeholder="Category"
               />
               <FilterItemDropDown
-                items={['Annual', 'Biennial', 'Perennial', 'Tender Perennial']}
-                activeItem={selectedCycle ?? 'Select cycle'}
+                items={["Annual", "Biennial", "Perennial", "Tender Perennial"]}
+                activeItem={selectedCycle ?? "Select cycle"}
                 onSelect={setSelectedCycle}
-                placeholder='Life Cycle'
+                placeholder="Life Cycle"
               />
             </View>
-            <View style={{ width: '100%' }}>
+            <View style={{ width: "100%" }}>
               <TouchableOpacity
                 onPress={() => {
-                  clearFilter()
+                  clearFilter();
                   // setFilterModal(false)
                 }}
-                style={{ alignSelf: 'center', marginBottom: 20 }}
+                style={{ alignSelf: "center", marginBottom: 20 }}
               >
-                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Clear all filters</Text>
+                <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                  Clear all filters
+                </Text>
               </TouchableOpacity>
               <GradientButton
                 gradient={[colors.red, colors.redDeep]}
@@ -344,17 +357,17 @@ const styles = StyleSheet.create({
   },
   searchCover: {
     marginHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   searchForm: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     // width: '100%',
     paddingHorizontal: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 50 / 2,
     flex: 1,
   },
@@ -362,13 +375,13 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.red,
     paddingHorizontal: 8,
     paddingVertical: 8,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginRight: 10,
     flex: 1,
   },
   optionsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   cancelText: {
     color: colors.white,
@@ -380,7 +393,7 @@ const styles = StyleSheet.create({
   },
   clearFilter: {
     color: colors.white,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
   cropSection: {
     marginVertical: 28,
@@ -388,16 +401,16 @@ const styles = StyleSheet.create({
   },
   cropCardContainer: {
     backgroundColor: colors.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '95%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "95%",
     borderRadius: 100 / 2,
     height: 70,
     paddingRight: 20,
     marginVertical: 10,
     // shadow iOS
-    shadowColor: 'grey',
+    shadowColor: "grey",
     shadowOffset: {
       width: 0.5,
       height: 0.4,
@@ -408,8 +421,8 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
   cropDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
   },
   cropAvatar: {
@@ -430,7 +443,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   gradientBtn: {
     marginVertical: 50,

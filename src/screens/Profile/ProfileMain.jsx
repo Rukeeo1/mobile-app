@@ -1,15 +1,15 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
-import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
-import constants from '../../constants/index';
-import ManageCrops from '../Crops/ManageCrop';
-import Notification from '../Notification/Notification';
-import CreatePost from '../Posts/PostForm';
-import Calendar from './AddToCalendar';
-import Explore from './Explore';
-import FirstView from './FirstView';
-import ProfileBtmSheet from './ProfileBtmSheet';
-import ProfileSideTab from './ProfileSideTab';
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
+import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import constants from "../../constants/index";
+import ManageCrops from "../Crops/ManageCrop";
+import Notification from "../Notification/Notification";
+import CreatePost from "../Posts/PostForm";
+import Calendar from "./AddToCalendar";
+import Explore from "./Explore";
+import FirstView from "./FirstView";
+import ProfileBtmSheet from "./ProfileBtmSheet";
+import ProfileSideTab from "./ProfileSideTab";
 
 const { colors } = constants;
 
@@ -42,17 +42,17 @@ const MainProfile = ({ navigation, route }) => {
     colors.green,
   ]);
 
-  const [defaultPostImage, setDefaultPostImage] = useState('');
+  const [defaultPostImage, setDefaultPostImage] = useState("");
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [showBottomSheet, setShowBottomSheet] = useState(false);
-     const { indexOfItemToShow } = route?.params || 3;
+  const { indexOfItemToShow } = route?.params || 3;
 
   //this sets the default sidebar item when comeing from another screen... we need to look for a way to clean it up...
   const handleNavigation = (destination) => {
     navigation.navigate(destination, {
-      screen: 'posts-form',
+      screen: "posts-form",
       params: { indexToGoBackTo: currentIndex },
     });
   };
@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   main: {
     backgroundColor: colors.white,
-    width: '80%',
-    overflow: 'hidden',
+    width: "80%",
+    overflow: "hidden",
     flex: 1,
     borderTopRightRadius: 40,
   },

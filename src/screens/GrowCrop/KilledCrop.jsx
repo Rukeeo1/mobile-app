@@ -1,33 +1,31 @@
-import React from 'react';
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-import { GradientButton as Button } from '../../components';
-import constants from '../../constants';
+import { GradientButton as Button } from "../../components";
+import constants from "../../constants";
 
 const { colors } = constants;
 
 const KilledCrop = ({ navigation }) => {
   return (
     // <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient
-        style={styles.container}
-        colors={[colors.green, colors.greenDeep]}
-      >
-        <Text style={styles.title}>Crop killed</Text>
-        <Text style={styles.question}>Aw man!</Text>
-        <Text style={styles.warning}>Don’t give up, you can do this.</Text>
-        <Button
-          title='End crop'
-          coverStyle={{ marginTop: '10%' }}
-          gradient={[colors.pink, colors.pinkDeep]}
-        />
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.optOut}>
-            No that was a mistake. Take me back!
-          </Text>
-        </TouchableOpacity>
-      </LinearGradient>
+    <LinearGradient
+      style={styles.container}
+      colors={[colors.green, colors.greenDeep]}
+    >
+      <Text style={styles.title}>Crop killed</Text>
+      <Text style={styles.question}>Aw man!</Text>
+      <Text style={styles.warning}>Don’t give up, you can do this.</Text>
+      <Button
+        title="End crop"
+        coverStyle={{ marginTop: "10%" }}
+        gradient={[colors.pink, colors.pinkDeep]}
+      />
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text style={styles.optOut}>No that was a mistake. Take me back!</Text>
+      </TouchableOpacity>
+    </LinearGradient>
     // </SafeAreaView>
   );
 };
@@ -35,33 +33,33 @@ const KilledCrop = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: '5%',
+    alignItems: "center",
+    paddingHorizontal: "5%",
   },
   title: {
-    marginTop: '45%',
+    marginTop: "45%",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.white,
   },
   question: {
-    marginTop: '10%',
+    marginTop: "10%",
     color: colors.white,
     fontSize: 30,
-    fontWeight: '100',
+    fontWeight: "100",
   },
   warning: {
-    marginTop: '5%',
+    marginTop: "5%",
     color: colors.white,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 20,
   },
   optOut: {
     color: colors.white,
-    marginTop: '10%',
+    marginTop: "10%",
     fontSize: 16,
-    textDecorationLine: 'underline'
+    textDecorationLine: "underline",
   },
 });
 export default KilledCrop;

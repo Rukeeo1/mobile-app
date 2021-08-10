@@ -5,7 +5,7 @@ import {
   GET_CROP_STEPS,
   GET_SEARCH_RESULTS,
   GET_CROPS,
-} from '../types/';
+} from "../types/";
 
 const initialState = {
   favoriteCrops: {},
@@ -42,12 +42,12 @@ const cropsReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         searchResults: payload,
-      }
+      };
     case GET_CROPS:
       return {
         ...state,
         crops: payload,
-      }
+      };
     default:
       return state;
   }

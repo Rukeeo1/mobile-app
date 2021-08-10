@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { Alert } from 'react-native'
+import axios from "axios";
+import { Alert } from "react-native";
 
 import {
   FETCH_POSTS,
@@ -7,44 +7,46 @@ import {
   REFRESHING,
   SELECT_POST,
   GET_POST_USER,
-} from '../types'
-import { apiRequest, showApiError } from '../../config/api'
-import { API_URL } from '../../constants'
+} from "../types";
+import { apiRequest, showApiError } from "../../config/api";
+import { API_URL } from "../../constants";
 
-export const getPosts = (refreshing = false) => (dispatch) => {
-  dispatch({
-    type: refreshing ? REFRESHING : LOADING,
-    payload: true,
-  })
+export const getPosts =
+  (refreshing = false) =>
+  (dispatch) => {
+    dispatch({
+      type: refreshing ? REFRESHING : LOADING,
+      payload: true,
+    });
 
-  apiRequest('/posts/public')
-    .then(({ data }) => {
-      // console.log(data)
+    apiRequest("/posts/public")
+      .then(({ data }) => {
+        // console.log(data)
 
-      dispatch({
-        type: FETCH_POSTS,
-        payload: data
+        dispatch({
+          type: FETCH_POSTS,
+          payload: data,
+        });
       })
-    })
-    .catch((err) => {
-      showApiError(err, true, () => dispatch(getPosts(refreshing)))
-    })
-    .finally(() => {
-      dispatch({
-        type: refreshing ? REFRESHING : LOADING,
-        payload: false,
+      .catch((err) => {
+        showApiError(err, true, () => dispatch(getPosts(refreshing)));
       })
-    })
-}
+      .finally(() => {
+        dispatch({
+          type: refreshing ? REFRESHING : LOADING,
+          payload: false,
+        });
+      });
+  };
 
 export const addPost = (formData) => (dispatch, getState) => {
-  const { token } = getState().auth
+  const { token } = getState().auth;
   // console.log(formData)
 
   dispatch({
     type: LOADING,
     payload: true,
-  })
+  });
 
   // axios
   //   .post(`${API_URL}/posts/newpost`, formData, {
@@ -52,104 +54,19 @@ export const addPost = (formData) => (dispatch, getState) => {
   //       Authorization: `Bearer ${token}`,
   //     },
   //   })
-    fetch(`${API_URL}/posts/newpost`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data'
-        },
-        method: 'POST',
-        body: formData
-    })
-    .then(({ data }) => {
-      console.log('add post', data)
-
-      dispatch(getPosts(true))
-    })
-    .catch((err) => {
-      // showApiError(err, true, () => dispatch(addPost(formData)))
-      // console.log('add post error', err?.response ?? err.message)
-    })
-    .finally(() => {
-      dispatch({
-        type: LOADING,
-        payload: false,
-      });
-        dispatch(getPosts(true))
-    })
-}
-export const addAltPost = (formData) => (dispatch, getState) => {
-  const { token } = getState().auth
-  // console.log(formData)
-
-  dispatch({
-    type: LOADING,
-    payload: true,
-  })
-
-  // axios
-  //   .post(`${API_URL}/posts/newpost`, formData, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-    fetch(`${API_URL}/posts/new_alternate_post`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data'
-        },
-        method: 'POST',
-        body: formData
-    })
-    .then(({ data }) => {
-      console.log('add post', data)
-
-      dispatch(getPosts(true))
-    })
-    .catch((err) => {
-      // showApiError(err, true, () => dispatch(addPost(formData)))
-      // console.log('add post error', err?.response ?? err.message)
-    })
-    .finally(() => {
-      dispatch({
-        type: LOADING,
-        payload: false,
-      });
-        dispatch(getPosts(true))
-    })
-}
-
-export const editPost = (formData, postId, navigation) => (dispatch, getState) => {
-  const { token } = getState().auth
-  // console.log(formData)
-
-  dispatch({
-    type: LOADING,
-    payload: true,
-  })
-
-  // axios
-  //   .post(`${API_URL}/posts/newpost`, formData, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  fetch(`${API_URL}/posts/${postId}`, {
+  fetch(`${API_URL}/posts/newpost`, {
     headers: {
       Authorization: `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'multipart/form-data'
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
     },
-    method: 'PUT',
-    body: formData
+    method: "POST",
+    body: formData,
   })
     .then(({ data }) => {
-      // console.log('add post', data)
-      Alert.alert('', 'Post updated successfully',[{ text: 'Dismiss' }])
-      navigation?.goBack()
+      console.log("add post", data);
 
-      dispatch(getPosts(true))
+      dispatch(getPosts(true));
     })
     .catch((err) => {
       // showApiError(err, true, () => dispatch(addPost(formData)))
@@ -159,32 +76,119 @@ export const editPost = (formData, postId, navigation) => (dispatch, getState) =
       dispatch({
         type: LOADING,
         payload: false,
-      })
+      });
+      dispatch(getPosts(true));
+    });
+};
+export const addAltPost = (formData) => (dispatch, getState) => {
+  const { token } = getState().auth;
+  // console.log(formData)
+
+  dispatch({
+    type: LOADING,
+    payload: true,
+  });
+
+  // axios
+  //   .post(`${API_URL}/posts/newpost`, formData, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  fetch(`${API_URL}/posts/new_alternate_post`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+    method: "POST",
+    body: formData,
+  })
+    .then(({ data }) => {
+      console.log("add post", data);
+
+      dispatch(getPosts(true));
     })
-}
+    .catch((err) => {
+      // showApiError(err, true, () => dispatch(addPost(formData)))
+      // console.log('add post error', err?.response ?? err.message)
+    })
+    .finally(() => {
+      dispatch({
+        type: LOADING,
+        payload: false,
+      });
+      dispatch(getPosts(true));
+    });
+};
+
+export const editPost =
+  (formData, postId, navigation) => (dispatch, getState) => {
+    const { token } = getState().auth;
+    // console.log(formData)
+
+    dispatch({
+      type: LOADING,
+      payload: true,
+    });
+
+    // axios
+    //   .post(`${API_URL}/posts/newpost`, formData, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   })
+    fetch(`${API_URL}/posts/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+      method: "PUT",
+      body: formData,
+    })
+      .then(({ data }) => {
+        // console.log('add post', data)
+        Alert.alert("", "Post updated successfully", [{ text: "Dismiss" }]);
+        navigation?.goBack();
+
+        dispatch(getPosts(true));
+      })
+      .catch((err) => {
+        // showApiError(err, true, () => dispatch(addPost(formData)))
+        // console.log('add post error', err?.response ?? err.message)
+      })
+      .finally(() => {
+        dispatch({
+          type: LOADING,
+          payload: false,
+        });
+      });
+  };
 
 export const selectPost = (payload) => ({
   type: SELECT_POST,
   payload,
-})
+});
 
 export const getPostUser = (userId) => async (dispatch) => {
   dispatch({
     type: LOADING,
     payload: true,
-  })
+  });
 
   try {
     // get user posts
-    const userPosts = (await apiRequest(`/users/${userId}/posts`)).data
+    const userPosts = (await apiRequest(`/users/${userId}/posts`)).data;
     // console.log({ userPosts })
 
     // get user growlist
-    const userGrowList = (await apiRequest(`/jobs/growlist?user_id=${userId}`)).data
+    const userGrowList = (await apiRequest(`/jobs/growlist?user_id=${userId}`))
+      .data;
     // console.log({ userGrowList })
 
     // get user data
-    const userData = (await apiRequest(`/users/${userId}`)).data
+    const userData = (await apiRequest(`/users/${userId}`)).data;
     // console.log({ userData })
 
     dispatch({
@@ -193,14 +197,14 @@ export const getPostUser = (userId) => async (dispatch) => {
         posts: userPosts?.posts,
         growitList: userGrowList?.crops,
         data: userData?.user?.[0],
-      }
-    })
+      },
+    });
   } catch (err) {
-    showApiError(err, true, () => dispatch(getPosts(refreshing)))
+    showApiError(err, true, () => dispatch(getPosts(refreshing)));
   } finally {
     dispatch({
       type: LOADING,
       payload: false,
-    })
+    });
   }
-}
+};

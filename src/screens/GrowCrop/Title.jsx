@@ -49,75 +49,80 @@ export const EditableTitle = ({ cropToGrowDetails }) => {
   return (
     <View>
       <View style={{ alignItems: "center", marginTop: "0%" }}>
-            <View  style={{
-                width: "100%",
-                textAlign: "center",
-                marginTop: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginHorizontal: '6%',
+        <View
+          style={{
+            width: "100%",
+            textAlign: "center",
+            marginTop: 0,
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: "6%",
+          }}
+        >
+          <Text
+            color={colors.white}
+            fontType="light"
+            style={{
+              fontSize: 42,
+              // height: 61,
+              fontWeight: "200",
+              maxWidth: "80%",
+              color: colors.white,
+            }}
+          >
+            {cropToGrowDetails?.cropName}
+          </Text>
+        </View>
 
-            }}>
-            <Text
-              color={colors.white}
-              fontType="light"
-              style={{
-                fontSize: 42,
-                  // height: 61,
-                  fontWeight: "200",
-                maxWidth: "80%",
-                color: colors.white,
-              }}
-            >
-              {cropToGrowDetails?.cropName}
-            </Text>
-          </View>
-
-          <View  style={{
-              width: "100%",
-              textAlign: "center",
-              marginTop: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: `${cropToGrowDetails?.cropVariety ? 'auto' : '0%'}`
-              // marginHorizontal: '6%',
-          }}>
-            <Text
-              color={colors.white}
-              fontType="bold"
-              style={{
-                  fontSize: 20,
-                marginVertical: "2%",
-                maxWidth: "100%",
-                color: colors.white,
-              }}
-            >
-              {cropToGrowDetails?.cropVariety}
-            </Text>
-          </View>
-          <View  style={{
-              width: "100%",
-              textAlign: "center",
-              marginTop: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginHorizontal: '6%',
-              marginBottom: 40,
-              height: `${cropToGrowDetails?.variety ? 'auto' : '0%'}`
-          }}>
-            <Text
-              color={colors.white}
-              fontType="light"
-              style={{
-                fontSize: 20,
-                fontWeight: "200",
-                maxWidth: "80%",
-                color: colors.white,
-              }}
-            >
-              {cropToGrowDetails?.variety}
-            </Text>
-          </View>
+        <View
+          style={{
+            width: "100%",
+            textAlign: "center",
+            marginTop: 0,
+            justifyContent: "center",
+            alignItems: "center",
+            height: `${cropToGrowDetails?.cropVariety ? "auto" : "0%"}`,
+            // marginHorizontal: '6%',
+          }}
+        >
+          <Text
+            color={colors.white}
+            fontType="bold"
+            style={{
+              fontSize: 20,
+              marginVertical: "2%",
+              maxWidth: "100%",
+              color: colors.white,
+            }}
+          >
+            {cropToGrowDetails?.cropVariety}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: "100%",
+            textAlign: "center",
+            marginTop: 0,
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: "6%",
+            marginBottom: 40,
+            height: `${cropToGrowDetails?.variety ? "auto" : "0%"}`,
+          }}
+        >
+          <Text
+            color={colors.white}
+            fontType="light"
+            style={{
+              fontSize: 20,
+              fontWeight: "200",
+              maxWidth: "80%",
+              color: colors.white,
+            }}
+          >
+            {cropToGrowDetails?.variety}
+          </Text>
+        </View>
       </View>
     </View>
   );

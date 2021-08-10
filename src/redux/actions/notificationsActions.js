@@ -1,32 +1,30 @@
-import {
-  LOADING,
-  REFRESHING,
-  GET_NOTIFICATIONS,
-} from '../types'
-import { apiRequest, showApiError } from '../../config/api'
+import { LOADING, REFRESHING, GET_NOTIFICATIONS } from "../types";
+import { apiRequest, showApiError } from "../../config/api";
 
-export const getNotifications = (refreshing = false) => (dispatch) => {
-  dispatch({
-    type: refreshing ? REFRESHING : LOADING,
-    payload: true,
-  })
+export const getNotifications =
+  (refreshing = false) =>
+  (dispatch) => {
+    dispatch({
+      type: refreshing ? REFRESHING : LOADING,
+      payload: true,
+    });
 
-  apiRequest('/notifications/')
-    .then(({ data }) => {
-      console.log('notifications', data)
+    apiRequest("/notifications/")
+      .then(({ data }) => {
+        console.log("notifications", data);
 
-      dispatch({
-        type: GET_NOTIFICATIONS,
-        payload: data
+        dispatch({
+          type: GET_NOTIFICATIONS,
+          payload: data,
+        });
       })
-    })
-    .catch((err) => {
-      showApiError(err, true, () => dispatch(getPosts(refreshing)))
-    })
-    .finally(() => {
-      dispatch({
-        type: refreshing ? REFRESHING : LOADING,
-        payload: false,
+      .catch((err) => {
+        showApiError(err, true, () => dispatch(getPosts(refreshing)));
       })
-    })
-}
+      .finally(() => {
+        dispatch({
+          type: refreshing ? REFRESHING : LOADING,
+          payload: false,
+        });
+      });
+  };

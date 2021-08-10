@@ -1,30 +1,30 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 
 const ManageCropContext = React.createContext(null);
 
 export const ManageCropProvider = ({ children }) => {
   const [cropToGrowDetails, setCropToGrowDetails] = useState({
-      cropName: '',
-      month: '',
-      action: 'PENDING',
-      variety: '', //crop type
-      cropVariety: '', //user variety
-      monthIndex: 0,
-      cropId: '',
-      fromJobs: false,
-      category:'',
-      jobId: '',
-      jobDate: '',
-      job_type: 'PENDING',
-      jobStatus: 'PENDING',
-      currentlySetToRemind: false,
-      currentlySetToRemindStage: 'PENDING',
-      growItStarted: 'PENDING',
-      editCropName: false,
-      stageOneComplete: false,
-      stageTwoComplete: false,
-      stageThreeComplete: false,
-      notNewCalendar: false,
+    cropName: "",
+    month: "",
+    action: "PENDING",
+    variety: "", //crop type
+    cropVariety: "", //user variety
+    monthIndex: 0,
+    cropId: "",
+    fromJobs: false,
+    category: "",
+    jobId: "",
+    jobDate: "",
+    job_type: "PENDING",
+    jobStatus: "PENDING",
+    currentlySetToRemind: false,
+    currentlySetToRemindStage: "PENDING",
+    growItStarted: "PENDING",
+    editCropName: false,
+    stageOneComplete: false,
+    stageTwoComplete: false,
+    stageThreeComplete: false,
+    notNewCalendar: false,
   });
 
   const [endHarvest, setEndharvest] = useState(false);
@@ -33,27 +33,27 @@ export const ManageCropProvider = ({ children }) => {
 
   const cleanContextState = () => {
     setCropToGrowDetails((prevState) => ({
-      cropName: '',
-      month: '',
-      action: 'PENDING',
-        variety: '', //crop type
-        cropVariety: '', //user variety
+      cropName: "",
+      month: "",
+      action: "PENDING",
+      variety: "", //crop type
+      cropVariety: "", //user variety
       monthIndex: 0,
-      cropId: '',
+      cropId: "",
       fromJobs: false,
-      category:'',
-      jobId: '',
-        jobDate: '',
-        job_type: 'PENDING',
-        jobStatus: 'PENDING',
-        currentlySetToRemind: false,
-        currentlySetToRemindStage: 'PENDING',
-        growItStarted: 'PENDING',
-        editCropName: false,
-        stageOneComplete: false,
-        stageTwoComplete: false,
-        stageThreeComplete: false,
-        notNewCalendar: false,
+      category: "",
+      jobId: "",
+      jobDate: "",
+      job_type: "PENDING",
+      jobStatus: "PENDING",
+      currentlySetToRemind: false,
+      currentlySetToRemindStage: "PENDING",
+      growItStarted: "PENDING",
+      editCropName: false,
+      stageOneComplete: false,
+      stageTwoComplete: false,
+      stageThreeComplete: false,
+      notNewCalendar: false,
     }));
 
     setEndharvest(false);
@@ -81,6 +81,6 @@ export const ManageCropProvider = ({ children }) => {
   );
 };
 
-export const useManageCropContext = () => useContext(ManageCropContext)
+export const useManageCropContext = () => useContext(ManageCropContext);
 
 export default ManageCropContext;

@@ -1,5 +1,5 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import React from "react";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 
 const SafeArea = ({ children, containerStyle }) => {
   return (

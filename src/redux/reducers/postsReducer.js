@@ -1,4 +1,4 @@
-import { FETCH_POSTS, SELECT_POST, GET_POST_USER } from '../types';
+import { FETCH_POSTS, SELECT_POST, GET_POST_USER } from "../types";
 
 const initialState = {
   all: null,
@@ -7,7 +7,7 @@ const initialState = {
     posts: null,
     growitList: null,
     data: null,
-  }
+  },
 };
 
 const postsReducer = (state = initialState, { type, payload }) => {
@@ -21,12 +21,12 @@ const postsReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         selected: payload,
-      }
+      };
     case GET_POST_USER:
       return {
         ...state,
-        selectedUser: payload
-      }
+        selectedUser: payload,
+      };
     default:
       return state;
   }

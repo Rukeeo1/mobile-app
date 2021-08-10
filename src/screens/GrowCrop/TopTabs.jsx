@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from "react";
+import { View, Text } from "react-native";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors, screenHeight, screenWidth } = constants;
 
@@ -19,14 +19,14 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
       <View
         style={[
           {
-            alignItems: 'center',
+            alignItems: "center",
             width: screenWidth * 0.28,
             borderTopLeftRadius: screenWidth * 0.2,
             borderTopRightRadius: screenWidth * 0.2,
-            justifyContent: 'center',
+            justifyContent: "center",
             height: screenHeight * 0.165,
 
-            marginHorizontal: '6%',
+            marginHorizontal: "6%",
           },
           activeScreen === index && { backgroundColor: colors.white },
         ]}
@@ -42,8 +42,8 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
               height: screenWidth * 0.2,
               width: screenWidth * 0.2,
               borderRadius: (screenWidth * 0.2) / 2,
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <Image
@@ -51,7 +51,7 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
               style={{
                 height: screenHeight * 0.05,
                 width: screenHeight * 0.05,
-                resizeMode: 'contain',
+                resizeMode: "contain",
               }}
             />
           </LinearGradient>
@@ -59,7 +59,7 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
         <Text
           style={{
             color: activeScreen === index ? colors.black : colors.white,
-            marginTop: '6%',
+            marginTop: "6%",
           }}
         >
           20 Feb
@@ -70,7 +70,7 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
             {
               height: 20,
               width: 15,
-              position: 'absolute',
+              position: "absolute",
               bottom: 0,
               left: -15,
             },
@@ -79,8 +79,8 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
         >
           <View
             style={{
-              height: '100%',
-              width: '100%',
+              height: "100%",
+              width: "100%",
               borderBottomRightRadius: 20,
               backgroundColor: colors.greenDeep,
             }}
@@ -91,7 +91,7 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
             {
               height: 26,
               width: 15,
-              position: 'absolute',
+              position: "absolute",
               bottom: -0.75,
               right: -15,
             },
@@ -101,8 +101,8 @@ export const TabItem = ({ isActive, onTabItemClick, imageSource }) => {
           <View
             colors={[colors.greenDeep, colors.greenDeep]}
             style={{
-              height: '100%',
-              width: '100%',
+              height: "100%",
+              width: "100%",
               borderBottomLeftRadius: 23,
               backgroundColor: colors.greenDeep,
             }}

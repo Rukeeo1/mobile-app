@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React from "react";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-import { Text, GradientButton } from '../index';
+import { Text, GradientButton } from "../index";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors } = constants;
 
@@ -26,7 +26,7 @@ const FavoriteCropItem = ({
         </View>
 
         <View style={[styles.flowerText]}>
-          <Text style={{ fontSize: 22, fontWeight: 'normal' }}>{name}</Text>
+          <Text style={{ fontSize: 22, fontWeight: "normal" }}>{name}</Text>
           <Text style={styles.boldText}>{grow_level}</Text>
         </View>
       </TouchableOpacity>
@@ -50,12 +50,12 @@ export default FavoriteCropItem;
 
 const styles = StyleSheet.create({
   flowers: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 50,
     marginVertical: 5,
     backgroundColor: colors.white,
-    shadowColor: 'grey',
+    shadowColor: "grey",
     shadowOffset: {
       width: 0.5,
       height: 0.4,
@@ -74,17 +74,17 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   explore: {
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 8,
     marginTop: 6,
   },
   quote: {
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 10,
   },
   btnText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

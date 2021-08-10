@@ -1,7 +1,7 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import PostsForm from './PostForm';
+import PostsForm from "./PostForm";
 
 const Stack = createStackNavigator();
 
@@ -14,7 +14,7 @@ const PostsNavigator = () => {
         headerShown: false,
       }}
     >
-      <Screen name='posts-form' component={PostsForm} />
+      <Screen name="posts-form" component={PostsForm} />
     </Navigator>
   );
 };

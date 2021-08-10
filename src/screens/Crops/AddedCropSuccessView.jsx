@@ -1,57 +1,57 @@
-import React, { useEffect } from 'react';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
+import React, { useEffect } from "react";
+import { Image, Text, View, TouchableOpacity } from "react-native";
 
-import constant from '../../constants/';
+import constant from "../../constants/";
 
 const { colors } = constant;
 
 const AddedSuccess = ({ navigation }) => {
   useEffect(() => {}, [
     setTimeout(() => {
-      navigation.navigate('Grow-Crop');
+      navigation.navigate("Grow-Crop");
     }, 1000),
   ]);
 
   return (
     <View style={{ flex: 1 }}>
       <Image
-        style={{ flex: 1, resizeMode: 'cover', width: '100%' }}
-        source={require('../../assets/great.gif')}
+        style={{ flex: 1, resizeMode: "cover", width: "100%" }}
+        source={require("../../assets/great.gif")}
       />
 
       <TouchableOpacity
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           bottom: 0,
           left: 0,
           right: 0,
-          justifyContent: 'flex-start',
+          justifyContent: "flex-start",
         }}
-        onPress={() => navigation.navigate('Grow-Crop')}
+        onPress={() => navigation.navigate("Grow-Crop")}
       >
         <Text
           style={{
-            textAlign: 'center',
-            marginTop: '30%',
+            textAlign: "center",
+            marginTop: "30%",
             fontSize: 60,
             color: colors.white,
-            fontWeight: '100',
+            fontWeight: "100",
           }}
         >
           Great
         </Text>
         <Text
           style={{
-            textAlign: 'center',
+            textAlign: "center",
             fontSize: 60,
             color: colors.white,
-            fontWeight: '100',
+            fontWeight: "100",
           }}
         >
           Choice!
         </Text>
-        <Text style={{ textAlign: 'center', color: colors.white }}>
+        <Text style={{ textAlign: "center", color: colors.white }}>
           Added to calendar
         </Text>
       </TouchableOpacity>

@@ -1,40 +1,41 @@
-import React, {useContext} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { BottomSheet } from 'react-native-btr';
-import { useNavigation } from '@react-navigation/native';
+import React, { useContext } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { BottomSheet } from "react-native-btr";
+import { useNavigation } from "@react-navigation/native";
 
-import ManageCropContext, { useManageCropContext } from '../../context/ManageCropsContext';
+import ManageCropContext, {
+  useManageCropContext,
+} from "../../context/ManageCropsContext";
 
-import constants from '../../constants/';
+import constants from "../../constants/";
 
 const { colors } = constants;
 
 const ActionSheet = ({ showBottomSheet, onClose }) => {
   const navigation = useNavigation();
-    const manageCropContext = useContext(ManageCropContext);
+  const manageCropContext = useContext(ManageCropContext);
   const {
     data: { cropToGrowDetails },
     actions: { cleanContextState },
   } = useManageCropContext();
-
 
   const handleNavigation = (path, params = {}) => {
     navigation.navigate(path, params);
   };
   const actions = [
     {
-      title: 'Buy seeds',
+      title: "Buy seeds",
       onClick: () => {},
     },
     {
-      title: 'Edit name/variety name',
+      title: "Edit name/variety name",
       onClick: () => {
-          manageCropContext?.actions?.updateCropToGrowDetails({
-              editCropName: true
-          });
-          //editCropName
-        navigation.navigate('Crops', {
-          screen: 'Crop-selection',
+        manageCropContext?.actions?.updateCropToGrowDetails({
+          editCropName: true,
+        });
+        //editCropName
+        navigation.navigate("Crops", {
+          screen: "Crop-selection",
           params: {
             cropName: cropToGrowDetails?.cropName,
             cropId: cropToGrowDetails?.cropId,
@@ -46,7 +47,7 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
 
   const onDelete = () => {
     onClose();
-    handleNavigation('Delete-Crop');
+    handleNavigation("Delete-Crop");
   };
   const onKill = () => {};
 
@@ -69,7 +70,7 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
               >
                 <Text
                   style={{
-                    fontWeight: '500',
+                    fontWeight: "500",
                     color: action?.dangerText ? colors.red : colors.black,
                   }}
                 >
@@ -79,10 +80,10 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
             )
           )}
           {cropToGrowDetails.fromJobs && (
-            <SheetItem title='Delete crop' onClick={onDelete} dangerText />
+            <SheetItem title="Delete crop" onClick={onDelete} dangerText />
           )}
           {cropToGrowDetails.fromJobs && (
-            <SheetItem title='Killed crop' onClick={onKill} dangerText />
+            <SheetItem title="Killed crop" onClick={onKill} dangerText />
           )}
         </View>
         <TouchableOpacity onPress={onClose} style={styles.cancelBottomSheet}>
@@ -102,7 +103,7 @@ const SheetItem = ({ onClick, dangerText, title }) => {
     >
       <Text
         style={{
-          fontWeight: '500',
+          fontWeight: "500",
           color: dangerText ? colors.red : colors.black,
         }}
       >
@@ -114,7 +115,7 @@ const SheetItem = ({ onClick, dangerText, title }) => {
 
 const styles = StyleSheet.create({
   bottomSheetItemWrapper: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: "5%",
   },
   optionsContainer: {
     backgroundColor: colors.white,
@@ -125,8 +126,8 @@ const styles = StyleSheet.create({
     height: 55,
     borderBottomColor: colors.grey100,
     borderBottomWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   cancelBottomSheet: {
     backgroundColor: colors.white,
@@ -134,18 +135,18 @@ const styles = StyleSheet.create({
     height: 60,
     marginTop: 10,
     marginBottom: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   deleteConfirmation: {
     backgroundColor: colors.white,
     borderRadius: 13,
     height: 96,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   deleteConfirmationOptions: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   actionTextNormal: {
     color: colors.black,

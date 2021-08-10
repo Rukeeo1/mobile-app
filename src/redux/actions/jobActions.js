@@ -101,7 +101,6 @@ export const getPastHarvests = (userId) => async (dispatch) => {
       type: GET_PAST_HARVEST,
       payload: data,
     });
-
   } catch (error) {
     return showApiError(error);
   }
@@ -140,7 +139,6 @@ export const editJobWithPatch =
       });
 
       dispatch(getUserJobs(jobDetails?.user_id));
-
     } catch (error) {
       console.log(error, "from job update");
       return showApiError(error);

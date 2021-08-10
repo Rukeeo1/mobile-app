@@ -1,6 +1,6 @@
-import { AntDesign } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import { AntDesign } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
 import {
   Dimensions,
   Image,
@@ -10,16 +10,17 @@ import {
   View,
   RefreshControl,
   TouchableOpacity,
-} from 'react-native'
-import { useSelector } from 'react-redux'
+} from "react-native";
+import { useSelector } from "react-redux";
 
+import { SafeArea } from "../../components";
+import constants from "../../constants";
 
-import { SafeArea } from '../../components'
-import constants from '../../constants'
-
-const { colors } = constants
+const { colors } = constants;
 const ArticleGuide = ({ navigation }) => {
-  const { all: articles, selected: categoryId } = useSelector((state) => state.articles)
+  const { all: articles, selected: categoryId } = useSelector(
+    (state) => state.articles
+  );
 
   return (
     <>
@@ -30,11 +31,11 @@ const ArticleGuide = ({ navigation }) => {
         >
           <View
             style={{
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              justifyContent: "space-between",
+              alignItems: "center",
               flexGrow: 1,
-              width: Dimensions.get('screen').width * 0.1,
-              overflow: 'visible',
+              width: Dimensions.get("screen").width * 0.1,
+              overflow: "visible",
             }}
           >
             <AntDesign
@@ -51,8 +52,7 @@ const ArticleGuide = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
           >
             <View>
-              <View>
-              </View>
+              <View></View>
               {articles[categoryId]?.map((article) => {
                 return (
                   <View
@@ -67,8 +67,8 @@ const ArticleGuide = ({ navigation }) => {
                       <Text
                         style={{
                           fontSize: 20,
-                          fontWeight: 'bold',
-                          textAlign: 'center',
+                          fontWeight: "bold",
+                          textAlign: "center",
                           marginHorizontal: 20,
                         }}
                       >
@@ -86,7 +86,7 @@ const ArticleGuide = ({ navigation }) => {
                       </Text>
                     </View>
                   </View>
-                )
+                );
               })}
             </View>
             <View style={{ height: 50, backgroundColor: colors.white }} />
@@ -94,23 +94,23 @@ const ArticleGuide = ({ navigation }) => {
         </LinearGradient>
       </SafeArea>
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    overflow: 'visible',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    overflow: "visible",
   },
   content: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 15,
-    width: Dimensions.get('screen').width * 0.8,
+    width: Dimensions.get("screen").width * 0.8,
     paddingBottom: 50,
-    overflow: 'visible',
+    overflow: "visible",
   },
-})
+});
 
-export default ArticleGuide
+export default ArticleGuide;

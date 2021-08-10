@@ -1,4 +1,4 @@
-import { GET_NOTIFICATIONS } from '../types';
+import { GET_NOTIFICATIONS } from "../types";
 
 const initialState = {
   all: null,

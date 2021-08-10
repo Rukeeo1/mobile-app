@@ -1,7 +1,7 @@
-import React from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { ActivityIndicator } from 'react-native';
+import React from "react";
+import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator } from "react-native";
 
 // todo: cater for props.children in cases where button needs to be wrapped around other components
 /**
@@ -15,7 +15,7 @@ import { ActivityIndicator } from 'react-native';
  */
 export const Button = ({
   title,
-  color = '#000',
+  color = "#000",
   coverStyle,
   onPress,
   children,
@@ -24,18 +24,18 @@ export const Button = ({
     <TouchableOpacity
       onPress={onPress}
       style={{
-        width: '100%',
+        width: "100%",
         height: 50,
         marginTop: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
         borderRadius: 20,
 
         ...coverStyle,
       }}
     >
-      <Text style={{ color, fontWeight: '600' }}>{title}</Text>
+      <Text style={{ color, fontWeight: "600" }}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -44,7 +44,7 @@ export const Button = ({
 export const GradientButton = ({
   children,
   title,
-  gradient = ['#000000', '#000000'],
+  gradient = ["#000000", "#000000"],
   coverStyle,
   textStyle,
   gradientStyle,
@@ -62,16 +62,13 @@ export const GradientButton = ({
         colors={gradient}
         style={{ ...styles.defaultLinearGradient, ...gradientStyle }}
       >
-        {children
-          ? children
-          : loading
-            ? (
-              <ActivityIndicator
-                color="#fff"
-                size="small"
-                animating
-              />
-            ) : <Text style={{ ...styles.defaultText, ...textStyle }}>{title}</Text>}
+        {children ? (
+          children
+        ) : loading ? (
+          <ActivityIndicator color="#fff" size="small" animating />
+        ) : (
+          <Text style={{ ...styles.defaultText, ...textStyle }}>{title}</Text>
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -80,7 +77,7 @@ export const GradientButton = ({
 export const SmallGradientButton = ({
   children,
   title,
-  gradient = ['#000000', '#000000'],
+  gradient = ["#000000", "#000000"],
   coverStyle,
   onPress,
 }) => {
@@ -101,43 +98,43 @@ export const SmallGradientButton = ({
 
 const styles = StyleSheet.create({
   defaultBtnContainer: {
-    width: '100%',
+    width: "100%",
     height: 50,
     marginTop: 15,
     borderRadius: 25,
   },
   defaultLinearGradient: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     borderRadius: 25,
-    backgroundColor: 'green',
+    backgroundColor: "green",
   },
   defaultText: {
-    color: '#ffffff',
-    fontWeight: '600',
-    fontFamily: 'Hero-New-Medium',
+    color: "#ffffff",
+    fontWeight: "600",
+    fontFamily: "Hero-New-Medium",
     fontSize: 18,
   },
 });
 
 const smallStyles = StyleSheet.create({
   defaultBtnContainer: {
-    width: '100%',
+    width: "100%",
     height: 50,
     marginTop: 15,
     borderRadius: 25,
   },
   defaultLinearGradient: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     borderRadius: 25,
-    backgroundColor: 'green',
+    backgroundColor: "green",
   },
-  defaultText: { color: '#ffffff', fontWeight: '600' },
+  defaultText: { color: "#ffffff", fontWeight: "600" },
 });

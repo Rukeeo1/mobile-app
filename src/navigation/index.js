@@ -1,8 +1,8 @@
-import React from 'react';
-import { AsyncStorage } from 'react-native';
+import React from "react";
+import { AsyncStorage } from "react-native";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import {
   ArticleNavigator,
@@ -15,8 +15,8 @@ import {
   PostsNavigator,
   ProfileNavigator,
   SplashScreen,
-} from '../screens';
-import Launch from './AuthLoading';
+} from "../screens";
+import Launch from "./AuthLoading";
 import SinglePost from "../screens/Profile/SinglePost";
 
 const Stack = createStackNavigator();
@@ -25,8 +25,8 @@ const { Navigator, Screen } = Stack;
 
 const RootNavigator = () => {
   const isAuthenticated = async () => {
-    const token = await AsyncStorage.getItem('token');
-    const user = await AsyncStorage.getItem('user');
+    const token = await AsyncStorage.getItem("token");
+    const user = await AsyncStorage.getItem("user");
 
     return !!token && !!user;
   };
@@ -41,18 +41,18 @@ const RootNavigator = () => {
           headerTitle: false,
         }}
       >
-        <Screen name='Launch' component={Launch} />
-        <Screen name='AuthNavigator' component={AuthNavigator} />
-        <Screen name='Onboarding' component={OnboardingLayout} />
-        <Screen name='Crops' component={Crops} />
-        <Screen name='Grow-Crop' component={GrowCropNavigator} />
-        <Screen name='Crop-Journal' component={CropJournalNavigator} />
-          <Screen name='Single-Post2' component={SinglePost} />
-        <Screen name='End-Harvest' component={EndHarvestNavigator} />
-        <Screen name='Splash' component={SplashScreen} />
-        <Screen name='Settings' component={ProfileNavigator} />
-        <Screen name='Article' component={ArticleNavigator} />
-        <Screen name='Posts' component={PostsNavigator} />
+        <Screen name="Launch" component={Launch} />
+        <Screen name="AuthNavigator" component={AuthNavigator} />
+        <Screen name="Onboarding" component={OnboardingLayout} />
+        <Screen name="Crops" component={Crops} />
+        <Screen name="Grow-Crop" component={GrowCropNavigator} />
+        <Screen name="Crop-Journal" component={CropJournalNavigator} />
+        <Screen name="Single-Post2" component={SinglePost} />
+        <Screen name="End-Harvest" component={EndHarvestNavigator} />
+        <Screen name="Splash" component={SplashScreen} />
+        <Screen name="Settings" component={ProfileNavigator} />
+        <Screen name="Article" component={ArticleNavigator} />
+        <Screen name="Posts" component={PostsNavigator} />
       </Navigator>
     </NavigationContainer>
   );

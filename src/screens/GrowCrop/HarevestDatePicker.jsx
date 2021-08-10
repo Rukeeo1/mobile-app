@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState, useContext } from "react";
+import { View } from "react-native";
 
-import ManageCropContext from '../../context/ManageCropsContext';
+import ManageCropContext from "../../context/ManageCropsContext";
 
-import { GradientButton as Button, Text } from '../../components';
+import { GradientButton as Button, Text } from "../../components";
 
-import { GrowCropCalender } from './GrowCropCalendar';
+import { GrowCropCalender } from "./GrowCropCalendar";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const {
   colors,
@@ -85,7 +85,7 @@ export const HarevestDatePicker = ({
       {showCalender && (
         <View style={{ marginVertical: 10 }}>
           <Text
-            fontType='bold'
+            fontType="bold"
             style={{ backgroundColor: colors.white, marginTop: 5 }}
           >
             {tip}
@@ -121,7 +121,7 @@ export const HarevestDatePicker = ({
           />
           <View>
             <Button
-              title='End Harvest'
+              title="End Harvest"
               gradient={[colors.pink, colors.pinkDeep]}
               onPress={onEndHarvest}
             />
@@ -140,7 +140,7 @@ export const HarevestDatePicker = ({
             selectedDate={endHarvestDay}
             selectedMonth={months[endHarvestMonth]}
             selectedYear={endHarvestYear}
-            title={'Harvest Ended'} //set a condition if harvest ended
+            title={"Harvest Ended"} //set a condition if harvest ended
           />
         </>
       )}
@@ -154,16 +154,16 @@ const SelectedDate = ({ selectedDate, selectedMonth, selectedYear, title }) => {
   return (
     <View
       style={{
-        justifyContent: 'center',
-        paddingHorizontal: '6%',
+        justifyContent: "center",
+        paddingHorizontal: "6%",
         borderTopLeftRadius: 45,
         borderBottomLeftRadius: 45,
         borderTopRightRadius: 45,
-        marginTop: '5%',
+        marginTop: "5%",
         borderBottomRightRadius: 45,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         flex: 1,
-        shadowColor: 'grey',
+        shadowColor: "grey",
         shadowOffset: {
           width: 0.5,
           height: 0.4,
@@ -171,14 +171,14 @@ const SelectedDate = ({ selectedDate, selectedMonth, selectedYear, title }) => {
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 15,
-        paddingVertical: '3%',
+        paddingVertical: "3%",
         // marginRight: !showHoriazontalButtonAfterDateIsSelected ? 20 : 0,
       }}
     >
-      <Text fontType='light'>{title}</Text>
+      <Text fontType="light">{title}</Text>
       <Text
-        style={{ color: colors.pink, fontSize: 18, marginTop: '2%' }}
-        fontType='light'
+        style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
+        fontType="light"
       >{`${selectedDate} ${selectedMonth} ${selectedYear}`}</Text>
     </View>
   );

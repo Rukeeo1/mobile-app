@@ -121,12 +121,12 @@ const PostForm = ({
     //     indexOfItemToShow: 1,
     //   },
     // });
-      navigation.navigate('Settings', {
-          screen: 'Main-Profile',
-          params: {
-              indexOfItemToShow: 3,
-          },
-      });
+    navigation.navigate("Settings", {
+      screen: "Main-Profile",
+      params: {
+        indexOfItemToShow: 3,
+      },
+    });
   };
 
   const submit = () => {
@@ -158,7 +158,7 @@ const PostForm = ({
       }
 
       dispatch(addAltPost(data));
-      goBack()
+      goBack();
     } else {
       if (post.postImageUri !== postData.media_url) {
         data.append("thumbnail_url", {
@@ -177,7 +177,7 @@ const PostForm = ({
     }
 
     // navigation.goBack()
-    goBack()
+    goBack();
   };
 
   const disableForm =

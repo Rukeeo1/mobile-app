@@ -1,4 +1,4 @@
-import { LOADING } from '../types';
+import { LOADING } from "../types";
 
 export const handleLoading = (payload) => ({
   type: LOADING,

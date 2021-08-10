@@ -1,6 +1,6 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
 import {
   Dimensions,
   Image,
@@ -10,27 +10,29 @@ import {
   View,
   TouchableOpacity,
   RefreshControl,
-} from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
-import { SafeArea } from '../../components'
-import { GradientButton, SmallGradientButton } from '../../components/Button'
-import constants from '../../constants'
-import { followUser } from '../../redux/actions/authActions'
-import { getPostUser } from '../../redux/actions/postsActions'
+import { SafeArea } from "../../components";
+import { GradientButton, SmallGradientButton } from "../../components/Button";
+import constants from "../../constants";
+import { followUser } from "../../redux/actions/authActions";
+import { getPostUser } from "../../redux/actions/postsActions";
 
-const { colors } = constants
+const { colors } = constants;
 const UserDetails = ({ navigation }) => {
-  const [showShare, setShowShare] = useState(false)
-  const [follow, setFollow] = useState(false)
-  const [grow, setGrow] = useState(false)
-  const toggleModal = () => setShowShare((prevState) => !prevState)
+  const [showShare, setShowShare] = useState(false);
+  const [follow, setFollow] = useState(false);
+  const [grow, setGrow] = useState(false);
+  const toggleModal = () => setShowShare((prevState) => !prevState);
 
-  const dispatch = useDispatch()
-  const { selectedUser: { data, posts, growitList } } = useSelector((state) => state.posts)
-  const { following = [] } = useSelector((state) => state.auth)
-  const { loading } = useSelector((state) => state.loading)
-  let isFollowing = !!(following?.find((user) => user?.id === data?.id)) ?? false
+  const dispatch = useDispatch();
+  const {
+    selectedUser: { data, posts, growitList },
+  } = useSelector((state) => state.posts);
+  const { following = [] } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.loading);
+  let isFollowing = !!following?.find((user) => user?.id === data?.id) ?? false;
 
   return (
     <>
@@ -41,11 +43,11 @@ const UserDetails = ({ navigation }) => {
         >
           <View
             style={{
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              justifyContent: "space-between",
+              alignItems: "center",
               flexGrow: 1,
-              width: Dimensions.get('screen').width * 0.1,
-              overflow: 'visible',
+              width: Dimensions.get("screen").width * 0.1,
+              overflow: "visible",
             }}
           >
             <AntDesign
@@ -60,14 +62,14 @@ const UserDetails = ({ navigation }) => {
           <ScrollView
             style={styles.content}
             showsVerticalScrollIndicator={false}
-            refreshControl={(
+            refreshControl={
               <RefreshControl
                 refreshing={loading}
                 onRefresh={() => dispatch(getPostUser(data?.id))}
                 tintColor={colors.purshBlue}
                 colors={[colors.purshBlue]}
               />
-            )}
+            }
           >
             <View>
               <View>
@@ -80,27 +82,29 @@ const UserDetails = ({ navigation }) => {
                 </View>
                 <View style={[styles.detailsContainer, styles.detaileText]}>
                   <Text style={[styles.title]}>{data?.fullname}</Text>
-                  <Text>
-                    {data?.biography}
-                  </Text>
+                  <Text>{data?.biography}</Text>
                   <Text>{data?.location}</Text>
                 </View>
 
                 {!follow && (
-                  <View style={{ paddingHorizontal: '6%' }}>
+                  <View style={{ paddingHorizontal: "6%" }}>
                     <SmallGradientButton
-                      gradient={isFollowing ? [colors.purshBlue, colors.blue] : [colors.red, colors.redDeep]}
+                      gradient={
+                        isFollowing
+                          ? [colors.purshBlue, colors.blue]
+                          : [colors.red, colors.redDeep]
+                      }
                       onPress={() => {
                         if (isFollowing) {
                           // TODO: undollow
                         } else {
-                          setFollow(true)
-                          dispatch(followUser(data?.id, false))
+                          setFollow(true);
+                          dispatch(followUser(data?.id, false));
                         }
                       }}
                     >
                       <Text style={[styles.btnText]}>
-                        {isFollowing ? 'Following' : 'Follow'}
+                        {isFollowing ? "Following" : "Follow"}
                       </Text>
                     </SmallGradientButton>
                   </View>
@@ -117,20 +121,32 @@ const UserDetails = ({ navigation }) => {
                     // onPress={() => setFollow(!follow)}
                   >
                     <View activeOpacity={0.7}>
-                      <Text style={[styles.followsText]}>{data?.following_count} Following</Text>
+                      <Text style={[styles.followsText]}>
+                        {data?.following_count} Following
+                      </Text>
                     </View>
-                    <Text>{'|'}</Text>
+                    <Text>{"|"}</Text>
                     <View activeOpacity={0.7}>
-                      <Text style={[styles.followsText]}>{data?.follower_count} Followers</Text>
+                      <Text style={[styles.followsText]}>
+                        {data?.follower_count} Followers
+                      </Text>
                     </View>
                   </View>
                 )}
 
-                {growitList?.length < 1
-                  ? (
-                    <View style={{ paddingHorizontal: '6%', backgroundColor: '#F7F7F7', paddingVertical: 20, marginTop: 10 }}>
-                      <Text style={{textAlign: 'center'}}>{data?.fullname} isn't growing anything!</Text>
-                      {/* <SmallGradientButton
+                {growitList?.length < 1 ? (
+                  <View
+                    style={{
+                      paddingHorizontal: "6%",
+                      backgroundColor: "#F7F7F7",
+                      paddingVertical: 20,
+                      marginTop: 10,
+                    }}
+                  >
+                    <Text style={{ textAlign: "center" }}>
+                      {data?.fullname} isn't growing anything!
+                    </Text>
+                    {/* <SmallGradientButton
                         gradient={[colors.green, colors.greenDeep]}
                         onPress={() => setGrow(!grow)}
                       >
@@ -151,8 +167,9 @@ const UserDetails = ({ navigation }) => {
                           />
                         </View>
                       </SmallGradientButton> */}
-                    </View>
-                  ) : growitList?.map((item, i) => {
+                  </View>
+                ) : (
+                  growitList?.map((item, i) => {
                     return (
                       <View style={[styles.growCard]} key={item?.id ?? i}>
                         <Image
@@ -161,15 +178,20 @@ const UserDetails = ({ navigation }) => {
                             width: 70,
                             borderRadius: 70 / 2,
                           }}
-                          source={item?.thumbnail_url ? { uri: item?.thumbnail_url } : require('../../assets/growavatar.png')}
+                          source={
+                            item?.thumbnail_url
+                              ? { uri: item?.thumbnail_url }
+                              : require("../../assets/growavatar.png")
+                          }
                         />
                         <Text style={[styles.growText]}>
-                          {item?.name}{' '}
-                          {item?.variety ? `“${item?.variety}”` : ''}
+                          {item?.name}{" "}
+                          {item?.variety ? `“${item?.variety}”` : ""}
                         </Text>
                       </View>
-                    )
-                  })}
+                    );
+                  })
+                )}
                 {posts?.map((post) => {
                   return (
                     <View style={[styles.postCard]}>
@@ -189,17 +211,15 @@ const UserDetails = ({ navigation }) => {
                       </View>
 
                       <View style={[styles.postDateTime]}>
-                        <Text>
-                          {new Date(post.created_at).toDateString()}
-                        </Text>
+                        <Text>{new Date(post.created_at).toDateString()}</Text>
                         {/* <TouchableOpacity onPress={toggleModal}>
                           <Text>...</Text>
                         </TouchableOpacity> */}
                       </View>
 
                       <View style={{ marginLeft: 15 }}>
-                        <Text style={{ fontFamily: 'Hero-New-Light' }}>
-                          <Text style={{ fontFamily: 'Hero-New-Medium' }}>
+                        <Text style={{ fontFamily: "Hero-New-Light" }}>
+                          <Text style={{ fontFamily: "Hero-New-Medium" }}>
                             {post?.title}
                           </Text>
                           {/* {' '}
@@ -207,7 +227,7 @@ const UserDetails = ({ navigation }) => {
                         </Text>
                       </View>
                     </View>
-                  )
+                  );
                 })}
               </View>
             </View>
@@ -216,30 +236,30 @@ const UserDetails = ({ navigation }) => {
         </LinearGradient>
       </SafeArea>
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    overflow: 'visible',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    overflow: "visible",
   },
   content: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 15,
-    width: Dimensions.get('screen').width * 0.8,
+    width: Dimensions.get("screen").width * 0.8,
     paddingBottom: 50,
-    overflow: 'visible',
+    overflow: "visible",
   },
   profileImg: {
-    width: '100%',
-    height: Dimensions.get('window').height / 3,
+    width: "100%",
+    height: Dimensions.get("window").height / 3,
   },
   detailsContainer: {
-    alignItems: 'center',
-    textAlign: 'center',
+    alignItems: "center",
+    textAlign: "center",
     marginTop: 5,
   },
   detaileText: {
@@ -249,87 +269,87 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 45,
     marginVertical: 10,
-    fontWeight: '100',
-    fontFamily: 'Hero-New-Light',
+    fontWeight: "100",
+    fontFamily: "Hero-New-Light",
   },
   edit: {
     marginVertical: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   follows: {
     width: 200,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    marginLeft: "auto",
+    marginRight: "auto",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   followsText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   growList: {
     backgroundColor: colors.nearWhite,
     padding: 20,
     paddingRight: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   btnText: {
     color: colors.white,
   },
   growCard: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 8,
   },
   growTitle: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 15,
   },
   growText: {
     maxWidth: 120,
-    textAlign: 'center',
+    textAlign: "center",
   },
   btnText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   growMovement: {
     height: 350,
   },
   growMovementImgContainer: {
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
   },
   growMovementImg: {
     width: 255,
     height: 255,
-    position: 'absolute',
+    position: "absolute",
   },
   growMoveTextContainer: {
-    position: 'absolute',
+    position: "absolute",
     width: 160,
     height: 160,
     borderRadius: 160 / 2,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.blue,
   },
   growMoveText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: 'bold',
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
     marginHorizontal: 5,
     maxWidth: 90,
   },
   growMoveFooterText: {
-    textAlign: 'center',
-    width: '60%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    textAlign: "center",
+    width: "60%",
+    marginLeft: "auto",
+    marginRight: "auto",
     fontSize: 16,
   },
   postCard: {
@@ -341,30 +361,30 @@ const styles = StyleSheet.create({
     borderRadius: 30 / 2,
   },
   postAvatarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 10,
     marginLeft: 15,
   },
   postTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
     fontSize: 14,
   },
   postImg: {
-    width: '100%',
+    width: "100%",
     height: 353,
   },
   postDateTime: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     margin: 10,
     marginLeft: 15,
   },
   bold: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-})
+});
 
-export default UserDetails
+export default UserDetails;

@@ -4,10 +4,10 @@ import {
   GET_CURRENT_GROW_CROPS,
   GET_PAST_HARVEST,
   GET_REMINDERS,
-    GET_JOB_HISTORY,
-    GET_CURRENT_JOB,
+  GET_JOB_HISTORY,
+  GET_CURRENT_JOB,
   UPDATING_REMINDER,
-} from '../types/';
+} from "../types/";
 
 const initialState = {
   usersJobs: {},
@@ -46,12 +46,12 @@ const jobsReducer = (state = initialState, { type, payload }) => {
         ...state,
         userReminders: payload,
       };
-      case GET_CURRENT_JOB:
+    case GET_CURRENT_JOB:
       return {
         ...state,
         currentJob: payload,
       };
-      case GET_JOB_HISTORY:
+    case GET_JOB_HISTORY:
       return {
         ...state,
         jobHistory: payload,
@@ -59,8 +59,8 @@ const jobsReducer = (state = initialState, { type, payload }) => {
     case UPDATING_REMINDER:
       return {
         ...state,
-        updatingReminder: payload
-      }
+        updatingReminder: payload,
+      };
     default:
       return state;
   }

@@ -1,88 +1,102 @@
-import React, { useState, useContext } from 'react';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import React, { useState, useContext } from "react";
+import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 
-import { GradientButton, Text } from '../../components/';
+import { GradientButton, Text } from "../../components/";
 
-import constants from '../../constants';
-import {growCrop, updateJob} from "../../redux/actions";
+import constants from "../../constants";
+import { growCrop, updateJob } from "../../redux/actions";
 import Toast from "react-native-toast-message";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const { colors, screenHeight } = constants;
 
-export const CropItem = ({ crop, currentVariety, currentName, currentCropId, manageCropContext, route }) => {
-    const dispatch = useDispatch();
+export const CropItem = ({
+  crop,
+  currentVariety,
+  currentName,
+  currentCropId,
+  manageCropContext,
+  route,
+}) => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
-    const { cropName, sowTip, growLevel, cropId } = route?.params || {};
-  const { thumbnail_url, name, category, variety, affiliate_links, recommendation } = crop || {}; //{affiliate_links, thumbnail_url, recommendation}
-    const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
-        cropCycleDetails: state?.crops?.cropCycleDetails[0],
-        cropSteps: state?.crops?.cropSteps,
-        user: state?.auth?.user,
-    }));
+  const { cropName, sowTip, growLevel, cropId } = route?.params || {};
+  const {
+    thumbnail_url,
+    name,
+    category,
+    variety,
+    affiliate_links,
+    recommendation,
+  } = crop || {}; //{affiliate_links, thumbnail_url, recommendation}
+  const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
+    cropCycleDetails: state?.crops?.cropCycleDetails[0],
+    cropSteps: state?.crops?.cropSteps,
+    user: state?.auth?.user,
+  }));
 
-    const getCurrentDate = () => {
-        const date = new Date().getDate();
-        const month = `0${new Date().getMonth() + 1}`;
-        const year = new Date().getFullYear();
-        return year + "-" + month + "-" + date; //format: yyyy-mm-dd;
+  const getCurrentDate = () => {
+    const date = new Date().getDate();
+    const month = `0${new Date().getMonth() + 1}`;
+    const year = new Date().getFullYear();
+    return year + "-" + month + "-" + date; //format: yyyy-mm-dd;
+  };
+  let ourDate;
+  let jobInfo = {};
+  const handleGrowCrop = (selectedDate, cropIdx, jobType) => {
+    // ourDate = new Date(); // 2020 January 5
+    ourDate = getCurrentDate(); // 2020 January 5
+    // ourDate = new Date(selectedDate); // 2020 January 5
+    jobInfo = {
+      cropName,
+      crop_id: currentCropId,
+      user_id: user?.id,
+      job_date: ourDate,
+      title: "PENDING",
+      status: "PENDING",
+      job_type: jobType,
+      variety: recommendation,
+      cropType: currentVariety,
     };
-    let ourDate;
-    let jobInfo = {};
-    const handleGrowCrop = (selectedDate, cropIdx, jobType) => {
-        // ourDate = new Date(); // 2020 January 5
-        ourDate = getCurrentDate(); // 2020 January 5
-        // ourDate = new Date(selectedDate); // 2020 January 5
-        jobInfo = {
-            cropName,
-            crop_id: currentCropId,
-            user_id: user?.id,
-            job_date: ourDate,
-            title: "PENDING",
-            status: "PENDING",
-            job_type: jobType,
-            variety: recommendation,
-            cropType: currentVariety,
-        };
-        console.log({oluwadurotimi: {
-                cropName,
-                crop_id: currentCropId,
-                user_id: user?.id,
-                job_date: ourDate,
-                status: "PENDING",
-                job_type: jobType,
-                variety: recommendation,
-                cropType: currentVariety,
-            }})
-
-
-        manageCropContext?.actions?.updateCropToGrowDetails({
-            title: "PENDING",
-            cropName: currentName,
-            action: "PENDING",
-            job_type: "PENDING",
-            jobDate: jobInfo.job_date,
-            variety: recommendation,
-            CropVariety: currentVariety,
-            cropId: currentCropId,
-        });
-
-        // handleNavigation('Success')
-        return dispatch(growCrop(jobInfo, false));
-    };
-  const handleNavigation = (path) => () => {
+    console.log({
+      oluwadurotimi: {
+        cropName,
+        crop_id: currentCropId,
+        user_id: user?.id,
+        job_date: ourDate,
+        status: "PENDING",
+        job_type: jobType,
+        variety: recommendation,
+        cropType: currentVariety,
+      },
+    });
 
     manageCropContext?.actions?.updateCropToGrowDetails({
-      variety: recommendation,
+      title: "PENDING",
       cropName: currentName,
-        CropVariety: currentVariety,
+      action: "PENDING",
+      job_type: "PENDING",
+      jobDate: jobInfo.job_date,
+      variety: recommendation,
+      CropVariety: currentVariety,
       cropId: currentCropId,
     });
 
-      navigation.navigate(path);
+    // handleNavigation('Success')
+    return dispatch(growCrop(jobInfo, false));
+  };
+  const handleNavigation = (path) => () => {
+    manageCropContext?.actions?.updateCropToGrowDetails({
+      variety: recommendation,
+      cropName: currentName,
+      CropVariety: currentVariety,
+      cropId: currentCropId,
+    });
+
+    navigation.navigate(path);
   };
 
   return (
@@ -99,13 +113,13 @@ export const CropItem = ({ crop, currentVariety, currentName, currentCropId, man
             <Text>{currentVariety}</Text>
           </View>
         </View>
-        <AntDesign name='right' size={24} color={colors.green} />
+        <AntDesign name="right" size={24} color={colors.green} />
       </TouchableOpacity>
       {show && (
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            justifyContent: "space-between",
             width: 200,
             paddingLeft: 20,
             paddingRight: 20,
@@ -113,16 +127,15 @@ export const CropItem = ({ crop, currentVariety, currentName, currentCropId, man
         >
           <GradientButton
             gradient={[colors.blueLigth, colors.blue]}
-            onPress={ () => {
-                 handleGrowCrop('1234', currentCropId, "PENDING");
-                navigation.navigate("Success");
-
+            onPress={() => {
+              handleGrowCrop("1234", currentCropId, "PENDING");
+              navigation.navigate("Success");
             }}
           >
             <View
               style={{
-                alignItems: 'center',
-                width: '100%',
+                alignItems: "center",
+                width: "100%",
                 paddingHorizontal: 20,
               }}
             >
@@ -135,21 +148,20 @@ export const CropItem = ({ crop, currentVariety, currentName, currentCropId, man
           >
             <View
               style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-around",
+                alignItems: "center",
                 paddingHorizontal: 20,
               }}
             >
               <Text style={styles.btnText}>Buy seed</Text>
-              <Entypo name='shopping-cart' size={24} color={colors.white} />
+              <Entypo name="shopping-cart" size={24} color={colors.white} />
             </View>
           </GradientButton>
         </View>
       )}
     </View>
-
   );
 };
 
@@ -158,16 +170,16 @@ export default CropItem;
 const styles = StyleSheet.create({
   cropCardContainer: {
     backgroundColor: colors.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '95%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "95%",
     borderRadius: 100 / 2,
     height: 70,
     paddingRight: 20,
     // marginVertical: 3,
     // shadow iOS
-    shadowColor: 'grey',
+    shadowColor: "grey",
     shadowOffset: {
       width: 0.5,
       height: 0.4,
@@ -178,8 +190,8 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
   cropDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   cropText: {
     marginLeft: 10,
@@ -191,6 +203,6 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

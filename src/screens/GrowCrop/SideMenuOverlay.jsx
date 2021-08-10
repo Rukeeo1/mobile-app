@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import React, { useState, useEffect, useContext } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
 
-import ManageCropContext from '../../context/ManageCropsContext';
+import ManageCropContext from "../../context/ManageCropsContext";
 
-import notificationIcon from '../../assets/notification.png';
-import notificationActive from '../../assets/notification-active.png';
-import manageCropsInactive from '../../assets/managecropswhite.png';
-import manageCrops from '../../assets/managecrops.png';
-import exploreInactive from '../../assets/exploreinactive.png';
-import exploreActive from '../../assets/exploreActive.png';
+import notificationIcon from "../../assets/notification.png";
+import notificationActive from "../../assets/notification-active.png";
+import manageCropsInactive from "../../assets/managecropswhite.png";
+import manageCrops from "../../assets/managecrops.png";
+import exploreInactive from "../../assets/exploreinactive.png";
+import exploreActive from "../../assets/exploreActive.png";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors, screenHeight, screenWidth } = constants;
 
@@ -29,8 +29,8 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
   const handleNavigation = (index) => {
     toggleSideMenu();
 
-    navigation.navigate('Settings', {
-      screen: 'Main-Profile',
+    navigation.navigate("Settings", {
+      screen: "Main-Profile",
       params: {
         indexOfItemToShow: index,
       },
@@ -41,7 +41,7 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
 
   const sideBarTabItems = [
     {
-      name: 'notifications',
+      name: "notifications",
       icon: (active) => (
         <Image
           source={active ? notificationActive : notificationIcon}
@@ -54,10 +54,10 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
       onclick: () => handleNavigation(0),
     },
     {
-      name: 'create-post',
+      name: "create-post",
       icon: (active) => (
         <Entypo
-          name='plus'
+          name="plus"
           size={30}
           color={colors.white}
           style={{ opacity: active ? 1 : 0.5 }}
@@ -69,10 +69,10 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
       onclick: () => handleNavigation(1),
     },
     {
-      name: 'profile',
+      name: "profile",
       icon: (active) => (
         <Ionicons
-          name='md-person-outline'
+          name="md-person-outline"
           size={24}
           style={{
             color: active ? colors.greenDeep : colors.white,
@@ -87,19 +87,19 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
       onclick: () => handleNavigation(2),
     },
     {
-      name: 'explore',
+      name: "explore",
 
       icon: (active) => (
         <Image source={active ? exploreActive : exploreInactive} />
       ),
       ref: React.createRef(),
-      activeColor: '#AD0048',
+      activeColor: "#AD0048",
       backgroundColor: [colors.blue, colors.purshBlueDeep],
       styles: { marginTop: 40 },
       onclick: () => handleNavigation(3),
     },
     {
-      name: 'manage-crops',
+      name: "manage-crops",
       icon: (active) => (
         <Image
           source={active ? manageCrops : manageCropsInactive}
@@ -108,15 +108,15 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
-      backgroundColor: ['#AD0048', '#E8357F'],
+      backgroundColor: ["#AD0048", "#E8357F"],
       styles: { marginTop: 100 },
       onclick: () => handleNavigation(4),
     },
     {
-      name: 'calendar',
+      name: "calendar",
       icon: (active) => (
         <Ionicons
-          name='md-calendar-outline'
+          name="md-calendar-outline"
           size={24}
           color={colors.white}
           style={{
@@ -173,8 +173,8 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
         style={{
           backgroundColor: colors.black,
           opacity: 0.5,
-          width: '84%',
-          height: '100%',
+          width: "84%",
+          height: "100%",
         }}
         onPress={toggleSideMenu}
       />
@@ -191,17 +191,17 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
             height: screenHeight * 1,
             zIndex: 2323,
             opacity: 1,
-            paddingTop: '15%',
+            paddingTop: "15%",
             borderTopLeftRadius: 100,
-            alignItems: 'center',
-            overflow: 'visible',
+            alignItems: "center",
+            overflow: "visible",
           }}
         >
           <View ref={containerRef}>
-            <View style={{ alignItems: 'center', marginBottom: 45 }}>
+            <View style={{ alignItems: "center", marginBottom: 45 }}>
               <TouchableOpacity style={styles.ellipse}>
                 <FontAwesome5
-                  name='ellipsis-h'
+                  name="ellipsis-h"
                   size={24}
                   color={colors.white}
                   style={{ opacity: 0.5 }}
@@ -224,11 +224,11 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
             ))}
             <View
               style={{
-                position: 'absolute',
+                position: "absolute",
                 height: 1,
                 backgroundColor: colors.white,
                 top: screenHeight * 0.58,
-                width: '100%',
+                width: "100%",
                 opacity: 0.5,
               }}
             />
@@ -241,18 +241,18 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
-    width: '100%',
+    width: "100%",
     height: screenHeight,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   tabIconWrapper: {
     marginTop: screenHeight * 0.03,
     height: 60,
     width: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 290323,
     elevation: 10,
   },
@@ -262,13 +262,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 30,
     elevation: 3,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.26,
     shadowRadius: 10,
     height: 60,
     width: 60,
-    position: 'absolute',
+    position: "absolute",
     left: -12,
   },
 });

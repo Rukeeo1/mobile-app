@@ -1,15 +1,17 @@
-import React from 'react';
-import { Image, Platform, StyleSheet } from 'react-native';
+import React from "react";
+import { Image, Platform, StyleSheet } from "react-native";
 
 const Logo = ({ source, logoStyles, ...props }) => {
-  return <Image source={source} style={[styles.image, logoStyles]} {...props} />;
+  return (
+    <Image source={source} style={[styles.image, logoStyles]} {...props} />
+  );
 };
 
 const styles = StyleSheet.create({
   image: {
-    marginBottom: '10%',
-    height: Platform.OS === 'android' ? 110 : 120,
-    width: '80%',
+    marginBottom: "10%",
+    height: Platform.OS === "android" ? 110 : 120,
+    width: "80%",
   },
 });
 

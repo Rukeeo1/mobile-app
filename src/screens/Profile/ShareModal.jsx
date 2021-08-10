@@ -1,18 +1,18 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BottomSheet } from 'react-native-btr';
-import { useDispatch } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { BottomSheet } from "react-native-btr";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
-import { deleteUserPosts } from '../../redux/actions/authActions'
+import { deleteUserPosts } from "../../redux/actions/authActions";
 
-import constants from '../../constants';
+import constants from "../../constants";
 
 const { colors } = constants;
 
 export const ShareModal = ({ showBottomSheet, setShowShare, post, Toast }) => {
-  const dispatch = useDispatch()
-  const navigation = useNavigation()
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   return (
     <BottomSheet
@@ -27,11 +27,11 @@ export const ShareModal = ({ showBottomSheet, setShowShare, post, Toast }) => {
           <TouchableOpacity
             style={styles.optionItem}
             onPress={() => {
-              setShowShare(false)
-              navigation.navigate('Posts', {
-                screen: 'posts-form',
-                params: { post }
-              })
+              setShowShare(false);
+              navigation.navigate("Posts", {
+                screen: "posts-form",
+                params: { post },
+              });
             }}
           >
             <Text>Edit Post</Text>
@@ -39,11 +39,11 @@ export const ShareModal = ({ showBottomSheet, setShowShare, post, Toast }) => {
           <TouchableOpacity
             style={styles.optionItem}
             onPress={() => {
-              setShowShare(false)
-              dispatch(deleteUserPosts(post?.id, Toast))
+              setShowShare(false);
+              dispatch(deleteUserPosts(post?.id, Toast));
             }}
           >
-            <Text style={{ color: colors.red, fontWeight: '500' }}>
+            <Text style={{ color: colors.red, fontWeight: "500" }}>
               Delete Post
             </Text>
           </TouchableOpacity>
@@ -66,18 +66,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   main: {
-    paddingHorizontal: '5%',
-    paddingTop: '5%',
+    paddingHorizontal: "5%",
+    paddingTop: "5%",
     flex: 1,
   },
   searchBarWrapper: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: "5%",
     paddingTop: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   searchInputContainer: {
     backgroundColor: colors.grey,
-    justifyContent: 'center',
+    justifyContent: "center",
     borderRadius: 20,
     height: 46,
     paddingLeft: 15,
@@ -90,26 +90,26 @@ const styles = StyleSheet.create({
     borderRadius: 20.5,
   },
   followItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 20,
   },
   followItemText: {
-    fontWeight: '500',
+    fontWeight: "500",
     marginLeft: 14,
   },
   cancelContainer: {
     width: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   cancelText: {
     color: colors.greyDark,
-    fontWeight: '300',
+    fontWeight: "300",
   },
   // remove the following styling later...
   bottomSheetItemWrapper: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: "5%",
   },
   optionsContainer: {
     backgroundColor: colors.white,
@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
     height: 55,
     borderBottomColor: colors.grey100,
     borderBottomWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   cancelBottomSheet: {
     backgroundColor: colors.white,
@@ -129,18 +129,18 @@ const styles = StyleSheet.create({
     height: 60,
     marginTop: 10,
     marginBottom: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   deleteConfirmation: {
     backgroundColor: colors.white,
     borderRadius: 13,
     height: 96,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   deleteConfirmationOptions: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 });
 

@@ -1,14 +1,14 @@
-import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
-import Search from "./CropSearch"
-import CropSelection from "./CropSelection"
-import ManageCrop from "./ManageCrop"
-import NewCrop from "./NewCrop"
-import Success from "./AddedCropSuccessView"
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import Search from "./CropSearch";
+import CropSelection from "./CropSelection";
+import ManageCrop from "./ManageCrop";
+import NewCrop from "./NewCrop";
+import Success from "./AddedCropSuccessView";
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
-const { Navigator, Screen } = Stack
+const { Navigator, Screen } = Stack;
 
 const Crops = () => {
   return (
@@ -23,7 +23,7 @@ const Crops = () => {
       <Screen name="New-crop" component={NewCrop} />
       <Screen name="Success" component={Success} />
     </Navigator>
-  )
-}
+  );
+};
 
 export default Crops;
