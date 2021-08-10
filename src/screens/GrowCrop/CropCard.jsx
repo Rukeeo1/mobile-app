@@ -15,13 +15,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
 
 import {
-  getCropCycleDetails,
-  getCropSteps,
-  growCrop,
-  harvestCrop,
-  plantCrop,
-  updateJob,
-  editJobWithPatch
+    getCropCycleDetails,
+    getCropSteps,
+    growCrop,
+    harvestCrop,
+    plantCrop,
+    updateJob,
+    editJobWithPatch,
+    getCurrentJob
 } from '../../redux/actions/';
 import ManageCropContext from '../../context/ManageCropsContext';
 
@@ -57,11 +58,14 @@ const screenWidth = Dimensions.get('screen').width;
 
 const CropCard = ({ navigation }) => {
   const manageCropContext = useContext(ManageCropContext);
-  const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
 
-  const { cropCycleDetails, cropSteps, user } = useSelector((state) => ({
+  const { cropToGrowDetails, endHarvest, } = manageCropContext?.data;
+  const {action, stageOneComplete, stageTwoComplete, stageThreeComplete } = cropToGrowDetails;
+
+  const { cropCycleDetails, cropSteps, user, currentJob } = useSelector((state) => ({
     cropCycleDetails: state.crops.cropCycleDetails[0],
     cropSteps: state.crops.cropSteps,
+      currentJob: state.jobs.currentJob,
     user: state?.auth?.user,
   }));
   const dispatch = useDispatch();
@@ -74,6 +78,9 @@ const CropCard = ({ navigation }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
+  const [stageOneFromServer, setStageOneFromServer] = useState(false);
+  const [stageTwoFromServer, setStageTwoFromServer] = useState(false);
+  const [stageThreeFromServer, setStageThreeFromServer] = useState(false);
 
   const cycleData = getCropCardData(cropCycleDetails, cropSteps, activeScreen);
 
@@ -89,6 +96,22 @@ const CropCard = ({ navigation }) => {
       setActiveScreen(1);
     }
   }, [cropToGrowDetails?.cropId]);
+
+  useEffect(() => {
+      dispatch(getCurrentJob(cropToGrowDetails?.jobId));
+      console.log({buhari2: currentJob})
+  }, [cropToGrowDetails?.jobId]);
+
+  useEffect(() => {
+        setStageOneFromServer(currentJob?.jobs[0]?.stage_one_completed);
+        setStageTwoFromServer(currentJob?.jobs[0]?.stage_two_completed);
+        setStageThreeFromServer(currentJob?.jobs[0]?.stage_three_completed);
+  }, [currentJob]);
+
+  useEffect(() => {
+      console.log({buhari: cropToGrowDetails?.jobId})
+  // }, [stageOneComplete, stageTwoComplete, stageThreeComplete, manageCropContext.data ]);
+  }, []);
 
   const video = React.useRef(null);
 
@@ -132,6 +155,7 @@ const CropCard = ({ navigation }) => {
         job_type: 'PENDING',
       status: 'PENDING',
       variety: cropToGrowDetails?.variety,
+        cropVariety:  cropToGrowDetails?.cropVariety,
     };
     setToUseJobType(jobType);
       setToUseVariety(cropToGrowDetails?.variety);
@@ -146,7 +170,8 @@ const CropCard = ({ navigation }) => {
                 jobId: cropToGrowDetails.jobId,
                 job_type: 'SOW',
                 action: 'STARTED',
-            jobStatus: 'STARTED'
+            jobStatus: 'STARTED',
+            notNewCalendar: true,
             }
         );
         await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
@@ -161,7 +186,8 @@ const CropCard = ({ navigation }) => {
                 jobId: cropToGrowDetails.jobId,
                 job_type: 'PLANT',
                 action: 'STARTED',
-            jobStatus: 'STARTED'
+            jobStatus: 'STARTED',
+            notNewCalendar: true,
             }
         );
         await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
@@ -403,6 +429,7 @@ const CropCard = ({ navigation }) => {
                     jobTitle ="SOW"
                     jobStatus ="SOW"
                     jobStatus2 ="SOW"
+                    jobCurrentAction = {action}
                     jobInfo ={toUseJobDetails}
                     submitting={loadingJobs}
                     fromJobs={
@@ -411,6 +438,9 @@ const CropCard = ({ navigation }) => {
                     jobStatusLevel = {activeScreen === 0 && cropToGrowDetails.action ===  SOW}
                     exisitngJobConfirmQuestion='Did you sow?'
                     confirmedJobText='Sown'
+                    completeCheck={!!stageOneFromServer || !!stageOneComplete}
+                    stageOneComplete={!!stageOneFromServer || !!stageOneComplete}
+                    stageTwoComplete={ !!stageTwoFromServer || !!stageTwoComplete}
                 />
             </>
           )}
@@ -421,7 +451,6 @@ const CropCard = ({ navigation }) => {
               renderIcon={(itemToConfirm) =>
                 renderCalenderConfirmIcon(itemToConfirm)
               }
-              reminderText='Reminder to plant'
               reminderText='Reminder to plant'
               startMonth={cropCycleDetails?.plant_end_month || cropCycleDetails?.plant_start_month}
               onSubmitSelected={(dateSelected) => {
@@ -441,6 +470,9 @@ const CropCard = ({ navigation }) => {
               }
               exisitngJobConfirmQuestion='Did you plant?'
               confirmedJobText='Planted'
+              completeCheck={ !!stageTwoFromServer || !!stageTwoComplete }
+              stageOneComplete={ !!stageOneFromServer || !!stageOneComplete}
+              stageTwoComplete={ !!stageTwoFromServer || !!stageTwoComplete}
             />
           )}
 
@@ -459,6 +491,7 @@ const CropCard = ({ navigation }) => {
                 dateStartedTitle='Harvest started'
                 onEndHarvest={() => navigation.navigate('End-Harvest')}
                 harvestEnded={endHarvest}
+                completeCheck={!!stageThreeComplete}
               />
             </>
           )}
@@ -558,7 +591,7 @@ const CropCard = ({ navigation }) => {
               />
             </View>
           )}
-          <StepsCarousel steps={cycleData?.steps} />
+            {cycleData?.steps && (<StepsCarousel steps={cycleData?.steps}/>)}
           {cycleData?.tip && cycleData?.tip.toLowerCase() !== 'n/a' && (
             <LinearGradient
               style={styles.toolTip}
@@ -568,24 +601,26 @@ const CropCard = ({ navigation }) => {
               <Text style={styles.toolTipContent}>{cycleData?.tip}</Text>
             </LinearGradient>
           )}
-          <View style={styles.companionContainer}>
-            <Image
-              source={{
-                uri: cropCycleDetails?.media_url,
-              }}
-              style={styles.companionContainerImage}
-            />
-            {cropCycleDetails?.companion_crops && (
-              <View style={{ alignItems: 'center' }}>
-                <Text style={styles.companionContainerTitle}>
-                  Companion Plant
-                </Text>
-                <Text style={styles.companionContainerText}>
-                  {cropCycleDetails?.companion_crops}
-                </Text>
-              </View>
-            )}
-          </View>
+
+                <View style={styles.companionContainer}>
+                    {cropCycleDetails?.media_url && (
+                        <Image
+                    source={{
+                        uri: cropCycleDetails?.media_url,
+                    }}
+                    style={styles.companionContainerImage}
+                />)}
+                {cropCycleDetails?.companion_crops && (
+                    <View style={{alignItems: 'center'}}>
+                        <Text style={styles.companionContainerTitle}>
+                            Companion Plant
+                        </Text>
+                        <Text style={styles.companionContainerText}>
+                            {cropCycleDetails?.companion_crops}
+                        </Text>
+                    </View>
+                )}
+            </View>
           <View style={styles.footer}>
             <Text style={styles.footerText}>Ready. Set. Grow!</Text>
           </View>

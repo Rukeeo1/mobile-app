@@ -173,10 +173,16 @@ const CreateJournal = ({ navigation }) => {
       }
 
 
-    dispatch(addPost(data))
-      dispatch(getPosts());
+    dispatch(addPost(data));
+      // dispatch(getPosts());
     // navigation.goBack()
-    goBack()
+    // goBack()
+      navigation.navigate('Settings', {
+          screen: 'Main-Profile',
+          params: {
+              indexOfItemToShow: 3,
+          },
+      });
   }
   return (
     <SafeArea>

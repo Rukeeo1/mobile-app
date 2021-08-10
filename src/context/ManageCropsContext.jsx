@@ -7,8 +7,8 @@ export const ManageCropProvider = ({ children }) => {
       cropName: '',
       month: '',
       action: 'PENDING',
-      variety: '', //user variety
-      cropVariety: '', //original
+      variety: '', //crop type
+      cropVariety: '', //user variety
       monthIndex: 0,
       cropId: '',
       fromJobs: false,
@@ -19,7 +19,12 @@ export const ManageCropProvider = ({ children }) => {
       jobStatus: 'PENDING',
       currentlySetToRemind: false,
       currentlySetToRemindStage: 'PENDING',
+      growItStarted: 'PENDING',
       editCropName: false,
+      stageOneComplete: false,
+      stageTwoComplete: false,
+      stageThreeComplete: false,
+      notNewCalendar: false,
   });
 
   const [endHarvest, setEndharvest] = useState(false);
@@ -31,8 +36,8 @@ export const ManageCropProvider = ({ children }) => {
       cropName: '',
       month: '',
       action: 'PENDING',
-        variety: '', //user variety
-        cropVariety: '', //original
+        variety: '', //crop type
+        cropVariety: '', //user variety
       monthIndex: 0,
       cropId: '',
       fromJobs: false,
@@ -43,7 +48,12 @@ export const ManageCropProvider = ({ children }) => {
         jobStatus: 'PENDING',
         currentlySetToRemind: false,
         currentlySetToRemindStage: 'PENDING',
+        growItStarted: 'PENDING',
         editCropName: false,
+        stageOneComplete: false,
+        stageTwoComplete: false,
+        stageThreeComplete: false,
+        notNewCalendar: false,
     }));
 
     setEndharvest(false);

@@ -165,7 +165,7 @@ const ManageCrops = () => {
               {jobs?.jobs?.length > 0 ? 'Past Harvest' : null}
             </Text>
             {jobs?.jobs?.map((job) => {
-              return job.job_type === 'HARVEST' ? (
+              return job.job_type === 'HARVEST' && job.status === 'DONE' ? (
                 <PlantItem
                   job={job}
                   key={job.id}
@@ -198,12 +198,34 @@ const PlantItem = ({ job, onPress = () => {} }) => {
         />
           <View style={styles.cropText}>
               <Text>{`${job?.name}`}</Text>
-              <Text fontType='bold' style={styles.boldText}>
-                  {`${job?.title?.replace(
-                      /(\w)(\w*)/g,
-                      (_, firstChar, rest) => firstChar + rest.toLowerCase()
-                  )}ed ${dateIndex[2]} ${dateIndex[1]}`}
-              </Text>
+              {job?.title === 'SOW' || job?.title === 'PLANT' || job?.title === 'HARVEST' && job?.title === 'PENDING' && (<Text fontType='bold' style={styles.boldText}>
+                  {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
+              </Text>)}
+              {job?.title === 'PENDING' && job?.title === 'PENDING' && (
+                  <Text fontType='bold' style={styles.boldText}>
+                      {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
+                  </Text>
+              ) }
+              {job?.title === 'SOW' && job?.title !== 'PENDING' && (
+                  <Text fontType='bold' style={styles.boldText}>
+                      {`Sown ${dateIndex[2]} ${dateIndex[1]}`}
+                  </Text>
+              ) }
+              {job?.title === 'PLANT' && job?.title !== 'PENDING' && (
+                  <Text fontType='bold' style={styles.boldText}>
+                      {`Planted ${dateIndex[2]} ${dateIndex[1]}`}
+                  </Text>
+              ) }
+              {job?.job_type === 'HARVEST' &&  job?.status === 'STARTED' && (
+                  <Text fontType='bold' style={styles.boldText}>
+                      {`Harvest started ${dateIndex[2]} ${dateIndex[1]}`}
+                  </Text>
+              ) }
+              {job?.job_type === 'HARVEST' &&  job?.status === 'DONE' && (
+                  <Text fontType='bold' style={styles.boldText}>
+                      {`Harvest ended ${dateIndex[2]} ${dateIndex[1]}`}
+                  </Text>
+              ) }
           </View>
       </View>
       <AntDesign name='right' size={24} color={colors.green} />

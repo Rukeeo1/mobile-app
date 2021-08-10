@@ -82,7 +82,7 @@ const FirstView = () => {
       variety: job?.variety,
       monthIndex: new Date(job.job_date).getMonth(),
       cropId: job?.crop_id,
-      action: job?.job_type,
+      // action: job?.job_type,
       jobDate: job?.job_date,
       fromJobs: true,
       jobId: job.id,
@@ -175,24 +175,14 @@ const FirstView = () => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                   >
-                    {jobs?.jobs?.map((crop) => {
-                      return (
-                        // <View style={[styles.growCard]}>
-                        //   <Image
-                        //     source={{ uri: crop.thumbnail_url }}
-                        //     style={{ height: 60, width: 60, borderRadius: 30 }}
-                        //   />
-                        //   <Text style={[styles.growText]}>
-                        //     {crop.name}{' '}
-                        //     {crop.variety ? `“${crop?.variety}”` : ''}
-                        //   </Text>
-                        // </View>
-                        <CurrentGrowList
-                          crop={crop}
-                          onPress={handleCurrentGrowingNav(crop)}
-                        />
-                      );
-                    })}
+                      {jobs?.jobs?.map((crop) => {
+                          return crop.job_type !== 'HARVEST' ? (
+                              <CurrentGrowList
+                                  crop={crop}
+                                  onPress={handleCurrentGrowingNav(crop)}
+                              />
+                          ) : null;
+                      })}
                   </ScrollView>
                 </>
               ) : (

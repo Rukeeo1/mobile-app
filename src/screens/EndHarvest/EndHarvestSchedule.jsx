@@ -81,7 +81,7 @@ const EndHarvestSchedule = ({ navigation }) => {
         Suggested date is predicted from this harvest
       </Text>
       <GrowCropCalender
-        activeItemsContainerStyle={{ top: '80%' }}
+        activeItemsContainerStyle={{ top: '27%' }}
         calenderWrapperStyle={{ width: '95%' }}
         textColor={colors.white}
         handleDate={setSelectedDay}

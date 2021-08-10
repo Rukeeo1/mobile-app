@@ -62,11 +62,12 @@ const CropSelection = ({ navigation, route }) => {
       job_date: ourDate,
       status: "PENDING",
       job_type: jobType,
-      variety: cropUserVariety,
+      // variety: cropVarietyType,
       cropType: cropVarietyType,
+        cropVariety: cropUserVariety,
     };
 
-        console.log({testTimixxx: cropToGrowDetails})
+        console.log({testDamooo: cropToGrowDetails})
 
     jobInfo.title = "PENDING";
     manageCropContext?.actions?.updateCropToGrowDetails({
@@ -75,22 +76,29 @@ const CropSelection = ({ navigation, route }) => {
       action: "PENDING",
       job_type: "PENDING",
       jobDate: jobInfo.job_date,
+
+        // variety: cropVarietyType,
+        cropVariety: cropUserVariety,
+
     });
     if (cropToGrowDetails?.editCropName) {
         jobInfo2 = {
             cropName,
             crop_id: cropToGrowDetails.cropId,
             user_id: user?.id,
-            variety: cropToGrowDetails.cropVariety,
+            variety: cropToGrowDetails.variety,
             cropType: cropVarietyType,
+            cropVariety: cropUserVariety,
             action: cropToGrowDetails.action,
             job_type: cropToGrowDetails.job_type,
             jobDate: cropToGrowDetails.jobDate,
         };
         manageCropContext?.actions?.updateCropToGrowDetails({
-            variety: cropUserVariety,
-            cropVariety: cropVarietyType,
+            // variety: cropVarietyType,
+            cropVariety: cropUserVariety,
         });
+
+        console.log({sunchine: jobInfo2})
         return await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo2, Toast));
     }
     return await dispatch(growCrop(jobInfo, false));
@@ -167,13 +175,14 @@ const CropSelection = ({ navigation, route }) => {
                         gradient={[colors.blueLigth, colors.blue]}
                         onPress={  () => {
                           // setSearch(crop?.variety)
-                          //   console.log({xxxVariety: crop?.variety})
+                         console.log({xxxVariety: crop?.variety})
                           setCropVarietyType(crop?.variety);
                             manageCropContext?.actions?.updateCropToGrowDetails({
                             category: crop?.variety,
-                            variety: cropUserVariety,
+                            variety: crop?.variety,
+                            cropVariety: cropUserVariety,
                             cropName,
-                            cropVariety: crop?.variety,
+                            // cropVariety: crop?.variety,
                             cropId: crop?.id,
                           });
                             handleGrowCrop(getCurrentDate(), crop?.id, "PENDING");
@@ -215,13 +224,15 @@ const CropSelection = ({ navigation, route }) => {
                           onPress={ () => {
                             handleGrowCrop(getCurrentDate, crop?.id, "Pending");
                              navigation.navigate("Success");
+                              console.log({yyyVariety: crop?.variety})
                             setCropVarietyType('');
                             manageCropContext?.actions?.updateCropToGrowDetails(
                               {
                                 category: crop?.category,
-                                variety: cropUserVariety,
+
+                                  // variety: crop?.variety,
+                                  cropVariety: cropUserVariety,
                                 cropName,
-                                cropVariety: '',
                                 cropId: crop?.id,
                               }
                             );

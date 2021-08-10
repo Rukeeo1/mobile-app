@@ -24,7 +24,14 @@ import {
   KeyboardAvoiding, Input,
 } from '../../components';
 
-import { addReminder, getCropsFavoriteToGrow, getUserJobs, getUserReminders, updateReminder } from '../../redux/actions';
+import {
+    addReminder,
+    getCropsFavoriteToGrow,
+    getJobHistory,
+    getUserJobs,
+    getUserReminders,
+    updateReminder
+} from '../../redux/actions';
 import ManageCropContext from '../../context/ManageCropsContext';
 
 import constants from '../../constants';
@@ -48,12 +55,15 @@ const AddToCalendar = () => {
     jobs: userJobs,
     loading,
     reminders,
+      jobHistory,
     updatingReminder
   } = useSelector((state) => ({
     favoriteCrops: state.crops.favoriteCrops,
     user: state.auth?.user,
     jobs: state.jobs?.usersJobs,
     reminders: state.jobs?.userReminders,
+    jobHistory: state.jobs?.jobHistory,
+    currentJob: state.jobs?.currentJob,
     loading: state.loading.loading,
     updatingReminder: state.jobs.updatingReminder
   }));
@@ -88,6 +98,7 @@ const AddToCalendar = () => {
     setLoadingJobs(true);
     await dispatch(getUserJobs(userId,month, year));
     await dispatch(getUserReminders());
+    await dispatch(getJobHistory());
     setLoadingJobs(false);
   };
 
@@ -96,6 +107,9 @@ const AddToCalendar = () => {
     if (user?.id) {
       getJobs(user?.id, months[m], y);
     }
+    console.log({xgracefull: {
+            reminders
+        }})
   }, [m, user?.id, JSON.stringify(userJobs), m]);
 
   let initialJobs = [];
@@ -109,6 +123,14 @@ const AddToCalendar = () => {
               initialJobs.push(job.job_type)
           ) : null;
   });
+      jobHistory?.jobs?.filter((job) => {
+              const date = new Date(job?.job_date)
+              return y === date.getFullYear() && m === date.getMonth()
+          }).slice(0, jobHistory?.jobs.length)?.map((job, index) => {
+          return job?.job_type !== 'HARVEST' ? (
+              initialJobs.push(job.job_type)
+          ) : null;
+  });
       reminders?.reminders
           ?.filter((reminder) => {
               const date = new Date(reminder?.reminder_date)
@@ -118,7 +140,7 @@ const AddToCalendar = () => {
           ?.slice(0, viewingMore2 ? reminders?.reminders.length : 3)
           .map((reminder, index) => {
               initialJobs.push(reminder)
-          })
+          });
 
   };
 
@@ -516,7 +538,7 @@ const AddToCalendar = () => {
                   <TouchableOpacity
                     onPress={() => setViewingMore(!viewingMore)}
                   >
-                    {userJobLength > 3 || reminders?.reminders?.length > 3 && (
+                    {userJobLength > 3 && reminders?.reminders?.length > 3 && (
                       <Text style={styles.viewMore}>
                         {viewingMore ? 'Hide jobs' : 'View more'}
                       </Text>
@@ -525,15 +547,7 @@ const AddToCalendar = () => {
                 </View>
 
 
-                {/*<TouchableOpacity*/}
-                {/*  onPress={() => setViewingMore2(!viewingMore2)}*/}
-                {/*>*/}
-                {/*  {reminders?.reminders?.length > 3 && (*/}
-                {/*    <Text style={styles.viewMore}>*/}
-                {/*      {viewingMore2 ? 'Hide reminders' : 'View more'}*/}
-                {/*    </Text>*/}
-                {/*  )}*/}
-                {/*</TouchableOpacity>*/}
+
 
                 <GradientButton gradient={[colors.blueLigth, colors.blue]}  onPress={() => {
                     setShowTipHarvest(!showTipHarvest);
@@ -623,7 +637,7 @@ const AddToCalendar = () => {
                           variety: crop?.variety,
                           monthIndex: m,
                           cropId: crop?.id,
-                          action: 'sow',
+                          action: 'STARTED',
                         });
                       }}
                     />

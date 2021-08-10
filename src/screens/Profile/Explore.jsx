@@ -1,5 +1,5 @@
-import { EvilIcons } from '@expo/vector-icons'
-import React, { useState, useCallback, useEffect } from 'react'
+import { EvilIcons } from "@expo/vector-icons";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Image,
   SafeAreaView,
@@ -11,66 +11,74 @@ import {
   Animated,
   Easing,
   RefreshControl,
-} from 'react-native'
-import { Input } from '../../components'
-import constants from '../../constants/'
-import { MaterialIcons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
+} from "react-native";
+import { Input } from "../../components";
+import constants from "../../constants/";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getPosts, getPostUser, selectPost } from '../../redux/actions/postsActions'
-import {followUser, getUserFollowers} from '../../redux/actions/authActions'
-import {BottomSheet} from "react-native-btr";
+import {
+  getPosts,
+  getPostUser,
+  selectPost,
+} from "../../redux/actions/postsActions";
+import { followUser, getUserFollowers } from "../../redux/actions/authActions";
+import { BottomSheet } from "react-native-btr";
 
-const { colors } = constants
+const { colors } = constants;
 
 const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout))
-}
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const Explore = () => {
-  const navigation = useNavigation()
-  const [showShare, setShowShare] = useState(false)
-  const [spinner, setSpinnner] = useState(true)
-  const [ refreshing2, setRefreshing2] = React.useState(false)
-  const [text, setText] = useState(false)
-  const [search, setSearch] = useState('')
+  const navigation = useNavigation();
+  const [showShare, setShowShare] = useState(false);
+  const [spinner, setSpinnner] = useState(true);
+  const [refreshing2, setRefreshing2] = React.useState(false);
+  const [text, setText] = useState(false);
+  const [search, setSearch] = useState("");
 
-  let spinValue = new Animated.Value(0)
+  let spinValue = new Animated.Value(0);
   const onRefresh = React.useCallback(() => {
-      setRefreshing2(true)
-    wait(2000).then(() => setRefreshing2(false))
-  }, [])
+    setRefreshing2(true);
+    wait(2000).then(() => setRefreshing2(false));
+  }, []);
   // First set up animation
   Animated.timing(spinValue, {
     toValue: 1,
     duration: 3000,
     easing: Easing.linear, // Easing is an additional import from react-native
     useNativeDriver: true, // To make use of native driver for performance
-  }).start()
+  }).start();
 
   // Next, interpolate beginning and end values (in this case 0 and 1)
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  })
+    outputRange: ["0deg", "360deg"],
+  });
 
   setTimeout(() => {
-    setSpinnner(false)
-  }, 1000)
+    setSpinnner(false);
+  }, 1000);
 
-  const dispatch = useDispatch()
-  const { loading, refreshing } = useSelector((state) => state.loading)
-  const { all: posts = [] } = useSelector((state) => state.posts)
-  const { following = [], user, followers } = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
+  const { loading, refreshing } = useSelector((state) => state.loading);
+  const { all: posts = [] } = useSelector((state) => state.posts);
+  const {
+    following = [],
+    user,
+    followers,
+  } = useSelector((state) => state.auth);
 
-    useEffect(() => {
-    dispatch(getUserFollowers())
-    dispatch(getPosts())
-  }, [])
+  useEffect(() => {
+    dispatch(getUserFollowers());
+    dispatch(getPosts());
+  }, []);
 
   return (
-    <View style={{ backgroundColor: colors.white, flex: 1, }}>
+    <View style={{ backgroundColor: colors.white, flex: 1 }}>
       <View style={{ flex: 1 }}>
         <ScrollView
           nestedScrollEnabled
@@ -88,171 +96,185 @@ const Explore = () => {
           }
         >
           <View style={[styles.container]}>
-
-              <>
-                  <View style={styles.searchBarWrapper}>
-                      <Input
-                          placeholder='Search'
-                          containerStyle={styles.searchInputContainer}
-                          inputStyle={{ marginTop: -10, paddingRight: 10 }}
-                          onChangeText={(val) => setSearch(val)}
-                          value={search}
-                      >
-                          <EvilIcons
-                              name='search'
-                              size={24}
-                              color={colors.blue}
-                              style={{
-                                  right: 10,
-                                  top: '30%',
-                                  position: 'absolute',
-                              }}
-                          />
-                      </Input>
-                      {search !== '' && <TouchableOpacity style={styles.cancelContainer} onPress={() => setSearch('')}>
-                          <Text style={styles.cancelText}>Cancel</Text>
-                      </TouchableOpacity>}
-                  </View>
-              </>
-            {/*<View style={styles.searchBarWrapper}>*/}
-            {/*  <Input*/}
-            {/*    placeholder="Find"*/}
-            {/*    containerStyle={styles.searchInputContainer}*/}
-            {/*    inputStyle={{ marginTop: -10, paddingRight: 10 }}*/}
-            {/*    onChangeText={(val) => setSearch(val)}*/}
-            {/*    value={search}*/}
-            {/*  >*/}
-            {/*    <EvilIcons*/}
-            {/*      name="search"*/}
-            {/*      size={24}*/}
-            {/*      color={colors.blue}*/}
-            {/*      style={{*/}
-            {/*        right: 10,*/}
-            {/*        top: '30%',*/}
-            {/*        position: 'absolute',*/}
-            {/*      }}*/}
-            {/*    />*/}
-            {/*  </Input>*/}
-            {/*</View>*/}
-
-            {<View style={[styles.flowercircle]}>
-            {spinner && (
-              <Animated.Image
-                style={{ transform: [{ rotate: spin }] }}
-                source={require('../../assets/flowercircle.png')}
-              />
-            )}
-          </View>}
-              {search === '' ? (<View>
-
+            <>
+              <View style={styles.searchBarWrapper}>
+                <Input
+                  placeholder="Search"
+                  containerStyle={styles.searchInputContainer}
+                  inputStyle={{ marginTop: -10, paddingRight: 10 }}
+                  onChangeText={(val) => setSearch(val)}
+                  value={search}
+                >
+                  <EvilIcons
+                    name="search"
+                    size={24}
+                    color={colors.blue}
+                    style={{
+                      right: 10,
+                      top: "30%",
+                      position: "absolute",
+                    }}
+                  />
+                </Input>
+                {search !== "" && (
                   <TouchableOpacity
-                      activeOpacity={0.8}
-                      style={{
-                          backgroundColor: '#002B55',
-                          height: 88,
-                          alignItems: 'center',
-                          paddingLeft: 19,
-                          flexDirection: 'row',
-                          marginTop: 10,
-                          marginBottom: 10,
-                      }}
-                      onPress={() => navigation.navigate('Article-guide')}
+                    style={styles.cancelContainer}
+                    onPress={() => setSearch("")}
                   >
-                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                          <Image source={require('../../assets/book-w.png')}/>
-                          <Text
-                              style={{
-                                  fontSize: 16,
-                                  color: 'white',
-                                  marginRight: 20,
-                                  width: 210,
-                                  paddingLeft: 25,
-                              }}
-                          >
-                              Explore the latest Grow It guides and articles
-                          </Text>
-                      </View>
-                      <View>
-                          <MaterialIcons
-                              name="keyboard-arrow-right"
-                              size={24}
-                              color="white"
-                          />
-                      </View>
+                    <Text style={styles.cancelText}>Cancel</Text>
                   </TouchableOpacity>
-                  {posts
-                      ?.filter((post) => post?.fullname?.toLowerCase()?.includes(search.toLowerCase()) || post?.title?.toLowerCase()?.includes(search.toLowerCase()) || post?.content?.toLowerCase()?.includes(search.toLowerCase()))
-                      ?.map((post) => {
-                          let isFollowing = !!(following?.find((user) => user?.id === post?.user_id)) ?? false
+                )}
+              </View>
+            </>
 
-                          return (
-                              <View
-                                  style={[styles.postCard]}
-                                  key={post.id}
-                              >
-                                  <TouchableOpacity
-                                      activeOpacity={0.8}
-                                      style={[styles.userDetail]}
-                                      onPress={() => {
-                                          dispatch(selectPost(post))
-                                          // navigation.navigate('Single-Post')
-                                          dispatch(getPostUser(post?.user_id))
-                                          post?.user_id !== user?.id ? navigation.navigate('User-details') : ''
-                                      }}
-                                      // onPress={() => navigation.navigate('User-details')}
-                                  >
-                                      <Image
-                                          style={[styles.imgAvatar]}
-                                          source={{uri: post?.avatar}}
-                                      />
-                                      <Text style={[styles.imgText]}>{post?.fullname}</Text>
-                                      {post?.user_id !== user?.id && (
-                                          <TouchableOpacity
-                                              onPress={() => {
-                                                  if (!isFollowing) {
-                                                      isFollowing = true
-                                                      dispatch(followUser(post?.user_id))
-                                                  }
-                                              }}
-                                          >
-                                              <Text>
-                                                  {' • '}
-                                                  <Text
-                                                      style={{textDecorationLine: isFollowing ? 'none' : 'underline'}}>
-                                                      {isFollowing ? 'Following' : 'Follow'}
-                                                  </Text>
-                                              </Text>
-                                          </TouchableOpacity>
-                                      )}
-                                  </TouchableOpacity>
+            {
+              <View style={[styles.flowercircle]}>
+                {spinner && (
+                  <Animated.Image
+                    style={{ transform: [{ rotate: spin }] }}
+                    source={require("../../assets/flowercircle.png")}
+                  />
+                )}
+              </View>
+            }
+            {search === "" ? (
+              <View>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={{
+                    backgroundColor: "#002B55",
+                    height: 88,
+                    alignItems: "center",
+                    paddingLeft: 19,
+                    flexDirection: "row",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                  onPress={() => navigation.navigate("Article-guide")}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image source={require("../../assets/book-w.png")} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: "white",
+                        marginRight: 20,
+                        width: 210,
+                        paddingLeft: 25,
+                      }}
+                    >
+                      Explore the latest Grow It guides and articles
+                    </Text>
+                  </View>
+                  <View>
+                    <MaterialIcons
+                      name="keyboard-arrow-right"
+                      size={24}
+                      color="white"
+                    />
+                  </View>
+                </TouchableOpacity>
+                {posts
+                  ?.filter(
+                    (post) =>
+                      post?.fullname
+                        ?.toLowerCase()
+                        ?.includes(search.toLowerCase()) ||
+                      post?.title
+                        ?.toLowerCase()
+                        ?.includes(search.toLowerCase()) ||
+                      post?.content
+                        ?.toLowerCase()
+                        ?.includes(search.toLowerCase())
+                  )
+                  ?.map((post) => {
+                    let isFollowing =
+                      !!following?.find((user) => user?.id === post?.user_id) ??
+                      false;
 
-                                  <TouchableOpacity
-                                      activeOpacity={1}
-                                      // onPress={() => navigation.navigate('User-details')}
-                                      onPress={() => {
-                                          dispatch(selectPost(post))
-                                          navigation.navigate('Single-Post')
-                                      }}
-                                  >
-                                      {post?.media_url ? (
-                                          <Image
-                                              style={[styles.postImg]}
-                                              source={{uri: post?.media_url !== '' ? post?.media_url : null}}
-                                          />
-                                      ) : <View style={[styles.postImg]}></View>
-                                      }
-                                  </TouchableOpacity>
+                    return (
+                      <View style={[styles.postCard]} key={post.id}>
+                        <TouchableOpacity
+                          activeOpacity={0.8}
+                          style={[styles.userDetail]}
+                          onPress={() => {
+                            dispatch(selectPost(post));
+                            // navigation.navigate('Single-Post')
+                            dispatch(getPostUser(post?.user_id));
+                            post?.user_id !== user?.id
+                              ? navigation.navigate("User-details")
+                              : "";
+                          }}
+                          // onPress={() => navigation.navigate('User-details')}
+                        >
+                          <Image
+                            style={[styles.imgAvatar]}
+                            source={{ uri: post?.avatar }}
+                          />
+                          <Text style={[styles.imgText]}>{post?.fullname}</Text>
+                          {post?.user_id !== user?.id && (
+                            <TouchableOpacity
+                              onPress={() => {
+                                if (!isFollowing) {
+                                  isFollowing = true;
+                                  dispatch(followUser(post?.user_id));
+                                }
+                              }}
+                            >
+                              <Text>
+                                {" • "}
+                                <Text
+                                  style={{
+                                    textDecorationLine: isFollowing
+                                      ? "none"
+                                      : "underline",
+                                  }}
+                                >
+                                  {isFollowing ? "Following" : "Follow"}
+                                </Text>
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                        </TouchableOpacity>
 
-                                  <View style={[styles.dateTime]}>
-                                      <Text style={[styles.date]}>{new Date(post?.created_at).toDateString()}</Text>
-                                      {/* <Text>...</Text> */}
-                                  </View>
+                        <TouchableOpacity
+                          activeOpacity={1}
+                          // onPress={() => navigation.navigate('User-details')}
+                          onPress={() => {
+                            dispatch(selectPost(post));
+                            navigation.navigate("Single-Post");
+                          }}
+                        >
+                          {post?.media_url ? (
+                            <Image
+                              style={[styles.postImg]}
+                              source={{
+                                uri:
+                                  post?.media_url !== ""
+                                    ? post?.media_url
+                                    : null,
+                              }}
+                            />
+                          ) : (
+                            <View style={[styles.postImg]}></View>
+                          )}
+                        </TouchableOpacity>
 
-                                  <View style={[styles.postText]}>
-                                      <Text style={[styles.boldContainer, {}]}>
-                                          {' '}
-                                          <Text style={[styles.bold]}>{post?.fullname}</Text>{' '}{post?.title}
-                                          {/* {!text && (
+                        <View style={[styles.dateTime]}>
+                          <Text style={[styles.date]}>
+                            {new Date(post?.created_at).toDateString()}
+                          </Text>
+                          {/* <Text>...</Text> */}
+                        </View>
+
+                        <View style={[styles.postText]}>
+                          <Text style={[styles.boldContainer, {}]}>
+                            {" "}
+                            <Text style={[styles.bold]}>
+                              {post?.fullname}
+                            </Text>{" "}
+                            {post?.title}
+                            {/* {!text && (
                       <Text
                         style={{ color: '#085BAC' }}
                         onPress={() => setText(!text)}
@@ -261,33 +283,47 @@ const Explore = () => {
                       </Text>
                     )}
                     {text && <Text> yes, patient is golden any time!</Text>} */}
-                                      </Text>
-                                      <Text style={{ fontFamily: 'Hero-New-Medium' }}>{post.name} {post.variety !== null || post.variety !== 'null' || post.variety !== 'undefined'&& <>{`- ‘${post.variety}’`}</>}</Text>
-
-                                  </View>
-                              </View>
-
-                          )
-                      })}
-              </View>): (
-                  <View style={styles.floatView}>
-
-              {followers
-                  ?.filter((item) => item?.fullname?.toLowerCase()?.includes(search.toLowerCase()))
+                          </Text>
+                          <Text style={{ fontFamily: "Hero-New-Medium" }}>
+                            {post.name}{" "}
+                            {post.variety !== null ||
+                              post.variety !== "null" ||
+                              (post.variety !== "undefined" && (
+                                <>{`- ‘${post.variety}’`}</>
+                              ))}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  })}
+              </View>
+            ) : (
+              <View style={styles.floatView}>
+                {followers
+                  ?.filter((item) =>
+                    item?.fullname
+                      ?.toLowerCase()
+                      ?.includes(search.toLowerCase())
+                  )
                   ?.map((item, index) => (
-                  <View style={styles.followItem} key={index}>
-                  <Image source={{uri: item.avatar}} style={styles.image} />
-                  <Text style={styles.followItemText}>{item?.fullname}</Text>
-                  </View>
+                    <View style={styles.followItem} key={index}>
+                      <Image
+                        source={{ uri: item.avatar }}
+                        style={styles.image}
+                      />
+                      <Text style={styles.followItemText}>
+                        {item?.fullname}
+                      </Text>
+                    </View>
                   ))}
-                  </View>)}
-
+              </View>
+            )}
           </View>
         </ScrollView>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {},
@@ -296,16 +332,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   flowercircle: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10,
   },
   postCard: {
     marginVertical: 10,
   },
   userDetail: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 20,
   },
   imgAvatar: {
@@ -314,18 +350,18 @@ const styles = StyleSheet.create({
     borderRadius: 30 / 2,
   },
   imgText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
   },
   postImg: {
-    width: '100%',
+    width: "100%",
     height: 356,
     marginVertical: 10,
   },
   dateTime: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginHorizontal: 20,
   },
   date: {
@@ -338,54 +374,54 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   bold: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   /// search relate ===. to be pulled out
   searchBarWrapper: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: "5%",
     paddingTop: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   searchInputContainer: {
     backgroundColor: colors.grey,
-    justifyContent: 'center',
+    justifyContent: "center",
     borderRadius: 20,
     height: 46,
     paddingLeft: 15,
     paddingRight: 25,
     flex: 1,
   },
-    image: {
-        height: 41,
-        width: 41,
-        borderRadius: 20.5,
-    },
-    followItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 20,
-    },
-    followItemText: {
-        fontWeight: '500',
-        marginLeft: 14,
-    },
-    floatView: {
-        width: '100%',
-        paddingLeft: 20,
-        paddingRight: 10,
-        backgroundColor: 'white',
-    },
+  image: {
+    height: 41,
+    width: 41,
+    borderRadius: 20.5,
+  },
+  followItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  followItemText: {
+    fontWeight: "500",
+    marginLeft: 14,
+  },
+  floatView: {
+    width: "100%",
+    paddingLeft: 20,
+    paddingRight: 10,
+    backgroundColor: "white",
+  },
 
-    cancelContainer: {
-        width: 80,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    cancelText: {
-        color: colors.greyDark,
-        fontWeight: '300',
-    },
-})
+  cancelContainer: {
+    width: 80,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cancelText: {
+    color: colors.greyDark,
+    fontWeight: "300",
+  },
+});
 
-export default Explore
+export default Explore;

@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCrop } from '../../redux/actions'
 import ManageCropContext from "../../context/ManageCropsContext";
+import {getPosts} from "../../redux/actions/postsActions";
 
 const { colors } = constants
 const NeCrop = ({ navigation }) => {
@@ -69,6 +70,16 @@ const createNewCrop = () => {
     );
       return dispatch(addCrop(state, navigation))
 }
+
+
+    const goBack = () => {
+        navigation.navigate('Settings', {
+            screen: 'Main-Profile',
+            params: {
+                indexOfItemToShow: 3,
+            },
+        });
+    };
   // console.log({state})
   return (
     <View style={{ flex: 1 }}>
@@ -87,7 +98,12 @@ const createNewCrop = () => {
                   style={{ top: 10, left: 0, position: "absolute" }}
                   onPress={() => navigation.goBack()}
               />
-            <Text style={[styles.title]}>New Crop</Text>
+          </View>
+          <View style={{
+              marginTop: 50,
+          }}>
+
+              <Text style={[styles.title]}>New Crop</Text>
           </View>
         </LinearGradient>
 
