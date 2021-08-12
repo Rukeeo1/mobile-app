@@ -30,7 +30,7 @@ export const getUserJobs =
         });
       })
       .catch((err) => {
-        showApiError(err, true, () => dispatch(getUserFollowers(refreshing)));
+        showApiError(err, true, () => dispatch(getUserJobs(userId, month, year)));
         dispatch({
           type: LOADING_JOBS,
         });

@@ -78,9 +78,9 @@ const FirstView = () => {
   const handleCurrentGrowingNav = (job) => () => {
     actions?.updateCropToGrowDetails({
       cropName: job?.name,
-      month: monthsAbr[new Date(job.job_date).getMonth()],
+      month: monthsAbr[new Date(job?.job_date).getMonth()],
       variety: job?.variety,
-      monthIndex: new Date(job.job_date).getMonth(),
+      monthIndex: new Date(job?.job_date).getMonth(),
       cropId: job?.crop_id,
       // action: job?.job_type,
       jobDate: job?.job_date,
