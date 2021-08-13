@@ -139,7 +139,7 @@ export const socialAuth = (user, navigation) => async (dispatch) => {
   })
     .then(({ data }) => {
       console.log("social auth", data);
-      dispatch(saveUser(data.token, { ...data.user }));
+      dispatch(saveUser(data.token, { ...data }));
       // navigation.navigate('Onboarding')
       // navigation.navigate('Splash')
 
@@ -149,7 +149,7 @@ export const socialAuth = (user, navigation) => async (dispatch) => {
           key: null,
           routes: [
             {
-              name: "Splash",
+              name: "Profile-Settings",
             },
           ],
         })
@@ -415,7 +415,7 @@ export const getUserFollowing =
         });
       })
       .catch((err) => {
-        showApiError(err, true, () => dispatch(getUserFollowing(refreshing)));
+        showApiError(err, true, () => dispatch(getUserFollowing(refreshing, silent)));
       })
       .finally(() => {
         if (!silent) {
@@ -447,7 +447,7 @@ export const getUserFollowers =
         });
       })
       .catch((err) => {
-        showApiError(err, true, () => dispatch(getUserFollowers(refreshing)));
+        showApiError(err, true, () => dispatch(getUserFollowers(refreshing, silent)));
       })
       .finally(() => {
         if (!silent) {

@@ -69,14 +69,21 @@ const Settings = ({ navigation }) => {
       location: user?.location ?? "",
       profileImageUri: user?.avatar,
     },
-
     validationSchema: ProfileSchema,
     onSubmit: (values) => {
       if (values.profileImageUri !== user.avatar)
         dispatch(updateAvatar({ ...values, location }, navigation));
       else dispatch(updateProfile({ ...values, location }, navigation));
     },
+    validateOnChange: true,
   });
+
+  const submitForm = () => {
+    // console.log({values})
+    if (values.profileImageUri !== user.avatar)
+      dispatch(updateAvatar({ ...values, location }, navigation));
+    else dispatch(updateProfile({ ...values, location }, navigation));
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -214,7 +221,7 @@ const Settings = ({ navigation }) => {
             </View>
             <GradientButton
               title="Save"
-              onPress={handleSubmit}
+              onPress={submitForm}
               gradient={[constants.colors.green, "#83B403"]}
               coverStyle={styles.button}
               loading={loading}

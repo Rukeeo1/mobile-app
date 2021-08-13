@@ -302,27 +302,31 @@ const CropSearch = ({ navigation, route }) => {
             <View style={{ width: "100%", marginTop: 20 }}>
               <FilterItemDropDown
                 items={months}
-                activeItem={selectedMonth ?? "Select Month"}
+                activeItem={selectedMonth ? `Grow in ${selectedMonth}` : "Select Month"}
                 onSelect={setSelectedMonth}
                 placeholder="Month to grow"
+                showRed={!!selectedMonth}
               />
               <FilterItemDropDown
                 items={["Beginner", "Intermediate", "Advanced"]}
                 activeItem={selectedLevel ?? "Select level"}
                 onSelect={setSelectedLevel}
                 placeholder="Grow level"
+                showRed={!!selectedLevel}
               />
               <FilterItemDropDown
                 items={["Fruit", "Vegetable", "Herb", "Microgreen", "Flower"]}
                 activeItem={selectedCategory ?? "Select category"}
                 onSelect={setSelectedCategory}
                 placeholder="Category"
+                showRed={!!selectedCategory}
               />
               <FilterItemDropDown
                 items={["Annual", "Biennial", "Perennial", "Tender Perennial"]}
                 activeItem={selectedCycle ?? "Select cycle"}
                 onSelect={setSelectedCycle}
                 placeholder="Life Cycle"
+                showRed={!!selectedCycle}
               />
             </View>
             <View style={{ width: "100%" }}>

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import growthLogo from "../../assets/growth_logo.png";
 import { Button, Logo, SmallGradientButton } from "../../components";
