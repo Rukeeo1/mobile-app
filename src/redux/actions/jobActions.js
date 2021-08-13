@@ -11,6 +11,7 @@ import {
   UPDATING_REMINDER,
 } from "../types";
 import { apiRequest, showApiError } from "../../config/api";
+import ManageCropContext from "../../context/ManageCropsContext";
 
 export const getUserJobs =
   (userId, month = "", year = "") =>
@@ -40,6 +41,16 @@ export const getUserJobs =
 export const growCrop = (cropDetails, toast) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/jobs/growit`, "post", cropDetails);
+      console.log('rotexxxy', data?.data);
+
+      if(data?.data){
+
+          ManageCropContext?.actions?.updateCropToGrowDetails({
+              variety: data.data.variety,
+              cropName: data.data.name,
+              jobId: data?.data?.id,
+          });
+      }
     toast.show({
       text1: data?.message,
     });
@@ -113,6 +124,7 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
       text1: data?.message || "successful",
     });
 
+
     dispatch(getUserJobs(jobDetails?.user_id));
   } catch (error) {
     console.log(error, "from job update");
@@ -125,7 +137,7 @@ export const updateJob2 = (jobId, jobDetails) => async (dispatch) => {
 
     dispatch(getUserJobs(jobDetails?.user_id));
   } catch (error) {
-    console.log(error, "from job update");
+    console.log(error, "from job update 2");
     return showApiError(error);
   }
 };
@@ -268,7 +280,7 @@ export const updateReminder = (reminder, status) => (dispatch) => {
 
   apiRequest(`/reminders/${reminder?.id}`, "delete", { ...reminder, status })
     .then(({ data }) => {
-      console.log("update rmeminver", data);
+      console.log("update reminder", data);
       dispatch(getUserReminders());
     })
     .catch((err) => {

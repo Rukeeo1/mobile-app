@@ -21,8 +21,8 @@ import constants from "../../constants";
 import ModalSheet from "./ModalSheet";
 import DeleteModal from "./DeleteModal";
 
-import { getUserJobs } from "../../redux/actions";
-import ShareModal from "../Profile/ShareModal";
+import {getJournals, getUserJobs} from "../../redux/actions";
+import ShareModal2 from "../Profile/ShareModal2";
 import Toast from "react-native-toast-message";
 import ManageCropContext, {
   useManageCropContext,
@@ -76,34 +76,51 @@ const CropJournalLists = ({ navigation }) => {
 
   const [showShare, setShowShare] = useState(false);
   const [postToShare, setPostToShare] = useState(null);
-  const { user, userData, posts, following, followers } = useSelector(
+  const { userData, posts, following, followers } = useSelector(
     (state) => state.auth
   );
-  const { journal } = useSelector((state) => ({
-    user: state?.auth.user,
-    journal: state,
-  }));
+    const {user,  journal } = useSelector((state) => ({
+        user: state?.auth.user,
+        journal: state?.journal?.journals,
+    }));
+
+
   const toggleModal = (post) => {
     setShowShare((prevState) => !prevState);
     setPostToShare(post);
+      manageCropContext?.actions?.updateCropToGrowDetails(
+          {
+              variety: cropToGrowDetails.variety,
+              cropVariety: cropToGrowDetails.cropVariety,
+              cropName: cropToGrowDetails.cropName,
+          }
+      );
   };
 
   useEffect(() => {
-    dispatch(getUserProfile());
-    dispatch(getUserGrowList());
-    dispatch(getUserPosts());
-    dispatch(getUserJobs(user?.id));
-    dispatch(getUserFollowers(false, true));
-    dispatch(getUserFollowing(false, true));
-    dispatch(getPosts(true));
-    console.log({ timxxt: posts });
+    // dispatch(getUserProfile());
+    // dispatch(getUserGrowList());
+       setRefreshing2(true)
+     dispatch(getUserPosts());
+    // dispatch(getUserJobs(user?.id));
+    // dispatch(getUserFollowers(false, true));
+    // dispatch(getUserFollowing(false, true));
+    //   dispatch(getPosts());
+          dispatch(getPosts());
+       setRefreshing2(false);
+
   }, []);
 
+    // useEffect(() => {
+    //     if( user && typeof user?.id !== 'undefined'){
+    //         dispatch(getJournals(user?.id));
+    //     }
+    // }, [user]);
   useEffect(() => {
-    return navigation.addListener("focus", () => {
+   if(navigation) {
       dispatch(getPosts());
-    });
-  }, []);
+    };
+  }, [navigation]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -225,7 +242,18 @@ const CropJournalLists = ({ navigation }) => {
                       >
                         {new Date(post.created_at).toDateString()}
                       </Text>
-                      <TouchableOpacity onPress={() => toggleModal(post)}>
+                      <TouchableOpacity onPress={() => {
+                          // {cropToGrowDetails.cropName}{" "}
+                          // {cropToGrowDetails.variety
+                          manageCropContext?.actions?.updateCropToGrowDetails(
+                              {
+                                  variety: cropToGrowDetails.variety,
+                                  cropVariety: cropToGrowDetails.cropVariety,
+                                  cropName: cropToGrowDetails.cropName,
+                              }
+                          );
+                              toggleModal(post);
+                      }}>
                         <Text>...</Text>
                       </TouchableOpacity>
                     </View>
@@ -247,7 +275,7 @@ const CropJournalLists = ({ navigation }) => {
                   </View>
                 );
               })}
-          <ShareModal
+          <ShareModal2
             showBottomSheet={showShare}
             setShowShare={toggleModal}
             post={postToShare}

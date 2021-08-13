@@ -28,12 +28,16 @@ import ManageCropContext from "../../context/ManageCropsContext";
 import { addJournal } from "../../redux/actions";
 
 import constants from "../../constants/";
-import { addPost, getPosts } from "../../redux/actions/postsActions";
+import {addPost, editPost, getPosts} from "../../redux/actions/postsActions";
 
 const { colors } = constants;
 
-const CreateJournal = ({ navigation }) => {
+const CreateJournal = ({ navigation,
+                           route,
+                           defaultPostImage = "",
+                           currentIndex,}) => {
   const dispatch = useDispatch();
+    const postData = route?.params?.params?.post;
 
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails } = manageCropContext?.data;
@@ -42,6 +46,21 @@ const CreateJournal = ({ navigation }) => {
     journal: state?.journal?.journals,
   }));
 
+    const [post, setPost] = useState({
+        content: postData?.content ?? "",
+        user_id: user?.id,
+        crop_id: cropToGrowDetails?.cropId,
+        type: cropToGrowDetails?.variety,
+        variety: cropToGrowDetails?.cropVariety,
+
+        post_type: "private", //public
+        isPublic: false,
+        journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
+        media_url: postData?.media_url ?? defaultPostImage ?? "",
+        thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
+
+        isCoverImage: false,
+    });
   const [addingJournal, setAddingJournal] = useState(false);
 
   const createJournalSchema = Yup.object().shape({
@@ -50,7 +69,21 @@ const CreateJournal = ({ navigation }) => {
       .min(2, "Too Short!")
       .max(1000, "Too Long!"),
   });
-  const goBack = () => {
+
+
+    useEffect(() => {
+        if (defaultPostImage) {
+            setFieldValue("postImageUri", defaultPostImage);
+            setPost((prevState) => ({
+                ...prevState,
+                postImageUri: defaultPostImage,
+            }));
+        }
+        // pickImage();
+    }, [defaultPostImage, currentIndex]);
+
+
+    const goBack = () => {
     // navigation.navigate('Settings', {
     //   screen: 'Main-Profile',
     //   params: {
@@ -76,14 +109,21 @@ const CreateJournal = ({ navigation }) => {
     touched,
   } = useFormik({
     initialValues: {
-      content: "",
+      content: postData?.content ?? "",
       user_id: user?.id,
       crop_id: cropToGrowDetails?.cropId,
+        type: cropToGrowDetails?.cropName,
+
+        variety: cropToGrowDetails.variety,
+        cropVariety: cropToGrowDetails.cropVariety,
+        cropName: cropToGrowDetails.cropName,
+
       post_type: "private", //public
       isPublic: false,
-      journalImageUri: "",
-      media_url: "",
-      thumbnail_url: "",
+
+        journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
+        media_url: postData?.media_url ?? defaultPostImage ?? "",
+        thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
 
       isCoverImage: false,
     },
@@ -97,37 +137,63 @@ const CreateJournal = ({ navigation }) => {
         crop_id,
         isPublic,
         content,
+          variety,
+          type,
         journalImageUri = "",
       } = data;
 
       journalFormData.append("user_id", user_id);
       journalFormData.append("title", crop_id);
       journalFormData.append("crop_id", crop_id);
+      journalFormData.append("variety", variety);
+      journalFormData.append("type", type);
       journalFormData.append("post_type", isPublic ? "public" : "private");
       journalFormData.append("content", content);
-      if (isPublic && journalImageUri === "") {
-        Alert.alert("", "You've not added an image", [{ text: "Dismiss" }]);
-      } else {
-        if (journalImageUri && journalImageUri !== "") {
-          journalFormData.append("thumbnail_url", {
-            name: journalImageUri?.split("/").pop(),
-            uri: journalImageUri,
-            type: "image/*",
-          });
-          journalFormData.append("media_url", {
-            name: journalImageUri?.split("/").pop(),
-            uri: journalImageUri,
-            type: "image/*",
-          });
-        }
-      }
+        if (!postData){
+            if (isPublic && journalImageUri === "") {
+                Alert.alert("", "You've not added an image", [{text: "Dismiss"}]);
+            } else {
+                if (journalImageUri && journalImageUri !== "") {
+                    journalFormData.append("thumbnail_url", {
+                        name: journalImageUri?.split("/").pop(),
+                        uri: journalImageUri,
+                        type: "image/*",
+                    });
+                    journalFormData.append("media_url", {
+                        name: journalImageUri?.split("/").pop(),
+                        uri: journalImageUri,
+                        type: "image/*",
+                    });
+                }
+            }
+            setAddingJournal(true);
+            await dispatch(addPost(journalFormData));
+            setAddingJournal(false);
+            navigation.navigate("Crop-Journal", {
+                screen: "Crop-Journal",
+            });
+        }  else {
+            if (post.postImageUri !== postData.media_url) {
+                journalFormData.append("thumbnail_url", {
+                    name: post.postImageUri?.split("/").pop(),
+                    uri: post.postImageUri,
+                    type: "image/*",
+                });
+                journalFormData.append("media_url", {
+                    name: post.postImageUri?.split("/").pop(),
+                    uri: post.postImageUri,
+                    type: "image/*",
+                });
+            }
 
-      setAddingJournal(true);
-      await dispatch(addPost(journalFormData));
-      setAddingJournal(false);
-      navigation.navigate("Crop-Journal", {
-        screen: "Crop-Journal",
-      });
+            setAddingJournal(true);
+            await dispatch(editPost(journalFormData));
+            setAddingJournal(false);
+            navigation.navigate("Crop-Journal", {
+                screen: "Crop-Journal",
+            });
+        }
+
       dispatch(getPosts(true));
     },
 
@@ -157,40 +223,19 @@ const CreateJournal = ({ navigation }) => {
       dispatch(getPosts());
     });
   }, [navigation]);
-  const submit = () => {
-    const data = new FormData();
-
-    data.append("title", values.content);
-    data.append("content", values.content);
-    data.append("post_type", values.isPublic ? "public" : "private");
-    data.append("crop_id", values.crop_id);
-    data.append("variety", values.plantVariety);
-    data.append("user_id", values.user_id);
-
-    if (values.journalImageUri && values.journalImageUri !== "") {
-      data.append("thumbnail_url", {
-        name: values.journalImageUri?.split("/").pop(),
-        uri: values.journalImageUri,
-        type: "image/*",
-      });
-      data.append("media_url", {
-        name: values.journalImageUri?.split("/").pop(),
-        uri: values.journalImageUri,
-        type: "image/*",
-      });
-    }
-
-    dispatch(addPost(data));
-    // dispatch(getPosts());
-    // navigation.goBack()
-    // goBack()
-    navigation.navigate("Settings", {
-      screen: "Main-Profile",
-      params: {
-        indexOfItemToShow: 3,
-      },
-    });
-  };
+    useEffect(() => {
+        console.log({jghghghg: postData})
+    }, []);
+    useEffect(() => {
+        if (defaultPostImage) {
+            setFieldValue("postImageUri", defaultPostImage);
+            setPost((prevState) => ({
+                ...prevState,
+                postImageUri: defaultPostImage,
+            }));
+        }
+        // pickImage();
+    }, [defaultPostImage, currentIndex]);
   return (
     <SafeArea>
       <ScrollView
@@ -260,7 +305,7 @@ const CreateJournal = ({ navigation }) => {
           }
           loading={addingJournal}
           // onPress={handleSubmit}
-          onPress={disableForm ? "" : submit}
+          onPress={disableForm ? "" : handleSubmit}
         />
       </View>
     </SafeArea>

@@ -58,8 +58,8 @@ const PostForm = ({
   } = useFormik({
     initialValues: {
       post: postData?.content ?? "",
-      crop_name: "",
-      plantVariety: "",
+      crop_name: postData?.name ?? "",
+      plantVariety: postData?.variety ?? "",
       postImageUri: postData?.media_url ?? defaultPostImage ?? "",
       isPublic: true,
     },
@@ -103,6 +103,9 @@ const PostForm = ({
     dispatch(getCrops());
   }, []);
 
+    useEffect(() => {
+        console.log({qwewewe: route?.params})
+    }, []);
   useEffect(() => {
     if (defaultPostImage) {
       setFieldValue("postImageUri", defaultPostImage);
@@ -136,6 +139,7 @@ const PostForm = ({
     data.append("content", values.post);
     data.append("post_type", "PUBLIC");
     data.append("crop_name", values.crop_name);
+    data.append("crop_type", values.crop_name);
     data.append("variety", values.plantVariety);
     data.append("user_id", user?.id);
 

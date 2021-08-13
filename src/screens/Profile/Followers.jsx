@@ -18,6 +18,7 @@ import { getUserFollowers } from "../../redux/actions/authActions";
 import { Header, Input } from "../../components/";
 
 import constants from "../../constants/";
+import {getPostUser} from "../../redux/actions/postsActions";
 
 const { colors } = constants;
 
@@ -27,7 +28,12 @@ const Followers = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.loading);
-  const { followers } = useSelector((state) => state.auth);
+  // const { followers } = useSelector((state) => state.auth);
+    const {
+        following = [],
+        user,
+        followers,
+    } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getUserFollowers());
@@ -73,10 +79,20 @@ const Followers = ({ navigation }) => {
                 item?.fullname?.toLowerCase()?.includes(search.toLowerCase())
               )
               ?.map((item, index) => (
-                <View style={styles.followItem} key={index}>
-                  <Image source={{ uri: item.avatar }} style={styles.image} />
-                  <Text style={styles.followItemText}>{item?.fullname}</Text>
-                </View>
+
+                <TouchableOpacity
+                onPress={() => {
+                dispatch(getPostUser(item?.id));
+                item?.id !== user?.id
+                ? navigation.navigate("User-details")
+                : "";
+            }}
+                >
+                    <View style={styles.followItem} key={index}>
+                        <Image source={{ uri: item.avatar }} style={styles.image} />
+                        <Text style={styles.followItemText}>{item?.fullname}</Text>
+                    </View>
+                </TouchableOpacity>
               ))}
             <BottomSheet visible={showBottomSheet}>
               <View style={styles.bottomSheetItemWrapper}>

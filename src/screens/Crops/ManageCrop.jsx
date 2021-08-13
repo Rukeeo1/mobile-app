@@ -16,18 +16,27 @@ import ManageCropContext from "../../context/ManageCropsContext";
 
 import { GradientButton, Text } from "../../components";
 import {
-  // getUserJobs,
-  getCurrentGrowing,
-  getPastHarvests,
+    // getUserJobs,
+    getCurrentGrowing,
+    getPastHarvests, getUserJobs,
 } from "../../redux/actions";
 
 import constants from "../../constants";
+import {
+    getUserFollowers,
+    getUserFollowing,
+    getUserGrowList,
+    getUserPosts,
+    getUserProfile
+} from "../../redux/actions/authActions";
 
 const { colors } = constants;
 
 const ManageCrops = () => {
   const navigation = useNavigation();
-
+    const { user } = useSelector(
+        (state) => state.auth
+    );
   const { jobs, userId, pastHarvest } = useSelector(
     (state) => ({
       jobs: state.jobs?.usersJobs,
@@ -59,11 +68,15 @@ const ManageCrops = () => {
     await dispatch(getPastHarvests(userId));
     setFetchingPastHarvest(false);
   }, []);
+    useEffect(() => {
+        dispatch(getUserGrowList());
+        dispatch(getUserJobs(user?.id));
+    }, [user?.id]);
 
   useEffect(() => {
-    getCurrentJobs();
+      getCurrentJobs();
     getPreviousHarvest();
-  }, [getCurrentJobs]);
+  }, [getCurrentJobs, getPreviousHarvest]);
 
   const handleNavigation = (path, details) => () => {
     navigation.navigate(path);
@@ -147,7 +160,7 @@ const ManageCrops = () => {
                 {jobs?.jobs?.length > 0 ? "Current growing" : null}
               </Text>
               {jobs?.jobs?.map((job) => {
-                return job.job_type !== "HARVEST" ? (
+                return job.status !== "DONE" && job.status !== "KILLED" ? (
                   <PlantItem
                     job={job}
                     key={job.id}
@@ -163,7 +176,7 @@ const ManageCrops = () => {
               {jobs?.jobs?.length > 0 ? "Past Harvest" : null}
             </Text>
             {jobs?.jobs?.map((job) => {
-              return job.job_type === "HARVEST" && job.status === "DONE" ? (
+              return job.job_type === "HARVEST" && job.status === "DONE" || job.job_type === "KILLED" && job.status === "KILLED"  ? (
                 <PlantItem
                   job={job}
                   key={job.id}
@@ -196,13 +209,12 @@ const PlantItem = ({ job, onPress = () => {} }) => {
         />
         <View style={styles.cropText}>
           <Text>{`${job?.name}`}</Text>
-          {job?.title === "SOW" ||
-            job?.title === "PLANT" ||
-            (job?.title === "HARVEST" && job?.title === "PENDING" && (
+          {(job?.title === "SOW" ||
+            job?.title === "PLANT" )&& job?.title === "PENDING" && (
               <Text fontType="bold" style={styles.boldText}>
                 {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
               </Text>
-            ))}
+            )}
           {job?.title === "PENDING" && job?.title === "PENDING" && (
             <Text fontType="bold" style={styles.boldText}>
               {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
@@ -226,6 +238,11 @@ const PlantItem = ({ job, onPress = () => {} }) => {
           {job?.job_type === "HARVEST" && job?.status === "DONE" && (
             <Text fontType="bold" style={styles.boldText}>
               {`Harvest ended ${dateIndex[2]} ${dateIndex[1]}`}
+            </Text>
+          )}
+          {job?.job_type === "KILLED" && job?.status === "KILLED" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Killed ${dateIndex[2]} ${dateIndex[1]}`}
             </Text>
           )}
         </View>

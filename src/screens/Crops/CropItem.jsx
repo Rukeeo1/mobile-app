@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Image, Linking } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 
@@ -59,7 +59,7 @@ export const CropItem = ({
       status: "PENDING",
       job_type: jobType,
       variety: recommendation,
-      cropType: currentVariety,
+      crop_type: currentVariety,
     };
     console.log({
       oluwadurotimi: {
@@ -70,7 +70,7 @@ export const CropItem = ({
         status: "PENDING",
         job_type: jobType,
         variety: recommendation,
-        cropType: currentVariety,
+        crop_type: currentVariety,
       },
     });
 
@@ -81,7 +81,7 @@ export const CropItem = ({
       job_type: "PENDING",
       jobDate: jobInfo.job_date,
       variety: recommendation,
-      CropVariety: currentVariety,
+      cropVariety: currentVariety,
       cropId: currentCropId,
     });
 
@@ -92,7 +92,7 @@ export const CropItem = ({
     manageCropContext?.actions?.updateCropToGrowDetails({
       variety: recommendation,
       cropName: currentName,
-      CropVariety: currentVariety,
+      cropVariety: currentVariety,
       cropId: currentCropId,
     });
 
@@ -145,6 +145,11 @@ export const CropItem = ({
           <GradientButton
             coverStyle={{ marginLeft: 5 }}
             gradient={[colors.blueLigth, colors.blue]}
+
+            onPress={() => {
+                Linking.openURL(`${affiliate_links}`)
+            }}
+            //
           >
             <View
               style={{

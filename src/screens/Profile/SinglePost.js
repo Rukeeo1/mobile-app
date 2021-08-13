@@ -98,6 +98,29 @@ const SinglePost = ({ navigation }) => {
                     )}
                     {text && <Text> yes, patient is golden any time!</Text>} */}
                 </Text>
+                  <View style={{ paddingLeft: 25, paddingTop: 10 }}>
+                      <Text
+                          style={{
+                              fontFamily: "Hero-New-Medium",
+                          }}
+                      >
+                          {post.name !== null &&
+                          post.name !== "" &&
+                          post.name !== "null" &&
+                          post.name !== "undefined" &&
+                          post.name}{" "}
+                          {post.variety !== null &&
+                          post.variety !== "" &&
+                          post.variety !== "null" &&
+                          post.variety !== "undefined" && (
+                              <Text
+                                  style={{
+                                      fontFamily: "Hero-New-Light-Italic",
+                                  }}
+                              >{`- ‘${post.variety}’`}</Text>
+                          )}
+                      </Text>
+                  </View>
               </View>
             </View>
           </View>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext, useEffect} from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -36,15 +36,19 @@ export const JobItem = ({ job }) => {
   const manageCropContext = useContext(ManageCropContext);
 
   const monthIndex = new Date(job.job_date).getMonth();
-
+    useEffect(()=>{
+        console.log({yvone: job})
+    }, [])
   const handleNavigation = (path) => () => {
     navigation.navigate(path);
 
+      console.log({yvone: job})
     manageCropContext?.actions?.updateCropToGrowDetails({
       //name in this case represents crop name...details for the crop was added to the job object
       cropName: job?.name,
       month: monthsAbr[monthIndex],
       variety: job?.variety,
+        cropVariety: job?.crop_type,
       monthIndex,
       cropId: job?.crop_id,
       action: job?.job_type,

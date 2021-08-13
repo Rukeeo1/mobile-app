@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext, useState} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { BottomSheet } from "react-native-btr";
 import { useNavigation } from "@react-navigation/native";
@@ -23,10 +23,10 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
     navigation.navigate(path, params);
   };
   const actions = [
-    {
-      title: "Buy seeds",
-      onClick: () => {},
-    },
+    // {
+    //   title: "Buy seeds",
+    //   onClick: () => {},
+    // },
     {
       title: "Edit name/variety name",
       onClick: () => {
@@ -49,7 +49,9 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
     onClose();
     handleNavigation("Delete-Crop");
   };
-  const onKill = () => {};
+  const onKill = () => {
+      onClose();
+      handleNavigation("Killed-Crop");};
 
   const handleClick = (callBack) => () => {
     callBack();

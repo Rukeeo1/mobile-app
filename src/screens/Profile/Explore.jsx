@@ -23,8 +23,14 @@ import {
   getPostUser,
   selectPost,
 } from "../../redux/actions/postsActions";
-import { followUser, getUserFollowers } from "../../redux/actions/authActions";
+import {
+  followUser,
+  getUserFollowers,
+  signOut,
+} from "../../redux/actions/authActions";
 import { BottomSheet } from "react-native-btr";
+import ShareModal from "./ShareModal";
+import Toast from "react-native-toast-message";
 
 const { colors } = constants;
 
@@ -72,10 +78,22 @@ const Explore = () => {
     followers,
   } = useSelector((state) => state.auth);
 
+  const [postToShare, setPostToShare] = useState(null);
   useEffect(() => {
     dispatch(getUserFollowers());
+    //   if(posts && typeof posts !== 'undefined'){
+    //       dispatch(getPosts());
+    //   }
+    //   if(followers && typeof followers !== 'undefined'){
+    //       dispatch(getUserFollowers());
+    //   }
     dispatch(getPosts());
   }, []);
+
+  const toggleModal = (post) => {
+    setShowShare((prevState) => !prevState);
+    setPostToShare(post);
+  };
 
   return (
     <View style={{ backgroundColor: colors.white, flex: 1 }}>
@@ -199,7 +217,6 @@ const Explore = () => {
                           style={[styles.userDetail]}
                           onPress={() => {
                             dispatch(selectPost(post));
-                            // navigation.navigate('Single-Post')
                             dispatch(getPostUser(post?.user_id));
                             post?.user_id !== user?.id
                               ? navigation.navigate("User-details")
@@ -214,6 +231,9 @@ const Explore = () => {
                           <Text style={[styles.imgText]}>{post?.fullname}</Text>
                           {post?.user_id !== user?.id && (
                             <TouchableOpacity
+                                style={{
+                                    width: '65%',
+                                }}
                               onPress={() => {
                                 if (!isFollowing) {
                                   isFollowing = true;
@@ -221,17 +241,17 @@ const Explore = () => {
                                 }
                               }}
                             >
-                              <Text>
-                                {" • "}
                                 <Text
                                   style={{
+                                      textAlign: 'right',
+                                      fontWeight: "bold",
+                                      color: '#1369BE',
                                     textDecorationLine: isFollowing
                                       ? "none"
-                                      : "underline",
+                                      : "none",
                                   }}
                                 >
                                   {isFollowing ? "Following" : "Follow"}
-                                </Text>
                               </Text>
                             </TouchableOpacity>
                           )}
@@ -262,9 +282,11 @@ const Explore = () => {
 
                         <View style={[styles.dateTime]}>
                           <Text style={[styles.date]}>
-                            {new Date(post?.created_at).toDateString()}
+                            {new Date(post?.created_at).toDateString().split(' ').slice(1).join(' ')}
                           </Text>
-                          {/* <Text>...</Text> */}
+                          <TouchableOpacity onPress={() => toggleModal(post)}>
+                            <Text>...</Text>
+                          </TouchableOpacity>
                         </View>
 
                         <View style={[styles.postText]}>
@@ -284,14 +306,37 @@ const Explore = () => {
                     )}
                     {text && <Text> yes, patient is golden any time!</Text>} */}
                           </Text>
-                          <Text style={{ fontFamily: "Hero-New-Medium" }}>
-                            {post.name}{" "}
-                            {post.variety !== null ||
-                              post.variety !== "null" ||
-                              (post.variety !== "undefined" && (
-                                <>{`- ‘${post.variety}’`}</>
-                              ))}
-                          </Text>
+                          {/*<Text style={{ fontFamily: "Hero-New-Medium" }}>*/}
+                          {/*  {post.name}{" "}*/}
+                          {/*  {post.variety !== null &&*/}
+                          {/*    post.variety !== "null" &&*/}
+                          {/*    post.variety !== "undefined" &&*/}
+                          {/*      <>{`- ‘${post.variety}’`}</>*/}
+                          {/*    }*/}
+                          {/*</Text>*/}
+                            <View style={{ paddingLeft: 25, paddingTop: 10 }}>
+                                <Text
+                                    style={{
+                                        fontFamily: "Hero-New-Medium",
+                                    }}
+                                >
+                                    {post.name !== null &&
+                                    post.name !== "" &&
+                                    post.name !== "null" &&
+                                    post.name !== "undefined" &&
+                                    post.name}{" "}
+                                    {post.variety !== null &&
+                                    post.variety !== "" &&
+                                    post.variety !== "null" &&
+                                    post.variety !== "undefined" && (
+                                        <Text
+                                            style={{
+                                                fontFamily: "Hero-New-Light-Italic",
+                                            }}
+                                        >{`- ‘${post.variety}’`}</Text>
+                                    )}
+                                </Text>
+                            </View>
                         </View>
                       </View>
                     );
@@ -306,19 +351,34 @@ const Explore = () => {
                       ?.includes(search.toLowerCase())
                   )
                   ?.map((item, index) => (
-                    <View style={styles.followItem} key={index}>
-                      <Image
-                        source={{ uri: item.avatar }}
-                        style={styles.image}
-                      />
-                      <Text style={styles.followItemText}>
-                        {item?.fullname}
-                      </Text>
-                    </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        dispatch(getPostUser(item?.id));
+                        item?.id !== user?.id
+                          ? navigation.navigate("User-details")
+                          : "";
+                      }}
+                    >
+                      <View style={styles.followItem} key={index}>
+                        <Image
+                          source={{ uri: item.avatar }}
+                          style={styles.image}
+                        />
+                        <Text style={styles.followItemText}>
+                          {item?.fullname}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   ))}
               </View>
             )}
           </View>
+          <ShareModal
+            showBottomSheet={showShare}
+            setShowShare={toggleModal}
+            post={postToShare}
+            Toast={Toast}
+          />
         </ScrollView>
       </View>
     </View>
@@ -343,6 +403,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 20,
+      width: '100%',
+      minWidth: '100%',
+      display: 'flex'
   },
   imgAvatar: {
     width: 30,
@@ -366,6 +429,7 @@ const styles = StyleSheet.create({
   },
   date: {
     color: colors.greyDark,
+      fontFamily: "Hero-New-Light-Italic",
   },
   postText: {
     marginVertical: 10,
