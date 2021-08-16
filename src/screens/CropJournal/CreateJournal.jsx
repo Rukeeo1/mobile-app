@@ -28,16 +28,18 @@ import ManageCropContext from "../../context/ManageCropsContext";
 import { addJournal } from "../../redux/actions";
 
 import constants from "../../constants/";
-import {addPost, editPost, getPosts} from "../../redux/actions/postsActions";
+import { addPost, editPost, getPosts } from "../../redux/actions/postsActions";
 
 const { colors } = constants;
 
-const CreateJournal = ({ navigation,
-                           route,
-                           defaultPostImage = "",
-                           currentIndex,}) => {
+const CreateJournal = ({
+  navigation,
+  route,
+  defaultPostImage = "",
+  currentIndex,
+}) => {
   const dispatch = useDispatch();
-    const postData = route?.params?.params?.post;
+  const postData = route?.params?.params?.post;
 
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails } = manageCropContext?.data;
@@ -46,21 +48,21 @@ const CreateJournal = ({ navigation,
     journal: state?.journal?.journals,
   }));
 
-    const [post, setPost] = useState({
-        content: postData?.content ?? "",
-        user_id: user?.id,
-        crop_id: cropToGrowDetails?.cropId,
-        type: cropToGrowDetails?.variety,
-        variety: cropToGrowDetails?.cropVariety,
+  const [post, setPost] = useState({
+    content: postData?.content ?? "",
+    user_id: user?.id,
+    crop_id: cropToGrowDetails?.cropId,
+    type: cropToGrowDetails?.variety,
+    variety: cropToGrowDetails?.cropVariety,
 
-        post_type: "private", //public
-        isPublic: false,
-        journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
-        media_url: postData?.media_url ?? defaultPostImage ?? "",
-        thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
+    post_type: "private", //public
+    isPublic: false,
+    journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
+    media_url: postData?.media_url ?? defaultPostImage ?? "",
+    thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
 
-        isCoverImage: false,
-    });
+    isCoverImage: false,
+  });
   const [addingJournal, setAddingJournal] = useState(false);
 
   const createJournalSchema = Yup.object().shape({
@@ -70,20 +72,18 @@ const CreateJournal = ({ navigation,
       .max(1000, "Too Long!"),
   });
 
+  useEffect(() => {
+    if (defaultPostImage) {
+      setFieldValue("postImageUri", defaultPostImage);
+      setPost((prevState) => ({
+        ...prevState,
+        postImageUri: defaultPostImage,
+      }));
+    }
+    // pickImage();
+  }, [defaultPostImage, currentIndex]);
 
-    useEffect(() => {
-        if (defaultPostImage) {
-            setFieldValue("postImageUri", defaultPostImage);
-            setPost((prevState) => ({
-                ...prevState,
-                postImageUri: defaultPostImage,
-            }));
-        }
-        // pickImage();
-    }, [defaultPostImage, currentIndex]);
-
-
-    const goBack = () => {
+  const goBack = () => {
     // navigation.navigate('Settings', {
     //   screen: 'Main-Profile',
     //   params: {
@@ -112,18 +112,18 @@ const CreateJournal = ({ navigation,
       content: postData?.content ?? "",
       user_id: user?.id,
       crop_id: cropToGrowDetails?.cropId,
-        type: cropToGrowDetails?.cropName,
+      type: cropToGrowDetails?.cropName,
 
-        variety: cropToGrowDetails.variety,
-        cropVariety: cropToGrowDetails.cropVariety,
-        cropName: cropToGrowDetails.cropName,
+      variety: cropToGrowDetails.variety,
+      cropVariety: cropToGrowDetails.cropVariety,
+      cropName: cropToGrowDetails.cropName,
 
       post_type: "private", //public
       isPublic: false,
 
-        journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
-        media_url: postData?.media_url ?? defaultPostImage ?? "",
-        thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
+      journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
+      media_url: postData?.media_url ?? defaultPostImage ?? "",
+      thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
 
       isCoverImage: false,
     },
@@ -137,8 +137,8 @@ const CreateJournal = ({ navigation,
         crop_id,
         isPublic,
         content,
-          variety,
-          type,
+        variety,
+        type,
         journalImageUri = "",
       } = data;
 
@@ -149,50 +149,50 @@ const CreateJournal = ({ navigation,
       journalFormData.append("type", type);
       journalFormData.append("post_type", isPublic ? "public" : "private");
       journalFormData.append("content", content);
-        if (!postData){
-            if (isPublic && journalImageUri === "") {
-                Alert.alert("", "You've not added an image", [{text: "Dismiss"}]);
-            } else {
-                if (journalImageUri && journalImageUri !== "") {
-                    journalFormData.append("thumbnail_url", {
-                        name: journalImageUri?.split("/").pop(),
-                        uri: journalImageUri,
-                        type: "image/*",
-                    });
-                    journalFormData.append("media_url", {
-                        name: journalImageUri?.split("/").pop(),
-                        uri: journalImageUri,
-                        type: "image/*",
-                    });
-                }
-            }
-            setAddingJournal(true);
-            await dispatch(addPost(journalFormData));
-            setAddingJournal(false);
-            navigation.navigate("Crop-Journal", {
-                screen: "Crop-Journal",
+      if (!postData) {
+        if (isPublic && journalImageUri === "") {
+          Alert.alert("", "You've not added an image", [{ text: "Dismiss" }]);
+        } else {
+          if (journalImageUri && journalImageUri !== "") {
+            journalFormData.append("thumbnail_url", {
+              name: journalImageUri?.split("/").pop(),
+              uri: journalImageUri,
+              type: "image/*",
             });
-        }  else {
-            if (post.postImageUri !== postData.media_url) {
-                journalFormData.append("thumbnail_url", {
-                    name: post.postImageUri?.split("/").pop(),
-                    uri: post.postImageUri,
-                    type: "image/*",
-                });
-                journalFormData.append("media_url", {
-                    name: post.postImageUri?.split("/").pop(),
-                    uri: post.postImageUri,
-                    type: "image/*",
-                });
-            }
-
-            setAddingJournal(true);
-            await dispatch(editPost(journalFormData));
-            setAddingJournal(false);
-            navigation.navigate("Crop-Journal", {
-                screen: "Crop-Journal",
+            journalFormData.append("media_url", {
+              name: journalImageUri?.split("/").pop(),
+              uri: journalImageUri,
+              type: "image/*",
             });
+          }
         }
+        setAddingJournal(true);
+        await dispatch(addPost(journalFormData));
+        setAddingJournal(false);
+        navigation.navigate("Crop-Journal", {
+          screen: "Crop-Journal",
+        });
+      } else {
+        if (post.postImageUri !== postData.media_url) {
+          journalFormData.append("thumbnail_url", {
+            name: post.postImageUri?.split("/").pop(),
+            uri: post.postImageUri,
+            type: "image/*",
+          });
+          journalFormData.append("media_url", {
+            name: post.postImageUri?.split("/").pop(),
+            uri: post.postImageUri,
+            type: "image/*",
+          });
+        }
+
+        setAddingJournal(true);
+        await dispatch(editPost(journalFormData));
+        setAddingJournal(false);
+        navigation.navigate("Crop-Journal", {
+          screen: "Crop-Journal",
+        });
+      }
 
       dispatch(getPosts(true));
     },
@@ -223,19 +223,19 @@ const CreateJournal = ({ navigation,
       dispatch(getPosts());
     });
   }, [navigation]);
-    useEffect(() => {
-        console.log({jghghghg: postData})
-    }, []);
-    useEffect(() => {
-        if (defaultPostImage) {
-            setFieldValue("postImageUri", defaultPostImage);
-            setPost((prevState) => ({
-                ...prevState,
-                postImageUri: defaultPostImage,
-            }));
-        }
-        // pickImage();
-    }, [defaultPostImage, currentIndex]);
+  useEffect(() => {
+    console.log({ jghghghg: postData });
+  }, []);
+  useEffect(() => {
+    if (defaultPostImage) {
+      setFieldValue("postImageUri", defaultPostImage);
+      setPost((prevState) => ({
+        ...prevState,
+        postImageUri: defaultPostImage,
+      }));
+    }
+    // pickImage();
+  }, [defaultPostImage, currentIndex]);
   return (
     <SafeArea>
       <ScrollView

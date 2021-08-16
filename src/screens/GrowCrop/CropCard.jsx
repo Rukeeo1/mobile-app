@@ -63,7 +63,7 @@ const CropCard = ({ navigation, route }) => {
   const { action, stageOneComplete, stageTwoComplete, stageThreeComplete } =
     cropToGrowDetails;
 
-  const { cropCycleDetails, cropSteps, user, currentJob, } = useSelector(
+  const { cropCycleDetails, cropSteps, user, currentJob } = useSelector(
     (state) => ({
       cropCycleDetails: state.crops.cropCycleDetails[0],
       cropSteps: state.crops.cropSteps,
@@ -102,33 +102,36 @@ const CropCard = ({ navigation, route }) => {
   }, [cropToGrowDetails?.cropId]);
 
   useEffect(() => {
-      if( currentJob && typeof currentJob !== 'undefined'
-          && typeof currentJob?.id !== 'undefined'){
-          dispatch(getCurrentJob(currentJob?.id || cropToGrowDetails.jobId));
-          setToUseJobId(currentJob?.id || cropToGrowDetails.jobId)
-
-      }
-      console.log({ buhari2: cropToGrowDetails });
+    if (
+      currentJob &&
+      typeof currentJob !== "undefined" &&
+      typeof currentJob?.id !== "undefined"
+    ) {
+      dispatch(getCurrentJob(currentJob?.id || cropToGrowDetails.jobId));
+      setToUseJobId(currentJob?.id || cropToGrowDetails.jobId);
+    }
+    console.log({ buhari2: cropToGrowDetails });
   }, [currentJob?.id, cropToGrowDetails]);
 
   useEffect(() => {
-     if(cropToGrowDetails?.jobId){
-         if( currentJob && typeof currentJob?.jobs !== 'undefined'
-             && typeof currentJob.jobs[0].stage_one_completed !== 'undefined'
-             && typeof currentJob.jobs[0].stage_two_completed !== 'undefined'
-             && typeof currentJob.jobs[0].stage_three_completed !== 'undefined' ){
-             setStageOneFromServer(currentJob?.jobs[0]?.stage_one_completed);
-             setStageTwoFromServer(currentJob?.jobs[0]?.stage_two_completed);
-             setStageThreeFromServer(currentJob?.jobs[0]?.stage_three_completed);
-         }
-     }
+    if (cropToGrowDetails?.jobId) {
+      if (
+        currentJob &&
+        typeof currentJob?.jobs !== "undefined" &&
+        typeof currentJob.jobs[0].stage_one_completed !== "undefined" &&
+        typeof currentJob.jobs[0].stage_two_completed !== "undefined" &&
+        typeof currentJob.jobs[0].stage_three_completed !== "undefined"
+      ) {
+        setStageOneFromServer(currentJob?.jobs[0]?.stage_one_completed);
+        setStageTwoFromServer(currentJob?.jobs[0]?.stage_two_completed);
+        setStageThreeFromServer(currentJob?.jobs[0]?.stage_three_completed);
+      }
+    }
   }, [currentJob?.id]);
 
   useEffect(() => {
-     console.log({osinbajo: {route}})
+    console.log({ osinbajo: { route } });
   }, [route]);
-
-
 
   const video = React.useRef(null);
 
@@ -176,67 +179,64 @@ const CropCard = ({ navigation, route }) => {
     setToUseJobType(jobType);
     setToUseVariety(cropToGrowDetails?.variety);
     setLoadingJobs(true);
-if(cropToGrowDetails?.fromJobs){
-
-    if (jobType === "SOW") {
+    if (cropToGrowDetails?.fromJobs) {
+      if (jobType === "SOW") {
         jobInfo.title = "SOW";
         jobInfo.status = "STARTED";
         jobInfo.job_type = "SOW";
         await manageCropContext?.actions?.updateCropToGrowDetails({
-            fromJobs: true,
-            jobId: cropToGrowDetails?.jobId,
-            job_type: "SOW",
-            action: "STARTED",
-            jobStatus: "STARTED",
-            notNewCalendar: true,
+          fromJobs: true,
+          jobId: cropToGrowDetails?.jobId,
+          job_type: "SOW",
+          action: "STARTED",
+          jobStatus: "STARTED",
+          notNewCalendar: true,
         });
         await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
+      }
 
-    }
-
-    if (jobType === "PLANT") {
+      if (jobType === "PLANT") {
         jobInfo.title = "PLANT";
         jobInfo.status = "STARTED";
         jobInfo.job_type = "PLANT";
         await manageCropContext?.actions?.updateCropToGrowDetails({
-            fromJobs: true,
-            jobId: cropToGrowDetails?.jobId,
-            job_type: "PLANT",
-            action: "STARTED",
-            jobStatus: "STARTED",
-            notNewCalendar: true,
+          fromJobs: true,
+          jobId: cropToGrowDetails?.jobId,
+          job_type: "PLANT",
+          action: "STARTED",
+          jobStatus: "STARTED",
+          notNewCalendar: true,
         });
         await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
-    }
+      }
 
-    if (jobType === "HARVEST") {
+      if (jobType === "HARVEST") {
         jobInfo.title = "HARVEST";
         jobInfo.status = "STARTED";
         jobInfo.job_type = "HARVEST";
 
         manageCropContext?.actions?.updateCropToGrowDetails({
-            fromJobs: true,
-            job_type: "HARVEST",
-            jobStatus: "STARTED",
+          fromJobs: true,
+          job_type: "HARVEST",
+          jobStatus: "STARTED",
         });
         await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
         // await dispatch(harvestCrop(jobInfo, Toast));
-    }
-} else {
-
-    if (jobType === "SOW") {
+      }
+    } else {
+      if (jobType === "SOW") {
         jobInfo.title = "SOW";
         jobInfo.status = "STARTED";
         jobInfo.job_type = "SOW";
-        console.log({hgkdd: toUseJobId})
+        console.log({ hgkdd: toUseJobId });
         await dispatch(updateJob(toUseJobId, jobInfo, Toast));
         await manageCropContext?.actions?.updateCropToGrowDetails({
-            fromJobs: true,
-            jobId: toUseJobId,
-            job_type: "SOW",
-            action: "STARTED",
-            jobStatus: "STARTED",
-            notNewCalendar: true,
+          fromJobs: true,
+          jobId: toUseJobId,
+          job_type: "SOW",
+          action: "STARTED",
+          jobStatus: "STARTED",
+          notNewCalendar: true,
         });
         // console.log({drogba: {
         //         timm: toUseJobId,
@@ -247,38 +247,38 @@ if(cropToGrowDetails?.fromJobs){
         //         jobStatus: "STARTED",
         //         notNewCalendar: true,
         //     }})
-    }
+      }
 
-    if (jobType === "PLANT") {
+      if (jobType === "PLANT") {
         jobInfo.title = "PLANT";
         jobInfo.status = "STARTED";
         jobInfo.job_type = "PLANT";
         await manageCropContext?.actions?.updateCropToGrowDetails({
-            fromJobs: true,
-            jobId: toUseJobId,
-            job_type: "PLANT",
-            action: "STARTED",
-            jobStatus: "STARTED",
-            notNewCalendar: true,
+          fromJobs: true,
+          jobId: toUseJobId,
+          job_type: "PLANT",
+          action: "STARTED",
+          jobStatus: "STARTED",
+          notNewCalendar: true,
         });
         await dispatch(updateJob(toUseJobId, jobInfo, Toast));
-    }
+      }
 
-    if (jobType === "HARVEST") {
+      if (jobType === "HARVEST") {
         jobInfo.title = "HARVEST";
         jobInfo.status = "STARTED";
         jobInfo.job_type = "HARVEST";
 
         manageCropContext?.actions?.updateCropToGrowDetails({
-            fromJobs: true,
-            jobId: toUseJobId,
-            job_type: "HARVEST",
-            jobStatus: "STARTED",
+          fromJobs: true,
+          jobId: toUseJobId,
+          job_type: "HARVEST",
+          jobStatus: "STARTED",
         });
         await dispatch(updateJob(toUseJobId, jobInfo, Toast));
         // await dispatch(harvestCrop(jobInfo, Toast));
+      }
     }
-}
 
     setLoadingJobs(false);
   };

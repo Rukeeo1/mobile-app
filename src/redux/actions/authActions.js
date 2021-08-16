@@ -415,7 +415,9 @@ export const getUserFollowing =
         });
       })
       .catch((err) => {
-        showApiError(err, true, () => dispatch(getUserFollowing(refreshing, silent)));
+        showApiError(err, true, () =>
+          dispatch(getUserFollowing(refreshing, silent))
+        );
       })
       .finally(() => {
         if (!silent) {
@@ -447,7 +449,9 @@ export const getUserFollowers =
         });
       })
       .catch((err) => {
-        showApiError(err, true, () => dispatch(getUserFollowers(refreshing, silent)));
+        showApiError(err, true, () =>
+          dispatch(getUserFollowers(refreshing, silent))
+        );
       })
       .finally(() => {
         if (!silent) {

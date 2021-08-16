@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { BottomSheet } from "react-native-btr";
 import { useNavigation } from "@react-navigation/native";
@@ -50,8 +50,9 @@ const ActionSheet = ({ showBottomSheet, onClose }) => {
     handleNavigation("Delete-Crop");
   };
   const onKill = () => {
-      onClose();
-      handleNavigation("Killed-Crop");};
+    onClose();
+    handleNavigation("Killed-Crop");
+  };
 
   const handleClick = (callBack) => () => {
     callBack();

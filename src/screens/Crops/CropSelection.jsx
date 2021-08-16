@@ -36,7 +36,9 @@ const CropSelection = ({ navigation, route }) => {
   }));
   const { cropName, name, sowTip, growLevel, cropId } = route?.params || {};
 
-  const [cropUserVariety, setCropUserVariety] = useState(cropToGrowDetails?.cropVariety);
+  const [cropUserVariety, setCropUserVariety] = useState(
+    cropToGrowDetails?.cropVariety
+  );
   const [cropVarietyType, setCropVarietyType] = useState("");
   const [cropNameUser, setCropNameUser] = useState("");
   const getCurrentDate = () => {
@@ -53,7 +55,12 @@ const CropSelection = ({ navigation, route }) => {
   let ourDate;
   let jobInfo = {};
   let jobInfo2 = {};
-  const handleGrowCrop = async (selectedDate, cropIdx, jobType, realVariety) => {
+  const handleGrowCrop = async (
+    selectedDate,
+    cropIdx,
+    jobType,
+    realVariety
+  ) => {
     // ourDate = new Date(); // 2020 January 5
     ourDate = getCurrentDate(); // 2020 January 5
     // ourDate = new Date(selectedDate); // 2020 January 5
@@ -69,7 +76,6 @@ const CropSelection = ({ navigation, route }) => {
       cropVariety: cropUserVariety,
     };
 
-
     jobInfo.title = "PENDING";
     manageCropContext?.actions?.updateCropToGrowDetails({
       title: "PENDING",
@@ -82,25 +88,27 @@ const CropSelection = ({ navigation, route }) => {
       cropVariety: cropUserVariety,
     });
 
-      if(!cropToGrowDetails?.editCropName) {
-          jobInfo2 = {
-              cropName,
-              crop_id: cropToGrowDetails.cropId,
-              user_id: user?.id,
-              variety: realVariety,
-              crop_type: cropUserVariety,
-              cropVariety: cropUserVariety,
-              action: cropToGrowDetails.action,
-              job_type: cropToGrowDetails.job_type,
-              jobDate: cropToGrowDetails.jobDate,
-          };
-          manageCropContext?.actions?.updateCropToGrowDetails({
-              cropName,
-              variety: realVariety,
-              cropVariety: cropUserVariety,
-          });
-          await dispatch(growCrop(jobInfo, false)).then(navigation.navigate("Success"));
-      }
+    if (!cropToGrowDetails?.editCropName) {
+      jobInfo2 = {
+        cropName,
+        crop_id: cropToGrowDetails.cropId,
+        user_id: user?.id,
+        variety: realVariety,
+        crop_type: cropUserVariety,
+        cropVariety: cropUserVariety,
+        action: cropToGrowDetails.action,
+        job_type: cropToGrowDetails.job_type,
+        jobDate: cropToGrowDetails.jobDate,
+      };
+      manageCropContext?.actions?.updateCropToGrowDetails({
+        cropName,
+        variety: realVariety,
+        cropVariety: cropUserVariety,
+      });
+      await dispatch(growCrop(jobInfo, false)).then(
+        navigation.navigate("Success")
+      );
+    }
     if (cropToGrowDetails?.editCropName) {
       jobInfo2 = {
         cropName,
@@ -118,9 +126,9 @@ const CropSelection = ({ navigation, route }) => {
         cropVariety: cropUserVariety,
       });
 
-       await dispatch(
-        updateJob(cropToGrowDetails?.jobId, jobInfo2, Toast)
-      ).then(navigation.navigate("Success"));
+      await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo2, Toast)).then(
+        navigation.navigate("Success")
+      );
     }
   };
 
@@ -132,7 +140,7 @@ const CropSelection = ({ navigation, route }) => {
   }, [cropName]);
 
   useEffect(() => {
-    console.log({obama: route?.params})
+    console.log({ obama: route?.params });
   }, [route?.params]);
   //
   // useEffect(() => {
@@ -140,7 +148,7 @@ const CropSelection = ({ navigation, route }) => {
   // }, [cropToGrowDetails]);
 
   useEffect(() => {
-    console.log({osama: cropUserVariety})
+    console.log({ osama: cropUserVariety });
   }, [cropUserVariety]);
 
   let tmpItem;
@@ -196,103 +204,107 @@ const CropSelection = ({ navigation, route }) => {
               {/*  </Text>*/}
               {/*)}*/}
 
+              {cropDetail?.crops?.map((crop) => {
+                crop?.variety &&
+                  crop?.variety?.toLowerCase() !== "" &&
+                  crop?.variety?.length > 1 &&
+                  (tmpItem2 = (
+                    <Text style={{ fontWeight: "bold", color: colors.white }}>
+                      What type is the variety you have chosen
+                    </Text>
+                  ));
+              })}
 
-                {cropDetail?.crops
-                    ?.map((crop) => {
-
-                        crop?.variety &&
-                        crop?.variety?.toLowerCase() !== "" &&
-                        crop?.variety?.length > 1 &&
-
-                        (tmpItem2 = (
-                            <Text style={{ fontWeight: "bold", color: colors.white }}>
-                                What type is the variety you have chosen
-                            </Text>
-                        ));
-                    })}
-
-                <View>{tmpItem2}</View>
+              <View>{tmpItem2}</View>
             </View>
 
             <>
               {cropDetail?.crops?.map((crop) => {
                 return (
                   crop?.variety &&
-                  crop?.variety?.toLowerCase() !== "" &&  (
-                      (
-                  <GradientButton
+                  crop?.variety?.toLowerCase() !== "" && (
+                    <GradientButton
                       key={crop?.id}
                       gradient={[colors.blueLigth, colors.blue]}
                       onPress={() => {
-                          // setSearch(crop?.variety)
-                          console.log({ qqqVariety: crop });
-                          setCropVarietyType(crop?.variety !== 'N/A' ? crop?.variety : '');
-                          manageCropContext?.actions?.updateCropToGrowDetails({
-                              category: crop?.variety !== 'N/A' ? crop?.variety : '',
-                              variety: crop?.variety !== 'N/A' ? crop?.variety : '',
-                              cropVariety: cropUserVariety,
-                              cropName,
-                              // cropVariety: crop?.variety,
-                              cropId: crop?.id,
-                          });
-                          handleGrowCrop(getCurrentDate(), crop?.id, "PENDING", crop?.variety !== 'N/A' ? crop?.variety : '');
+                        // setSearch(crop?.variety)
+                        console.log({ qqqVariety: crop });
+                        setCropVarietyType(
+                          crop?.variety !== "N/A" ? crop?.variety : ""
+                        );
+                        manageCropContext?.actions?.updateCropToGrowDetails({
+                          category:
+                            crop?.variety !== "N/A" ? crop?.variety : "",
+                          variety: crop?.variety !== "N/A" ? crop?.variety : "",
+                          cropVariety: cropUserVariety,
+                          cropName,
+                          // cropVariety: crop?.variety,
+                          cropId: crop?.id,
+                        });
+                        handleGrowCrop(
+                          getCurrentDate(),
+                          crop?.id,
+                          "PENDING",
+                          crop?.variety !== "N/A" ? crop?.variety : ""
+                        );
                       }}
-                  >
+                    >
                       {/* {console.log(crop,'from maping stuff')} */}
                       <View
-                          style={{
-                              alignItems: "center",
-                              width: "100%",
-                              paddingHorizontal: 20,
-                          }}
+                        style={{
+                          alignItems: "center",
+                          width: "100%",
+                          paddingHorizontal: 20,
+                        }}
                       >
-                          <Text style={[styles.btnText]}>
-                              {crop?.variety === "N/A" ? "Grow it" : crop?.variety}
-                          </Text>
+                        <Text style={[styles.btnText]}>
+                          {crop?.variety === "N/A" ? "Grow it" : crop?.variety}
+                        </Text>
                       </View>
-
-                  </GradientButton>
-              )
-                    )
+                    </GradientButton>
+                  )
                 );
               })}
 
-              {cropDetail?.crops
-                ?.map((crop) => {
-                  (crop && crop?.variety === null) |
-                    (crop && crop?.variety === "") &&
-                    (tmpItem = (
-                      <>
-                        <GradientButton
-                          gradient={[colors.blueLigth, colors.blue]}
-                          onPress={() => {
-                            // console.log({ yyyVariety: crop?.variety });
-                            setCropVarietyType("");
-                              manageCropContext?.actions?.updateCropToGrowDetails({
-                                  category: crop?.category,
-                                  variety: '',
-                                  cropVariety: cropUserVariety,
-                                  cropName,
-                                  // cropVariety: crop?.variety,
-                                  cropId: crop?.id,
-                              });
-                              handleGrowCrop(getCurrentDate(), crop?.id, "PENDING", '');
-
+              {cropDetail?.crops?.map((crop) => {
+                (crop && crop?.variety === null) |
+                  (crop && crop?.variety === "") &&
+                  (tmpItem = (
+                    <>
+                      <GradientButton
+                        gradient={[colors.blueLigth, colors.blue]}
+                        onPress={() => {
+                          // console.log({ yyyVariety: crop?.variety });
+                          setCropVarietyType("");
+                          manageCropContext?.actions?.updateCropToGrowDetails({
+                            category: crop?.category,
+                            variety: "",
+                            cropVariety: cropUserVariety,
+                            cropName,
+                            // cropVariety: crop?.variety,
+                            cropId: crop?.id,
+                          });
+                          handleGrowCrop(
+                            getCurrentDate(),
+                            crop?.id,
+                            "PENDING",
+                            ""
+                          );
+                        }}
+                      >
+                        <View
+                          style={{
+                            alignItems: "center",
+                            width: "100%",
+                            paddingHorizontal: 20,
                           }}
                         >
-                          <View
-                            style={{
-                              alignItems: "center",
-                              width: "100%",
-                              paddingHorizontal: 20,
-                            }}
-                          >
-                            <Text style={[styles.btnText]}>Grow it</Text>
-                          </View>
-                        </GradientButton>
-                      </>
-                    ));
-                })}
+                          <Text style={[styles.btnText]}>Grow it</Text>
+                        </View>
+                      </GradientButton>
+                    </>
+                  ));
+              })}
 
               <View>{tmpItem}</View>
             </>
@@ -304,12 +316,13 @@ const CropSelection = ({ navigation, route }) => {
             (item) =>
               // Object.keys.recommendations &&
               // sowTip.toLowerCase() !== "n/a" && (
-                item.recommendations &&
-                item.recommendations.length !== 0 && (
+              item.recommendations &&
+              item.recommendations.length !== 0 && (
                 <>
                   <Text style={{ fontSize: 20 }}>Grow it Recommends</Text>
                   <Text style={{ width: "80%", textAlign: "center" }}>
-                      Still need to buy seeds? Here is some inspiration for you with tried and tested suggestions.
+                    Still need to buy seeds? Here is some inspiration for you
+                    with tried and tested suggestions.
                   </Text>
                 </>
               )

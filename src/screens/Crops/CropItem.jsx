@@ -1,5 +1,11 @@
 import React, { useState, useContext } from "react";
-import { View, TouchableOpacity, StyleSheet, Image, Linking } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Linking,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 
@@ -145,9 +151,8 @@ export const CropItem = ({
           <GradientButton
             coverStyle={{ marginLeft: 5 }}
             gradient={[colors.blueLigth, colors.blue]}
-
             onPress={() => {
-                Linking.openURL(`${affiliate_links}`)
+              Linking.openURL(`${affiliate_links}`);
             }}
             //
           >

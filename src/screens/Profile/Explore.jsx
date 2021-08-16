@@ -231,9 +231,9 @@ const Explore = () => {
                           <Text style={[styles.imgText]}>{post?.fullname}</Text>
                           {post?.user_id !== user?.id && (
                             <TouchableOpacity
-                                style={{
-                                    width: '65%',
-                                }}
+                              style={{
+                                width: "65%",
+                              }}
                               onPress={() => {
                                 if (!isFollowing) {
                                   isFollowing = true;
@@ -241,17 +241,17 @@ const Explore = () => {
                                 }
                               }}
                             >
-                                <Text
-                                  style={{
-                                      textAlign: 'right',
-                                      fontWeight: "bold",
-                                      color: '#1369BE',
-                                    textDecorationLine: isFollowing
-                                      ? "none"
-                                      : "none",
-                                  }}
-                                >
-                                  {isFollowing ? "Following" : "Follow"}
+                              <Text
+                                style={{
+                                  textAlign: "right",
+                                  fontWeight: "bold",
+                                  color: "#1369BE",
+                                  textDecorationLine: isFollowing
+                                    ? "none"
+                                    : "none",
+                                }}
+                              >
+                                {isFollowing ? "Following" : "Follow"}
                               </Text>
                             </TouchableOpacity>
                           )}
@@ -282,7 +282,11 @@ const Explore = () => {
 
                         <View style={[styles.dateTime]}>
                           <Text style={[styles.date]}>
-                            {new Date(post?.created_at).toDateString().split(' ').slice(1).join(' ')}
+                            {new Date(post?.created_at)
+                              .toDateString()
+                              .split(" ")
+                              .slice(1)
+                              .join(" ")}
                           </Text>
                           <TouchableOpacity onPress={() => toggleModal(post)}>
                             <Text>...</Text>
@@ -314,29 +318,29 @@ const Explore = () => {
                           {/*      <>{`- ‘${post.variety}’`}</>*/}
                           {/*    }*/}
                           {/*</Text>*/}
-                            <View style={{ paddingLeft: 25, paddingTop: 10 }}>
-                                <Text
+                          <View style={{ paddingLeft: 25, paddingTop: 10 }}>
+                            <Text
+                              style={{
+                                fontFamily: "Hero-New-Medium",
+                              }}
+                            >
+                              {post.name !== null &&
+                                post.name !== "" &&
+                                post.name !== "null" &&
+                                post.name !== "undefined" &&
+                                post.name}{" "}
+                              {post.variety !== null &&
+                                post.variety !== "" &&
+                                post.variety !== "null" &&
+                                post.variety !== "undefined" && (
+                                  <Text
                                     style={{
-                                        fontFamily: "Hero-New-Medium",
+                                      fontFamily: "Hero-New-Light-Italic",
                                     }}
-                                >
-                                    {post.name !== null &&
-                                    post.name !== "" &&
-                                    post.name !== "null" &&
-                                    post.name !== "undefined" &&
-                                    post.name}{" "}
-                                    {post.variety !== null &&
-                                    post.variety !== "" &&
-                                    post.variety !== "null" &&
-                                    post.variety !== "undefined" && (
-                                        <Text
-                                            style={{
-                                                fontFamily: "Hero-New-Light-Italic",
-                                            }}
-                                        >{`- ‘${post.variety}’`}</Text>
-                                    )}
-                                </Text>
-                            </View>
+                                  >{`- ‘${post.variety}’`}</Text>
+                                )}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     );
@@ -403,9 +407,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 20,
-      width: '100%',
-      minWidth: '100%',
-      display: 'flex'
+    width: "100%",
+    minWidth: "100%",
+    display: "flex",
   },
   imgAvatar: {
     width: 30,
@@ -429,7 +433,7 @@ const styles = StyleSheet.create({
   },
   date: {
     color: colors.greyDark,
-      fontFamily: "Hero-New-Light-Italic",
+    fontFamily: "Hero-New-Light-Italic",
   },
   postText: {
     marginVertical: 10,

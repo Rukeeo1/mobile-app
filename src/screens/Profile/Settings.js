@@ -83,7 +83,7 @@ const Settings = ({ navigation }) => {
     if (values.profileImageUri !== user.avatar)
       dispatch(updateAvatar({ ...values, location }, navigation));
     else dispatch(updateProfile({ ...values, location }, navigation));
-  }
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

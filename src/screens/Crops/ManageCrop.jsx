@@ -16,27 +16,26 @@ import ManageCropContext from "../../context/ManageCropsContext";
 
 import { GradientButton, Text } from "../../components";
 import {
-    // getUserJobs,
-    getCurrentGrowing,
-    getPastHarvests, getUserJobs,
+  // getUserJobs,
+  getCurrentGrowing,
+  getPastHarvests,
+  getUserJobs,
 } from "../../redux/actions";
 
 import constants from "../../constants";
 import {
-    getUserFollowers,
-    getUserFollowing,
-    getUserGrowList,
-    getUserPosts,
-    getUserProfile
+  getUserFollowers,
+  getUserFollowing,
+  getUserGrowList,
+  getUserPosts,
+  getUserProfile,
 } from "../../redux/actions/authActions";
 
 const { colors } = constants;
 
 const ManageCrops = () => {
   const navigation = useNavigation();
-    const { user } = useSelector(
-        (state) => state.auth
-    );
+  const { user } = useSelector((state) => state.auth);
   const { jobs, userId, pastHarvest } = useSelector(
     (state) => ({
       jobs: state.jobs?.usersJobs,
@@ -68,13 +67,13 @@ const ManageCrops = () => {
     await dispatch(getPastHarvests(userId));
     setFetchingPastHarvest(false);
   }, []);
-    useEffect(() => {
-        dispatch(getUserGrowList());
-        dispatch(getUserJobs(user?.id));
-    }, [user?.id]);
+  useEffect(() => {
+    dispatch(getUserGrowList());
+    dispatch(getUserJobs(user?.id));
+  }, [user?.id]);
 
   useEffect(() => {
-      getCurrentJobs();
+    getCurrentJobs();
     getPreviousHarvest();
   }, [getCurrentJobs, getPreviousHarvest]);
 
@@ -176,7 +175,8 @@ const ManageCrops = () => {
               {jobs?.jobs?.length > 0 ? "Past Harvest" : null}
             </Text>
             {jobs?.jobs?.map((job) => {
-              return job.job_type === "HARVEST" && job.status === "DONE" || job.job_type === "KILLED" && job.status === "KILLED"  ? (
+              return (job.job_type === "HARVEST" && job.status === "DONE") ||
+                (job.job_type === "KILLED" && job.status === "KILLED") ? (
                 <PlantItem
                   job={job}
                   key={job.id}
@@ -209,8 +209,8 @@ const PlantItem = ({ job, onPress = () => {} }) => {
         />
         <View style={styles.cropText}>
           <Text>{`${job?.name}`}</Text>
-          {(job?.title === "SOW" ||
-            job?.title === "PLANT" )&& job?.title === "PENDING" && (
+          {(job?.title === "SOW" || job?.title === "PLANT") &&
+            job?.title === "PENDING" && (
               <Text fontType="bold" style={styles.boldText}>
                 {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
               </Text>

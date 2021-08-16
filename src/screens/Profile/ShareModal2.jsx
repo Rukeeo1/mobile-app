@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BottomSheet } from "react-native-btr";
 import { useDispatch } from "react-redux";
@@ -15,8 +15,8 @@ export const ShareModal2 = ({ showBottomSheet, setShowShare, post, Toast }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-    const manageCropContext = useContext(ManageCropContext);
-    const { cropToGrowDetails } = manageCropContext?.data;
+  const manageCropContext = useContext(ManageCropContext);
+  const { cropToGrowDetails } = manageCropContext?.data;
 
   return (
     <BottomSheet
@@ -32,13 +32,11 @@ export const ShareModal2 = ({ showBottomSheet, setShowShare, post, Toast }) => {
             style={styles.optionItem}
             onPress={() => {
               setShowShare(false);
-                manageCropContext?.actions?.updateCropToGrowDetails(
-                    {
-                        variety: cropToGrowDetails.variety,
-                        cropVariety: cropToGrowDetails.cropVariety,
-                        cropName: cropToGrowDetails.cropName,
-                    }
-                );
+              manageCropContext?.actions?.updateCropToGrowDetails({
+                variety: cropToGrowDetails.variety,
+                cropVariety: cropToGrowDetails.cropVariety,
+                cropName: cropToGrowDetails.cropName,
+              });
               navigation.navigate("Create-Journal", {
                 screen: "Create-Journal",
                 params: { post },

@@ -431,7 +431,7 @@ const AddToCalendar = () => {
                               [{ text: "Dismiss" }]
                             );
                           }
-                          if (!isNumeric(day) || (day < 1 || day > 31)) {
+                          if (!isNumeric(day) || day < 1 || day > 31) {
                             Alert.alert(
                               "",
                               "Your date is invalid. It should be between 1 and 31",
@@ -494,103 +494,120 @@ const AddToCalendar = () => {
                           y === date.getFullYear() && m === date.getMonth()
                         );
                       })
-                      ?.slice(0, viewingMore ? userJobs?.jobs.length : (userJobLength >= 2 ? 3 : 3))
+                      ?.slice(
+                        0,
+                        viewingMore
+                          ? userJobs?.jobs.length
+                          : userJobLength >= 2
+                          ? 3
+                          : 3
+                      )
                       ?.map((job, index) => {
-                        return job.job_type !== "HARVEST" && job.job_type !== "KILLED" ? (
+                        return job.job_type !== "HARVEST" &&
+                          job.job_type !== "KILLED" ? (
                           <React.Fragment key={index}>
                             <JobItem job={job} />
                           </React.Fragment>
                         ) : null;
                       })
                   )}
-<View style={{
-    flexDirection: "column-reverse",
-}}>
+                  <View
+                    style={{
+                      flexDirection: "column-reverse",
+                    }}
+                  >
+                    {reminders?.reminders
+                      ?.filter((reminder) => {
+                        const date = new Date(reminder?.reminder_date);
 
-    {reminders?.reminders
-        ?.filter((reminder) => {
-            const date = new Date(reminder?.reminder_date);
-
-            return y == date.getFullYear() && m == date.getMonth();
-        })
-        ?.slice(0, viewingMore ? reminders?.reminders.length : (userJobLength >= 2 ? 1 : 3))
-        .map((reminder, index) => {
-                return (
-                    reminder.status === "PENDING" ? (
-                        <TouchableOpacity
+                        return y == date.getFullYear() && m == date.getMonth();
+                      })
+                      ?.slice(
+                        0,
+                        viewingMore
+                          ? reminders?.reminders.length
+                          : userJobLength >= 2
+                          ? 1
+                          : 3
+                      )
+                      .map((reminder, index) => {
+                        return reminder.status === "PENDING" ? (
+                          <TouchableOpacity
                             style={[styles.tasks]}
                             key={index}
                             onPress={() => {
-                                if (!updatingReminder)
-                                    dispatch(
-                                        updateReminder(
-                                            reminder,
-                                            reminder.status === "PENDING"
-                                                ? "DONE"
-                                                : "PENDING"
-                                        )
-                                    );
+                              if (!updatingReminder)
+                                dispatch(
+                                  updateReminder(
+                                    reminder,
+                                    reminder.status === "PENDING"
+                                      ? "DONE"
+                                      : "PENDING"
+                                  )
+                                );
                             }}
-                        >
+                          >
                             <View style={[styles.jobsChild]}>
-                            <Image
+                              <Image
                                 source={require("../../assets/job-indicator-pink.png")}
                                 style={{ height: 25, width: 25 }}
-                            />
-                            <View style={[styles.jobsText]}>
+                              />
+                              <View style={[styles.jobsText]}>
                                 <Text
-                                    style={{
-                                        textTransform: "capitalize",
-                                        color:
-                                            reminder.status === "PENDING"
-                                                ? colors.black
-                                                : colors.pink,
-                                    }}
+                                  style={{
+                                    textTransform: "capitalize",
+                                    color:
+                                      reminder.status === "PENDING"
+                                        ? colors.black
+                                        : colors.pink,
+                                  }}
                                 >
-                                    {reminder?.title}
+                                  {reminder?.title}
                                 </Text>
                                 <Text
-                                    style={{
-                                        color:
-                                            reminder.status === "PENDING"
-                                                ? colors.black
-                                                : colors.pink,
-                                    }}
+                                  style={{
+                                    color:
+                                      reminder.status === "PENDING"
+                                        ? colors.black
+                                        : colors.pink,
+                                  }}
                                 >
-                                    {`${new Date(
+                                  {`${new Date(
+                                    reminder?.reminder_date
+                                  ).getDate()} ${
+                                    monthsFull[
+                                      new Date(
                                         reminder?.reminder_date
-                                    ).getDate()} ${
-                                        monthsFull[
-                                            new Date(reminder?.reminder_date).getMonth()
-                                            ]
-                                    }`}
+                                      ).getMonth()
+                                    ]
+                                  }`}
                                 </Text>
-                            </View>
-                            {updatingReminder === reminder.id ? (
+                              </View>
+                              {updatingReminder === reminder.id ? (
                                 <ActivityIndicator
-                                    color={colors.greyDark}
-                                    size="small"
-                                    animating
+                                  color={colors.greyDark}
+                                  size="small"
+                                  animating
                                 />
-                            ) : (
+                              ) : (
                                 <MaterialIcons
-                                    size={24}
-                                    color={
-                                        reminder.status === "PENDING"
-                                            ? colors.greyDark
-                                            : colors.pink
-                                    }
-                                    name={
-                                        reminder.status === "PENDING"
-                                            ? "check-circle-outline"
-                                            : "check-circle"
-                                    }
+                                  size={24}
+                                  color={
+                                    reminder.status === "PENDING"
+                                      ? colors.greyDark
+                                      : colors.pink
+                                  }
+                                  name={
+                                    reminder.status === "PENDING"
+                                      ? "check-circle-outline"
+                                      : "check-circle"
+                                  }
                                 />
-                            )}
-                        </View>
-
-                        </TouchableOpacity>) : (
-                        <TouchableOpacity
+                              )}
+                            </View>
+                          </TouchableOpacity>
+                        ) : (
+                          <TouchableOpacity
                             style={[styles.tasks]}
                             key={index}
                             // onPress={() => {
@@ -604,79 +621,80 @@ const AddToCalendar = () => {
                             //             )
                             //         );
                             // }}
-                        ><View style={[styles.jobsChild]}>
-                            <Image
+                          >
+                            <View style={[styles.jobsChild]}>
+                              <Image
                                 source={require("../../assets/job-indicator-pink.png")}
                                 style={{ height: 25, width: 25 }}
-                            />
-                            <View style={[styles.jobsText]}>
+                              />
+                              <View style={[styles.jobsText]}>
                                 <Text
-                                    style={{
-                                        textTransform: "capitalize",
-                                        color:
-                                            reminder.status === "PENDING"
-                                                ? colors.black
-                                                : colors.pink,
-                                    }}
+                                  style={{
+                                    textTransform: "capitalize",
+                                    color:
+                                      reminder.status === "PENDING"
+                                        ? colors.black
+                                        : colors.pink,
+                                  }}
                                 >
-                                    {reminder?.title}
+                                  {reminder?.title}
                                 </Text>
                                 <Text
-                                    style={{
-                                        color:
-                                            reminder.status === "PENDING"
-                                                ? colors.black
-                                                : colors.pink,
-                                    }}
+                                  style={{
+                                    color:
+                                      reminder.status === "PENDING"
+                                        ? colors.black
+                                        : colors.pink,
+                                  }}
                                 >
-                                    {`${new Date(
+                                  {`${new Date(
+                                    reminder?.reminder_date
+                                  ).getDate()} ${
+                                    monthsFull[
+                                      new Date(
                                         reminder?.reminder_date
-                                    ).getDate()} ${
-                                        monthsFull[
-                                            new Date(reminder?.reminder_date).getMonth()
-                                            ]
-                                    }`}
+                                      ).getMonth()
+                                    ]
+                                  }`}
                                 </Text>
-                            </View>
-                            {updatingReminder === reminder.id ? (
+                              </View>
+                              {updatingReminder === reminder.id ? (
                                 <ActivityIndicator
-                                    color={colors.greyDark}
-                                    size="small"
-                                    animating
+                                  color={colors.greyDark}
+                                  size="small"
+                                  animating
                                 />
-                            ) : (
+                              ) : (
                                 <MaterialIcons
-                                    size={24}
-                                    color={
-                                        reminder.status === "PENDING"
-                                            ? colors.greyDark
-                                            : colors.pink
-                                    }
-                                    name={
-                                        reminder.status === "PENDING"
-                                            ? "check-circle-outline"
-                                            : "check-circle"
-                                    }
+                                  size={24}
+                                  color={
+                                    reminder.status === "PENDING"
+                                      ? colors.greyDark
+                                      : colors.pink
+                                  }
+                                  name={
+                                    reminder.status === "PENDING"
+                                      ? "check-circle-outline"
+                                      : "check-circle"
+                                  }
                                 />
-                            )}
-                        </View>
-
-                        </TouchableOpacity>)
-                )
-            }
-
-
-        )}
-</View>
-                    {userJobLength > 3 && (<TouchableOpacity
-                        onPress={() => setViewingMore(!viewingMore)}
+                              )}
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                  </View>
+                  {userJobLength > 3 && (
+                    <TouchableOpacity
+                      onPress={() => setViewingMore(!viewingMore)}
                     >
-                        {(userJobLength + reminders?.reminders?.length) > 3 && (
-                            <Text style={styles.viewMore}>
-                                {viewingMore ? "Hide jobs" : "View more"}
-                            </Text>
-                        )}
-                    </TouchableOpacity>)}
+                      {userJobLength + reminders?.reminders?.length > 3 && (
+                        <Text style={styles.viewMore}>
+                          {viewingMore ? "Hide jobs" : "View more"}
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                  )}
                 </View>
 
                 <GradientButton
@@ -769,8 +787,8 @@ const AddToCalendar = () => {
                             sowTip: crop?.suggestion,
                             growLevel: crop?.grow_level,
                             cropId: crop?.id,
-                              variety: crop?.variety,
-                              cropVariety: crop?.crop_type,
+                            variety: crop?.variety,
+                            cropVariety: crop?.crop_type,
                           },
                         });
                         //update state context???
@@ -781,7 +799,7 @@ const AddToCalendar = () => {
                           monthIndex: m,
                           cropId: crop?.id,
                           action: "STARTED",
-                            cropVariety: crop?.crop_type
+                          cropVariety: crop?.crop_type,
                         });
                       }}
                     />

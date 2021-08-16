@@ -103,9 +103,9 @@ const PostForm = ({
     dispatch(getCrops());
   }, []);
 
-    useEffect(() => {
-        console.log({qwewewe: route?.params})
-    }, []);
+  useEffect(() => {
+    console.log({ qwewewe: route?.params });
+  }, []);
   useEffect(() => {
     if (defaultPostImage) {
       setFieldValue("postImageUri", defaultPostImage);

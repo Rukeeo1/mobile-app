@@ -79,14 +79,14 @@ export const FilterItemDropDown = ({
 
   const handleSelectedItem = (item) => {
     // hideMenu();
-    setShowDropDownItems(false)
+    setShowDropDownItems(false);
     setSelectedItems(item);
     onSelect(item);
   };
 
   return (
     <View style={{ marginHorizontal: 5 }}>
-      {(showRed && !showDropDownItems )&& (
+      {showRed && !showDropDownItems && (
         <GradientButton
           gradient={[colors.red, colors.redDeep]}
           // title={activeItem}
@@ -100,23 +100,39 @@ export const FilterItemDropDown = ({
           // }}
           // activeOpacity={1}
         >
-          <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            paddingHorizontal: 15,
-          }}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              paddingHorizontal: 15,
+            }}
+          >
             <Text
-              style={{ color: showRed ? '#fff' : colors.green, fontWeight: "600", fontSize: 15 }}
+              style={{
+                color: showRed ? "#fff" : colors.green,
+                fontWeight: "600",
+                fontSize: 15,
+              }}
             >
               {activeItem ?? placeholder}
             </Text>
-            <TouchableOpacity onPress={() => setShowDropDownItems(() => !showDropDownItems)}>
+            <TouchableOpacity
+              onPress={() => setShowDropDownItems(() => !showDropDownItems)}
+            >
               {showDropDownItems ? (
-                <AntDesign name="up" size={16} color={showRed ? '#fff' : colors.green} />
+                <AntDesign
+                  name="up"
+                  size={16}
+                  color={showRed ? "#fff" : colors.green}
+                />
               ) : (
-                <AntDesign name="down" size={16} color={showRed ? '#fff' : colors.green} />
+                <AntDesign
+                  name="down"
+                  size={16}
+                  color={showRed ? "#fff" : colors.green}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -141,7 +157,9 @@ export const FilterItemDropDown = ({
             >
               {activeItem ?? placeholder}
             </Text>
-            <TouchableOpacity onPress={() => setShowDropDownItems(() => !showDropDownItems)}>
+            <TouchableOpacity
+              onPress={() => setShowDropDownItems(() => !showDropDownItems)}
+            >
               {showDropDownItems ? (
                 <AntDesign name="up" size={16} color={colors.green} />
               ) : (
@@ -149,7 +167,6 @@ export const FilterItemDropDown = ({
               )}
             </TouchableOpacity>
           </TouchableOpacity>
-          
         </View>
       )}
       {showDropDownItems && (

@@ -1,6 +1,6 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -17,7 +17,7 @@ import { SafeArea } from "../../components";
 import { GradientButton, SmallGradientButton } from "../../components/Button";
 import constants from "../../constants";
 import { followUser } from "../../redux/actions/authActions";
-import {getPosts, getPostUser} from "../../redux/actions/postsActions";
+import { getPosts, getPostUser } from "../../redux/actions/postsActions";
 
 const { colors } = constants;
 const UserDetails = ({ navigation }) => {
@@ -34,10 +34,9 @@ const UserDetails = ({ navigation }) => {
   const { loading } = useSelector((state) => state.loading);
   let isFollowing = !!following?.find((user) => user?.id === data?.id) ?? false;
 
-
-    useEffect(() => {
-        console.log({data})
-    }, [data]);
+  useEffect(() => {
+    console.log({ data });
+  }, [data]);
   return (
     <>
       <SafeArea>

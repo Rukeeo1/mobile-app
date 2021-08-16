@@ -302,7 +302,9 @@ const CropSearch = ({ navigation, route }) => {
             <View style={{ width: "100%", marginTop: 20 }}>
               <FilterItemDropDown
                 items={months}
-                activeItem={selectedMonth ? `Grow in ${selectedMonth}` : "Select Month"}
+                activeItem={
+                  selectedMonth ? `Grow in ${selectedMonth}` : "Select Month"
+                }
                 onSelect={setSelectedMonth}
                 placeholder="Month to grow"
                 showRed={!!selectedMonth}
