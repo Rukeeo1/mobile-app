@@ -11,16 +11,32 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 import { SafeArea } from "../../components";
 import { GradientButton, SmallGradientButton } from "../../components/Button";
 import constants from "../../constants";
-import { followUser } from "../../redux/actions/authActions";
+import {
+  followUser,
+  getUserFollowers,
+  getUserFollowing,
+  getUserGrowList,
+  getUserGrowList2,
+  getUserPosts,
+  getUserProfile,
+} from "../../redux/actions/authActions";
 import { getPosts, getPostUser } from "../../redux/actions/postsActions";
+import { getUserJobs } from "../../redux/actions";
 
 const { colors } = constants;
 const UserDetails = ({ navigation }) => {
+  const { jobs, loadingJobs } = useSelector(
+    (state) => ({
+      jobs: state.jobs.usersJobs,
+      loadingJobs: state.jobs.loadingJobs,
+    }),
+    shallowEqual
+  );
   const [showShare, setShowShare] = useState(false);
   const [follow, setFollow] = useState(false);
   const [grow, setGrow] = useState(false);
@@ -28,15 +44,23 @@ const UserDetails = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const {
-    selectedUser: { data, posts, growitList },
+    selectedUser: { data, posts, growitList, userData, followers },
   } = useSelector((state) => state.posts);
   const { following = [] } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.loading);
   let isFollowing = !!following?.find((user) => user?.id === data?.id) ?? false;
 
   useEffect(() => {
-    console.log({ data });
-  }, [data]);
+    dispatch(getUserProfile());
+    dispatch(getUserGrowList2(data?.id));
+    dispatch(getUserPosts());
+    dispatch(getUserJobs(data?.id));
+    dispatch(getUserFollowers(false, true));
+    dispatch(getUserFollowing(false, true));
+  }, []);
+
+  // console.log({mygrowitList: data})
+
   return (
     <>
       <SafeArea>
@@ -151,28 +175,36 @@ const UserDetails = ({ navigation }) => {
                     </Text>
                   </View>
                 ) : (
-                  growitList?.map((item, i) => {
-                    return (
-                      <View style={[styles.growCard]} key={item?.id ?? i}>
-                        <Image
-                          style={{
-                            height: 70,
-                            width: 70,
-                            borderRadius: 70 / 2,
-                          }}
-                          source={
-                            item?.thumbnail_url
-                              ? { uri: item?.thumbnail_url }
-                              : require("../../assets/growavatar.png")
-                          }
-                        />
-                        <Text style={[styles.growText]}>
-                          {item?.name}{" "}
-                          {item?.variety ? `“${item?.variety}”` : ""}
-                        </Text>
-                      </View>
-                    );
-                  })
+                  <View style={[styles.growListWrapper]}>
+                    <Text style={[styles.growTitle]}>Current Grow It List</Text>
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      {growitList?.map((item, i) => {
+                        return (
+                          <View style={[styles.growCard]} key={item?.id ?? i}>
+                            <Image
+                              style={{
+                                height: 70,
+                                width: 70,
+                                borderRadius: 70 / 2,
+                              }}
+                              source={
+                                item?.thumbnail_url
+                                  ? { uri: item?.thumbnail_url }
+                                  : require("../../assets/growavatar.png")
+                              }
+                            />
+                            <Text style={[styles.growText]}>
+                              {item?.name}{" "}
+                              {item?.variety ? `“${item?.variety}”` : ""}
+                            </Text>
+                          </View>
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
                 )}
                 {posts?.map((post) => {
                   return (
@@ -218,6 +250,20 @@ const UserDetails = ({ navigation }) => {
         </LinearGradient>
       </SafeArea>
     </>
+  );
+};
+
+const CurrentGrowList = ({ crop, onPress }) => {
+  return (
+    <TouchableOpacity style={[styles.growCard]} onPress={onPress}>
+      <Image
+        source={{ uri: crop?.alternate_thumbnail ?? crop.thumbnail_url }}
+        style={{ height: 60, width: 60, borderRadius: 30 }}
+      />
+      <Text style={[styles.growText]}>
+        {crop.name} {crop.variety ? `“${crop?.variety}”` : ""}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
@@ -283,9 +329,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 8,
   },
+  growListWrapper: {
+    backgroundColor: colors.nearWhite,
+    marginTop: 15,
+    marginBottom: 15,
+    paddingBottom: 25,
+  },
   growTitle: {
     textAlign: "center",
+    marginTop: 25,
     marginBottom: 15,
+    fontFamily: "Hero-New-Medium",
   },
   growText: {
     maxWidth: 120,

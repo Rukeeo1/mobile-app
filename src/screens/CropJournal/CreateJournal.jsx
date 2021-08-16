@@ -29,6 +29,7 @@ import { addJournal } from "../../redux/actions";
 
 import constants from "../../constants/";
 import { addPost, editPost, getPosts } from "../../redux/actions/postsActions";
+import { getUserPosts } from "../../redux/actions/authActions";
 
 const { colors } = constants;
 
@@ -52,16 +53,18 @@ const CreateJournal = ({
     content: postData?.content ?? "",
     user_id: user?.id,
     crop_id: cropToGrowDetails?.cropId,
-    type: cropToGrowDetails?.variety,
-    variety: cropToGrowDetails?.cropVariety,
+    type: cropToGrowDetails?.cropVariety,
+    title: cropToGrowDetails?.cropName,
+    variety: cropToGrowDetails?.variety,
+    postId: postData?.id ?? "",
 
     post_type: "private", //public
-    isPublic: false,
+    isPublic: postData?.post_type === "public" ?? false,
     journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
     media_url: postData?.media_url ?? defaultPostImage ?? "",
     thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
 
-    isCoverImage: false,
+    isCoverImage: postData?.use_thumbnail ?? false,
   });
   const [addingJournal, setAddingJournal] = useState(false);
 
@@ -80,6 +83,8 @@ const CreateJournal = ({
         postImageUri: defaultPostImage,
       }));
     }
+    console.log({ bugzy: cropToGrowDetails });
+    console.log({ bugzy2: postData });
     // pickImage();
   }, [defaultPostImage, currentIndex]);
 
@@ -112,20 +117,22 @@ const CreateJournal = ({
       content: postData?.content ?? "",
       user_id: user?.id,
       crop_id: cropToGrowDetails?.cropId,
-      type: cropToGrowDetails?.cropName,
 
-      variety: cropToGrowDetails.variety,
       cropVariety: cropToGrowDetails.cropVariety,
       cropName: cropToGrowDetails.cropName,
+      type: cropToGrowDetails?.cropVariety,
+      title: cropToGrowDetails?.cropName,
+      variety: cropToGrowDetails?.variety,
+      postId: postData?.id ?? "",
 
       post_type: "private", //public
-      isPublic: false,
+      isPublic: postData?.post_type === "public" ?? false,
 
       journalImageUri: postData?.media_url ?? defaultPostImage ?? "",
       media_url: postData?.media_url ?? defaultPostImage ?? "",
       thumbnail_url: postData?.media_url ?? defaultPostImage ?? "",
 
-      isCoverImage: false,
+      isCoverImage: postData?.use_thumbnail ?? false,
     },
 
     validationSchema: createJournalSchema,
@@ -138,16 +145,21 @@ const CreateJournal = ({
         isPublic,
         content,
         variety,
+        title,
         type,
+        postId,
         journalImageUri = "",
+        isCoverImage,
       } = data;
 
       journalFormData.append("user_id", user_id);
-      journalFormData.append("title", crop_id);
+      journalFormData.append("title", title);
       journalFormData.append("crop_id", crop_id);
       journalFormData.append("variety", variety);
       journalFormData.append("type", type);
+      journalFormData.append("postId", postId);
       journalFormData.append("post_type", isPublic ? "public" : "private");
+      journalFormData.append("use_thumbnail", !!isCoverImage);
       journalFormData.append("content", content);
       if (!postData) {
         if (isPublic && journalImageUri === "") {
@@ -168,6 +180,8 @@ const CreateJournal = ({
         }
         setAddingJournal(true);
         await dispatch(addPost(journalFormData));
+        dispatch(getUserPosts());
+        dispatch(getPosts(true));
         setAddingJournal(false);
         navigation.navigate("Crop-Journal", {
           screen: "Crop-Journal",
@@ -185,10 +199,13 @@ const CreateJournal = ({
             type: "image/*",
           });
         }
-
         setAddingJournal(true);
-        await dispatch(editPost(journalFormData));
+        // await dispatch(editPost(journalFormData));
+
+        dispatch(editPost(journalFormData, postId, false));
         setAddingJournal(false);
+        dispatch(getUserPosts());
+        dispatch(getPosts(true));
         navigation.navigate("Crop-Journal", {
           screen: "Crop-Journal",
         });
@@ -216,7 +233,8 @@ const CreateJournal = ({
   const disableForm =
     !isValid ||
     !values.content ||
-    (values.isPublic && !values.journalImageUri && true); //|| !values.journalImageUri;
+    (values.isPublic && !values.journalImageUri && true) ||
+    (values.isCoverImage && !values.journalImageUri && true); //|| !values.journalImageUri;
   //
   useEffect(() => {
     return navigation.addListener("focus", () => {
@@ -224,7 +242,7 @@ const CreateJournal = ({
     });
   }, [navigation]);
   useEffect(() => {
-    console.log({ jghghghg: postData });
+    // console.log({jghghghg: postData})
   }, []);
   useEffect(() => {
     if (defaultPostImage) {
@@ -305,7 +323,7 @@ const CreateJournal = ({
           }
           loading={addingJournal}
           // onPress={handleSubmit}
-          onPress={disableForm ? "" : handleSubmit}
+          onPress={disableForm ? () => {} : handleSubmit}
         />
       </View>
     </SafeArea>

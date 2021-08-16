@@ -104,7 +104,7 @@ const PostForm = ({
   }, []);
 
   useEffect(() => {
-    console.log({ qwewewe: route?.params });
+    // console.log({qwewewe: route?.params})
   }, []);
   useEffect(() => {
     if (defaultPostImage) {
@@ -177,7 +177,7 @@ const PostForm = ({
         });
       }
 
-      dispatch(editPost(data, postData?.id, navigation));
+      dispatch(editPost(data, postData?.id, true));
     }
 
     // navigation.goBack()
@@ -269,7 +269,7 @@ const PostForm = ({
               }
               //the "settings title for this would be refactored to profile"
               // onPress={() => goBack()}
-              onPress={disableForm ? "" : submit}
+              onPress={disableForm ? () => {} : submit}
               loading={loading}
             />
           </View>

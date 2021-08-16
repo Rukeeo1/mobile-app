@@ -65,7 +65,7 @@ const CropSelection = ({ navigation, route }) => {
     ourDate = getCurrentDate(); // 2020 January 5
     // ourDate = new Date(selectedDate); // 2020 January 5
     jobInfo = {
-      cropName,
+      name: cropName,
       crop_id: cropIdx,
       user_id: user?.id,
       job_date: ourDate,
@@ -73,7 +73,6 @@ const CropSelection = ({ navigation, route }) => {
       job_type: jobType,
       variety: realVariety,
       crop_type: cropUserVariety,
-      cropVariety: cropUserVariety,
     };
 
     jobInfo.title = "PENDING";
@@ -82,36 +81,23 @@ const CropSelection = ({ navigation, route }) => {
       cropName,
       action: "PENDING",
       job_type: "PENDING",
-      jobDate: jobInfo.job_date,
+      jobDate: ourDate,
 
       variety: realVariety,
       cropVariety: cropUserVariety,
     });
 
     if (!cropToGrowDetails?.editCropName) {
-      jobInfo2 = {
-        cropName,
-        crop_id: cropToGrowDetails.cropId,
-        user_id: user?.id,
-        variety: realVariety,
-        crop_type: cropUserVariety,
-        cropVariety: cropUserVariety,
-        action: cropToGrowDetails.action,
-        job_type: cropToGrowDetails.job_type,
-        jobDate: cropToGrowDetails.jobDate,
-      };
       manageCropContext?.actions?.updateCropToGrowDetails({
         cropName,
         variety: realVariety,
         cropVariety: cropUserVariety,
       });
-      await dispatch(growCrop(jobInfo, false)).then(
-        navigation.navigate("Success")
-      );
+      dispatch(growCrop(jobInfo, false)).then(navigation.navigate("Success"));
     }
     if (cropToGrowDetails?.editCropName) {
       jobInfo2 = {
-        cropName,
+        name: cropName,
         crop_id: cropToGrowDetails.cropId,
         user_id: user?.id,
         variety: realVariety,
@@ -140,7 +126,7 @@ const CropSelection = ({ navigation, route }) => {
   }, [cropName]);
 
   useEffect(() => {
-    console.log({ obama: route?.params });
+    // console.log({obama: route?.params})
   }, [route?.params]);
   //
   // useEffect(() => {
@@ -148,7 +134,7 @@ const CropSelection = ({ navigation, route }) => {
   // }, [cropToGrowDetails]);
 
   useEffect(() => {
-    console.log({ osama: cropUserVariety });
+    // console.log({osama: cropUserVariety})
   }, [cropUserVariety]);
 
   let tmpItem;
@@ -228,7 +214,7 @@ const CropSelection = ({ navigation, route }) => {
                       gradient={[colors.blueLigth, colors.blue]}
                       onPress={() => {
                         // setSearch(crop?.variety)
-                        console.log({ qqqVariety: crop });
+                        // console.log({ qqqVariety: crop });
                         setCropVarietyType(
                           crop?.variety !== "N/A" ? crop?.variety : ""
                         );

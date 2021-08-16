@@ -67,18 +67,18 @@ export const CropItem = ({
       variety: recommendation,
       crop_type: currentVariety,
     };
-    console.log({
-      oluwadurotimi: {
-        cropName,
-        crop_id: currentCropId,
-        user_id: user?.id,
-        job_date: ourDate,
-        status: "PENDING",
-        job_type: jobType,
-        variety: recommendation,
-        crop_type: currentVariety,
-      },
-    });
+    // console.log({
+    //   oluwadurotimi: {
+    //     cropName,
+    //     crop_id: currentCropId,
+    //     user_id: user?.id,
+    //     job_date: ourDate,
+    //     status: "PENDING",
+    //     job_type: jobType,
+    //     variety: recommendation,
+    //     crop_type: currentVariety,
+    //   },
+    // });
 
     manageCropContext?.actions?.updateCropToGrowDetails({
       title: "PENDING",

@@ -27,6 +27,12 @@ const NeCrop = ({ navigation }) => {
     variety: "",
     level: null,
     image: null,
+    favoriteCrops: {},
+    cropDetail: {},
+    cropCycleDetails: [],
+    cropSteps: {},
+    searchResults: [],
+    crops: {},
   });
 
   const handleState = (value) => {
@@ -38,7 +44,7 @@ const NeCrop = ({ navigation }) => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Im,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       base64: true,
@@ -73,6 +79,27 @@ const NeCrop = ({ navigation }) => {
       action: "PENDING",
       job_type: "PENDING",
       job_date: cropDate,
+      month: "",
+      cropVariety: "", //user variety
+      monthIndex: 0,
+      cropId: "",
+      fromJobs: false,
+      category: "",
+      jobId: "",
+      jobDate: "",
+      jobStatus: "PENDING",
+      currentlySetToRemind: false,
+      currentlySetToRemindStage: "PENDING",
+      growItStarted: "PENDING",
+      sowItDate: "",
+      plantItDate: "",
+      harvestItStartDate: "",
+      harvestItEndDate: "",
+      editCropName: false,
+      stageOneComplete: false,
+      stageTwoComplete: false,
+      stageThreeComplete: false,
+      notNewCalendar: false,
     });
     return dispatch(addCrop(state, navigation));
   };

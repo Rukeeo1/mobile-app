@@ -102,9 +102,17 @@ const CropJournalLists = ({ navigation }) => {
     // dispatch(getUserJobs(user?.id));
     // dispatch(getUserFollowers(false, true));
     // dispatch(getUserFollowing(false, true));
-    //   dispatch(getPosts());
     dispatch(getPosts());
     setRefreshing2(false);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+    dispatch(getUserGrowList());
+    dispatch(getUserPosts());
+    dispatch(getUserJobs(user?.id));
+    dispatch(getUserFollowers(false, true));
+    dispatch(getUserFollowing(false, true));
   }, []);
 
   // useEffect(() => {
@@ -114,6 +122,7 @@ const CropJournalLists = ({ navigation }) => {
   // }, [user]);
   useEffect(() => {
     if (navigation) {
+      dispatch(getUserPosts());
       dispatch(getPosts());
     }
   }, [navigation]);
@@ -199,18 +208,9 @@ const CropJournalLists = ({ navigation }) => {
           {posts?.length > 0 &&
             posts
               ?.filter((post) => post?.crop_id === cropToGrowDetails.cropId)
-              .filter((post) => post?.post_type === "private")
               .map((post) => {
                 return (
                   <View style={[styles.postCard]}>
-                    <View style={[styles.postAvatarContainer]}>
-                      <Image
-                        style={[styles.postAvatarImg]}
-                        source={{ uri: user?.avatar }}
-                      />
-                      <Text style={[styles.postTitle]}>{user?.fullname}</Text>
-                    </View>
-
                     <TouchableOpacity
                       activeOpacity={1}
                       // onPress={() => navigation.navigate('User-details')}
@@ -236,7 +236,11 @@ const CropJournalLists = ({ navigation }) => {
                           color: "#9B9B9B",
                         }}
                       >
-                        {new Date(post.created_at).toDateString()}
+                        {new Date(post?.created_at)
+                          .toDateString()
+                          .split(" ")
+                          .slice(1)
+                          .join(" ")}
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
@@ -254,18 +258,53 @@ const CropJournalLists = ({ navigation }) => {
                       </TouchableOpacity>
                     </View>
 
-                    <View style={{ marginLeft: 15 }}>
-                      <Text style={{ fontFamily: "Hero-New-Light" }}>
-                        <Text style={{ fontFamily: "Hero-New-Medium" }}>
-                          {post?.title}
+                    <View style={{ marginLeft: 0, display: "flex" }}>
+                      <Text style={[styles.postTitle]}>
+                        {post?.post_type !== "private" && (
+                          <Image
+                            source={globe}
+                            style={{
+                              maxWidth: 14,
+                              maxHeight: 14,
+                              width: 16,
+                              marginTop: 2,
+                              marginRight: 5,
+                            }}
+                          />
+                        )}{" "}
+                        {user?.fullname}{" "}
+                        <Text
+                          style={{
+                            fontFamily: "Hero-New-Light",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          {" "}
+                          {post?.content}
                         </Text>
                       </Text>
-
-                      <Text style={{ fontFamily: "Hero-New-Medium" }}>
-                        {cropToGrowDetails.cropName}{" "}
-                        {cropToGrowDetails.variety !== null && (
-                          <>{`- ‘${cropToGrowDetails.variety}’`}</>
-                        )}
+                    </View>
+                    <View style={{ width: "100%", marginLeft: 10 }}>
+                      <Text
+                        style={{
+                          fontFamily: "Hero-New-Medium",
+                        }}
+                      >
+                        {cropToGrowDetails.cropName !== null &&
+                          cropToGrowDetails.cropName !== "" &&
+                          cropToGrowDetails.cropName !== "null" &&
+                          cropToGrowDetails.cropName !== "undefined" &&
+                          cropToGrowDetails.cropName}{" "}
+                        {cropToGrowDetails.variety !== null &&
+                          cropToGrowDetails.variety !== "" &&
+                          cropToGrowDetails.variety !== "null" &&
+                          cropToGrowDetails.variety !== "undefined" && (
+                            <Text
+                              style={{
+                                fontFamily: "Hero-New-Light-Italic",
+                              }}
+                            >{`- ‘${cropToGrowDetails.variety}’`}</Text>
+                          )}
                       </Text>
                     </View>
                   </View>
@@ -434,7 +473,7 @@ const styles = StyleSheet.create({
   postTitle: {
     fontWeight: "bold",
     marginLeft: 10,
-    fontSize: 14,
+    marginRight: 14,
     fontFamily: "Hero-New-Medium",
   },
   postImg: {

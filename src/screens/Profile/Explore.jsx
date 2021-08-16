@@ -26,11 +26,16 @@ import {
 import {
   followUser,
   getUserFollowers,
+  getUserFollowing,
+  getUserGrowList,
+  getUserPosts,
+  getUserProfile,
   signOut,
 } from "../../redux/actions/authActions";
 import { BottomSheet } from "react-native-btr";
 import ShareModal from "./ShareModal";
 import Toast from "react-native-toast-message";
+import { getUserJobs } from "../../redux/actions";
 
 const { colors } = constants;
 
@@ -88,6 +93,15 @@ const Explore = () => {
     //       dispatch(getUserFollowers());
     //   }
     dispatch(getPosts());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+    dispatch(getUserGrowList());
+    dispatch(getUserPosts());
+    dispatch(getUserJobs(user?.id));
+    dispatch(getUserFollowers(false, true));
+    dispatch(getUserFollowing(false, true));
   }, []);
 
   const toggleModal = (post) => {

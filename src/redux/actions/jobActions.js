@@ -21,7 +21,7 @@ export const getUserJobs =
     });
     apiRequest(`/jobs/list?user_id=${userId}&month=${month}&year=${year}`)
       .then((response) => {
-        console.log(response, "mr president");
+        // console.log(response, "mr president");
         dispatch({
           type: GET_USER_JOBS,
           payload: response.data,
@@ -44,21 +44,47 @@ export const growCrop = (cropDetails, toast) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/jobs/growit`, "post", cropDetails);
     console.log("rotexxxy", data?.data);
+    console.log("rotexxxy3", cropDetails);
 
     if (data?.data) {
       ManageCropContext?.actions?.updateCropToGrowDetails({
         variety: data.data.variety,
-        cropName: data.data.name,
-        jobId: data?.data?.id,
+        cropVariety: data.data.crop_type,
+        cropName: cropDetails.name,
+        jobId: data.data.id,
+        sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
+        plantItDate: data.data.plant_date && true ? data.data.plant_date : "",
+        harvestItStartDate:
+          data.data.harvest_start_date && true
+            ? data.data.harvest_start_Date
+            : "",
+        harvestItEndDate:
+          data.data.harvest_end_date && true ? data.data.harvest_end_Date : "",
       });
+
+      console.log("rotexxxy33", {
+        variety: data.data.variety,
+        cropName: data.data.name,
+        cropVariety: data.data.crop_type,
+        jobId: data.data.id,
+        sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
+        plantItDate: data.data.plant_date && true ? data.data.plant_date : "",
+        harvestItStartDate:
+          data.data.harvest_start_date && true
+            ? data.data.harvest_start_Date
+            : "",
+        harvestItEndDate:
+          data.data.harvest_end_date && true ? data.data.harvest_end_Date : "",
+      });
+      dispatch(getCurrentJob(data.data.id));
+      dispatch(getUserJobs(cropDetails?.user_id));
     }
     toast.show({
       text1: data?.message,
     });
-
-    dispatch(getUserJobs(cropDetails?.user_id));
   } catch (error) {
     console.log(data, "data___error");
+    // console.log('');
 
     showApiError(error);
     return error;
@@ -89,7 +115,7 @@ export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
     return showApiError(error);
   }
 };
-
+//
 // export const getCurrentGrowing = (userId) => async (dispatch) => {
 //   try {
 //     const { data } = await apiRequest(
@@ -99,7 +125,7 @@ export const harvestCrop = (cropDetails, toast) => async (dispatch) => {
 //       type: GET_CURRENT_GROW_CROPS,
 //       payload: data,
 //     });
-
+//
 //     return;
 //   } catch (error) {
 //     return showApiError(error);
@@ -124,6 +150,26 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
     toast.show({
       text1: data?.message || "successful",
     });
+    console.log("rotexxxy2", data);
+    console.log("rotexxxy4", jobId);
+    console.log("rotexxxy6", jobDetails);
+
+    if (data?.data) {
+      ManageCropContext?.actions?.updateCropToGrowDetails({
+        variety: data.data.variety,
+        cropVariety: data.data.crop_type,
+        cropName: data.data.name,
+        // jobId: data.data?.id,
+        sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
+        plantItDate: data.data.plant_date && true ? data.data.plant_date : "",
+        harvestItStartDate:
+          data.data.harvest_start_date && true
+            ? data.data.harvest_start_Date
+            : "",
+        harvestItEndDate:
+          data.data.harvest_end_date && true ? data.data.harvest_end_Date : "",
+      });
+    }
 
     dispatch(getUserJobs(jobDetails?.user_id));
   } catch (error) {
@@ -276,11 +322,11 @@ export const updateReminder = (reminder, status) => (dispatch) => {
     payload: reminder?.id,
   });
 
-  console.log(reminder);
+  // console.log(reminder);
 
   apiRequest(`/reminders/${reminder?.id}`, "delete", { ...reminder, status })
     .then(({ data }) => {
-      console.log("update reminder", data);
+      // console.log("update reminder", data);
       dispatch(getUserReminders());
     })
     .catch((err) => {

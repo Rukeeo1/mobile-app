@@ -92,11 +92,11 @@ export const register = (user, navigation) => async (dispatch) => {
     device_token: deviceToken,
   };
 
-  console.log("user data", postData);
+  // console.log("user data", postData);
 
   apiRequest("/users/signup", "post", postData)
     .then(({ data }) => {
-      console.log("signup", data);
+      // console.log("signup", data);
       dispatch(
         login({ email: user.email, password: user.password }, navigation)
       );
@@ -214,7 +214,7 @@ export const validateOTP = (otpToken, navigation) => (dispatch, getState) => {
     x_request_otp_token: otpToken,
   })
     .then(({ data }) => {
-      console.log("validate otp", data);
+      // console.log("validate otp", data);
 
       if (data.valid) {
         dispatch({
@@ -253,7 +253,7 @@ export const resetPassword = (password, navigation) => (dispatch, getState) => {
     password,
   })
     .then(({ data }) => {
-      console.log("reset password", data);
+      // console.log("reset password", data);
 
       Alert.alert("", "Password reset successfully", [{ text: "Dismiss" }], {
         onDismiss: () => navigation.navigate("ManualAuthentication"),
@@ -286,7 +286,7 @@ export const resetPassword = (password, navigation) => (dispatch, getState) => {
 export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
   const { user, token } = getState().auth;
 
-  console.log("update avatar");
+  // console.log("update avatar");
 
   const { profileImageUri: image } = userData;
   const formData = new FormData();
@@ -309,7 +309,7 @@ export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
       },
     })
     .then(({ data }) => {
-      console.log("update avatar", data);
+      // console.log("update avatar", data);
 
       dispatch(updateProfile(userData, navigation));
     })
@@ -327,7 +327,7 @@ export const updateAvatar = (userData, navigation) => (dispatch, getState) => {
 export const updateProfile = (userData, navigation) => (dispatch, getState) => {
   const { user } = getState().auth;
 
-  console.log("update profile");
+  // console.log("update profile");
 
   dispatch({
     type: LOADING,
@@ -377,7 +377,7 @@ export const getUserProfile =
 
     apiRequest(`/users/${user?.id}`)
       .then(({ data }) => {
-        console.log("user profile", data);
+        // console.log("user profile", data);
 
         dispatch({
           type: GET_USER_DATA,
@@ -468,7 +468,7 @@ export const followUser =
   (dispatch) => {
     apiRequest("/users/follows", "post", { user_id })
       .then(({ data }) => {
-        console.log("follow user", data);
+        // console.log("follow user", data);
 
         if (isMyProfile) dispatch(getUserFollowing(false, true));
         else dispatch(getPostUser(user_id));
@@ -495,6 +495,29 @@ export const getUserGrowList = () => (dispatch, getState) => {
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(getUserGrowList()));
+    })
+    .finally(() => {
+      dispatch({
+        type: REFRESHING,
+        payload: false,
+      });
+    });
+};
+export const getUserGrowList2 = (userId) => (dispatch, getState) => {
+  dispatch({
+    type: REFRESHING,
+    payload: true,
+  });
+
+  apiRequest(`/jobs/growlist?user_id=${userId}`)
+    .then(({ data }) => {
+      dispatch({
+        type: GET_USER_GROW_LIST,
+        payload: data.crops,
+      });
+    })
+    .catch((err) => {
+      showApiError(err, true, () => dispatch(getUserGrowList2(userId)));
     })
     .finally(() => {
       dispatch({

@@ -27,6 +27,7 @@ export const apiRequest = async (
     return Promise.resolve(request);
   } catch (error) {
     console.log(endpoint, error?.response ?? error?.message);
+    // console.log('');
 
     return Promise.reject(error);
   }

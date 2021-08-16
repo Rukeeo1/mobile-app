@@ -18,7 +18,7 @@ import { updateAvatar } from "./authActions";
 export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crops/grow/favourites?month=${month}`);
-    console.log(data, "RO: thisisdada");
+    // console.log(data, "RO: thisisdada");
     dispatch({
       type: GET_FAVORITE_CROPS_TO_GROW,
       payload: data,
@@ -58,12 +58,15 @@ export const getCropVarieties = (crop) => async (dispatch) => {
 
 export const getCropCycleDetails = (cropId) => async (dispatch) => {
   try {
+    // console.log({mbappe2: cropId});
     const { data } = await apiRequest(`/crops/${cropId}`);
     dispatch({
       type: GET_CROP_CYCLE_DETAILS,
       payload: data,
     });
   } catch (error) {
+    // console.log({mbappe3: cropId});
+    // console.log({mbappe: error})
     showApiError(error);
   }
 };
@@ -86,23 +89,20 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
   formData.append("name", cropData.name);
   formData.append("grow_level", cropData.level);
   formData.append("variety", cropData.variety);
-
-  if (cropData.image) {
-    formData.append("media_url", {
-      name: cropData.image?.split("/").pop(),
-      uri: cropData.image,
-      type: "image/*",
-    });
-
-    formData.append("thumbnail_url", {
-      name: cropData.image?.split("/").pop(),
-      uri: cropData.image,
-      type: "image/*",
-    });
-  }
-
-  // formData = JSON.stringify(formData);
-  // console.log('timz', formData)
+  //
+  // if (cropData.image) {
+  //   formData.append("media_url", {
+  //     name: cropData.image?.split("/").pop(),
+  //     uri: cropData.image,
+  //     type: "image/*",
+  //   });
+  //
+  //   formData.append("thumbnail_url", {
+  //     name: cropData.image?.split("/").pop(),
+  //     uri: cropData.image,
+  //     type: "image/*",
+  //   });
+  // }
 
   const { token } = getState().auth;
 
@@ -114,18 +114,30 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
   // axios
   //   .post(`${API_URL}/crops/newCrop`, formData, {
   //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //       Authorization: `Bearer ${token}`,
+  //             Accept: "application/json",
+  //         method: 'POST',
+  //         'Content-Type': 'multipart/form-data',
+  //       Authorization: token ? `Bearer ${token}` : null,
   //     },
   //   })
+
   fetch(`${API_URL}/crops/newCrop`, {
     headers: {
+      // Authorization: token ? `Bearer ${token}` : null,
       Accept: "application/json",
       "Content-Type": "multipart/form-data",
     },
     method: "POST",
     body: formData,
   })
+    // fetch(`${API_URL}/crops/newCrop`, {
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    //   method: "POST",
+    //   body: formData,
+    // })
     .then(({ data }) => {
       console.log("update crop", data);
 
@@ -133,10 +145,34 @@ export const addCrop = (cropData, navigation) => (dispatch, getState) => {
         variety: cropData.variety,
         cropName: cropData.name,
         cropId: data?.id,
+        month: "",
+        cropVariety: "", //user variety
+        monthIndex: 0,
+        fromJobs: false,
+        category: "",
+        jobId: "",
+        jobDate: "",
+        jobStatus: "PENDING",
+        currentlySetToRemind: false,
+        currentlySetToRemindStage: "PENDING",
+        growItStarted: "PENDING",
+        sowItDate: "",
+        plantItDate: "",
+        harvestItStartDate: "",
+        harvestItEndDate: "",
+        editCropName: false,
+        stageOneComplete: false,
+        stageTwoComplete: false,
+        stageThreeComplete: false,
+        notNewCalendar: false,
       });
-      navigation.navigate("Success");
+      // navigation.navigate("Success");
       // dispatch(updateProfile(userData, navigation))
-      // navigation.navigate('Crop-selection', { cropName: cropData?.name, growLevel: cropData?.level, sowTip: data?.sow_tip })
+      navigation.navigate("Success", {
+        cropName: cropData?.name,
+        growLevel: cropData?.level,
+        sowTip: data?.sow_tip,
+      });
     })
     .catch((err) => {
       showApiError(err, true, () => dispatch(updateAvatar(image, navigation)));
@@ -157,7 +193,7 @@ export const addCrop2 = (name, setCrop) => (dispatch) => {
 
   apiRequest("/crops/newCrop", "post", { name })
     .then(({ data }) => {
-      console.log("new crop", data);
+      // console.log("new crop", data);
       setCrop(data?.data);
     })
     .catch((err) => {

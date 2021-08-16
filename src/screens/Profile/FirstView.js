@@ -314,7 +314,7 @@ const CurrentGrowList = ({ crop, onPress }) => {
   return (
     <TouchableOpacity style={[styles.growCard]} onPress={onPress}>
       <Image
-        source={{ uri: crop.thumbnail_url }}
+        source={{ uri: crop?.alternate_thumbnail ?? crop.thumbnail_url }}
         style={{ height: 60, width: 60, borderRadius: 30 }}
       />
       <Text style={[styles.growText]}>

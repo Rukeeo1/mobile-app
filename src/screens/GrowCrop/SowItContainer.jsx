@@ -46,10 +46,14 @@ export const CropDatePickerContainer = ({
   completeCheck,
   stageOneComplete,
   stageTwoComplete,
+  sowDateFromServer,
+  plantDateFromServer,
+  harvestStartDateFromServer,
+  harvestEndDateFromServer,
 }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { data } = manageCropContext;
-  const { growItStarted, action, notNewCalendar, jobStatus } =
+  const { growItStarted, action, notNewCalendar, jobStatus, jobId } =
     data.cropToGrowDetails;
 
   const [showSowItButton, setShowSowItButton] = useState(false);
@@ -325,6 +329,7 @@ export const CropDatePickerContainer = ({
       }
     }
 
+    // console.log('testtesttest');
     console.log({
       tibvbv: stageOneComplete,
       fromJobs,
@@ -345,9 +350,6 @@ export const CropDatePickerContainer = ({
     afterCancelDateConfirmed,
   ]);
   useEffect(() => {
-    console.log({ lebron2: data });
-  }, []);
-  useEffect(() => {
     // if (completeCheck) {
     //     setShowFullSelectedDate(false);
     //     setShowSowItButton(false);
@@ -361,6 +363,9 @@ export const CropDatePickerContainer = ({
     // }
   }, [completeCheck]);
 
+  useEffect(() => {
+    // console.log('testtesttest');
+  }, []);
   const onCancel = () => {
     setShowConfirmExistingBox(false);
     setShowCalender(true);
@@ -392,6 +397,10 @@ export const CropDatePickerContainer = ({
             completeCheck={completeCheck}
             showQuestion={showQuestion}
             setShowQuestion={setShowQuestion}
+            sowDateFromServer={sowDateFromServer}
+            plantDateFromServer={plantDateFromServer}
+            harvestStartDateFromServer={harvestStartDateFromServer}
+            harvestEndDateFromServer={harvestEndDateFromServer}
           />
         )}
       </View>
@@ -535,6 +544,10 @@ const ConfirmExistingJob = ({
   setShowConfirmed,
   showQuestion,
   setShowQuestion,
+  sowDateFromServer,
+  plantDateFromServer,
+  harvestStartDateFromServer,
+  harvestEndDateFromServer,
 }) => {
   // const [showQuestion, setShowQuestion] = useState(completeCheck);
 
@@ -547,14 +560,24 @@ const ConfirmExistingJob = ({
     data.cropToGrowDetails;
 
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   console.log({ lebron: data });
-  // }, []);
+
   const onConfirm = () => {
     setShowConfirmed(completeCheck);
     setShowQuestion(!completeCheck);
+    let myJobDetail = {
+      status: "DONE",
+      crop_id: cropId,
+      user_id: userId,
+      job_date: jobDate,
+      variety: variety,
+      job_type: jobType,
+      title: jobTitle2,
+      stage_one_completed: jobType === "SOW" || jobType === "PLANT",
+      stage_two_completed: jobType === "PLANT",
+      stage_three_completed: jobType === "HARVEST",
+    };
 
-    manageCropContext?.actions?.updateCropToGrowDetails({
+    let myJobContext = {
       jobId,
       action: "DONE",
       currentlySetToRemindStage: "DONE",
@@ -563,38 +586,36 @@ const ConfirmExistingJob = ({
       stageOneComplete: jobType === "SOW" || jobType === "PLANT",
       stageTwoComplete: jobType === "PLANT",
       stageThreeComplete: jobType === "HARVEST",
-    });
+    };
+
+    let myJobContext2 = {
+      jobId,
+      currentlySetToRemindStage: "DONE",
+      job_type: jobType,
+      action: jobStatus2,
+      stageOneComplete: jobType === "SOW" || jobType === "PLANT",
+      stageTwoComplete: jobType === "PLANT",
+      stageThreeComplete: jobType === "HARVEST",
+      growItStarted: "DONE",
+    };
+
+    if (jobType === "SOW") {
+      myJobDetail = { ...myJobDetail, sow_date: jobDate };
+      myJobContext = { ...myJobContext, sowItDate: jobDate };
+      myJobContext2 = { ...myJobContext2, sowItDate: jobDate };
+    }
+    if (jobType === "PLANT") {
+      myJobDetail = { ...myJobDetail, plant_date: jobDate };
+      myJobContext = { ...myJobContext, plantItDate: jobDate };
+      myJobContext2 = { ...myJobContext2, plantItDate: jobDate };
+    }
+
+    manageCropContext?.actions?.updateCropToGrowDetails(myJobContext);
 
     if (jobId) {
-      manageCropContext?.actions?.updateCropToGrowDetails({
-        jobId,
-        currentlySetToRemindStage: "DONE",
-        job_type: jobType,
-        action: jobStatus2,
-        stageOneComplete: jobType === "SOW" || jobType === "PLANT",
-        stageTwoComplete: jobType === "PLANT",
-        stageThreeComplete: jobType === "HARVEST",
-        growItStarted: "DONE",
-      });
+      manageCropContext?.actions?.updateCropToGrowDetails(myJobContext2);
 
-      dispatch(
-        updateJob(
-          jobId,
-          {
-            status: "DONE",
-            crop_id: cropId,
-            user_id: userId,
-            job_date: jobDate,
-            variety: variety,
-            job_type: jobType,
-            title: jobTitle2,
-            stage_one_completed: jobType === "SOW" || jobType === "PLANT",
-            stage_two_completed: jobType === "PLANT",
-            stage_three_completed: jobType === "HARVEST",
-          },
-          Toast
-        )
-      );
+      dispatch(updateJob(jobId, myJobDetail, Toast));
     }
     // dispatch(updateJob())
   };
@@ -633,7 +654,31 @@ const ConfirmExistingJob = ({
               style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
               fontType="light"
             >
-              {new Date(data?.cropToGrowDetails?.jobDate).toDateString()}
+              {(() => {
+                if (
+                  (jobType === "SOW" && sowDateFromServer !== "") ||
+                  (jobType === "SOW" &&
+                    data?.cropToGrowDetails?.sowItDate &&
+                    data?.cropToGrowDetails?.sowItDate !== "")
+                ) {
+                  return new Date(
+                    sowDateFromServer || data?.cropToGrowDetails?.jobDate
+                  ).toDateString();
+                } else if (
+                  (jobType === "PLANT" && plantDateFromServer !== "") ||
+                  (jobType === "PLANT" &&
+                    data?.cropToGrowDetails?.plantItDate &&
+                    data?.cropToGrowDetails?.plantItDate !== "")
+                ) {
+                  return new Date(
+                    plantDateFromServer || data?.cropToGrowDetails?.jobDate
+                  ).toDateString();
+                } else {
+                  new Date(data?.cropToGrowDetails?.jobDate).toDateString();
+                }
+
+                return null;
+              })()}
             </Text>
           </View>
         )}

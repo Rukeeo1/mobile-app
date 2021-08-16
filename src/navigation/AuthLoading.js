@@ -23,7 +23,7 @@ const Launch = ({ navigation }) => {
         navigation.navigate("Splash");
       } else navigation.navigate("AuthNavigator");
     } catch (err) {
-      console.log("launch error", err);
+      // console.log("launch error", err);
       navigation.navigate("AuthNavigator");
     }
   };

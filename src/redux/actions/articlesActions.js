@@ -17,7 +17,7 @@ export const getCategories =
 
     apiRequest("/articles/categories")
       .then(({ data }) => {
-        console.log("categories", data);
+        // console.log("categories", data);
 
         dispatch({
           type: FETCH_CATEGORIES,
@@ -47,7 +47,7 @@ export const getArticles =
 
     apiRequest(`/articles/category/${category}/articles`)
       .then(({ data }) => {
-        console.log("articles", data);
+        // console.log("articles", data);
 
         dispatch({
           type: FETCH_ARTICLES,

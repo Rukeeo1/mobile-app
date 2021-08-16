@@ -30,7 +30,7 @@ const KilledCrop = ({ navigation }) => {
     value,
   } = useManageCropContext();
 
-  console.log({ cropToGrowDetails });
+  // console.log({ cropToGrowDetails });
 
   const { user } = useSelector((state) => ({
     user: state.auth.user,

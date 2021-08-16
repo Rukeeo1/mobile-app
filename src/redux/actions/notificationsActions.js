@@ -11,7 +11,7 @@ export const getNotifications =
 
     apiRequest("/notifications/")
       .then(({ data }) => {
-        console.log("notifications", data);
+        // console.log("notifications", data);
 
         dispatch({
           type: GET_NOTIFICATIONS,

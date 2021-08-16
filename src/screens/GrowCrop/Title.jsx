@@ -28,7 +28,7 @@ export const EditableTitle = ({ cropToGrowDetails }) => {
       ...cropToGrowDetails,
     }));
   }, [cropToGrowDetails]);
-  console.log(cropToGrowDetails, "from edit title");
+  // console.log(cropToGrowDetails, "from edit title");
 
   const handleChange = (itemName, text) => {
     setCropDetails((prevState) => ({

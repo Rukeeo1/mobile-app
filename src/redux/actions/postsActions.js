@@ -7,9 +7,11 @@ import {
   REFRESHING,
   SELECT_POST,
   GET_POST_USER,
+  GET_USER_POSTS,
 } from "../types";
 import { apiRequest, showApiError } from "../../config/api";
 import { API_URL } from "../../constants";
+import { getUserPosts } from "./authActions";
 
 export const getPosts =
   (refreshing = false) =>
@@ -41,19 +43,12 @@ export const getPosts =
 
 export const addPost = (formData) => (dispatch, getState) => {
   const { token } = getState().auth;
-  // console.log(formData)
+  // console.log({dzeko: formData})
 
   dispatch({
     type: LOADING,
     payload: true,
   });
-
-  // axios
-  //   .post(`${API_URL}/posts/newpost`, formData, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
   fetch(`${API_URL}/posts/newpost`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -64,7 +59,7 @@ export const addPost = (formData) => (dispatch, getState) => {
     body: formData,
   })
     .then(({ data }) => {
-      console.log("add post", data);
+      // console.log(dzeko2, data);
 
       dispatch(getPosts(true));
     })
@@ -125,7 +120,7 @@ export const addAltPost = (formData) => (dispatch, getState) => {
 export const editPost =
   (formData, postId, navigation) => (dispatch, getState) => {
     const { token } = getState().auth;
-    // console.log(formData)
+    // console.log({martinmartins: formData})
 
     dispatch({
       type: LOADING,
@@ -149,13 +144,18 @@ export const editPost =
     })
       .then(({ data }) => {
         // console.log('add post', data)
-        Alert.alert("", "Post updated successfully", [{ text: "Dismiss" }]);
-        navigation?.goBack();
-
-        dispatch(getPosts(true));
+        // Alert.alert("", "Post updated successfully", [{ text: "Dismiss" }]);
+        //
+        if (data) {
+          dispatch(getUserPosts());
+          dispatch(getPosts(true));
+        }
+        if (navigation) {
+          navigation?.goBack();
+        }
       })
       .catch((err) => {
-        // showApiError(err, true, () => dispatch(addPost(formData)))
+        showApiError(err, true, () => dispatch(addPost(formData)));
         // console.log('add post error', err?.response ?? err.message)
       })
       .finally(() => {
@@ -183,9 +183,10 @@ export const getPostUser = (userId) => async (dispatch) => {
     // console.log({ userPosts })
 
     // get user growlist
-    const userGrowList = (await apiRequest(`/jobs/growlist?user_id=${userId}`))
-      .data;
-    // console.log({ userGrowList })
+    const userGrowList = (
+      await apiRequest(`/jobs/current_growing?user_id=${userId}`)
+    ).data;
+    console.log({ userGrowList });
 
     // get user data
     const userData = (await apiRequest(`/users/${userId}`)).data;

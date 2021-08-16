@@ -56,7 +56,7 @@ const ManageCrops = () => {
     setFechingJobs(true);
     if (userId) {
       // await dispatch(getUserJobs(userId));
-      await dispatch(getCurrentGrowing(userId));
+      // await dispatch(getCurrentGrowing(userId));
     }
 
     setFechingJobs(false);
@@ -205,7 +205,7 @@ const PlantItem = ({ job, onPress = () => {} }) => {
       <View style={[styles.cropDetails]}>
         <Image
           style={[styles.cropAvatar]}
-          source={{ uri: job?.thumbnail_url }}
+          source={{ uri: job?.alternate_thumbnail ?? job?.thumbnail_url }}
         />
         <View style={styles.cropText}>
           <Text>{`${job?.name}`}</Text>

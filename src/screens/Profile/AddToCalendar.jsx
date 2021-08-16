@@ -109,6 +109,7 @@ const AddToCalendar = () => {
     if (user?.id) {
       getJobs(user?.id, months[m], y);
     }
+    // console.log('');
     console.log({
       xgracefull: {
         reminders,
@@ -156,7 +157,7 @@ const AddToCalendar = () => {
   useEffect(() => {
     myUserJobs();
     setUserJobLength(initialJobs.length);
-    console.log({ initialJobs });
+    // console.log({ initialJobs });
   }, [m]);
 
   const nextItem = () => {
