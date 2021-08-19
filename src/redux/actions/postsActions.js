@@ -43,7 +43,7 @@ export const getPosts =
 
 export const addPost = (formData) => (dispatch, getState) => {
   const { token } = getState().auth;
-  // console.log({dzeko: formData})
+  console.log({lukaku: formData})
 
   dispatch({
     type: LOADING,

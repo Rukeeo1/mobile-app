@@ -60,14 +60,14 @@ const CropCard = ({ navigation, route }) => {
   const manageCropContext = useContext(ManageCropContext);
 
   const { cropToGrowDetails, endHarvest } = manageCropContext?.data;
-  const { action, stageOneComplete, stageTwoComplete, stageThreeComplete } =
+  const { action, stageOneComplete, stageTwoComplete, stageThreeComplete, cropId, addedNewCrop } =
     cropToGrowDetails;
 
   const { cropCycleDetails, cropSteps, user, currentJob } = useSelector(
     (state) => ({
-      cropCycleDetails: state.crops.cropCycleDetails[0],
-      cropSteps: state.crops.cropSteps,
-      currentJob: state.jobs?.currentJob,
+      cropCycleDetails: state?.crops?.cropCycleDetails[0],
+      cropSteps: state?.crops?.cropSteps,
+      currentJob: state?.jobs?.currentJob,
       user: state?.auth?.user,
     })
   );
@@ -109,16 +109,19 @@ const CropCard = ({ navigation, route }) => {
     }
   }, [cropToGrowDetails]);
 
-  useEffect(() => {
-    if (cropToGrowDetails?.cropId) {
-      dispatch(getCropCycleDetails(cropToGrowDetails?.cropId));
-      dispatch(getCropSteps(cropToGrowDetails?.cropId));
-    }
-  }, [cropToGrowDetails?.cropId]);
+  // useEffect(() => {
+  //   if (cropToGrowDetails) {
+  //     // dispatch(getCropCycleDetails(cropToGrowDetails?.cropId));
+  //     // // dispatch(getCropSteps(cropToGrowDetails?.cropId));
+  //   }
+  // }, [cropToGrowDetails]);
 
   useEffect(() => {
-    if (cropToGrowDetails && cropToGrowDetails?.jobId !== "") {
-      // dispatch(getCurrentJob(cropToGrowDetails?.jobId));
+    if (cropToGrowDetails ) {
+        console.log({ buhari9: cropToGrowDetails });
+        if(cropToGrowDetails?.jobId && cropToGrowDetails?.jobId !== ""){
+            dispatch(getCurrentJob(cropToGrowDetails?.jobId));
+        }
       if (
         currentJob &&
         typeof currentJob?.jobs !== "undefined" &&
@@ -131,10 +134,10 @@ const CropCard = ({ navigation, route }) => {
         setToUseCropName(currentJob?.jobs[0]?.name);
       }
     }
-    // console.log({ buhari2: cropToGrowDetails });
-    // console.log({ buhari5: currentJob?.jobs[0] });
-    // console.log({ buhari52: toUseJobId});
-  }, [toUseJobId, currentJob?.id, cropToGrowDetails]);
+    console.log({ buhari2: cropToGrowDetails });
+    console.log({ buhari5: currentJob });
+    console.log({ buhari52: toUseJobId});
+  }, [toUseJobId, currentJob?.id, cropToGrowDetails?.jobId]);
 
   useEffect(() => {
     if (
@@ -156,8 +159,8 @@ const CropCard = ({ navigation, route }) => {
   }, [currentJob]);
 
   // useEffect(() => {
-  //    console.log({osinbajo: {cycleData}})
-  // }, [cycleData]);
+  //    console.log({osinbajo: {currentJob}})
+  // }, [currentJob]);
 
   const video = React.useRef(null);
 
@@ -187,15 +190,20 @@ const CropCard = ({ navigation, route }) => {
         }`;
 
   const cropSeasons = [sowMonth, plantMonth, harvestMonth];
+
+
+
+    useEffect(() => {
+        console.log({amyamy: cropSeasons});
+    }, [cropSeasons]);
   let ourDate;
+    let jobInfo;
   const handleGrowCrop = async (selectedDate, jobType) => {
     ourDate = selectedDate || new Date(); // 2020 January 5
     // ourDate = new Date(selectedDate); // 2020 January 5
-    const jobInfo = {
+    jobInfo = {
       user_id: userId,
       job_type: jobType,
-
-      // job_date: new Date('2017-09-13 00:13:28'.replace(' ', 'T')),
       job_date: ourDate.toString(),
       status: "PENDING",
       variety: cropToGrowDetails?.variety,
@@ -211,13 +219,17 @@ const CropCard = ({ navigation, route }) => {
         jobInfo.title = "SOW";
         jobInfo.status = "STARTED";
         jobInfo.job_type = "SOW";
+
+          jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "SOW", status: "STARTED",
+              job_type: "SOW", sow_date: ourDate, sowItDate: ourDate }
+
         await manageCropContext?.actions?.updateCropToGrowDetails({
           fromJobs: true,
-          jobId: cropToGrowDetails?.jobId,
+          // jobId: cropToGrowDetails?.jobId,
           job_type: "SOW",
           action: "STARTED",
           jobStatus: "STARTED",
-          notNewCalendar: true,
+          notNewCalendarSow: true,
           cropId: toUseCropId,
           cropVariety: toUseCropType,
         });
@@ -225,16 +237,20 @@ const CropCard = ({ navigation, route }) => {
       }
 
       if (jobType === "PLANT") {
-        jobInfo.title = "PLANT";
-        jobInfo.status = "STARTED";
-        jobInfo.job_type = "PLANT";
+        // jobInfo.title = "PLANT";
+        // jobInfo.status = "STARTED";
+        // jobInfo.job_type = "PLANT";
+
+          jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "PLANT", status: "STARTED",
+              job_type: "PLANT", plant_date: ourDate, plantItDate: ourDate }
+
         await manageCropContext?.actions?.updateCropToGrowDetails({
           fromJobs: true,
-          jobId: cropToGrowDetails?.jobId,
+          // jobId: cropToGrowDetails?.jobId,
           job_type: "PLANT",
           action: "STARTED",
           jobStatus: "STARTED",
-          notNewCalendar: true,
+          notNewCalendarPlant: true,
         });
         await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
       }
@@ -245,29 +261,40 @@ const CropCard = ({ navigation, route }) => {
         jobInfo.job_type = "HARVEST";
 
         manageCropContext?.actions?.updateCropToGrowDetails({
-          fromJobs: true,
-          job_type: "HARVEST",
-          jobStatus: "STARTED",
+
+            fromJobs: true,
+            // jobId: cropToGrowDetails?.jobId,
+            job_type: "HARVEST",
+            action: "HARVEST",
+            jobStatus: "STARTED",
+            notNewCalendarHarvest: true,
+            cropId: toUseCropId,
+            cropVariety: toUseCropType,
         });
         await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
         // await dispatch(harvestCrop(jobInfo, Toast));
       }
     } else {
       if (jobType === "SOW") {
-        jobInfo.title = "SOW";
-        jobInfo.status = "STARTED";
-        jobInfo.job_type = "SOW";
+
+        // jobInfo.title = "SOW";
+        // jobInfo.status = "STARTED";
+        // jobInfo.job_type = "SOW";
         // jobInfo.job_date = ourDate;
+
+          jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "SOW", status: "STARTED", job_type: "SOW", sow_date: ourDate, sowItDate: ourDate }
+
         console.log({ hgkdd: currentJob });
         console.log({ hgkdd2: manageCropContext?.data });
-        await dispatch(updateJob(toUseJobId, jobInfo, Toast));
+        await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo, Toast));
         // await dispatch(updateJob("5af2ee17-ddc7-42ac-9ccd-fa6da5fdc7d5", jobInfo, Toast));
         manageCropContext?.actions?.updateCropToGrowDetails({
           fromJobs: true,
           job_type: "SOW",
-          action: "STARTED",
+          action: "SOW",
           jobStatus: "STARTED",
-          notNewCalendar: true,
+            sowItDate: ourDate,
+          notNewCalendarSow: true,
           cropId: toUseCropId,
           cropVariety: toUseCropType,
         });
@@ -283,29 +310,42 @@ const CropCard = ({ navigation, route }) => {
       }
 
       if (jobType === "PLANT") {
-        jobInfo.title = "PLANT";
-        jobInfo.status = "STARTED";
-        jobInfo.job_type = "PLANT";
-        await manageCropContext?.actions?.updateCropToGrowDetails({
-          fromJobs: true,
-          job_type: "PLANT",
-          action: "STARTED",
-          jobStatus: "STARTED",
-          notNewCalendar: true,
-        });
-        await dispatch(updateJob(toUseJobId, jobInfo, Toast));
+        // jobInfo.title = "PLANT";
+        // jobInfo.status = "STARTED";
+        // jobInfo.job_type = "PLANT";
+
+          jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "PLANT", status: "STARTED", job_type: "PLANT", plant_date: ourDate, plantItDate: ourDate }
+
+          await manageCropContext?.actions?.updateCropToGrowDetails({
+              fromJobs: true,
+              job_type: "PLANT",
+              action: "PLANT",
+              jobStatus: "STARTED",
+              plantItDate: ourDate,
+              notNewCalendarPlant: true,
+              cropId: toUseCropId,
+              cropVariety: toUseCropType,
+            });
+            await dispatch(updateJob(toUseJobId, jobInfo, Toast));
       }
 
       if (jobType === "HARVEST") {
-        jobInfo.title = "HARVEST";
-        jobInfo.status = "STARTED";
-        jobInfo.job_type = "HARVEST";
+        // jobInfo.title = "HARVEST";
+        // jobInfo.status = "STARTED";
+        // jobInfo.job_type = "HARVEST";
+
+          jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "HARVEST", status: "STARTED", job_type: "HARVEST", harvest_start_date: ourDate, harvestItStartDate: ourDate }
 
         manageCropContext?.actions?.updateCropToGrowDetails({
           fromJobs: true,
           // jobId: toUseJobId,
           job_type: "HARVEST",
+          action: "HARVEST",
           jobStatus: "STARTED",
+            harvestItStartDate: ourDate,
+            notNewCalendarHarvest: true,
+            cropId: toUseCropId,
+            cropVariety: toUseCropType,
         });
         await dispatch(updateJob(toUseJobId, jobInfo, Toast));
         // await dispatch(harvestCrop(jobInfo, Toast));
@@ -357,14 +397,16 @@ const CropCard = ({ navigation, route }) => {
             />
           </LinearGradient>
         </TouchableOpacity>
-        <Text
-          style={{
-            color: activeScreen === index ? colors.black : colors.white,
-            marginTop: "6%",
-          }}
-        >
-          {season}
-        </Text>
+          {season && (
+              <Text
+                  style={{
+                      color: activeScreen === index ? colors.black : colors.white,
+                      marginTop: "6%",
+                  }}
+              >
+                  {season && season !== ' - ' ? season : ' '}
+              </Text>
+          )}
 
         <View
           style={[
@@ -551,6 +593,7 @@ const CropCard = ({ navigation, route }) => {
                 completeCheck={!!stageOneFromServer || !!stageOneComplete}
                 stageOneComplete={!!stageOneFromServer || !!stageOneComplete}
                 stageTwoComplete={!!stageTwoFromServer || !!stageTwoComplete}
+                stageThreeComplete={!!stageTwoFromServer || !!stageThreeComplete}
               />
             </>
           )}
@@ -607,8 +650,13 @@ const CropCard = ({ navigation, route }) => {
                   renderCalenderConfirmIcon(itemToConfirm)
                 }
                 onSubmitSelected={(dateSelected) =>
-                  handleGrowCrop(dateSelected, "HARVEST")
+                  handleGrowCrop(dateSelected, "HARVEST").catch((error) =>
+                      console.error(error)
+                  )
                 }
+                currentJobDate={currentJob &&
+                typeof currentJob?.jobs !== "undefined" &&
+                typeof currentJob?.jobs[0] !== "undefined" ? currentJob?.jobs[0]?.job_date : cropToGrowDetails.jobDate}
                 startMonth={cropCycleDetails?.harvest_start_month}
                 dateStartedTitle="Harvest started"
                 onEndHarvest={() => navigation.navigate("End-Harvest")}
@@ -642,7 +690,10 @@ const CropCard = ({ navigation, route }) => {
               (cropCycleDetails?.sow_under_cover_from !== null ||
                 cropCycleDetails?.sow_under_cover_to !== null ||
                 cropCycleDetails?.sow_direct_from !== null ||
-                cropCycleDetails?.sow_direct_to !== null) && (
+                cropCycleDetails?.sow_direct_to !== null) && (cropCycleDetails?.sow_under_cover_from !== '' ||
+                cropCycleDetails?.sow_under_cover_to !== '' ||
+                cropCycleDetails?.sow_direct_from !== '' ||
+                cropCycleDetails?.sow_direct_to !== '') &&  (
                 <MonthGraph
                   activeMonths={[
                     `${cropCycleDetails?.sow_under_cover_from || ""}`,

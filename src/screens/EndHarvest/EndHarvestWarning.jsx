@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
   StyleSheet,
   View,
@@ -34,6 +34,10 @@ const EndHarvestWarning = ({ navigation }) => {
   const [endingHarvest, setEndingHarvest] = useState(false);
 
   const dispatch = useDispatch();
+
+    useEffect(() => {
+       console.log({osinbajo33: {jobId, cropId, jobDate}})
+    }, [jobId, cropId, jobDate]);
 
   const endHarvest = async () => {
     setEndingHarvest(true);

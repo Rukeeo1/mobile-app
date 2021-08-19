@@ -12,6 +12,7 @@ import {
 } from "../types";
 import { apiRequest, showApiError } from "../../config/api";
 import ManageCropContext from "../../context/ManageCropsContext";
+import {getCropCycleDetails, getCropSteps} from "./cropActions";
 
 export const getUserJobs =
   (userId, month = "", year = "") =>
@@ -43,47 +44,26 @@ export const getUserJobs =
 export const growCrop = (cropDetails, toast) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/jobs/growit`, "post", cropDetails);
-    console.log("rotexxxy", data?.data);
-    console.log("rotexxxy3", cropDetails);
+    const {id} = data.data
+    console.log("rotexxxyTT", data?.data);
+    console.log("rotexxxyTT2", cropDetails);
 
-    if (data?.data) {
-      ManageCropContext?.actions?.updateCropToGrowDetails({
-        variety: data.data.variety,
-        cropVariety: data.data.crop_type,
-        cropName: cropDetails.name,
-        jobId: data.data.id,
-        sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
-        plantItDate: data.data.plant_date && true ? data.data.plant_date : "",
-        harvestItStartDate:
-          data.data.harvest_start_date && true
-            ? data.data.harvest_start_Date
-            : "",
-        harvestItEndDate:
-          data.data.harvest_end_date && true ? data.data.harvest_end_Date : "",
-      });
+    if (data) {
 
-      console.log("rotexxxy33", {
-        variety: data.data.variety,
-        cropName: data.data.name,
-        cropVariety: data.data.crop_type,
-        jobId: data.data.id,
-        sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
-        plantItDate: data.data.plant_date && true ? data.data.plant_date : "",
-        harvestItStartDate:
-          data.data.harvest_start_date && true
-            ? data.data.harvest_start_Date
-            : "",
-        harvestItEndDate:
-          data.data.harvest_end_date && true ? data.data.harvest_end_Date : "",
-      });
-      dispatch(getCurrentJob(data.data.id));
-      dispatch(getUserJobs(cropDetails?.user_id));
-    }
-    toast.show({
-      text1: data?.message,
-    });
+        ManageCropContext?.actions?.updateCropToGrowDetails({
+            variety: data?.data?.variety,
+            cropName: data?.data?.name,
+            jobId: id,
+        });
+
+        await dispatch(getCropCycleDetails(data?.data?.crop_id));
+        await  dispatch(getCropSteps(data?.data?.crop_id));
+        await dispatch(getUserJobs(data?.data?.user_id));
+    await dispatch(getCurrentJob(id));
+      return id;
+}
   } catch (error) {
-    console.log(data, "data___error");
+    console.log(error, "data___error");
     // console.log('');
 
     showApiError(error);
@@ -154,24 +134,29 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
     console.log("rotexxxy4", jobId);
     console.log("rotexxxy6", jobDetails);
 
-    if (data?.data) {
-      ManageCropContext?.actions?.updateCropToGrowDetails({
-        variety: data.data.variety,
-        cropVariety: data.data.crop_type,
-        cropName: data.data.name,
-        // jobId: data.data?.id,
-        sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
-        plantItDate: data.data.plant_date && true ? data.data.plant_date : "",
-        harvestItStartDate:
-          data.data.harvest_start_date && true
-            ? data.data.harvest_start_Date
-            : "",
-        harvestItEndDate:
-          data.data.harvest_end_date && true ? data.data.harvest_end_Date : "",
-      });
-    }
+      if (data?.data) {
+          ManageCropContext?.actions?.updateCropToGrowDetails({
+              variety: data.data.variety,
+              cropVariety: data.data.crop_type,
+              cropName: data.data.name,
+              // jobId: data.data?.id,
+              sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
+              plantItDate: data.data.plant_date && true ? data.data.plant_date : "",
+              harvestItStartDate:
+                  data.data.harvest_start_date && true
+                      ? data.data.harvest_start_Date
+                      : "",
+              harvestItEndDate:
+                  data.data.harvest_end_date && true ? data.data.harvest_end_Date : "",
+          });
 
-    dispatch(getUserJobs(jobDetails?.user_id));
+          await dispatch(getCropCycleDetails(data?.data?.crop_id));
+          await  dispatch(getCropSteps(data?.data?.crop_id));
+          await dispatch(getUserJobs(data?.data?.user_id));
+          await dispatch(getCurrentJob(data?.data?.id));
+      }
+    //
+    // dispatch(getUserJobs(jobDetails?.user_id));
   } catch (error) {
     console.log(error, "from job update");
     return showApiError(error);
@@ -249,15 +234,18 @@ export const getCurrentJob = (jobId) => (dispatch) => {
   });
 
   apiRequest(`/jobs/${jobId}`)
-    .then(({ data }) => {
+    .then(({data}) => {
+      if(data){
+
+      }
       dispatch({
-        type: GET_CURRENT_JOB,
-        payload: data,
-      });
+            type: GET_CURRENT_JOB,
+            payload: data,
+        });
     })
     .catch((err) => {
       console.log(err, "from get current Job");
-      return showApiError(err);
+        // showApiError(err, true, () => dispatch(getCurrentJob(jobId)));
     })
     .finally(() => {
       dispatch({
@@ -324,7 +312,7 @@ export const updateReminder = (reminder, status) => (dispatch) => {
 
   // console.log(reminder);
 
-  apiRequest(`/reminders/${reminder?.id}`, "delete", { ...reminder, status })
+  apiRequest(`/reminders/${reminder?.id}`, "put", { ...reminder, status })
     .then(({ data }) => {
       // console.log("update reminder", data);
       dispatch(getUserReminders());

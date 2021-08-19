@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View } from "react-native";
+import {StyleSheet, View} from "react-native";
 
 import ManageCropContext from "../../context/ManageCropsContext";
 
@@ -31,6 +31,7 @@ export const HarevestDatePicker = ({
   dateStartedTitle,
   onEndHarvest = () => {},
   harvestEnded,
+                                       currentJobDate
 }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails } = manageCropContext?.data;
@@ -112,13 +113,24 @@ export const HarevestDatePicker = ({
         </View>
       )}
       {showFullSelectedDate && (
-        <>
-          <SelectedDate
-            selectedDate={selectedDate}
-            selectedMonth={selectedMonth}
-            selectedYear={selectedYear}
-            title={dateStartedTitle} //set a condition if harvest ended
-          />
+
+          <View style={[styles.showSelectedDateItem]}>
+          {/*<SelectedDate*/}
+          {/*    // selectedDate={selectedDate}*/}
+          {/*    // selectedMonth={selectedMonth}*/}
+          {/*    // selectedYear={selectedYear}*/}
+          {/*  selectedDate={new Date(currentJobDate).getUTCDate()}*/}
+          {/*  selectedMonth={new Date(currentJobDate).getUTCMonth() + 1}*/}
+          {/*  selectedYear={new Date(currentJobDate).getUTCFullYear()}*/}
+          {/*  title={dateStartedTitle} //set a condition if harvest ended*/}
+          {/*/>*/}
+                <Text fontType="light">{dateStartedTitle}</Text>
+            <Text
+                style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
+                fontType="light"
+            >
+                {new Date(currentJobDate).toDateString()}
+            </Text>
           <View>
             <Button
               title="End Harvest"
@@ -126,7 +138,7 @@ export const HarevestDatePicker = ({
               onPress={onEndHarvest}
             />
           </View>
-        </>
+        </View>
       )}
       {showEndHarvestSummary && (
         <>
@@ -183,3 +195,36 @@ const SelectedDate = ({ selectedDate, selectedMonth, selectedYear, title }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+    horizontalFlexSpBtw: {},
+    showSelectedDateItem: {
+        justifyContent: "center",
+        paddingHorizontal: "6%",
+        borderTopLeftRadius: 45,
+        borderBottomLeftRadius: 45,
+        borderTopRightRadius: 45,
+        marginTop: "5%",
+        borderBottomRightRadius: 45,
+        backgroundColor: "white",
+        flex: 1,
+        shadowColor: "white",
+        shadowOffset: {
+            width: 0.5,
+            height: 0.4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 15,
+        paddingVertical: "3%",
+    },
+    circularButton: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        backgroundColor: colors.pink,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 15,
+    },
+});

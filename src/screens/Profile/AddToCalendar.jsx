@@ -277,7 +277,7 @@ const AddToCalendar = () => {
                           marginHorizontal: 2,
                           marginVertical: 10,
                           backgroundColor: `${
-                            index === m ? colors.green : "white"
+                            index === m ? colors.greenDeep2 : "white"
                           }`,
                         }}
                         onPress={() => setMonth(index)}
@@ -285,9 +285,10 @@ const AddToCalendar = () => {
                         <Text
                           style={{
                             color: `${index === m ? "#fff" : "black"}`,
-                            fontWeight: `${index === m ? "bold" : "100"}`,
+                              fontSize: `${index === m ? 16 : 14}`,
+                            // fontWeight: `${index === m ? "bold" : "100"}`,
                           }}
-                          fontType={index === m ? "bold" : "light"}
+                          fontType={index === m ? "" : "light"}
                         >
                           {item}
                         </Text>
@@ -308,15 +309,15 @@ const AddToCalendar = () => {
                     <MaterialIcons
                       name="arrow-back-ios"
                       size={24}
-                      color={colors.green}
+                      color={colors.greenDeep2}
                     />
                   </TouchableOpacity>
                   <View style={{}}>
                     <Text
+                        fontType={'thin'}
                       style={{
                         color: colors.black,
                         fontSize: 40,
-                        fontWeight: "100",
                       }}
                     >
                       {months[m]} {y}
@@ -326,16 +327,17 @@ const AddToCalendar = () => {
                     <MaterialIcons
                       name="arrow-forward-ios"
                       size={24}
-                      color={colors.green}
+                      color={colors.greenDeep2}
                     />
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={pickCurrentMonth}>
                   <Text
                     style={{
-                      marginBottom: 30,
+                      marginBottom: 15,
                       textAlign: "center",
-                      color: colors.green,
+                        fontSize: 14,
+                      color: colors.greenDeep2,
                     }}
                   >
                     Today
@@ -360,12 +362,12 @@ const AddToCalendar = () => {
                       paddingHorizontal: 20,
                     }}
                   >
-                    <Text style={styles.btnText}>Grow in {monthsFull[m]} </Text>
+                    <Text style={styles.btnText2}>Grow in {monthsFull[m]} </Text>
                     <AntDesign name="search1" size={25} color={colors.white} />
                   </View>
                 </GradientButton>
                 <GradientButton
-                  gradient={[colors.green, colors.greenDeep]}
+                  gradient={[colors.green, colors.greenDeep2]}
                   onPress={() => setJobs(!jobs)}
                 >
                   <View
@@ -432,7 +434,7 @@ const AddToCalendar = () => {
                               [{ text: "Dismiss" }]
                             );
                           }
-                          if (!isNumeric(day) || day < 1 || day > 31) {
+                          if ((!isNumeric(day) && day < 1) || (!isNumeric(day) && day > 31)) {
                             Alert.alert(
                               "",
                               "Your date is invalid. It should be between 1 and 31",
@@ -514,23 +516,19 @@ const AddToCalendar = () => {
                   )}
                   <View
                     style={{
-                      flexDirection: "column-reverse",
+                      flexDirection: "column",
                     }}
                   >
                     {reminders?.reminders
                       ?.filter((reminder) => {
                         const date = new Date(reminder?.reminder_date);
 
-                        return y == date.getFullYear() && m == date.getMonth();
-                      })
-                      ?.slice(
-                        0,
-                        viewingMore
-                          ? reminders?.reminders.length
-                          : userJobLength >= 2
-                          ? 1
-                          : 3
-                      )
+                        return y === date.getFullYear() && m === date.getMonth();
+                      })?.reverse()
+                        ?.slice(0, viewingMore ? userJobs?.jobs.length : (userJobLength >= 2 && reminders?.reminders.length >= 1 ? 2 : 3))
+                      // ?.slice( 0, userJobLength >= 2 && reminders?.reminders.length >= 1
+                      //     ? viewingMore : 4
+                      // )
                       .map((reminder, index) => {
                         return reminder.status === "PENDING" ? (
                           <TouchableOpacity
@@ -762,10 +760,10 @@ const AddToCalendar = () => {
                   )}
                 </View>
 
-                <View style={[styles.horizontalLine]}></View>
+                <View style={[styles.horizontalLine]}/>
 
                 <View style={[styles.favoriteContainer]}>
-                  <Text style={styles.favouriteText}>
+                  <Text style={styles.favouriteText2}>
                     Some of our favourites to grow this month
                   </Text>
                 </View>
@@ -807,7 +805,7 @@ const AddToCalendar = () => {
                   ))
                 )}
 
-                <View style={{ marginBottom: 50 }}>
+                <View style={{ marginTop: 30, marginBottom: 50 }}>
                   <Text style={styles.explore}>Continue to explore</Text>
                   <GradientButton
                     gradient={[colors.red, colors.redDeep]}
@@ -818,6 +816,7 @@ const AddToCalendar = () => {
                   >
                     <View
                       style={{
+
                         justifyContent: "space-between",
                         alignItems: "center",
                         flexDirection: "row",
@@ -825,7 +824,7 @@ const AddToCalendar = () => {
                         paddingHorizontal: 20,
                       }}
                     >
-                      <Text style={styles.btnText}>
+                      <Text style={styles.btnText2}>
                         Grow in {monthsFull[m]}{" "}
                       </Text>
                       <AntDesign
@@ -916,7 +915,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   viewMore: {
-    color: colors.green,
+    color: colors.greenDeep2,
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 20,
@@ -937,18 +936,33 @@ const styles = StyleSheet.create({
   favoriteContainer: {
     justifyContent: "center",
     alignItems: "center",
+      marginBottom: 20,
   },
   favouriteText: {
     textAlign: "center",
-    color: colors.green,
+    color: colors.greenDeep2,
+    maxWidth: 250,
+    fontSize: 12,
+    fontWeight: "bold",
+    marginVertical: 5,
+  },
+  favouriteText2: {
+    textAlign: "center",
+    color: colors.greenDeep2,
     maxWidth: 250,
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: '500',
     marginVertical: 5,
   },
   btnText: {
     color: colors.white,
     fontWeight: "bold",
+      fontSize: 18
+  },
+  btnText2: {
+    color: colors.white,
+    fontWeight: "bold",
+      fontSize: 18
   },
   flowers: {
     flexDirection: "row",
@@ -975,10 +989,11 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   explore: {
-    fontWeight: "bold",
+    // fontWeight: "bold",
     textAlign: "center",
     marginBottom: 8,
     marginTop: 6,
+      fontSize: 20,
   },
   boldText: {
     fontWeight: "bold",

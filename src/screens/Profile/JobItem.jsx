@@ -18,11 +18,11 @@ import harvestIcon from "../../assets/harvest-icon-pink.png";
 
 const getIcon = (jobType) => {
   switch (jobType) {
-    case "plant":
+    case "PLANT":
       return plantItPink;
-    case "water":
-      return jobIndicatorPink;
-    case "harvest":
+    // case "water":
+    //   return jobIndicatorPink;
+    case "HARVEST":
       return harvestIcon;
 
     default:
@@ -57,6 +57,12 @@ export const JobItem = ({ job }) => {
       jobId: job.id,
     });
   };
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const myDate = new Date(job?.job_date);
+    const dateIndexMonth = monthNames[myDate.getMonth()];
+    const dateIndexDay = myDate.getUTCDate();
 
   return (
     <TouchableOpacity
@@ -76,7 +82,7 @@ export const JobItem = ({ job }) => {
             (_, firstChar, rest) => firstChar + rest.toLowerCase()
           )} ${job?.name}`}</Text>
           <Text fontType="bold" style={styles.boldText}>
-            {new Date(job.job_date).toDateString()}
+              {dateIndexDay} {dateIndexMonth}
           </Text>
         </View>
       </View>

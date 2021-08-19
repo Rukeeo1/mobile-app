@@ -24,62 +24,66 @@ export const MonthGraph = ({
   checkIndexActive.push(monthsAbr.indexOf(activeMonths[2]));
   checkIndexActive.push(monthsAbr.indexOf(activeMonths[3])); //activeMonths?.(function(e) { return e.name; }).indexOf(activeMonths);
 
-  // console.log({activeMonths});
+  console.log({activeMonths});
   // console.log({checkIndexActive});
   return (
     <View>
-      <Text>{title}</Text>
-      <View style={styles.monthStrip}>
+        {activeMonths.indexOf("") === -1 &&(
+            <>
+            <Text>{title}</Text>
+            <View style={styles.monthStrip}>
         {monthsAbr.map((item, index) => (
-          <View
+            <View
             style={[
-              styles.montStripItem,
-              index >= checkIndexActive[0] &&
-                index <= checkIndexActive[1] && {
-                  backgroundColor: colors.blue,
-                },
-              index >= checkIndexActive[2] &&
-                index <= checkIndexActive[3] && {
-                  backgroundColor: colors.blue100,
-                },
-              // activeMonths?.includes(item) && { backgroundColor: colors.blue },
-              index === 0 && {
-                borderTopLeftRadius: 10,
-                borderBottomLeftRadius: 10,
-              },
-              index === months.length - 1 && {
-                borderTopRightRadius: 10,
-                borderBottomRightRadius: 10,
-              },
+            styles.montStripItem,
+            index >= checkIndexActive[0] &&
+            index <= checkIndexActive[1] && {
+            backgroundColor: colors.blue,
+        },
+            index >= checkIndexActive[2] &&
+            index <= checkIndexActive[3] && {
+            backgroundColor: colors.blue100,
+        },
+            // activeMonths?.includes(item) && { backgroundColor: colors.blue },
+            index === 0 && {
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+        },
+            index === months.length - 1 && {
+            borderTopRightRadius: 10,
+            borderBottomRightRadius: 10,
+        },
             ]}
             key={index}
-          >
-            <Text style={{ color: colors.white }}>{item[0]}</Text>
-          </View>
-        ))}
-      </View>
-      <View style={{ flexDirection: "row", marginTop: 5 }}>
-        <Text
-          style={{
+            >
+            <Text style={{color: colors.white}}>{item[0]}</Text>
+            </View>
+            ))}
+            </View>
+            <View style={{flexDirection: "row", marginTop: 5}}>
+            <Text
+            style={{
             fontSize: 16,
             fontWeight: "bold",
             color: colors.blue,
-          }}
-        >
-          {bottomTextOne}
-        </Text>
+        }}
+            >
+        {bottomTextOne}
+            </Text>
 
-        <Text
-          style={{
+            <Text
+            style={{
             fontSize: 16,
             fontWeight: "bold",
             color: colors.blue100,
             marginLeft: 20,
-          }}
-        >
-          {bottomTextTwo}
-        </Text>
-      </View>
+        }}
+            >
+        {bottomTextTwo}
+            </Text>
+            </View>
+            </>
+            )}
     </View>
   );
 };

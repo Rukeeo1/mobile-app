@@ -82,7 +82,8 @@ const CropSelection = ({ navigation, route }) => {
       action: "PENDING",
       job_type: "PENDING",
       jobDate: ourDate,
-
+        crop_id: cropIdx,
+        user_id: user?.id,
       variety: realVariety,
       cropVariety: cropUserVariety,
     });
@@ -94,6 +95,7 @@ const CropSelection = ({ navigation, route }) => {
         cropVariety: cropUserVariety,
       });
       dispatch(growCrop(jobInfo, false)).then(navigation.navigate("Success"));
+      console.log({jasmine: jobInfo})
     }
     if (cropToGrowDetails?.editCropName) {
       jobInfo2 = {
@@ -126,12 +128,12 @@ const CropSelection = ({ navigation, route }) => {
   }, [cropName]);
 
   useEffect(() => {
-    // console.log({obama: route?.params})
-  }, [route?.params]);
+    console.log({obama: cropDetail})
+  }, []);
   //
-  // useEffect(() => {
-  //   console.log({osama: cropToGrowDetails})
-  // }, [cropToGrowDetails]);
+  useEffect(() => {
+    console.log({osama: cropToGrowDetails})
+  }, [cropToGrowDetails]);
 
   useEffect(() => {
     // console.log({osama: cropUserVariety})

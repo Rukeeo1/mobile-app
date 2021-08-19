@@ -28,7 +28,10 @@ export const ManageCropProvider = ({ children }) => {
     stageOneComplete: false,
     stageTwoComplete: false,
     stageThreeComplete: false,
-    notNewCalendar: false,
+      notNewCalendarSow: false,
+      notNewCalendarPlant: false,
+      notNewCalendarHarvest: false,
+      addedNewCrop: false,
   });
 
   const [endHarvest, setEndharvest] = useState(false);
@@ -61,7 +64,10 @@ export const ManageCropProvider = ({ children }) => {
       stageOneComplete: false,
       stageTwoComplete: false,
       stageThreeComplete: false,
-      notNewCalendar: false,
+      notNewCalendarSow: false,
+        notNewCalendarPlant: false,
+        notNewCalendarHarvest: false,
+        addedNewCrop: false,
     }));
 
     setEndharvest(false);

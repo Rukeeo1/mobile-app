@@ -55,8 +55,8 @@ const ManageCrops = () => {
   const getCurrentJobs = useCallback(async () => {
     setFechingJobs(true);
     if (userId) {
-      // await dispatch(getUserJobs(userId));
-      // await dispatch(getCurrentGrowing(userId));
+      await dispatch(getUserJobs(userId));
+      await dispatch(getCurrentGrowing(userId));
     }
 
     setFechingJobs(false);
@@ -255,7 +255,7 @@ const PlantItem = ({ job, onPress = () => {} }) => {
 const styles = StyleSheet.create({
   titleContainer: {
     marginTop: 70,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   title: {
     fontSize: 40,
@@ -274,6 +274,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+    boldTextTitle: {
+    fontSize: 16,
+  },
+    boldText: {
+    fontSize: 12,
+  },
   cropCardContainer: {
     backgroundColor: colors.white,
     flexDirection: "row",
@@ -283,7 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: 100 / 2,
     height: 70,
     paddingRight: 20,
-    marginVertical: 10,
+    marginVertical: 5,
     // shadow iOS
     shadowColor: "grey",
     shadowOffset: {
