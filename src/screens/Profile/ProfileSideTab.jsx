@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Animated,
   SafeAreaView,
@@ -7,16 +7,16 @@ import {
   TouchableOpacity,
   View,
   Image,
-} from "react-native";
-import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
+} from 'react-native';
+import { Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
 
-import constants from "../../constants/index";
-import notificationIcon from "../../assets/notification.png";
-import notificationActive from "../../assets/notification-active.png";
-import manageCropsInactive from "../../assets/managecropswhite.png";
-import manageCrops from "../../assets/managecrops.png";
-import exploreInactive from "../../assets/exploreinactive.png";
-import exploreActive from "../../assets/exploreActive.png";
+import constants from '../../constants/index';
+import notificationIcon from '../../assets/notification.png';
+import notificationActive from '../../assets/notification-active.png';
+import manageCropsInactive from '../../assets/managecropswhite.png';
+import manageCrops from '../../assets/managecrops.png';
+import exploreInactive from '../../assets/exploreinactive.png';
+import exploreActive from '../../assets/exploreActive.png';
 
 const { colors, screenHeight, screenWidth } = constants;
 
@@ -42,7 +42,7 @@ const ProfileSideTab = ({
 
   const sideBarTabItems = [
     {
-      name: "notifications",
+      name: 'notifications',
       icon: (active) => (
         <Image
           source={active ? notificationActive : notificationIcon}
@@ -54,10 +54,10 @@ const ProfileSideTab = ({
       style: styles.iconsAboveWhiteLineTopSpacing,
     },
     {
-      name: "create-post",
+      name: 'create-post',
       icon: (active) => (
         <Entypo
-          name="plus"
+          name='plus'
           size={30}
           color={colors.white}
           style={{ opacity: active ? 1 : 0.5 }}
@@ -68,10 +68,10 @@ const ProfileSideTab = ({
       styles: { marginTop: 40 },
     },
     {
-      name: "profile",
+      name: 'profile',
       icon: (active) => (
         <Ionicons
-          name="md-person-outline"
+          name='md-person-outline'
           size={24}
           style={{
             color: active ? colors.greenDeep : colors.white,
@@ -85,17 +85,17 @@ const ProfileSideTab = ({
       styles: { marginTop: 40 },
     },
     {
-      name: "explore",
+      name: 'explore',
       icon: (active) => (
         <Image source={active ? exploreActive : exploreInactive} />
       ),
       ref: React.createRef(),
-      activeColor: "#AD0048",
+      activeColor: '#AD0048',
       backgroundColor: [colors.blue, colors.purshBlueDeep],
       styles: { marginTop: 40 },
     },
     {
-      name: "manage-crops",
+      name: 'manage-crops',
       icon: (active) => (
         <Image
           source={active ? manageCrops : manageCropsInactive}
@@ -104,14 +104,14 @@ const ProfileSideTab = ({
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
-      backgroundColor: ["#AD0048", "#E8357F"],
+      backgroundColor: ['#AD0048', '#E8357F'],
       styles: { marginTop: 100 },
     },
     {
-      name: "calendar",
+      name: 'calendar',
       icon: (active) => (
         <Ionicons
-          name="md-calendar-outline"
+          name='md-calendar-outline'
           size={24}
           color={colors.white}
           style={{
@@ -130,8 +130,8 @@ const ProfileSideTab = ({
   const moveBall = (itemPosition) => {
     const itemsCoordinates = coordinates[itemPosition];
 
-    if (sideBarTabItems[itemPosition].name === "create-post") {
-      handleNavigation("Posts");
+    if (sideBarTabItems[itemPosition].name === 'create-post') {
+      handleNavigation('Posts');
     }
 
     Animated.spring(roundBackgroundAnimation, {
@@ -181,7 +181,10 @@ const ProfileSideTab = ({
       
      */
 
-    if (indexOfItemToShow && coordinates.length === sideBarTabItems.length) {
+    if (
+      (indexOfItemToShow || indexOfItemToShow === 0) &&
+      coordinates.length === sideBarTabItems.length
+    ) {
       //currentindex handles the Icon/Menu Item to display
       setCurrentIndex(indexOfItemToShow);
 
@@ -204,15 +207,15 @@ const ProfileSideTab = ({
     <SafeAreaView style={styles.tab}>
       <TouchableOpacity style={styles.ellipse} onPress={onClickEllipse}>
         <FontAwesome5
-          name="ellipsis-h"
+          name='ellipsis-h'
           size={24}
           color={colors.white}
           style={{ opacity: 0.5 }}
         />
       </TouchableOpacity>
       <ScrollView
-        contentContainerStyle={{ flex: 1, alignItems: "center" }}
-        style={{ overflow: "visible" }}
+        contentContainerStyle={{ flex: 1, alignItems: 'center' }}
+        style={{ overflow: 'visible' }}
         ref={containerRef}
       >
         <Animated.View
@@ -239,7 +242,7 @@ const ProfileSideTab = ({
       </ScrollView>
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           height: 1,
           backgroundColor: colors.white,
           top: screenHeight * 0.58,
@@ -255,13 +258,13 @@ const ProfileSideTab = ({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   main: {
     backgroundColor: colors.white,
-    width: "80%",
-    paddingTop: "10%",
+    width: '80%',
+    paddingTop: '10%',
     flex: 1,
     borderTopRightRadius: 40,
   },
@@ -270,15 +273,15 @@ const styles = StyleSheet.create({
   },
   ellipse: {
     marginTop: 50,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabIconWrapper: {
-    marginTop: "35%",
+    marginTop: '35%',
     height: 60,
     width: 60,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 290323,
     elevation: 10,
   },
@@ -288,13 +291,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 30,
     elevation: 3,
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.26,
     shadowRadius: 10,
     height: 60,
     width: 60,
-    position: "absolute",
+    position: 'absolute',
   },
   iconsAboveWhiteLineTopSpacing: {
     marginTop: screenHeight * 0.4,

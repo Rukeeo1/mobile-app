@@ -120,24 +120,21 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
           size={24}
           color={colors.white}
           style={{
-            // color: active ? colors.greenDeep : colors.white,
-            color: true ? colors.greenDeep : colors.white,
-            opacity: true ? 1 : 0.5,
+            color: active ? colors.greenDeep : colors.white,
+            // color: true ? colors.greenDeep : colors.white,
+            // opacity: true ? 1 : 0.5,
           }}
         />
       ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: [colors.greenDeep, colors.green],
-      styles: { marginTop: 40, left: -12 },
+      // styles: { marginTop: 40, left: -12 },
+      styles: { marginTop: 40 },
       onclick: () => handleNavigation(5),
     },
   ];
 
-  // const moveBall = (index) => {
-  //   handleNavigation(index)
-
-  // }
 
   useEffect(() => {
     // get the positions of sidebar items/icons on the screen (basically their x and y coordinates)
@@ -164,8 +161,6 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
   }, [coordinates.length, JSON.stringify(coordinates)]);
 
   const lastItem = coordinates[coordinates?.length - 1];
-
-  // console.log(coordinates, 'RO: coordinates', lastItem);
 
   return (
     <View style={styles.container}>
@@ -208,14 +203,13 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
                 />
               </TouchableOpacity>
             </View>
-            <View
+            {/* <View
               style={{ ...styles.ball, top: lastItem?.y, left: lastItem?.x }}
-            />
+            /> */}
             {sideBarTabItems.map((item, index) => (
               <TouchableOpacity
                 style={[styles.tabIconWrapper, item.styles]}
                 onPress={item?.onclick}
-                // onPress={() => moveBall(index)}
                 key={index}
                 ref={item.ref}
               >
