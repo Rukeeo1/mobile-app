@@ -17,10 +17,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  Header,
-  Input,
-  GradientButton as Button,
-  SafeArea,
+    Header,
+    Input,
+    GradientButton as Button,
+    SafeArea, KeyboardAvoiding,
 } from "../../components/";
 
 import ManageCropContext from "../../context/ManageCropsContext";
@@ -255,7 +255,10 @@ const CreateJournal = ({
     // pickImage();
   }, [defaultPostImage, currentIndex]);
   return (
-    <SafeArea>
+          <KeyboardAvoiding>
+              <SafeArea>
+                  <View style={{ flex: 1 }}>
+
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ justifyContent: "space-between" }}
@@ -326,7 +329,9 @@ const CreateJournal = ({
           onPress={disableForm ? () => {} : handleSubmit}
         />
       </View>
+    </View>
     </SafeArea>
+          </KeyboardAvoiding>
   );
 };
 
@@ -360,7 +365,11 @@ const styles = StyleSheet.create({
   footer: {
     padding: 22,
     justifyContent: "flex-end",
-    marginBottom: "5%",
+    marginBottom: "15%",
+
+      // padding: 22,
+      // justifyContent: "flex-end",
+      // marginTop: "auto",
   },
 });
 

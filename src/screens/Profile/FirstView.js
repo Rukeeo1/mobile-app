@@ -176,7 +176,7 @@ const FirstView = () => {
                     showsHorizontalScrollIndicator={false}
                   >
                     {jobs?.jobs?.map((crop) => {
-                      return crop.job_type !== "HARVEST" ? (
+                      return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
                         <CurrentGrowList
                           crop={crop}
                           onPress={handleCurrentGrowingNav(crop)}
@@ -224,45 +224,76 @@ const FirstView = () => {
                 return (
                   <View style={[styles.postCard]}>
                     <View style={[styles.postAvatarContainer]}>
-                      <Image
-                        style={[styles.postAvatarImg]}
-                        source={{ uri: user?.avatar }}
-                      />
+                        {user?.avatar ? (< Image
+                            style={[styles.postAvatarImg]}
+                            source={{uri: user?.avatar}}
+                        />) : <Text style={[styles.growText]}>
+                        {""}
+                            </Text>}
                       <Text style={[styles.postTitle]}>{user?.fullname}</Text>
                     </View>
 
+                      { post.media_url ? (
                     <View>
-                      <Image
-                        style={[styles.postImg]}
-                        source={{ uri: post.media_url }}
-                      />
+                            <Image
+                            style={[styles.postImg]}
+                            source={{uri: post.media_url}}
+                        />
                     </View>
+                      ) : <Text style={[styles.growText]}>
+                      {""}
+                          </Text>}
 
-                    <View style={[styles.postDateTime]}>
-                      <Text
-                        style={{
-                          fontFamily: "Hero-New-Light-Italic",
-                          color: "#9B9B9B",
-                        }}
-                      >
-                        {new Date(post.created_at).toDateString()}
-                      </Text>
-                      <TouchableOpacity onPress={() => toggleModal(post)}>
-                        <Text>...</Text>
-                      </TouchableOpacity>
-                    </View>
 
-                    <View style={{ marginLeft: 15 }}>
-                      <Text style={{ fontFamily: "Hero-New-Light" }}>
-                        <Text style={{ fontFamily: "Hero-New-Medium" }}>
-                          {post?.title}
-                        </Text>
-                        {/* {' '}
-                        {post.content} */}
-                      </Text>
 
-                      {/* <Text style={{ fontFamily: 'Hero-New-Medium' }}>Tomatoes - ‘Sungold’</Text> */}
-                    </View>
+                      <View style={[styles.postDateTime]}>
+                          <Text style={[styles.date]}>
+                              {new Date(post?.created_at)
+                                  .toDateString()
+                                  .split(" ")
+                                  .slice(1)
+                                  .join(" ")}
+                          </Text>
+                          <TouchableOpacity onPress={() => toggleModal(post)}>
+                              <Text>...</Text>
+                          </TouchableOpacity>
+                      </View>
+
+                      <View style={[styles.postText]}>
+                          <Text style={[styles.boldContainer, {}]}>
+                              {" "}
+                              <Text style={[styles.bold]}>
+                                  {user?.fullname}
+                              </Text>{" "}
+                              <Text style={{ fontFamily: "Hero-New-Light" }}>
+                                     {' '}
+                        {post.content}
+                              </Text>
+                          </Text>
+                          <View style={{ paddingLeft: 25, paddingTop: 10 }}>
+                              <Text
+                                  style={{
+                                      fontFamily: "Hero-New-Medium",
+                                  }}
+                              >
+                                  {post.title !== null &&
+                                  post.title !== "" &&
+                                  post.title !== "null" &&
+                                  post.title !== "undefined" &&
+                                  post.title}{" "}
+                                  {post.variety !== null &&
+                                  post.variety !== "" &&
+                                  post.variety !== "null" &&
+                                  post.variety !== "undefined" && (
+                                      <Text
+                                          style={{
+                                              fontFamily: "Hero-New-Light-Italic",
+                                          }}
+                                      >{`- ‘${post.variety}’`}</Text>
+                                  )}
+                              </Text>
+                          </View>
+                      </View>
                   </View>
                 );
               })
@@ -313,13 +344,17 @@ const FirstView = () => {
 const CurrentGrowList = ({ crop, onPress }) => {
   return (
     <TouchableOpacity style={[styles.growCard]} onPress={onPress}>
-      <Image
-        source={{ uri: crop?.alternate_thumbnail ?? crop.thumbnail_url }}
-        style={{ height: 60, width: 60, borderRadius: 30 }}
-      />
-      <Text style={[styles.growText]}>
-        {crop.name} {crop.variety ? `“${crop?.variety}”` : ""}
-      </Text>
+        <View>
+            {crop.thumbnail_url ? (<Image
+                source={{uri: crop?.alternate_thumbnail ?? crop.thumbnail_url}}
+                style={{height: 60, width: 60, borderRadius: 30}}
+            />): <Text style={[styles.growText]}>
+                {""}
+            </Text>}
+            <Text style={[styles.growText]}>
+                {crop.name}{"\n"}{crop.crop_type && crop.crop_type !== 'N/A' ? `“${crop?.crop_type}”` : ""}
+            </Text>
+        </View>
     </TouchableOpacity>
   );
 };
@@ -391,6 +426,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
+      fontSize: 18
   },
   growMovement: {
     height: 350,
@@ -467,6 +503,24 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: "bold",
   },
+
+    dateTime: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginHorizontal: 20,
+    },
+    date: {
+        color: colors.greyDark,
+        fontFamily: "Hero-New-Light-Italic",
+    },
+    postText: {
+        marginVertical: 10,
+    },
+    boldContainer: {
+        marginHorizontal: 20,
+    },
+
 });
 
 export default FirstView;

@@ -43,7 +43,6 @@ export const getPosts =
 
 export const addPost = (formData) => (dispatch, getState) => {
   const { token } = getState().auth;
-  console.log({lukaku: formData})
 
   dispatch({
     type: LOADING,

@@ -70,15 +70,19 @@ const CropSelection = ({ navigation, route }) => {
       user_id: user?.id,
       job_date: ourDate,
       status: "PENDING",
-      job_type: jobType,
+      // job_type: jobType,
+        title: "PENDING",
+      job_type: jobType || "PENDING",
       variety: realVariety,
       crop_type: cropUserVariety,
     };
+    console.log({konkolo: jobInfo})
 
     jobInfo.title = "PENDING";
     manageCropContext?.actions?.updateCropToGrowDetails({
       title: "PENDING",
       cropName,
+        jobStatus: "PENDING",
       action: "PENDING",
       job_type: "PENDING",
       jobDate: ourDate,
@@ -107,7 +111,8 @@ const CropSelection = ({ navigation, route }) => {
         cropVariety: cropUserVariety,
         action: cropToGrowDetails.action,
         job_type: cropToGrowDetails.job_type,
-        jobDate: cropToGrowDetails.jobDate,
+        job_date: cropToGrowDetails.jobDate,
+          status: cropToGrowDetails.jobStatus,
       };
       manageCropContext?.actions?.updateCropToGrowDetails({
         variety: realVariety,
@@ -179,7 +184,7 @@ const CropSelection = ({ navigation, route }) => {
                 onChangeText={(text) => setCropUserVariety(text)}
                 isCenter={true}
                 placeholderText="red"
-              ></Input>
+              />
             </View>
 
             <View style={{ alignItems: "center", marginVertical: 15 }}>
@@ -194,7 +199,8 @@ const CropSelection = ({ navigation, route }) => {
 
               {cropDetail?.crops?.map((crop) => {
                 crop?.variety &&
-                  crop?.variety?.toLowerCase() !== "" &&
+                crop?.variety?.toLowerCase() !== "" &&
+                crop?.variety?.toLowerCase() !== "n/a" &&
                   crop?.variety?.length > 1 &&
                   (tmpItem2 = (
                     <Text style={{ fontWeight: "bold", color: colors.white }}>
@@ -414,6 +420,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
+      fontSize: 18
   },
 });
 

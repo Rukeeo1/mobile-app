@@ -29,9 +29,12 @@ export const HarevestDatePicker = ({
   onSubmitSelected,
   submitting,
   dateStartedTitle,
+                                       dateEndedTitle,
   onEndHarvest = () => {},
   harvestEnded,
-                                       currentJobDate
+                                       currentJobDate,
+                                       currentJobDate2,
+                                       harvestEndDateFromServer
 }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails } = manageCropContext?.data;
@@ -124,19 +127,30 @@ export const HarevestDatePicker = ({
           {/*  selectedYear={new Date(currentJobDate).getUTCFullYear()}*/}
           {/*  title={dateStartedTitle} //set a condition if harvest ended*/}
           {/*/>*/}
-                <Text fontType="light">{dateStartedTitle}</Text>
+            <Text fontType="light">{dateStartedTitle}</Text>
             <Text
                 style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
                 fontType="light"
             >
-                {new Date(currentJobDate).toDateString()}
+                {new Date(currentJobDate ? currentJobDate : currentJobDate2).toDateString()}
             </Text>
           <View>
-            <Button
-              title="End Harvest"
-              gradient={[colors.pink, colors.pinkDeep]}
-              onPress={onEndHarvest}
-            />
+              {harvestEndDateFromServer === '' ? (<Button
+                  title="End Harvest"
+                  gradient={[colors.pink, colors.pinkDeep]}
+                  onPress={onEndHarvest}
+              />):(
+                  <View>
+                      <Text fontType="light"  style={{ marginTop: "7%" }}>{dateEndedTitle}</Text>
+                      <Text
+                          style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
+                          fontType="light"
+                      >
+                          {new Date(harvestEndDateFromServer).toDateString()}
+                      </Text>
+                  </View>
+              )}
+
           </View>
         </View>
       )}

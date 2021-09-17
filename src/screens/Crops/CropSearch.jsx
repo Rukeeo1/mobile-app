@@ -303,7 +303,7 @@ const CropSearch = ({ navigation, route }) => {
               <FilterItemDropDown
                 items={months}
                 activeItem={
-                  selectedMonth ? `Grow in ${selectedMonth}` : "Select Month"
+                  selectedMonth ? `Grow in ${selectedMonth}` : "Select month"
                 }
                 onSelect={setSelectedMonth}
                 placeholder="Month to grow"
@@ -325,7 +325,7 @@ const CropSearch = ({ navigation, route }) => {
               />
               <FilterItemDropDown
                 items={["Annual", "Biennial", "Perennial", "Tender Perennial"]}
-                activeItem={selectedCycle ?? "Select cycle"}
+                activeItem={selectedCycle ?? "Select lifecycle"}
                 onSelect={setSelectedCycle}
                 placeholder="Life Cycle"
                 showRed={!!selectedCycle}
@@ -450,6 +450,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
+      fontSize: 18
   },
   gradientBtn: {
     marginVertical: 50,

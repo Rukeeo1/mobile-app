@@ -1,18 +1,19 @@
 import {
-  GET_USER_JOBS,
-  LOADING_JOBS,
-  GET_CURRENT_GROW_CROPS,
-  GET_FAVORITE_CROPS_TO_GROW,
-  GET_PAST_HARVEST,
-  GET_REMINDERS,
-  GET_JOB_HISTORY,
-  GET_CURRENT_JOB,
-  LOADING,
-  UPDATING_REMINDER,
+    GET_USER_JOBS,
+    LOADING_JOBS,
+    GET_CURRENT_GROW_CROPS,
+    GET_FAVORITE_CROPS_TO_GROW,
+    GET_PAST_HARVEST,
+    GET_REMINDERS,
+    GET_JOB_HISTORY,
+    GET_CURRENT_JOB,
+    LOADING,
+    UPDATING_REMINDER, GET_JOURNALS,
 } from "../types";
 import { apiRequest, showApiError } from "../../config/api";
 import ManageCropContext from "../../context/ManageCropsContext";
 import {getCropCycleDetails, getCropSteps} from "./cropActions";
+import {API_URL} from "../../constants";
 
 export const getUserJobs =
   (userId, month = "", year = "") =>
@@ -226,6 +227,54 @@ export const getUserReminders = () => (dispatch) => {
       });
     });
 };
+export const getUserOldJobs = () => async (dispatch, getState) => {
+    const { user, token } = getState().auth;
+    dispatch({
+        type: LOADING,
+        payload: true,
+    });
+
+
+    try {
+        apiRequest(`/jobs/user_history`, "get").then(({data}) => {
+            console.log('xdemolartt', data);
+             dispatch({
+                 type: GET_JOB_HISTORY,
+                 payload: data,
+             });
+
+            // return data.data
+        })
+        // const { data } = await fetch(`${API_URL}/jobs/user_history`, {
+        //     method: 'GET',
+        //     headers: new Headers({
+        //         'Cache-Control': 'no-cache, no-store, must-revalidate',
+        //         'Authorization': `Bearer ${token}`,
+        //         'Pragma': 'no-cache',
+        //         'Expires': 0,
+        //     }),
+        //  });
+
+
+        // console.log({xdemolarppp: {data}});
+        // if(data){
+        //     // console.log({xdemolarx: {data}});
+        //     dispatch({
+        //         type: GET_JOB_HISTORY,
+        //         payload: data,
+        //     });
+        //     return data
+        // }
+    } catch (error) {
+        showApiError(error);
+    }
+
+    dispatch({
+        type: LOADING,
+        payload: false,
+    });
+
+};
 
 export const getCurrentJob = (jobId) => (dispatch) => {
   dispatch({
@@ -279,30 +328,30 @@ export const addReminder = (data) => (dispatch, getState) => {
       });
     });
 };
-
-export const getJobHistory = () => (dispatch) => {
-  dispatch({
-    type: LOADING,
-    payload: true,
-  });
-
-  apiRequest(`/jobs/user_history/`)
-    .then(({ data }) => {
-      dispatch({
-        type: GET_JOB_HISTORY,
-        payload: data,
-      });
-    })
-    .catch((err) => {
-      showApiError(err, true, () => dispatch(getJobHistory()));
-    })
-    .finally(() => {
-      dispatch({
-        type: LOADING,
-        payload: false,
-      });
-    });
-};
+//
+// export const getJobHistory = () => (dispatch) => {
+//   dispatch({
+//     type: LOADING,
+//     payload: true,
+//   });
+//
+//   apiRequest(`/jobs/user_history`)
+//     .then(({ data }) => {
+//       dispatch({
+//         type: GET_JOB_HISTORY,
+//         payload: data,
+//       });
+//     })
+//     .catch((err) => {
+//       showApiError(err, true, () => dispatch(getJobHistory()));
+//     })
+//     .finally(() => {
+//       dispatch({
+//         type: LOADING,
+//         payload: false,
+//       });
+//     });
+// };
 
 export const updateReminder = (reminder, status) => (dispatch) => {
   dispatch({

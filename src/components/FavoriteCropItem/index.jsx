@@ -104,5 +104,6 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
+      fontSize: 18
   },
 });

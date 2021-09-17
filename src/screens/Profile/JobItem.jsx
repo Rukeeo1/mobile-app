@@ -36,13 +36,11 @@ export const JobItem = ({ job }) => {
   const manageCropContext = useContext(ManageCropContext);
 
   const monthIndex = new Date(job.job_date).getMonth();
-  // useEffect(()=>{
-  //     console.log({yvone: job})
-  // }, [])
+
   const handleNavigation = (path) => () => {
     navigation.navigate(path);
 
-    // console.log({yvone: job})
+    console.log({yvone: job})
     manageCropContext?.actions?.updateCropToGrowDetails({
       //name in this case represents crop name...details for the crop was added to the job object
       cropName: job?.name,
@@ -54,6 +52,7 @@ export const JobItem = ({ job }) => {
       action: job?.job_type,
       jobDate: job?.job_date,
       fromJobs: true,
+        fromJobHistory: false,
       jobId: job.id,
     });
   };

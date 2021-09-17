@@ -182,7 +182,8 @@ const UserDetails = ({ navigation }) => {
                       showsHorizontalScrollIndicator={false}
                     >
                       {growitList?.map((item, i) => {
-                        return (
+                        // return (
+                            return item?.job_type !== "KILLED" && (
                           <View style={[styles.growCard]} key={item?.id ?? i}>
                             <Image
                               style={{
@@ -261,7 +262,7 @@ const CurrentGrowList = ({ crop, onPress }) => {
         style={{ height: 60, width: 60, borderRadius: 30 }}
       />
       <Text style={[styles.growText]}>
-        {crop.name} {crop.variety ? `“${crop?.variety}”` : ""}
+          {crop.name}{"\n"}{crop.crop_type && crop.crop_type !== 'N/A' ? `“${crop?.crop_type}”` : ""}
       </Text>
     </TouchableOpacity>
   );
@@ -348,6 +349,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
+      fontSize: 18
   },
   growMovement: {
     height: 350,

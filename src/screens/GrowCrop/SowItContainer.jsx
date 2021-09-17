@@ -18,6 +18,7 @@ import { GrowCropCalender } from "./GrowCropCalendar";
 import { updateJob } from "../../redux/actions";
 
 import constants from "../../constants";
+import moment from "moment";
 // import moment from "moment";
 
 const { colors, months, monthsAbr, defaultCalendarDay, defaultCalendarYear } =
@@ -50,6 +51,7 @@ export const CropDatePickerContainer = ({
   plantDateFromServer,
   harvestStartDateFromServer,
   harvestEndDateFromServer,
+                                            setActiveScreen
 }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { data } = manageCropContext;
@@ -98,37 +100,179 @@ export const CropDatePickerContainer = ({
 
   useEffect(() => {
     if (fromJobs) {
-      if (!completeCheck) {
-        if ((jobType === "SOW" || jobType === "PENDING") && stageOneComplete) {
-          setShowSowItButton(false);
-          setShowFullSelectedDate(false);
-          setShowConfirmExistingBox(false);
-          setShowConfirmed(true);
-          setShowQuestion(false);
-        }
-        if (jobType === "PLANT" && stageTwoComplete) {
-          setShowSowItButton(false);
-          setShowFullSelectedDate(false);
-          setShowConfirmExistingBox(false);
-          setShowConfirmed(true);
-          setShowQuestion(false);
-        }
-        if ((jobType === "SOW" || jobType === "PENDING") && !stageOneComplete) {
-          setShowSowItButton(false);
-          setShowFullSelectedDate(false);
-          setShowConfirmExistingBox(true);
-          setShowConfirmed(false);
-          setShowQuestion(true);
-        }
-        if (jobType === "PLANT" && !stageTwoComplete) {
-          setShowSowItButton(false);
-          setShowFullSelectedDate(false);
-          setShowConfirmExistingBox(true);
-          setShowConfirmed(false);
-          setShowQuestion(true);
-        }
-      }
+      // if (!completeCheck) {
+      //   if ((jobType === "SOW" || jobType === "PENDING") && stageOneComplete) {
+      //     setShowSowItButton(false);
+      //     setShowFullSelectedDate(false);
+      //     setShowConfirmExistingBox(false);
+      //     setShowConfirmed(true);
+      //     setShowQuestion(false);
+      //   }
+      //   if (jobType === "PLANT" && stageTwoComplete) {
+      //     setShowSowItButton(false);
+      //     setShowFullSelectedDate(false);
+      //     setShowConfirmExistingBox(false);
+      //     setShowConfirmed(true);
+      //     setShowQuestion(false);
+      //   }
+        //   if ((jobType === "SOW" || jobType === "PENDING") && stageOneComplete) {
+        //     setShowSowItButton(false);
+        //     setShowFullSelectedDate(false);
+        //     setShowConfirmExistingBox(false);
+        //     setShowConfirmed(true);
+        //     setShowQuestion(false);
+        //   }
+      //   if ((jobType === "SOW" || jobType === "PENDING") && !stageOneComplete) {
+      //     setShowSowItButton(false);
+      //     setShowFullSelectedDate(false);
+      //     setShowConfirmExistingBox(true);
+      //     setShowConfirmed(false);
+      //     setShowQuestion(true);
+      //   }
+      //   if (jobType === "PLANT" && !stageTwoComplete) {
+      //     setShowSowItButton(false);
+      //     setShowFullSelectedDate(false);
+      //     setShowConfirmExistingBox(true);
+      //     setShowConfirmed(false);
+      //     setShowQuestion(true);
+      //   }
+      // }
+        if (!completeCheck) {
+              if ((jobType === "SOW" || jobType === "PENDING") && stageOneComplete) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(false);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+              }
+              if ((jobType === "SOW" || jobType === "PENDING") && !stageOneComplete) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(false);
+                setShowConfirmExistingBox(true);
+                setShowConfirmed(false);
+                setShowQuestion(true);
+              }
+              if (jobType === "PLANT" && !stageTwoComplete) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(false);
+                setShowConfirmExistingBox(true);
+                setShowConfirmed(false);
+                setShowQuestion(true);
+              }
 
+            if (jobType === "SOW" && stageOneComplete && !stageTwoComplete) {
+                setShowSowItButton(true);
+                setShowFullSelectedDate(false);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+            }
+            if (jobType === "PLANT" && stageOneComplete && !stageTwoComplete) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(false);
+                setShowConfirmExistingBox(true);
+                setShowConfirmed(false);
+                setShowQuestion(true);
+            }
+
+            // if (jobType === "SOW" && !stageOneComplete && !stageTwoComplete) {
+            //     setShowSowItButton(true);
+            //     setShowFullSelectedDate(false);
+            //     setShowConfirmExistingBox(false);
+            //     setShowConfirmed(true);
+            //     setShowQuestion(false);
+            // }
+
+            // if (jobType === "PLANT" && !stageOneComplete && !stageTwoComplete) {
+            //     setShowSowItButton(true);
+            //     setShowFullSelectedDate(false);
+            //     setShowConfirmExistingBox(false);
+            //     setShowConfirmed(true);
+            //     setShowQuestion(false);
+            // }
+            if (
+                jobType === "SOW" &&
+                !stageOneComplete &&
+                !stageTwoComplete &&
+                afterCancelDateConfirmedSow
+            ) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(true);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+            }
+
+            if (
+                jobType === "PLANT" &&
+                !stageOneComplete &&
+                !stageTwoComplete &&
+                afterCancelDateConfirmedPlant
+            ) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(true);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+            }
+
+            if (
+                jobType === "HARVEST" &&
+                !stageOneComplete &&
+                !stageTwoComplete &&
+                afterCancelDateConfirmedHarvest
+            ) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(true);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+            }
+
+            if (jobType === "SOW" && !stageOneComplete && stageTwoComplete) {
+                setShowSowItButton(true);
+                setShowFullSelectedDate(false);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+            }
+            if (jobType === "PLANT" && stageOneComplete && !stageTwoComplete) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(false);
+                setShowConfirmExistingBox(true);
+                setShowConfirmed(false);
+                setShowQuestion(true);
+            }
+
+            if (
+                jobType === "SOW" &&
+                !stageOneComplete &&
+                stageTwoComplete &&
+                jobStatus === "STARTED"
+            ) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(true);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+            }
+
+            if (
+                jobType === "PLANT" &&
+                stageOneComplete &&
+                !stageTwoComplete &&
+                jobStatus === "STARTED"
+            ) {
+                setShowSowItButton(false);
+                setShowFullSelectedDate(true);
+                setShowConfirmExistingBox(false);
+                setShowConfirmed(true);
+                setShowQuestion(false);
+            }
+
+
+
+        }
       if (completeCheck) {
         if ((jobType === "SOW" || jobType === "PENDING") && stageOneComplete) {
           setShowSowItButton(false);
@@ -269,14 +413,14 @@ export const CropDatePickerContainer = ({
           setShowQuestion(false);
         }
 
-        if (jobType === "SOW" && !stageOneComplete && stageTwoComplete) {
+        if (jobType === "SOW" && !stageOneComplete && stageTwoComplete && plantDateFromServer === '') {
           setShowSowItButton(true);
           setShowFullSelectedDate(false);
           setShowConfirmExistingBox(false);
           setShowConfirmed(true);
           setShowQuestion(false);
         }
-        if (jobType === "PLANT" && stageOneComplete && !stageTwoComplete) {
+        if (jobType === "PLANT" && stageOneComplete && !stageTwoComplete && sowDateFromServer === '') {
           setShowSowItButton(true);
           setShowFullSelectedDate(false);
           setShowConfirmExistingBox(false);
@@ -318,13 +462,15 @@ export const CropDatePickerContainer = ({
           setShowConfirmExistingBox(true);
           setShowConfirmed(true);
           setShowQuestion(false);
-        } else if (jobType === "PLANT" && stageTwoComplete) {
+        }
+        if (jobType === "PLANT" && stageTwoComplete) {
           setShowSowItButton(false);
           setShowFullSelectedDate(false);
           setShowConfirmExistingBox(true);
           setShowConfirmed(true);
           setShowQuestion(false);
-        } else if (
+        }
+        if (
           (jobType === "SOW" || jobType === "PENDING") &&
           !stageOneComplete
         ) {
@@ -333,19 +479,46 @@ export const CropDatePickerContainer = ({
           setShowConfirmExistingBox(true);
           setShowConfirmed(true);
           setShowQuestion(false);
-        } else if (jobType === "PLANT" && !stageTwoComplete) {
-          setShowSowItButton(true);
-          setShowFullSelectedDate(false);
-          setShowConfirmExistingBox(false);
-          setShowConfirmed(true);
-          setShowQuestion(false);
-        } else if (jobType === "HARVEST" && !stageTwoComplete) {
+        }
+        if (jobType === "PLANT" && !stageTwoComplete) {
           setShowSowItButton(true);
           setShowFullSelectedDate(false);
           setShowConfirmExistingBox(false);
           setShowConfirmed(true);
           setShowQuestion(false);
         }
+        if (jobType === "HARVEST" && !stageTwoComplete) {
+          setShowSowItButton(true);
+          setShowFullSelectedDate(false);
+          setShowConfirmExistingBox(false);
+          setShowConfirmed(true);
+          setShowQuestion(false);
+        }
+          if (
+              jobType === "SOW" &&
+              !stageOneComplete &&
+              stageTwoComplete &&
+              jobStatus === "STARTED"
+          ) {
+              setShowSowItButton(false);
+              setShowFullSelectedDate(true);
+              setShowConfirmExistingBox(false);
+              setShowConfirmed(true);
+              setShowQuestion(false);
+          }
+
+          if (
+              jobType === "PLANT" &&
+              stageOneComplete &&
+              !stageTwoComplete &&
+              jobStatus === "STARTED"
+          ) {
+              setShowSowItButton(false);
+              setShowFullSelectedDate(true);
+              setShowConfirmExistingBox(false);
+              setShowConfirmed(true);
+              setShowQuestion(false);
+          }
       }
     }
 
@@ -357,6 +530,7 @@ export const CropDatePickerContainer = ({
           completeCheck,
           stageTwoComplete,
           jobType,
+          jobStatus,
           notNewCalendarSow,
           notNewCalendarPlant,
           notNewCalendarHarvest,
@@ -371,6 +545,7 @@ export const CropDatePickerContainer = ({
     stageOneComplete,
     stageTwoComplete,
     jobType,
+      jobStatus,
       notNewCalendarSow,
       notNewCalendarPlant,
       notNewCalendarHarvest,
@@ -398,6 +573,10 @@ export const CropDatePickerContainer = ({
   useEffect(() => {
     // console.log('testtesttest');
   }, []);
+
+  // useEffect(() => {
+  //     console.log({'testtesttest': {selectedYear, selectedMonth, selectedDate}});
+  // }, [selectedYear, selectedMonth, selectedDate]);
   const onCancel = () => {
     setShowConfirmExistingBox(false);
     setShowCalender(true);
@@ -407,7 +586,7 @@ export const CropDatePickerContainer = ({
   const justMonth = ourMonthIndex(selectedMonth);
 
   // console.log(moment.utc(`${selectedYear} ${selectedMonth} ${selectedDate}`));
-  // console.log('moment test', moment(`${selectedYear} ${selectedMonth} ${selectedDate}`,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss'))
+ // console.log('moment test', moment(`${selectedYear} ${selectedMonth} ${selectedDate}`,'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss'))
   return (
     <View>
       <View>
@@ -433,6 +612,7 @@ export const CropDatePickerContainer = ({
             plantDateFromServer={plantDateFromServer}
             harvestStartDateFromServer={harvestStartDateFromServer}
             harvestEndDateFromServer={harvestEndDateFromServer}
+            setActiveScreen={setActiveScreen}
           />
         )}
       </View>
@@ -521,7 +701,43 @@ export const CropDatePickerContainer = ({
               <Text
                 style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
                 fontType="light"
-              >{`${selectedDate} ${selectedMonth} ${selectedYear}`}</Text>
+              >
+                  {/*{`${selectedDate} ${selectedMonth} ${selectedYear}`}*/}
+                  {(() => {
+                      if (
+                          (jobType === "SOW" && sowDateFromServer !== "") ||
+                          (jobType === "SOW" &&
+                              data?.cropToGrowDetails?.sowItDate &&
+                              data?.cropToGrowDetails?.sowItDate !== "")
+                      ) {
+                          return new Date(
+                              sowDateFromServer || data?.cropToGrowDetails?.jobDate
+                          ).toDateString();
+                      } else if (
+                          (jobType === "PLANT" && plantDateFromServer !== "") ||
+                          (jobType === "PLANT" &&
+                              data?.cropToGrowDetails?.plantItDate &&
+                              data?.cropToGrowDetails?.plantItDate !== "")
+                      ) {
+                          return new Date(
+                              plantDateFromServer || data?.cropToGrowDetails?.jobDate
+                          ).toDateString();
+                      }  else if (
+                          (jobType === "HARVEST" && harvestStartDateFromServer !== "") ||
+                          (jobType === "HARVEST" &&
+                              data?.cropToGrowDetails?.harvestItStartDate &&
+                              data?.cropToGrowDetails?.harvestItStartDate !== "")
+                      ) {
+                          return new Date(
+                              harvestStartDateFromServer || data?.cropToGrowDetails?.jobDate
+                          ).toDateString();
+                      } else {
+                          new Date(data?.cropToGrowDetails?.jobDate).toDateString();
+                      }
+
+                      return null;
+                  })()}
+              </Text>
             </View>
             {!showHoriazontalButtonAfterDateIsSelected && (
               <TouchableOpacity
@@ -583,6 +799,7 @@ const ConfirmExistingJob = ({
   plantDateFromServer,
   harvestStartDateFromServer,
   harvestEndDateFromServer,
+                                setActiveScreen
 }) => {
   // const [showQuestion, setShowQuestion] = useState(completeCheck);
 
@@ -603,14 +820,14 @@ const ConfirmExistingJob = ({
       status: "DONE",
       crop_id: cropId,
       user_id: userId,
-      job_date: jobDate,
+      job_date: new Date(jobDate),
       variety: variety,
       job_type: jobType,
-      title: jobTitle2,
+      title: jobType,
       // stage_one_completed: jobType === "SOW" || jobType === "PLANT",
-      stage_one_completed: jobType === "SOW",
-      stage_two_completed: jobType === "PLANT",
-      stage_three_completed: jobType === "HARVEST",
+      // stage_one_completed: jobType === "SOW",
+      // stage_two_completed: jobType === "PLANT",
+      // stage_three_completed: jobType === "HARVEST",
     };
 
     let myJobContext = {
@@ -620,45 +837,52 @@ const ConfirmExistingJob = ({
       growItStarted: "DONE",
       jobStatus: jobStatus2,
       // stageOneComplete: jobType === "SOW" || jobType === "PLANT",
-      stageOneComplete: jobType === "SOW",
-      stageTwoComplete: jobType === "PLANT",
-      stageThreeComplete: jobType === "HARVEST",
+      // stageOneComplete: jobType === "SOW",
+      // stageTwoComplete: jobType === "PLANT",
+      // stageThreeComplete: jobType === "HARVEST",
     };
 
     let myJobContext2 = {
       jobId,
       currentlySetToRemindStage: "DONE",
+      title: jobType,
       job_type: jobType,
       action: jobStatus2,
       // stageOneComplete: jobType === "SOW" || jobType === "PLANT",
-      stageOneComplete: jobType === "SOW",
-      stageTwoComplete: jobType === "PLANT",
-      stageThreeComplete: jobType === "HARVEST",
+      // stageOneComplete: jobType === "SOW",
+      // stageTwoComplete: jobType === "PLANT",
+      // stageThreeComplete: jobType === "HARVEST",
       growItStarted: "DONE",
     };
-
     if (jobType === "SOW") {
-      myJobDetail = { ...myJobDetail, sow_date: jobDate };
-      myJobContext = { ...myJobContext, sowItDate: jobDate };
-      myJobContext2 = { ...myJobContext2, sowItDate: jobDate };
-        console.log({durant: myJobDetail});
+      myJobDetail = { ...myJobDetail, sow_date: jobDate, job_date: new Date(jobDate), title: 'SOW', status: "DONE", stage_one_completed: true };
+      myJobContext = { ...myJobContext, sowItDate: jobDate, job_date: new Date(jobDate),stageTwoComplete: plantDateFromServer !== '', stageOneComplete: true };
+      myJobContext2 = { ...myJobContext2, sowItDate: jobDate, stageTwoComplete: plantDateFromServer !== '',  stageOneComplete: true};
+        dispatch(updateJob(jobId, myJobDetail, Toast)).then(() => {
+            setActiveScreen(1);
+        });
+
     }
       if (jobType === "PLANT") {
-          myJobDetail = { ...myJobDetail, plant_date: jobDate };
-          myJobContext = { ...myJobContext, plantItDate: jobDate };
-          myJobContext2 = { ...myJobContext2, plantItDate: jobDate };
+          myJobDetail = { ...myJobDetail, plant_date: jobDate, job_date: new Date(jobDate), title: 'PLANT', status: "DONE", stage_two_completed: true };
+          myJobContext = { ...myJobContext, plantItDate: jobDate, job_date: new Date(jobDate), stageOneComplete: sowDateFromServer !== '', stageTwoComplete: true };
+          myJobContext2 = { ...myJobContext2, plantItDate: jobDate,  stageOneComplete: sowDateFromServer !== '', stageTwoComplete: true };
+          dispatch(updateJob(jobId, myJobDetail, Toast)).then(() => {
+              setActiveScreen(2);
+          });
       }
       if (jobType === "HARVEST") {
-          myJobDetail = { ...myJobDetail, harvest_date: jobDate };
-          myJobContext = { ...myJobContext, harvestItStartDate: jobDate };
-          myJobContext2 = { ...myJobContext2, harvestItStartDate: jobDate };
+          myJobDetail = { ...myJobDetail, harvest_date: jobDate, job_date: new Date(jobDate), title: 'HARVEST', status: "DONE", stage_three_completed: true };
+          myJobContext = { ...myJobContext, harvestItStartDate: jobDate, job_date: new Date(jobDate), stageOneComplete: sowDateFromServer !== '', stageTwoComplete: plantDateFromServer !== '', stageThreeComplete: true };
+          myJobContext2 = { ...myJobContext2, harvestItStartDate: jobDate, stageOneComplete: sowDateFromServer !== '', stageTwoComplete: plantDateFromServer !== '', stageThreeComplete: true };
+
       }
 
     manageCropContext?.actions?.updateCropToGrowDetails(myJobContext);
     if (jobId) {
       manageCropContext?.actions?.updateCropToGrowDetails(myJobContext2);
 
-      dispatch(updateJob(jobId, myJobDetail, Toast));
+
     }
     // dispatch(updateJob())
   };

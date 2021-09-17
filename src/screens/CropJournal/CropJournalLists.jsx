@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   Animated,
@@ -260,7 +260,7 @@ const CropJournalLists = ({ navigation }) => {
 
                     <View style={{ marginLeft: 0, display: "flex" }}>
                       <Text style={[styles.postTitle]}>
-                        {post?.post_type !== "private" && (
+                        {post?.post_type !== "private" ? (
                           <Image
                             source={globe}
                             style={{
@@ -271,6 +271,8 @@ const CropJournalLists = ({ navigation }) => {
                               marginRight: 5,
                             }}
                           />
+                        ) : (
+                            <Entypo name="lock" size={14}  color={colors.greyDark} />
                         )}{" "}
                         {user?.fullname}{" "}
                         <Text

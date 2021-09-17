@@ -52,14 +52,28 @@ const EndHarvestSchedule = ({ navigation }) => {
       status: "PENDING",
     };
     setSubmitting(true);
-    const error = await dispatch(growCrop(cropInfo, Toast));
+
+      dispatch(growCrop(cropInfo, false)).then(
+          () => {
+
+              actions.setEndharvest(true);
+              actions.updateCropToGrowDetails({ fromJobs: false });
+              handleNavigation("Settings", {
+                  screen: "Main-Profile",
+                  params: {
+                      indexOfItemToShow: 5,
+                  },
+              })
+          }
+      );
     setSubmitting(false);
     if (!error) {
-      handleNavigation("Crop-Card");
-      actions.setEndharvest(true);
-      actions.updateCropToGrowDetails({ fromJobs: false });
+      // handleNavigation("Crop-Card");
+      //
+      // actions.setEndharvest(true);
+      // actions.updateCropToGrowDetails({ fromJobs: false });
       // handleNavigation('Settings', {
-      //   screen: 'Main-Profile',
+      //   // screen: 'Main-Profile',
       //   screen: 'Crop-Card',
       //   params: {
       //     indexOfItemToShow: 5,

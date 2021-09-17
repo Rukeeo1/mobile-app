@@ -39,6 +39,17 @@ const EndHarvestWarning = ({ navigation }) => {
        console.log({osinbajo33: {jobId, cropId, jobDate}})
     }, [jobId, cropId, jobDate]);
 
+    const getCurrentDate = () => {
+        const date = new Date().getDate();
+        const month = `0${new Date().getMonth() + 1}`;
+        const year = new Date().getFullYear();
+
+        //Alert.alert(date + '-' + month + '-' + year);
+        // You can turn it in to your desired format
+        // return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
+        return year + "-" + month + "-" + date; //format: yyyy-mm-dd;
+    };
+let todaysDate = getCurrentDate();
   const endHarvest = async () => {
     setEndingHarvest(true);
     if (jobId) {
@@ -52,6 +63,8 @@ const EndHarvestWarning = ({ navigation }) => {
             job_date: jobDate,
             job_type: "HARVEST",
             title: "HARVEST",
+            harvest_end_date:  todaysDate,
+              stage_three_completed: true
           },
           Toast
         )

@@ -314,24 +314,7 @@ const Explore = () => {
                               {post?.fullname}
                             </Text>{" "}
                             {post?.title}
-                            {/* {!text && (
-                      <Text
-                        style={{ color: '#085BAC' }}
-                        onPress={() => setText(!text)}
-                      >
-                        ...more
-                      </Text>
-                    )}
-                    {text && <Text> yes, patient is golden any time!</Text>} */}
                           </Text>
-                          {/*<Text style={{ fontFamily: "Hero-New-Medium" }}>*/}
-                          {/*  {post.name}{" "}*/}
-                          {/*  {post.variety !== null &&*/}
-                          {/*    post.variety !== "null" &&*/}
-                          {/*    post.variety !== "undefined" &&*/}
-                          {/*      <>{`- ‘${post.variety}’`}</>*/}
-                          {/*    }*/}
-                          {/*</Text>*/}
                           <View style={{ paddingLeft: 25, paddingTop: 10 }}>
                             <Text
                               style={{

@@ -16,6 +16,7 @@ import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 
 import { JobItem } from "./JobItem";
+import { JobItem2 } from "./JobItem2";
 
 import {
   GradientButton,
@@ -32,6 +33,7 @@ import {
   getJobHistory,
   getUserJobs,
   getUserReminders,
+    getUserOldJobs,
   updateReminder,
 } from "../../redux/actions";
 import ManageCropContext from "../../context/ManageCropsContext";
@@ -100,22 +102,32 @@ const AddToCalendar = () => {
     setLoadingJobs(true);
     await dispatch(getUserJobs(userId, month, year));
     await dispatch(getUserReminders());
-    await dispatch(getJobHistory());
     setLoadingJobs(false);
   };
 
   useEffect(() => {
     getFavoriteCrops();
+      dispatch(getUserOldJobs());
     if (user?.id) {
       getJobs(user?.id, months[m], y);
+
     }
-    // console.log('');
-    console.log({
-      xgracefull: {
-        reminders,
-      },
-    });
+      console.log({
+          xgracefull2: {
+              jobHistory,
+          },
+      });
+
   }, [m, user?.id, JSON.stringify(userJobs), m]);
+
+  useEffect(() => {
+      dispatch(getUserOldJobs());
+      console.log({
+          xgracefull: {
+              jobHistory,
+          },
+      });
+  }, [user?.id]);
 
   let initialJobs = [];
 
@@ -127,21 +139,21 @@ const AddToCalendar = () => {
       })
       .slice(0, userJobs?.jobs.length)
       ?.map((job, index) => {
+        return job?.job_type !== "HARVEST" && job?.status !== "DONE" && job?.job_type !== "KILLED"
+          ? initialJobs.push(job.job_type)
+          : null;
+      });
+    jobHistory?.data
+      ?.filter((job) => {
+        const date = new Date(job?.job_date);
+        return y === date.getFullYear() && m === date.getMonth();
+      })
+      .slice(0, viewingMore ? jobHistory?.data.length : 0)
+      ?.map((job, index) => {
         return job?.job_type !== "HARVEST" && job?.job_type !== "KILLED"
           ? initialJobs.push(job.job_type)
           : null;
       });
-    // jobHistory?.jobs
-    //   ?.filter((job) => {
-    //     const date = new Date(job?.job_date);
-    //     return y === date.getFullYear() && m === date.getMonth();
-    //   })
-    //   .slice(0, jobHistory?.jobs.length)
-    //   ?.map((job, index) => {
-    //     return job?.job_type !== "HARVEST"
-    //       ? initialJobs.push(job.job_type)
-    //       : null;
-    //   });
     reminders?.reminders
       ?.filter((reminder) => {
         const date = new Date(reminder?.reminder_date);
@@ -502,12 +514,13 @@ const AddToCalendar = () => {
                         viewingMore
                           ? userJobs?.jobs.length
                           : userJobLength >= 2
-                          ? 3
+                          ? 2
                           : 3
                       )
                       ?.map((job, index) => {
-                        return job.job_type !== "HARVEST" &&
-                          job.job_type !== "KILLED" ? (
+                        return job.job_type !== "HARVEST"
+                        && job?.status !== "DONE"
+                        &&  job.job_type !== "KILLED" ? (
                           <React.Fragment key={index}>
                             <JobItem job={job} />
                           </React.Fragment>
@@ -525,12 +538,9 @@ const AddToCalendar = () => {
 
                         return y === date.getFullYear() && m === date.getMonth();
                       })?.reverse()
-                        ?.slice(0, viewingMore ? userJobs?.jobs.length : (userJobLength >= 2 && reminders?.reminders.length >= 1 ? 2 : 3))
-                      // ?.slice( 0, userJobLength >= 2 && reminders?.reminders.length >= 1
-                      //     ? viewingMore : 4
-                      // )
+                        ?.slice(0, viewingMore ? userJobs?.jobs.length : (userJobLength >= 2 && reminders?.reminders.length >= 1 ? 1 : 3))
                       .map((reminder, index) => {
-                        return reminder.status === "PENDING" ? (
+                        return reminder.status === "PENDING" && (
                           <TouchableOpacity
                             style={[styles.tasks]}
                             key={index}
@@ -605,84 +615,116 @@ const AddToCalendar = () => {
                               )}
                             </View>
                           </TouchableOpacity>
-                        ) : (
-                          <TouchableOpacity
-                            style={[styles.tasks]}
-                            key={index}
-                            // onPress={() => {
-                            //     if (!updatingReminder)
-                            //         dispatch(
-                            //             updateReminder(
-                            //                 reminder,
-                            //                 reminder.status === "PENDING"
-                            //                     ? "DONE"
-                            //                     : "PENDING"
-                            //             )
-                            //         );
-                            // }}
-                          >
-                            <View style={[styles.jobsChild]}>
-                              <Image
-                                source={require("../../assets/job-indicator-pink.png")}
-                                style={{ height: 25, width: 25 }}
-                              />
-                              <View style={[styles.jobsText]}>
-                                <Text
-                                  style={{
-                                    textTransform: "capitalize",
-                                    color:
-                                      reminder.status === "PENDING"
-                                        ? colors.black
-                                        : colors.pink,
-                                  }}
-                                >
-                                  {reminder?.title}
-                                </Text>
-                                <Text
-                                  style={{
-                                    color:
-                                      reminder.status === "PENDING"
-                                        ? colors.black
-                                        : colors.pink,
-                                  }}
-                                >
-                                  {`${new Date(
-                                    reminder?.reminder_date
-                                  ).getDate()} ${
-                                    monthsFull[
-                                      new Date(
-                                        reminder?.reminder_date
-                                      ).getMonth()
-                                    ]
-                                  }`}
-                                </Text>
-                              </View>
-                              {updatingReminder === reminder.id ? (
-                                <ActivityIndicator
-                                  color={colors.greyDark}
-                                  size="small"
-                                  animating
-                                />
-                              ) : (
-                                <MaterialIcons
-                                  size={24}
-                                  color={
-                                    reminder.status === "PENDING"
-                                      ? colors.greyDark
-                                      : colors.pink
-                                  }
-                                  name={
-                                    reminder.status === "PENDING"
-                                      ? "check-circle-outline"
-                                      : "check-circle"
-                                  }
-                                />
-                              )}
-                            </View>
-                          </TouchableOpacity>
                         );
                       })}
                   </View>
+
+                    <View
+                        style={{
+                        }}>
+
+                        {loadingJobs || loading ? (
+                            <ActivityIndicator />
+                        ) : (
+                            jobHistory?.data
+                                ?.filter((job2) => {
+                                    const date = new Date(job2?.job_date);
+                                    return (
+                                        y === date.getFullYear() && m === date.getMonth()
+                                    );
+                                })
+                                ?.slice(0, viewingMore ? jobHistory?.data.length : (userJobLength >= 2 && jobHistory?.data.length >= 1 ? 0 : 1))
+                                ?.map((job2, index2) => {
+                                    console.log({dayodayo6: job2})
+                                    return (job2?.job_type === "SOW" || job2?.job_type === "PLANT" ) &&  (
+                                        <React.Fragment key={index2}>
+                                            <JobItem2 job={job2}/>
+                                        </React.Fragment>
+                                    )
+
+                                })
+                        )}
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                        }}
+                    >
+                        {reminders?.reminders
+                            ?.filter((reminder) => {
+                                const date = new Date(reminder?.reminder_date);
+
+                                return y === date.getFullYear() && m === date.getMonth();
+                            })?.reverse()
+                            ?.slice(0, viewingMore ? userJobs?.jobs.length : (userJobLength >= 2 && reminders?.reminders.length >= 1 ? 0 : 3))
+                            .map((reminder, index) => {
+                                return reminder.status !== "PENDING" && (
+                                    <TouchableOpacity
+                                        style={[styles.tasks]}
+                                        key={index}
+                                    >
+                                        <View style={[styles.jobsChild]}>
+                                            <Image
+                                                source={require("../../assets/job-indicator-pink.png")}
+                                                style={{ height: 25, width: 25 }}
+                                            />
+                                            <View style={[styles.jobsText]}>
+                                                <Text
+                                                    style={{
+                                                        textTransform: "capitalize",
+                                                        color:
+                                                            reminder.status === "PENDING"
+                                                                ? colors.black
+                                                                : colors.pink,
+                                                    }}
+                                                >
+                                                    {reminder?.title}
+                                                </Text>
+                                                <Text
+                                                    style={{
+                                                        color:
+                                                            reminder.status === "PENDING"
+                                                                ? colors.black
+                                                                : colors.pink,
+                                                    }}
+                                                >
+                                                    {`${new Date(
+                                                        reminder?.reminder_date
+                                                    ).getDate()} ${
+                                                        monthsFull[
+                                                            new Date(
+                                                                reminder?.reminder_date
+                                                            ).getMonth()
+                                                            ]
+                                                    }`}
+                                                </Text>
+                                            </View>
+                                            {updatingReminder === reminder.id ? (
+                                                <ActivityIndicator
+                                                    color={colors.greyDark}
+                                                    size="small"
+                                                    animating
+                                                />
+                                            ) : (
+                                                <MaterialIcons
+                                                    size={24}
+                                                    color={
+                                                        reminder.status === "PENDING"
+                                                            ? colors.greyDark
+                                                            : colors.pink
+                                                    }
+                                                    name={
+                                                        reminder.status === "PENDING"
+                                                            ? "check-circle-outline"
+                                                            : "check-circle"
+                                                    }
+                                                />
+                                            )}
+                                        </View>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                    </View>
                   {userJobLength > 3 && (
                     <TouchableOpacity
                       onPress={() => setViewingMore(!viewingMore)}
