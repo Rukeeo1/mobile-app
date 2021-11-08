@@ -260,6 +260,8 @@ const CropCard = ({ navigation, route }) => {
                     action: "STARTED",
                     jobStatus: "STARTED",
                     notNewCalendarPlant: true,
+                    cropId: toUseCropId,
+                    cropVariety: toUseCropType,
                 });
                 await dispatch(updateJob(currentJob?.jobs[0].id, jobInfo, Toast));
             }
@@ -271,7 +273,7 @@ const CropCard = ({ navigation, route }) => {
 
 
                 jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "HARVEST", status: "STARTED",
-                    job_type: "HARVEST", plant_date: ourDate, job_date: ourDate, plantItDate: ourDate }
+                    job_type: "HARVEST", harvest_start_date: ourDate, job_date: ourDate, harvestItStartDate: ourDate }
                 manageCropContext?.actions?.updateCropToGrowDetails({
 
                     fromJobs: true,
@@ -282,6 +284,8 @@ const CropCard = ({ navigation, route }) => {
                     notNewCalendarHarvest: true,
                     cropId: toUseCropId,
                     cropVariety: toUseCropType,
+                    // cropId: toUseCropId,
+                    // cropVariety: toUseCropType,
                 });
                 await dispatch(updateJob(currentJob?.jobs[0].id, jobInfo, Toast));
                 // await dispatch(harvestCrop(jobInfo, Toast));
@@ -352,7 +356,8 @@ const CropCard = ({ navigation, route }) => {
                 // jobInfo.status = "STARTED";
                 // jobInfo.job_type = "HARVEST";
 
-                jobInfo = { ...jobInfo, crop_id: toUseCropId, crop_type: toUseCropType, title: "HARVEST", status: "STARTED", job_type: "HARVEST", harvest_start_date: ourDate, job_date: ourDate, harvestItStartDate: ourDate }
+                jobInfo = { ...jobInfo, crop_id: toUseCropId, crop_type: toUseCropType, title: "HARVEST", status: "STARTED",
+                    job_type: "HARVEST", harvest_start_date: ourDate, job_date: ourDate, harvestItStartDate: ourDate }
 
                 manageCropContext?.actions?.updateCropToGrowDetails({
                     fromJobs: true,
@@ -568,7 +573,10 @@ const CropCard = ({ navigation, route }) => {
                         ))}
                     </View>
                 </LinearGradient>
-                <View style={{ paddingHorizontal: "1%" }}>
+                <View style={{ paddingHorizontal: "1%",
+                    marginLeft: 10,
+                    marginRight: 10,
+                 }}>
                     {activeScreen === 0 && (
                         <>
                             <CropDatePickerContainer
@@ -692,18 +700,24 @@ const CropCard = ({ navigation, route }) => {
                             />
                         </>
                     )}
-                    {activeScreen === 0 && (
-                        <SkipStep
-                            tip="Not starting from seed?"
-                            onSkip={() => setActiveScreen(1)}
-                        />
-                    )}
-                    {activeScreen === 1 && (
-                        <SkipStep
-                            tip="Sown direct, and already in final position?"
-                            onSkip={() => setActiveScreen(2)}
-                        />
-                    )}
+
+                    <View   style={{
+                        marginLeft: 10,
+                        marginRight: 10,
+                    }}>
+                        {activeScreen === 0 && (
+                            <SkipStep
+                                tip="Not starting from seed?"
+                                onSkip={() => setActiveScreen(1)}
+                            />
+                        )}
+                        {activeScreen === 1 && (
+                            <SkipStep
+                                tip="Sown direct, and already in final position?"
+                                onSkip={() => setActiveScreen(2)}
+                            />
+                        )}
+                    </View>
                     <View
                         style={{
                             marginTop: 20,
@@ -711,71 +725,76 @@ const CropCard = ({ navigation, route }) => {
                             backgroundColor: colors.white,
                         }}
                     >
-                        {activeScreen === 0 &&
-                        (cropCycleDetails?.sow_under_cover_from !== null ||
-                            cropCycleDetails?.sow_under_cover_to !== null ||
-                            cropCycleDetails?.sow_direct_from !== null ||
-                            cropCycleDetails?.sow_direct_to !== null) && (cropCycleDetails?.sow_under_cover_from !== '' ||
-                            cropCycleDetails?.sow_under_cover_to !== '' ||
-                            cropCycleDetails?.sow_direct_from !== '' ||
-                            cropCycleDetails?.sow_direct_to !== '') &&  (
-                            <MonthGraph
-                                activeMonths={[
-                                    `${cropCycleDetails?.sow_under_cover_from || ""}`,
-                                    `${cropCycleDetails?.sow_under_cover_to || ""}`,
-                                    `${cropCycleDetails?.sow_direct_from || ""}`,
-                                    `${cropCycleDetails?.sow_direct_to || ""}`,
-                                ]}
-                                title="When to sow guide"
-                                bottomTextOne={
-                                    cropCycleDetails?.sow_under_cover_from !== null ||
-                                    cropCycleDetails?.sow_under_cover_to !== null
-                                        ? "Sow Under Cover"
-                                        : ""
-                                }
-                                bottomTextTwo={
-                                    cropCycleDetails?.sow_direct_from !== null ||
-                                    cropCycleDetails?.sow_direct_to !== null
-                                        ? "Sow Direct Outside"
-                                        : ""
-                                }
-                            />
-                        )}
-                        {activeScreen === 1 &&
-                        (cropCycleDetails?.plant_end_month !== null ||
-                            cropCycleDetails?.plant_start_month !== null) && (
-                            <MonthGraph
-                                activeMonths={[
-                                    `${cropCycleDetails?.plant_start_month || ""}`,
-                                    `${cropCycleDetails?.plant_end_month || ""}`,
-                                ]}
-                                title="When to plant guide"
-                                bottomTextOne={
-                                    cropCycleDetails?.plant_end_month !== null ||
-                                    cropCycleDetails?.plant_start_month !== null
-                                        ? "Plant out"
-                                        : ""
-                                }
-                            />
-                        )}
-                        {activeScreen === 2 &&
-                        (cropCycleDetails?.harvest_start_month !== null ||
-                            cropCycleDetails?.harvest_end_month !== null) && (
-                            <MonthGraph
-                                activeMonths={[
-                                    `${cropCycleDetails?.harvest_start_month || ""}`,
-                                    `${cropCycleDetails?.harvest_end_month || ""}`,
-                                ]}
-                                title="When to harvest guide"
-                                bottomTextOne={
-                                    cropCycleDetails?.harvest_start_month !== null ||
-                                    cropCycleDetails?.harvest_end_month !== null
-                                        ? "Harvest months"
-                                        : ""
-                                }
-                            />
-                        )}
+                       <View   style={{
+                           marginLeft: 10,
+                           marginRight: 10,
+                       }}>
+                           {activeScreen === 0 &&
+                           (cropCycleDetails?.sow_under_cover_from !== null ||
+                               cropCycleDetails?.sow_under_cover_to !== null ||
+                               cropCycleDetails?.sow_direct_from !== null ||
+                               cropCycleDetails?.sow_direct_to !== null) && (cropCycleDetails?.sow_under_cover_from !== '' ||
+                               cropCycleDetails?.sow_under_cover_to !== '' ||
+                               cropCycleDetails?.sow_direct_from !== '' ||
+                               cropCycleDetails?.sow_direct_to !== '') &&  (
+                               <MonthGraph
+                                   activeMonths={[
+                                       `${cropCycleDetails?.sow_under_cover_from || ""}`,
+                                       `${cropCycleDetails?.sow_under_cover_to || ""}`,
+                                       `${cropCycleDetails?.sow_direct_from || ""}`,
+                                       `${cropCycleDetails?.sow_direct_to || ""}`,
+                                   ]}
+                                   title="When to sow guide"
+                                   bottomTextOne={
+                                       cropCycleDetails?.sow_under_cover_from !== null ||
+                                       cropCycleDetails?.sow_under_cover_to !== null
+                                           ? "Sow Under Cover"
+                                           : ""
+                                   }
+                                   bottomTextTwo={
+                                       cropCycleDetails?.sow_direct_from !== null ||
+                                       cropCycleDetails?.sow_direct_to !== null
+                                           ? "Sow Direct Outside"
+                                           : ""
+                                   }
+                               />
+                           )}
+                           {activeScreen === 1 &&
+                           (cropCycleDetails?.plant_end_month !== null ||
+                               cropCycleDetails?.plant_start_month !== null) && (
+                               <MonthGraph
+                                   activeMonths={[
+                                       `${cropCycleDetails?.plant_start_month || ""}`,
+                                       `${cropCycleDetails?.plant_end_month || ""}`,
+                                   ]}
+                                   title="When to plant guide"
+                                   bottomTextOne={
+                                       cropCycleDetails?.plant_end_month !== null ||
+                                       cropCycleDetails?.plant_start_month !== null
+                                           ? "Plant out"
+                                           : ""
+                                   }
+                               />
+                           )}
+                           {activeScreen === 2 &&
+                           (cropCycleDetails?.harvest_start_month !== null ||
+                               cropCycleDetails?.harvest_end_month !== null) && (
+                               <MonthGraph
+                                   activeMonths={[
+                                       `${cropCycleDetails?.harvest_start_month || ""}`,
+                                       `${cropCycleDetails?.harvest_end_month || ""}`,
+                                   ]}
+                                   title="When to harvest guide"
+                                   bottomTextOne={
+                                       cropCycleDetails?.harvest_start_month !== null ||
+                                       cropCycleDetails?.harvest_end_month !== null
+                                           ? "Harvest months"
+                                           : ""
+                                   }
+                               />
+                           )}
 
+                       </View>
                         <View>
                             <Button
                                 gradient={[colors.purshBlue, colors.blue]}
@@ -796,12 +815,18 @@ const CropCard = ({ navigation, route }) => {
                                     textAlign: "center",
                                     fontSize: 24,
                                     marginVertical: 10,
+                                    marginTop: 30,
                                     fontWeight: "100",
+                                    fontFamily: "Hero-New-Thin",
                                 }}
                             >
                                 {cycleData?.title}
                             </Text>
-                            <Text style={{ textAlign: "center" }}>{cycleData?.summary}</Text>
+                            <Text style={{
+                                textAlign: "center",
+                                fontFamily: "Hero-New-Light",
+                            fontSize: 15,
+                            }}>{cycleData?.summary}</Text>
                         </View>
                     )}
                     {cycleData?.tip && cycleData?.tip.toLowerCase() !== "n/a" && (

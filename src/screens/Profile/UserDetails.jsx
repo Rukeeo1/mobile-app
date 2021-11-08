@@ -239,7 +239,24 @@ const UserDetails = ({ navigation }) => {
                           </Text>
                           {/* {' '}
                           {post.content} */}
-                        </Text>
+
+                              {post.name !== null &&
+                              post.name !== "" &&
+                              post.name !== "null" &&
+                              post.name !== "undefined" &&
+                              post.name}{" "}
+                              {post.variety !== null &&
+                              post.variety !== "" &&
+                              post.variety !== "null" &&
+                              post.variety !== "undefined" && (
+                                  <Text
+                                      style={{
+                                          fontFamily: "Hero-New-Light-Italic",
+                                      }}
+                                  >{`- ‘${post.variety}’`}</Text>
+                              )}
+                          </Text>
+
                       </View>
                     </View>
                   );
@@ -278,7 +295,7 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 15,
-    width: Dimensions.get("screen").width * 0.8,
+    width: Dimensions.get("screen").width,
     paddingBottom: 50,
     overflow: "visible",
   },
@@ -322,9 +339,6 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingRight: 5,
     alignItems: "center",
-  },
-  btnText: {
-    color: colors.white,
   },
   growCard: {
     alignItems: "center",

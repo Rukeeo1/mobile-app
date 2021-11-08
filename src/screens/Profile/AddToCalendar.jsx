@@ -286,7 +286,7 @@ const AddToCalendar = () => {
                           textAlign: "center",
                           alignItems: "center",
                           justifyContent: "center",
-                          marginHorizontal: 2,
+                          marginHorizontal: 0,
                           marginVertical: 10,
                           backgroundColor: `${
                             index === m ? colors.greenDeep2 : "white"

@@ -13,7 +13,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { Ionicons } from "@expo/vector-icons";
+import {Entypo, Ionicons} from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 import { useManageCropContext } from "../../context/ManageCropsContext";
@@ -30,6 +30,7 @@ import { GradientButton } from "../../components/Button";
 import constants from "../../constants";
 import ShareModal from "./ShareModal";
 import { getUserJobs } from "../../redux/actions";
+import globe from "../../assets/globe.png";
 
 const { colors, monthsAbr } = constants;
 
@@ -171,19 +172,80 @@ const FirstView = () => {
               {jobs?.jobs?.length > 0 ? (
                 <>
                   <Text style={[styles.growTitle]}>Current Grow It List</Text>
-                  <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    {jobs?.jobs?.map((crop) => {
-                      return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
-                        <CurrentGrowList
-                          crop={crop}
-                          onPress={handleCurrentGrowingNav(crop)}
-                        />
-                      ) : null;
-                    })}
-                  </ScrollView>
+                    {jobs?.jobs?.length === 1 && <ScrollView  style={[styles.lozenges1]}
+                                                              horizontal={true}
+                                                              showsHorizontalScrollIndicator={false}
+                    >
+
+                        {jobs?.jobs?.map((crop) => {
+                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
+                                <CurrentGrowList
+                                    crop={crop}
+                                    onPress={handleCurrentGrowingNav(crop)}
+                                />
+                            ) : null;
+                        })}
+                    </ScrollView>}
+
+                    {jobs?.jobs?.length === 2 && <ScrollView  style={[styles.lozenges2]}
+                                                              horizontal={true}
+                                                              showsHorizontalScrollIndicator={false}
+                    >
+
+                        {jobs?.jobs?.map((crop) => {
+                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
+                                <CurrentGrowList
+                                    crop={crop}
+                                    onPress={handleCurrentGrowingNav(crop)}
+                                />
+                            ) : null;
+                        })}
+                    </ScrollView>}
+
+                    {jobs?.jobs?.length === 3 && <ScrollView  style={[styles.lozenges3]}
+                                                              horizontal={true}
+                                                              showsHorizontalScrollIndicator={false}
+                    >
+
+                        {jobs?.jobs?.map((crop) => {
+                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
+                                <CurrentGrowList
+                                    crop={crop}
+                                    onPress={handleCurrentGrowingNav(crop)}
+                                />
+                            ) : null;
+                        })}
+                    </ScrollView>}
+
+                    {jobs?.jobs?.length === 4 && <ScrollView  style={[styles.lozenges4]}
+                                                              horizontal={true}
+                                                              showsHorizontalScrollIndicator={false}
+                    >
+
+                        {jobs?.jobs?.map((crop) => {
+                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
+                                <CurrentGrowList
+                                    crop={crop}
+                                    onPress={handleCurrentGrowingNav(crop)}
+                                />
+                            ) : null;
+                        })}
+                    </ScrollView>}
+
+                    {jobs?.jobs?.length > 4 && <ScrollView
+                                                              horizontal={true}
+                                                              showsHorizontalScrollIndicator={false}
+                    >
+
+                        {jobs?.jobs?.map((crop) => {
+                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
+                                <CurrentGrowList
+                                    crop={crop}
+                                    onPress={handleCurrentGrowingNav(crop)}
+                                />
+                            ) : null;
+                        })}
+                    </ScrollView>}
                 </>
               ) : (
                 <View>
@@ -262,6 +324,20 @@ const FirstView = () => {
                       <View style={[styles.postText]}>
                           <Text style={[styles.boldContainer, {}]}>
                               {" "}
+                              {post?.post_type !== "private" ? (
+                                  <Image
+                                      source={globe}
+                                      style={{
+                                          maxWidth: 14,
+                                          maxHeight: 14,
+                                          width: 16,
+                                          marginTop: 2,
+                                          marginRight: 5,
+                                      }}
+                                  />
+                              ) : (
+                                  <Entypo name="lock" size={14}  color={colors.greyDark} />
+                              )}{" "}
                               <Text style={[styles.bold]}>
                                   {user?.fullname}
                               </Text>{" "}
@@ -403,6 +479,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontFamily: "Hero-New-Light",
   },
+    lozenges1: {
+        width: Dimensions.get("screen").width,
+        marginLeft: "95%",
+    },
+    lozenges2: {
+        width: Dimensions.get("screen").width,
+        marginLeft: "69%",
+    },
+    lozenges3: {
+        width: Dimensions.get("screen").width,
+        marginLeft: "45%",
+    },
+    lozenges4: {
+        width: Dimensions.get("screen").width,
+        marginLeft: "25%",
+    },
   growCard: {
     alignItems: "center",
     marginHorizontal: 10,

@@ -60,7 +60,7 @@ let todaysDate = getCurrentDate();
             status: "DONE",
             crop_id: cropId,
             user_id: userId,
-            job_date: jobDate,
+            job_date: todaysDate,
             job_type: "HARVEST",
             title: "HARVEST",
             harvest_end_date:  todaysDate,
