@@ -34,7 +34,7 @@ export const ShareModal2 = ({ showBottomSheet, setShowShare, post, Toast }) => {
               setShowShare(false);
               manageCropContext?.actions?.updateCropToGrowDetails({
                 variety: cropToGrowDetails.variety,
-                cropVariety: cropToGrowDetails.cropVariety,
+                crop_variety: cropToGrowDetails.crop_variety,
                 cropName: cropToGrowDetails.cropName,
               });
               navigation.navigate("Create-Journal", {

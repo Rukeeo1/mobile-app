@@ -89,7 +89,7 @@ const CropJournalLists = ({ navigation }) => {
     setPostToShare(post);
     manageCropContext?.actions?.updateCropToGrowDetails({
       variety: cropToGrowDetails.variety,
-      cropVariety: cropToGrowDetails.cropVariety,
+      crop_variety: cropToGrowDetails.crop_variety,
       cropName: cropToGrowDetails.cropName,
     });
   };
@@ -248,7 +248,7 @@ const CropJournalLists = ({ navigation }) => {
                           // {cropToGrowDetails.variety
                           manageCropContext?.actions?.updateCropToGrowDetails({
                             variety: cropToGrowDetails.variety,
-                            cropVariety: cropToGrowDetails.cropVariety,
+                            crop_variety: cropToGrowDetails.crop_variety,
                             cropName: cropToGrowDetails.cropName,
                           });
                           toggleModal(post);

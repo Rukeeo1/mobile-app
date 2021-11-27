@@ -37,9 +37,9 @@ const CropSelection = ({ navigation, route }) => {
   const { cropName, name, sowTip, growLevel, cropId } = route?.params || {};
 
   const [cropUserVariety, setCropUserVariety] = useState(
-    cropToGrowDetails?.cropVariety
+    cropToGrowDetails?.crop_variety
   );
-  const [cropVarietyType, setCropVarietyType] = useState("");
+  const [crop_varietyType, setCropVarietyType] = useState("");
   const [cropNameUser, setCropNameUser] = useState("");
   const getCurrentDate = () => {
     const date = new Date().getDate();
@@ -75,6 +75,7 @@ const CropSelection = ({ navigation, route }) => {
       job_type: jobType || "PENDING",
       variety: realVariety,
       crop_type: cropUserVariety,
+        crop_variety: cropUserVariety,
     };
     console.log({konkolo: jobInfo})
 
@@ -89,14 +90,14 @@ const CropSelection = ({ navigation, route }) => {
         crop_id: cropIdx,
         user_id: user?.id,
       variety: realVariety,
-      cropVariety: cropUserVariety,
+      crop_variety: cropUserVariety,
     });
 
     if (!cropToGrowDetails?.editCropName) {
       manageCropContext?.actions?.updateCropToGrowDetails({
         cropName,
         variety: realVariety,
-        cropVariety: cropUserVariety,
+        crop_variety: cropUserVariety,
       });
       dispatch(growCrop(jobInfo, false)).then(navigation.navigate("Success"));
       console.log({jasmine: jobInfo})
@@ -108,11 +109,11 @@ const CropSelection = ({ navigation, route }) => {
         user_id: user?.id,
         variety: realVariety,
         crop_type: cropUserVariety,
-        cropVariety: cropUserVariety,
+        crop_variety: cropUserVariety,
         action: cropToGrowDetails.action,
         job_type: cropToGrowDetails.job_type,
         job_date: cropToGrowDetails.jobDate,
-          status: cropToGrowDetails.jobStatus,
+          // status: cropToGrowDetails.jobStatus,
       };
       manageCropContext?.actions?.updateCropToGrowDetails({
         variety: realVariety,
@@ -134,10 +135,11 @@ const CropSelection = ({ navigation, route }) => {
 
   useEffect(() => {
     console.log({obama: cropDetail})
-  }, []);
+  }, [cropDetail]);
   //
   useEffect(() => {
     console.log({osama: cropToGrowDetails})
+      // if (cropToGrowDetails && (cropToGrowDetails.variety === null || cropToGrowDetails.variety === 'null'))
   }, [cropToGrowDetails]);
 
   useEffect(() => {
@@ -184,6 +186,7 @@ const CropSelection = ({ navigation, route }) => {
                 onChangeText={(text) => setCropUserVariety(text)}
                 isCenter={true}
                 placeholderText="red"
+                value={cropUserVariety ? cropUserVariety : ''}
               />
             </View>
 
@@ -230,9 +233,9 @@ const CropSelection = ({ navigation, route }) => {
                           category:
                             crop?.variety !== "N/A" ? crop?.variety : "",
                           variety: crop?.variety !== "N/A" ? crop?.variety : "",
-                          cropVariety: cropUserVariety,
+                          crop_variety: cropUserVariety,
                           cropName,
-                          // cropVariety: crop?.variety,
+                          // crop_variety: crop?.variety,
                           cropId: crop?.id,
                         });
                         handleGrowCrop(
@@ -260,22 +263,25 @@ const CropSelection = ({ navigation, route }) => {
                 );
               })}
 
+
               {cropDetail?.crops?.map((crop) => {
-                (crop && crop?.variety === null) |
+
+                  (crop && crop?.variety === null) || (crop && crop?.variety === 'null') || (cropToGrowDetails && cropToGrowDetails?.variety === null)
+                  || (cropToGrowDetails && cropToGrowDetails?.variety === 'null') ||
                   (crop && crop?.variety === "") &&
                   (tmpItem = (
                     <>
                       <GradientButton
                         gradient={[colors.blueLigth, colors.blue]}
                         onPress={() => {
-                          // console.log({ yyyVariety: crop?.variety });
+                          console.log({ yyyVariety: crop?.variety });
                           setCropVarietyType("");
                           manageCropContext?.actions?.updateCropToGrowDetails({
                             category: crop?.category,
                             variety: "",
-                            cropVariety: cropUserVariety,
+                            crop_variety: cropUserVariety,
                             cropName,
-                            // cropVariety: crop?.variety,
+                            // crop_variety: crop?.variety,
                             cropId: crop?.id,
                           });
                           handleGrowCrop(

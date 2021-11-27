@@ -48,7 +48,7 @@ const KilledCrop = ({ navigation }) => {
     job_type: "KILLED",
     status: "KILLED",
     variety: cropToGrowDetails?.variety,
-    cropVariety: cropToGrowDetails?.cropVariety,
+    crop_variety: cropToGrowDetails?.crop_variety,
   };
 
   const [killingJob, setKillingJob] = useState(false);

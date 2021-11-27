@@ -11,12 +11,18 @@ import {
 import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
 
 import constants from "../../constants/index";
-import notificationIcon from "../../assets/notification.png";
-import notificationActive from "../../assets/notification-active.png";
-import manageCropsInactive from "../../assets/managecropswhite.png";
-import manageCrops from "../../assets/managecrops.png";
-import exploreInactive from "../../assets/exploreinactive.png";
-import exploreActive from "../../assets/exploreActive.png";
+import SvgNotification from "../../components/Svg/notification";
+import SvgNotificationInactive from "../../components/Svg/notification-inactive";
+import SvgProfile from "../../components/Svg/profile";
+import SvgProfileInactive from "../../components/Svg/profile-inactive";
+import SvgExplore from "../../components/Svg/explore";
+import SvgExploreInactive from "../../components/Svg/explore-inactive";
+import SvgAddPost from "../../components/Svg/addpost";
+import SvgAddPostInactive from "../../components/Svg/addpost-inactive";
+import SvgManageCrop from "../../components/Svg/manageCrop";
+import SvgManageCropInactive from "../../components/Svg/manageCrop-inactive";
+import SvgCalendar from "../../components/Svg/calendars";
+import SvgCalendarInactive from "../../components/Svg/calendar-inactive";
 
 const { colors, screenHeight, screenWidth } = constants;
 
@@ -43,42 +49,36 @@ const ProfileSideTab = ({
   const sideBarTabItems = [
     {
       name: "notifications",
-      icon: (active) => (
-        <Image
-          source={active ? notificationActive : notificationIcon}
-          style={{ opacity: active ? 1 : 0.5 }}
-        />
-      ),
+      icon: (active) =>
+        active ? (
+          <SvgNotification style={{ opacity: 1 }} />
+        ) : (
+          <SvgNotificationInactive style={{ opacity: 0.5 }} />
+        ),
       ref: React.createRef(),
       backgroundColor: [colors.green, colors.greenDeep],
       style: styles.iconsAboveWhiteLineTopSpacing,
     },
     {
       name: "create-post",
-      icon: (active) => (
-        <Entypo
-          name="plus"
-          size={30}
-          color={colors.white}
-          style={{ opacity: active ? 1 : 0.5 }}
-        />
-      ),
+      icon: (active) =>
+        active ? (
+          <SvgAddPost style={{ opacity: 1 }} />
+        ) : (
+          <SvgAddPostInactive style={{ opacity: 0.5 }} />
+        ),
       ref: React.createRef(),
       backgroundColor: [colors.purshBlueDeep, colors.blue],
       styles: { marginTop: 40 },
     },
     {
       name: "profile",
-      icon: (active) => (
-        <Ionicons
-          name="md-person-outline"
-          size={24}
-          style={{
-            color: active ? colors.greenDeep : colors.white,
-            opacity: active ? 1 : 0.5,
-          }}
-        />
-      ),
+      icon: (active) =>
+        active ? (
+          <SvgProfile style={{ opacity: 1 }} />
+        ) : (
+          <SvgProfileInactive style={{ opacity: 0.5 }} />
+        ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: [colors.greenDeep, colors.green],
@@ -86,9 +86,12 @@ const ProfileSideTab = ({
     },
     {
       name: "explore",
-      icon: (active) => (
-        <Image source={active ? exploreActive : exploreInactive} />
-      ),
+      icon: (active) =>
+        active ? (
+          <SvgExplore style={{ opacity: 1 }} />
+        ) : (
+          <SvgExploreInactive style={{ opacity: 1 }} />
+        ),
       ref: React.createRef(),
       activeColor: "#AD0048",
       backgroundColor: [colors.blue, colors.purshBlueDeep],
@@ -96,12 +99,12 @@ const ProfileSideTab = ({
     },
     {
       name: "manage-crops",
-      icon: (active) => (
-        <Image
-          source={active ? manageCrops : manageCropsInactive}
-          style={{ width: 32, height: 32, opacity: active ? 1 : 0.5 }}
-        />
-      ),
+      icon: (active) =>
+        active ? (
+          <SvgManageCrop style={{ opacity: 1 }} />
+        ) : (
+          <SvgManageCropInactive style={{ opacity: 1 }} />
+        ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: ["#AD0048", "#E8357F"],
@@ -109,17 +112,12 @@ const ProfileSideTab = ({
     },
     {
       name: "calendar",
-      icon: (active) => (
-        <Ionicons
-          name="md-calendar-outline"
-          size={24}
-          color={colors.white}
-          style={{
-            color: active ? colors.greenDeep : colors.white,
-            opacity: active ? 1 : 0.5,
-          }}
-        />
-      ),
+      icon: (active) =>
+        active ? (
+          <SvgCalendar style={{ opacity: 1 }} />
+        ) : (
+          <SvgCalendarInactive style={{ opacity: 1 }} />
+        ),
       ref: React.createRef(),
       activeColor: colors.greenDeep,
       backgroundColor: [colors.greenDeep, colors.green],
@@ -170,16 +168,16 @@ const ProfileSideTab = ({
 
   useEffect(() => {
     /**
-     * @indexOfItemToShow: is used to set the active sidebar item, when comming from another screen. for example notification, being the firstItem has and index of 0. create post has and index of 1 etc.
-     *
-     * if i wanted Create post which is the plus icon to be active by default when comming from a different page, i pass in a indexOfItemToShow through navigation params...
-     *
-     * The codde below works as follows:
-       
-     (1) indexOfItemToShow checks if there's an item you want to make default and if the property is passed with the parent
-     (2) coordinates.length === sideBarTabItems.length checks that the coordinate of all the sidebar icons have been measured and the coordinate state item updated
-      
-     */
+         * @indexOfItemToShow: is used to set the active sidebar item, when comming from another screen. for example notification, being the firstItem has and index of 0. create post has and index of 1 etc.
+         *
+         * if i wanted Create post which is the plus icon to be active by default when comming from a different page, i pass in a indexOfItemToShow through navigation params...
+         *
+         * The codde below works as follows:
+
+         (1) indexOfItemToShow checks if there's an item you want to make default and if the property is passed with the parent
+         (2) coordinates.length === sideBarTabItems.length checks that the coordinate of all the sidebar icons have been measured and the coordinate state item updated
+
+         */
 
     if (indexOfItemToShow && coordinates.length === sideBarTabItems.length) {
       //currentindex handles the Icon/Menu Item to display

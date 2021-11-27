@@ -18,7 +18,7 @@ export const EditableTitle = ({ cropToGrowDetails }) => {
     cropName: "<Crop>",
     category: "",
     variety: "'<Var >'",
-    cropVariety: "",
+    crop_variety: "",
     monthIndex: 0,
   });
 
@@ -42,7 +42,7 @@ export const EditableTitle = ({ cropToGrowDetails }) => {
       params: {
         cropName: cropToGrowDetails?.cropName,
         cropId: cropToGrowDetails?.cropId,
-        cropVariety: cropToGrowDetails.cropVariety,
+        crop_variety: cropToGrowDetails.crop_variety,
       },
     });
   };
@@ -81,7 +81,7 @@ export const EditableTitle = ({ cropToGrowDetails }) => {
             marginTop: 0,
             justifyContent: "center",
             alignItems: "center",
-            height: `${cropToGrowDetails?.cropVariety ? "auto" : "0%"}`,
+            height: `${cropToGrowDetails?.crop_variety ? "auto" : "0%"}`,
             // marginHorizontal: '6%',
           }}
         >
@@ -95,7 +95,7 @@ export const EditableTitle = ({ cropToGrowDetails }) => {
               color: colors.white,
             }}
           >
-            {cropToGrowDetails?.cropVariety}
+            {cropToGrowDetails?.crop_variety}
           </Text>
         </View>
         <View

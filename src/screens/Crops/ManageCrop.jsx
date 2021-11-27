@@ -90,7 +90,7 @@ const ManageCrops = () => {
       monthIndex: new Date(details?.job_date).getMonth(),
       variety: details?.variety,
       cropId: details?.crop_id,
-        cropVariety: details?.crop_type,
+        crop_variety: details?.crop_type,
       action: details?.job_type,
       jobId: details?.id,
       jobDate: details?.job_date,
@@ -283,10 +283,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontSize: 40,
+    fontSize: 32,
+        lineHeight: 45,
+    fontFamily: "Hero-New-Thin",
     textAlign: "center",
-    fontWeight: "100",
-  },
+},
   growCalendarCard: {
     backgroundColor: colors.greenTransparent,
     borderRadius: 50 / 2,

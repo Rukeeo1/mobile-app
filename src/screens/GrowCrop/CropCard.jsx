@@ -133,7 +133,7 @@ const CropCard = ({ navigation, route }) => {
                 setToUseJobId(currentJob?.jobs[0]?.id);
                 setToUseCropId(currentJob?.jobs[0]?.crop_id);
                 setToUseCropDate(currentJob?.jobs[0]?.job_date);
-                setToUseCropType(currentJob?.jobs[0]?.crop_type || cropToGrowDetails?.cropVariety);
+                setToUseCropType(currentJob?.jobs[0]?.crop_type || cropToGrowDetails?.crop_variety);
                 setToUseCropName(currentJob?.jobs[0]?.name);
             }
         }
@@ -214,7 +214,7 @@ const CropCard = ({ navigation, route }) => {
             status: "PENDING",
             variety: cropToGrowDetails?.variety,
             crop_id: toUseCropId,
-            crop_type: toUseCropType ?? cropToGrowDetails?.cropVariety,
+            crop_type: toUseCropType ?? cropToGrowDetails?.crop_variety,
             name: toUseCropName,
         };
         setToUseJobType(jobType);
@@ -229,7 +229,7 @@ const CropCard = ({ navigation, route }) => {
                 // jobInfo.status = "STARTED";
                 // jobInfo.job_type = "SOW";
 
-                jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "SOW", status: "STARTED",
+                jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.crop_variety, title: "SOW", status: "STARTED",
                     job_type: "SOW", sow_date: ourDate, job_date: ourDate,  sowItDate: ourDate }
 
                 await manageCropContext?.actions?.updateCropToGrowDetails({
@@ -240,7 +240,7 @@ const CropCard = ({ navigation, route }) => {
                     jobStatus: "STARTED",
                     notNewCalendarSow: true,
                     cropId: toUseCropId,
-                    cropVariety: toUseCropType,
+                    crop_variety: toUseCropType,
                 });
                 await dispatch(updateJob(currentJob?.jobs[0].id, jobInfo, Toast));
             }
@@ -250,7 +250,7 @@ const CropCard = ({ navigation, route }) => {
                 // jobInfo.status = "STARTED";
                 // jobInfo.job_type = "PLANT";
 
-                jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "PLANT", status: "STARTED",
+                jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.crop_variety, title: "PLANT", status: "STARTED",
                     job_type: "PLANT", plant_date: ourDate, job_date: ourDate, plantItDate: ourDate }
 
                 await manageCropContext?.actions?.updateCropToGrowDetails({
@@ -261,7 +261,7 @@ const CropCard = ({ navigation, route }) => {
                     jobStatus: "STARTED",
                     notNewCalendarPlant: true,
                     cropId: toUseCropId,
-                    cropVariety: toUseCropType,
+                    crop_variety: toUseCropType,
                 });
                 await dispatch(updateJob(currentJob?.jobs[0].id, jobInfo, Toast));
             }
@@ -272,7 +272,7 @@ const CropCard = ({ navigation, route }) => {
                 jobInfo.job_type = "HARVEST";
 
 
-                jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.cropVariety, title: "HARVEST", status: "STARTED",
+                jobInfo = { ...jobInfo, crop_id: cropToGrowDetails?.cropId, crop_type: cropToGrowDetails?.crop_variety, title: "HARVEST", status: "STARTED",
                     job_type: "HARVEST", harvest_start_date: ourDate, job_date: ourDate, harvestItStartDate: ourDate }
                 manageCropContext?.actions?.updateCropToGrowDetails({
 
@@ -283,9 +283,9 @@ const CropCard = ({ navigation, route }) => {
                     jobStatus: "STARTED",
                     notNewCalendarHarvest: true,
                     cropId: toUseCropId,
-                    cropVariety: toUseCropType,
+                    crop_variety: toUseCropType,
                     // cropId: toUseCropId,
-                    // cropVariety: toUseCropType,
+                    // crop_variety: toUseCropType,
                 });
                 await dispatch(updateJob(currentJob?.jobs[0].id, jobInfo, Toast));
                 // await dispatch(harvestCrop(jobInfo, Toast));
@@ -315,7 +315,7 @@ const CropCard = ({ navigation, route }) => {
                     sowItDate: ourDate,
                     notNewCalendarSow: true,
                     cropId: toUseCropId,
-                    cropVariety: toUseCropType,
+                    crop_variety: toUseCropType,
                 });
                 console.log({drogba: {
                         timm: currentJob?.jobs[0].id,
@@ -346,7 +346,7 @@ const CropCard = ({ navigation, route }) => {
                     plantItDate: ourDate,
                     notNewCalendarPlant: true,
                     cropId: toUseCropId,
-                    cropVariety: toUseCropType,
+                    crop_variety: toUseCropType,
                 });
                 await dispatch(updateJob(currentJob?.jobs[0].id, jobInfo, Toast));
             }
@@ -368,7 +368,7 @@ const CropCard = ({ navigation, route }) => {
                     harvestItStartDate: ourDate,
                     notNewCalendarHarvest: true,
                     cropId: toUseCropId,
-                    cropVariety: toUseCropType,
+                    crop_variety: toUseCropType,
                 });
                 await dispatch(updateJob(currentJob?.jobs[0].id, jobInfo, Toast));
                 // await dispatch(harvestCrop(jobInfo, Toast));

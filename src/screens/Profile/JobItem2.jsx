@@ -46,7 +46,7 @@ export const JobItem2 = ({ job }) => {
       cropName: job?.name,
       month: monthsAbr[monthIndex],
       variety: job?.variety,
-      cropVariety: job?.crop_type,
+      crop_variety: job?.crop_type,
       monthIndex,
       cropId: job?.crop_id,
       action: job?.job_type,

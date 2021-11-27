@@ -138,7 +138,7 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
       if (data?.data) {
           ManageCropContext?.actions?.updateCropToGrowDetails({
               variety: data.data.variety,
-              cropVariety: data.data.crop_type,
+              crop_variety: data.data.crop_type,
               cropName: data.data.name,
               // jobId: data.data?.id,
               sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
@@ -152,7 +152,7 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
           });
 
           await dispatch(getCropCycleDetails(data?.data?.crop_id));
-          await  dispatch(getCropSteps(data?.data?.crop_id));
+          await dispatch(getCropSteps(data?.data?.crop_id));
           await dispatch(getUserJobs(data?.data?.user_id));
           await dispatch(getCurrentJob(data?.data?.id));
       }

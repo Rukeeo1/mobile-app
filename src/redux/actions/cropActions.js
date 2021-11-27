@@ -186,7 +186,7 @@ return
   //       cropName: name,
   //       cropId: data?.data.id,
   //       month: "",
-  //       cropVariety: "", //user variety
+  //       crop_variety: "", //user variety
   //       monthIndex: 0,
   //       fromJobs: false,
   //       category: "",

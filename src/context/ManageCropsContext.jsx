@@ -8,7 +8,7 @@ export const ManageCropProvider = ({ children }) => {
     month: "",
     action: "",
     variety: "", //crop type
-    cropVariety: "", //user variety
+    crop_variety: "", //user variety
     monthIndex: 0,
     cropId: "",
     fromJobs: false,
@@ -45,7 +45,7 @@ export const ManageCropProvider = ({ children }) => {
       month: "",
       action: "",
       variety: "", //crop type
-      cropVariety: "", //user variety
+      crop_variety: "", //user variety
       monthIndex: 0,
       cropId: "",
       fromJobs: false,

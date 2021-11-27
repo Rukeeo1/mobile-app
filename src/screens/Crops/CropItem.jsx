@@ -87,7 +87,7 @@ export const CropItem = ({
       job_type: "PENDING",
       jobDate: jobInfo.job_date,
       variety: recommendation,
-      cropVariety: currentVariety,
+      crop_variety: currentVariety,
       cropId: currentCropId,
     });
 
@@ -98,7 +98,7 @@ export const CropItem = ({
     manageCropContext?.actions?.updateCropToGrowDetails({
       variety: recommendation,
       cropName: currentName,
-      cropVariety: currentVariety,
+      crop_variety: currentVariety,
       cropId: currentCropId,
     });
 

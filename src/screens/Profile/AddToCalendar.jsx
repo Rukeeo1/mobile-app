@@ -829,7 +829,7 @@ const AddToCalendar = () => {
                             growLevel: crop?.grow_level,
                             cropId: crop?.id,
                             variety: crop?.variety,
-                            cropVariety: crop?.crop_type,
+                            crop_variety: crop?.crop_type,
                           },
                         });
                         //update state context???
@@ -840,7 +840,7 @@ const AddToCalendar = () => {
                           monthIndex: m,
                           cropId: crop?.id,
                           action: "STARTED",
-                          cropVariety: crop?.crop_type,
+                          crop_variety: crop?.crop_type,
                         });
                       }}
                     />
