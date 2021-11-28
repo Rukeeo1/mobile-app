@@ -113,11 +113,11 @@ const CropSelection = ({ navigation, route }) => {
         action: cropToGrowDetails.action,
         job_type: cropToGrowDetails.job_type,
         job_date: cropToGrowDetails.jobDate,
-          // status: cropToGrowDetails.jobStatus,
+        status: cropToGrowDetails.jobStatus === '' ? cropToGrowDetails.action : cropToGrowDetails.jobStatus,
       };
       manageCropContext?.actions?.updateCropToGrowDetails({
         variety: realVariety,
-        cropVariety: cropUserVariety,
+        crop_variety: cropUserVariety,
       });
 
       await dispatch(updateJob(cropToGrowDetails?.jobId, jobInfo2, Toast)).then(
@@ -134,7 +134,7 @@ const CropSelection = ({ navigation, route }) => {
   }, [cropName]);
 
   useEffect(() => {
-    console.log({obama: cropDetail})
+    console.log({obama: cropDetail.crops.length})
   }, [cropDetail]);
   //
   useEffect(() => {
@@ -148,6 +148,7 @@ const CropSelection = ({ navigation, route }) => {
 
   let tmpItem;
   let tmpItem2;
+  let tmpItem3;
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
@@ -306,7 +307,101 @@ const CropSelection = ({ navigation, route }) => {
                   ));
               })}
 
+
               <View>{tmpItem}</View>
+            </>
+            <>
+              {cropDetail?.crops?.map((crop) => {
+                return (
+                  crop?.variety &&
+                  crop?.variety?.toLowerCase() !== "" && (
+                    <GradientButton
+                      key={crop?.id}
+                      gradient={[colors.blueLigth, colors.blue]}
+                      onPress={() => {
+                        // setSearch(crop?.variety)
+                        // console.log({ qqqVariety: crop });
+                        setCropVarietyType(
+                          crop?.variety !== "N/A" ? crop?.variety : ""
+                        );
+                        manageCropContext?.actions?.updateCropToGrowDetails({
+                          category:
+                            crop?.variety !== "N/A" ? crop?.variety : "",
+                          variety: crop?.variety !== "N/A" ? crop?.variety : "",
+                          crop_variety: cropUserVariety,
+                          cropName,
+                          // crop_variety: crop?.variety,
+                          cropId: crop?.id,
+                        });
+                        handleGrowCrop(
+                          getCurrentDate(),
+                          crop?.id,
+                          "PENDING",
+                          crop?.variety !== "N/A" ? crop?.variety : ""
+                        );
+                      }}
+                    >
+                      {/* {console.log(crop,'from maping stuff')} */}
+                      <View
+                        style={{
+                          alignItems: "center",
+                          width: "100%",
+                          paddingHorizontal: 20,
+                        }}
+                      >
+                        <Text style={[styles.btnText]}>
+                          {crop?.variety === "N/A" ? "Grow it" : crop?.variety}
+                        </Text>
+                      </View>
+                    </GradientButton>
+                  )
+                );
+              })}
+
+
+                {(cropDetail.crops.length === 0) &&
+                (<GradientButton
+                    key={cropToGrowDetails?.id}
+                    gradient={[colors.blueLigth, colors.blue]}
+                    onPress={() => {
+                        // setSearch(crop?.variety)
+                        // console.log({ qqqVariety: crop });
+                        setCropVarietyType(
+                            cropToGrowDetails?.variety !== "N/A" ? cropToGrowDetails?.variety : ""
+                        );
+                        manageCropContext?.actions?.updateCropToGrowDetails({
+                            category:
+                                cropToGrowDetails?.variety !== "N/A" ? cropToGrowDetails?.variety : "",
+                            variety: cropToGrowDetails?.variety !== "N/A" ? cropToGrowDetails?.variety : "",
+                            crop_variety: cropUserVariety,
+                            cropName,
+                            // crop_variety: crop?.variety,
+                            cropId: cropToGrowDetails?.id,
+                        });
+                        handleGrowCrop(
+                            getCurrentDate(),
+                            cropToGrowDetails?.id,
+                            "PENDING",
+                            cropToGrowDetails?.variety !== "N/A" ? cropToGrowDetails?.variety : ""
+                        );
+                    }}
+                >
+                    {/* {console.log(crop,'from maping stuff')} */}
+                    <View
+                        style={{
+                            alignItems: "center",
+                            width: "100%",
+                            paddingHorizontal: 20,
+                        }}
+                    >
+                        <Text style={[styles.btnText]}>
+                            Grow it
+                        </Text>
+                    </View>
+                </GradientButton>)}
+
+
+              {/*<View>{tmpItem3}</View>*/}
             </>
           </LinearGradient>
         </View>

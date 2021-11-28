@@ -138,9 +138,9 @@ const PostForm = ({
     data.append("title", values.post);
     data.append("content", values.post);
     data.append("post_type", "PUBLIC");
-    data.append("crop_name", values.crop_name);
-    data.append("crop_type", values.crop_name);
-    data.append("variety", values.plantVariety);
+    data.append("crop_name", values.crop_name === '' ? 'noCropName' : values.crop_name);
+    data.append("crop_type", values.crop_name === '' ? 'noCropName' : values.crop_name);
+    data.append("variety", values.plantVariety  === '' ? 'noVariety' : values.plantVariety);
     data.append("user_id", user?.id);
 
     if (!postData) {

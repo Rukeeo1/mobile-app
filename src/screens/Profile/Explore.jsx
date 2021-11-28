@@ -325,11 +325,13 @@ const Explore = () => {
                                 post.name !== "" &&
                                 post.name !== "null" &&
                                 post.name !== "undefined" &&
+                                post.name !== "noCropName" &&
                                 post.name}{" "}
                               {post.variety !== null &&
                                 post.variety !== "" &&
                                 post.variety !== "null" &&
-                                post.variety !== "undefined" && (
+                              post.variety !== 'noVariety' &&
+                              post.variety !== "undefined" && (
                                   <Text
                                     style={{
                                       fontFamily: "Hero-New-Light-Italic",

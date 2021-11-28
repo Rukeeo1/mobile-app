@@ -21,9 +21,9 @@ export const getUserJobs =
     dispatch({
       type: LOADING_JOBS,
     });
-    apiRequest(`/jobs/list?user_id=${userId}&month=${month}&year=${year}`)
+    apiRequest(`/jobs/list?user_id=${userId}`)
       .then((response) => {
-        // console.log(response, "mr president");
+        // console.log(response, "getTimitim");
         dispatch({
           type: GET_USER_JOBS,
           payload: response.data,
@@ -135,10 +135,10 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
     console.log("rotexxxy4", jobId);
     console.log("rotexxxy6", jobDetails);
 
-      if (data?.data) {
+      if (data) {
           ManageCropContext?.actions?.updateCropToGrowDetails({
               variety: data.data.variety,
-              crop_variety: data.data.crop_type,
+              crop_variety: data.data.crop_variety,
               cropName: data.data.name,
               // jobId: data.data?.id,
               sowItDate: data.data.sow_date && true ? data.data.sow_date : "",
@@ -153,8 +153,8 @@ export const updateJob = (jobId, jobDetails, toast) => async (dispatch) => {
 
           await dispatch(getCropCycleDetails(data?.data?.crop_id));
           await dispatch(getCropSteps(data?.data?.crop_id));
-          await dispatch(getUserJobs(data?.data?.user_id));
           await dispatch(getCurrentJob(data?.data?.id));
+          await dispatch(getUserJobs(data?.data?.user_id));
       }
     //
     // dispatch(getUserJobs(jobDetails?.user_id));
@@ -276,32 +276,54 @@ export const getUserOldJobs = () => async (dispatch, getState) => {
 
 };
 
-export const getCurrentJob = (jobId) => (dispatch) => {
+export const getCurrentJob = (jobId) => async(dispatch) => {
+    console.log('atlanta12', jobId)
   dispatch({
     type: LOADING,
     payload: true,
   });
-
-  apiRequest(`/jobs/${jobId}`)
-    .then(({data}) => {
-      if(data){
-
-      }
-      dispatch({
-            type: GET_CURRENT_JOB,
-            payload: data,
-        });
-    })
-    .catch((err) => {
-      console.log(err, "from get current Job");
-        // showApiError(err, true, () => dispatch(getCurrentJob(jobId)));
-    })
-    .finally(() => {
-      dispatch({
+    try {
+        const { data } = await apiRequest(`/jobs/${jobId}`);
+        console.log('atlanta2', data)
+        if (data) {
+            dispatch({
+                type: GET_CURRENT_JOB,
+                payload: data,
+            });
+            console.log('atlanta3', data)
+        }
+        //
+        // dispatch(getUserJobs(jobDetails?.user_id));
+    } catch (error) {
+        console.log(err, "from get current Job");
+        return showApiError(error);
+    }
+    dispatch({
         type: LOADING,
         payload: false,
-      });
     });
+  // apiRequest(`/jobs/${jobId}`)
+  //   .then(({data}) => {
+  //     if(data){
+  //         dispatch({
+  //             type: GET_CURRENT_JOB,
+  //             payload: data,
+  //         });
+  //         console.log('atlanta', data)
+  //     }
+  //
+  //       console.log('atlanta 2', data)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err, "from get current Job");
+  //       // showApiError(err, true, () => dispatch(getCurrentJob(jobId)));
+  //   })
+  //   .finally(() => {
+  //     dispatch({
+  //       type: LOADING,
+  //       payload: false,
+  //     });
+  //   });
 };
 
 export const addReminder = (data) => (dispatch, getState) => {

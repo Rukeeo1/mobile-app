@@ -244,10 +244,12 @@ const UserDetails = ({ navigation }) => {
                               post.name !== "" &&
                               post.name !== "null" &&
                               post.name !== "undefined" &&
+                              post.name !== "noCropName" &&
                               post.name}{" "}
                               {post.variety !== null &&
                               post.variety !== "" &&
                               post.variety !== "null" &&
+                              post.variety !== 'noVariety' &&
                               post.variety !== "undefined" && (
                                   <Text
                                       style={{

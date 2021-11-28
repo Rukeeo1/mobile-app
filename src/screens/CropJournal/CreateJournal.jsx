@@ -155,7 +155,7 @@ const CreateJournal = ({
       journalFormData.append("user_id", user_id);
       journalFormData.append("title", title);
       journalFormData.append("crop_id", crop_id);
-      journalFormData.append("variety", variety);
+      journalFormData.append("variety", variety === '' ? 'noVariety' : variety);
       journalFormData.append("type", type);
       journalFormData.append("postId", postId);
       journalFormData.append("post_type", isPublic ? "public" : "private");

@@ -295,12 +295,14 @@ const CropJournalLists = ({ navigation }) => {
                         {cropToGrowDetails.cropName !== null &&
                           cropToGrowDetails.cropName !== "" &&
                           cropToGrowDetails.cropName !== "null" &&
+                        cropToGrowDetails.cropName !== "noCropName" &&
                           cropToGrowDetails.cropName !== "undefined" &&
                           cropToGrowDetails.cropName}{" "}
                         {cropToGrowDetails.variety !== null &&
                           cropToGrowDetails.variety !== "" &&
                           cropToGrowDetails.variety !== "null" &&
-                          cropToGrowDetails.variety !== "undefined" && (
+                        cropToGrowDetails.variety !== 'noVariety' &&
+                        cropToGrowDetails.variety !== "undefined" && (
                             <Text
                               style={{
                                 fontFamily: "Hero-New-Light-Italic",

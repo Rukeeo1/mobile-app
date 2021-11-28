@@ -31,14 +31,17 @@ import constants from "../../constants";
 import ShareModal from "./ShareModal";
 import { getUserJobs } from "../../redux/actions";
 import globe from "../../assets/globe.png";
+import {getPosts} from "../../redux/actions/postsActions";
 
 const { colors, monthsAbr } = constants;
 
 const FirstView = () => {
   const dispatch = useDispatch();
-  const { user, userData, posts, following, followers } = useSelector(
+  const { user, userData, following, followers } = useSelector(
     (state) => state.auth
   );
+
+    const { all: posts = [] } = useSelector((state) => state.posts);
   const { loading, refreshing, fetchingMore } = useSelector(
     (state) => state.loading
   );
@@ -61,11 +64,18 @@ const FirstView = () => {
   useEffect(() => {
     dispatch(getUserProfile());
     dispatch(getUserGrowList());
+      dispatch(getPosts());
     dispatch(getUserPosts());
     dispatch(getUserJobs(user?.id));
     dispatch(getUserFollowers(false, true));
     dispatch(getUserFollowing(false, true));
   }, []);
+
+  useEffect(() => {
+   console.log({myMyPos: posts})
+  }, [posts]);
+
+
 
   const toggleModal = (post) => {
     setShowShare((prevState) => !prevState);
@@ -352,14 +362,16 @@ const FirstView = () => {
                                       fontFamily: "Hero-New-Medium",
                                   }}
                               >
-                                  {post.title !== null &&
-                                  post.title !== "" &&
-                                  post.title !== "null" &&
-                                  post.title !== "undefined" &&
-                                  post.title}{" "}
+                                  {post.name !== null &&
+                                  post.name !== "" &&
+                                  post.name !== "null" &&
+                                  post.name !== "undefined" &&
+                                  post.name !== "noCropName" &&
+                                  post.name}{" "}
                                   {post.variety !== null &&
                                   post.variety !== "" &&
                                   post.variety !== "null" &&
+                                  post.variety !== 'noVariety' &&
                                   post.variety !== "undefined" && (
                                       <Text
                                           style={{

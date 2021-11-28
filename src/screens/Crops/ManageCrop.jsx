@@ -90,7 +90,7 @@ const ManageCrops = () => {
       monthIndex: new Date(details?.job_date).getMonth(),
       variety: details?.variety,
       cropId: details?.crop_id,
-        crop_variety: details?.crop_type,
+        crop_variety: details?.crop_variety,
       action: details?.job_type,
       jobId: details?.id,
       jobDate: details?.job_date,

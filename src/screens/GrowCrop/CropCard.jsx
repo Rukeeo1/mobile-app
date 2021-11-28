@@ -197,10 +197,6 @@ const CropCard = ({ navigation, route }) => {
     const cropSeasons = [sowMonth, plantMonth, harvestMonth];
 
 
-
-    useEffect(() => {
-        // console.log({amyamy: cropSeasons});
-    }, [cropSeasons]);
     let ourDate;
     let jobInfo;
     const handleGrowCrop = async (selectedDate, jobType) => {
