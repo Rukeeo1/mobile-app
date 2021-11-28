@@ -272,7 +272,11 @@ const CropJournalLists = ({ navigation }) => {
                             }}
                           />
                         ) : (
-                            <Entypo name="lock" size={14}  color={colors.greyDark} />
+                          <Entypo
+                            name="lock"
+                            size={14}
+                            color={colors.greyDark}
+                          />
                         )}{" "}
                         {user?.fullname}{" "}
                         <Text
@@ -295,14 +299,14 @@ const CropJournalLists = ({ navigation }) => {
                         {cropToGrowDetails.cropName !== null &&
                           cropToGrowDetails.cropName !== "" &&
                           cropToGrowDetails.cropName !== "null" &&
-                        cropToGrowDetails.cropName !== "noCropName" &&
+                          cropToGrowDetails.cropName !== "noCropName" &&
                           cropToGrowDetails.cropName !== "undefined" &&
                           cropToGrowDetails.cropName}{" "}
                         {cropToGrowDetails.variety !== null &&
                           cropToGrowDetails.variety !== "" &&
                           cropToGrowDetails.variety !== "null" &&
-                        cropToGrowDetails.variety !== 'noVariety' &&
-                        cropToGrowDetails.variety !== "undefined" && (
+                          cropToGrowDetails.variety !== "noVariety" &&
+                          cropToGrowDetails.variety !== "undefined" && (
                             <Text
                               style={{
                                 fontFamily: "Hero-New-Light-Italic",

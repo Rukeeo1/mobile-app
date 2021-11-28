@@ -1,8 +1,8 @@
-import {SvgXml} from "react-native-svg";
+import { SvgXml } from "react-native-svg";
 import * as React from "react";
 
 export default function SvgProfileInactive(props) {
-    const profileInactive = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+  const profileInactive = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
 viewBox="0 0 62 32" style="fill:#ffffff;" xml:space="preserve">
 <g class="st0">
  <path class="st1" d="M22.6,27.4c-2.1,0-3.1-0.7-3.1-2c0-1.8,1-3.6,3.1-5.4s4.7-2.6,7.9-2.6c1.6,0,3.2,0.3,4.6,0.8s2.6,1.2,3.5,2
@@ -13,6 +13,8 @@ viewBox="0 0 62 32" style="fill:#ffffff;" xml:space="preserve">
   s-1.7,0.4-2.4,1.1c-0.7,0.7-1,1.7-1,2.8s0.3,2,1,2.8C28.8,13.5,29.6,13.9,30.5,13.9z"/>
 </g>
 </svg>`;
-    const ProfileSvgInactive  = () => <SvgXml xml={profileInactive} height="100%" width="100%" />;
-    return <ProfileSvgInactive  />;
+  const ProfileSvgInactive = () => (
+    <SvgXml xml={profileInactive} height="100%" width="100%" />
+  );
+  return <ProfileSvgInactive />;
 }

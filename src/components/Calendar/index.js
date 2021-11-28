@@ -113,30 +113,6 @@ export const GrowCalendar = ({
   return (
     <React.Fragment>
       <View style={styles.wrapperVertical} keyboardShouldPersistTaps="always">
-        {/* <SmoothPicker
-          initialScrollToIndex={selected}
-          onScrollToIndexFailed={() => {}}
-          keyExtractor={(_, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          data={data}
-          scrollAnimation
-          onSelected={({ item, index }) => handleChange(index, item)}
-          offsetSelection={0}
-          renderItem={(option) => {
-            console.warn(option)
-            return ItemToRender(
-              option,
-              selected,
-              true,
-              activeItemContainerStyle,
-              activeTextColor,
-              textColor
-            )
-          }}
-          magnet
-          selectOnPress
-          key={1}
-        /> */}
         <ScrollPicker
           // ref={(sp) => { this.sp = sp }}
           dataSource={data}
@@ -147,7 +123,6 @@ export const GrowCalendar = ({
           animateToSelectedIndex
           highlightColor={colors.white}
           renderItem={(option, index) => {
-            // console.warn(option)
             return ItemToRender(
               { item: option, index },
               selected,

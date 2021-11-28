@@ -59,8 +59,6 @@ const UserDetails = ({ navigation }) => {
     dispatch(getUserFollowing(false, true));
   }, []);
 
-  // console.log({mygrowitList: data})
-
   return (
     <>
       <SafeArea>
@@ -183,25 +181,27 @@ const UserDetails = ({ navigation }) => {
                     >
                       {growitList?.map((item, i) => {
                         // return (
-                            return item?.job_type !== "KILLED" && (
-                          <View style={[styles.growCard]} key={item?.id ?? i}>
-                            <Image
-                              style={{
-                                height: 70,
-                                width: 70,
-                                borderRadius: 70 / 2,
-                              }}
-                              source={
-                                item?.thumbnail_url
-                                  ? { uri: item?.thumbnail_url }
-                                  : require("../../assets/growavatar.png")
-                              }
-                            />
-                            <Text style={[styles.growText]}>
-                              {item?.name}{" "}
-                              {item?.variety ? `“${item?.variety}”` : ""}
-                            </Text>
-                          </View>
+                        return (
+                          item?.job_type !== "KILLED" && (
+                            <View style={[styles.growCard]} key={item?.id ?? i}>
+                              <Image
+                                style={{
+                                  height: 70,
+                                  width: 70,
+                                  borderRadius: 70 / 2,
+                                }}
+                                source={
+                                  item?.thumbnail_url
+                                    ? { uri: item?.thumbnail_url }
+                                    : require("../../assets/growavatar.png")
+                                }
+                              />
+                              <Text style={[styles.growText]}>
+                                {item?.name}{" "}
+                                {item?.variety ? `“${item?.variety}”` : ""}
+                              </Text>
+                            </View>
+                          )
                         );
                       })}
                     </ScrollView>
@@ -239,26 +239,24 @@ const UserDetails = ({ navigation }) => {
                           </Text>
                           {/* {' '}
                           {post.content} */}
-
-                              {post.name !== null &&
-                              post.name !== "" &&
-                              post.name !== "null" &&
-                              post.name !== "undefined" &&
-                              post.name !== "noCropName" &&
-                              post.name}{" "}
-                              {post.variety !== null &&
-                              post.variety !== "" &&
-                              post.variety !== "null" &&
-                              post.variety !== 'noVariety' &&
-                              post.variety !== "undefined" && (
-                                  <Text
-                                      style={{
-                                          fontFamily: "Hero-New-Light-Italic",
-                                      }}
-                                  >{`- ‘${post.variety}’`}</Text>
-                              )}
-                          </Text>
-
+                          {post.name !== null &&
+                            post.name !== "" &&
+                            post.name !== "null" &&
+                            post.name !== "undefined" &&
+                            post.name !== "noCropName" &&
+                            post.name}{" "}
+                          {post.variety !== null &&
+                            post.variety !== "" &&
+                            post.variety !== "null" &&
+                            post.variety !== "noVariety" &&
+                            post.variety !== "undefined" && (
+                              <Text
+                                style={{
+                                  fontFamily: "Hero-New-Light-Italic",
+                                }}
+                              >{`- ‘${post.variety}’`}</Text>
+                            )}
+                        </Text>
                       </View>
                     </View>
                   );
@@ -281,7 +279,11 @@ const CurrentGrowList = ({ crop, onPress }) => {
         style={{ height: 60, width: 60, borderRadius: 30 }}
       />
       <Text style={[styles.growText]}>
-          {crop.name}{"\n"}{crop.crop_type && crop.crop_type !== 'N/A' ? `“${crop?.crop_type}”` : ""}
+        {crop.name}
+        {"\n"}
+        {crop.crop_type && crop.crop_type !== "N/A"
+          ? `“${crop?.crop_type}”`
+          : ""}
       </Text>
     </TouchableOpacity>
   );
@@ -365,7 +367,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
-      fontSize: 18
+    fontSize: 18,
   },
   growMovement: {
     height: 350,

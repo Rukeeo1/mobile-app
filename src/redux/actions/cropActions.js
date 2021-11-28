@@ -14,7 +14,7 @@ import { apiRequest, showApiError } from "../../config/api";
 import { API_URL } from "../../constants";
 import ManageCropContext from "../../context/ManageCropsContext";
 import { updateAvatar } from "./authActions";
-import {getCurrentJob, getUserJobs, growCrop} from "./jobActions";
+import { getCurrentJob, getUserJobs, growCrop } from "./jobActions";
 
 export const getCropsFavoriteToGrow = (month) => async (dispatch) => {
   try {
@@ -59,17 +59,12 @@ export const getCropVarieties = (crop) => async (dispatch) => {
 
 export const getCropCycleDetails = (cropId) => async (dispatch) => {
   try {
-    console.log({mbappe2: cropId});
     const { data } = await apiRequest(`/crops/${cropId}`);
-
-      console.log({mbappe4: data});
     dispatch({
       type: GET_CROP_CYCLE_DETAILS,
       payload: data,
     });
   } catch (error) {
-    // console.log({mbappe3: cropId});
-    // console.log({mbappe: error})
     showApiError(error);
   }
 };
@@ -87,70 +82,47 @@ export const getCropSteps = (cropId) => async (dispatch) => {
 };
 
 export const addCrop = (cropData) => async (dispatch, getState) => {
-    const { token } = getState().auth;
+  const { token } = getState().auth;
 
   dispatch({
     type: LOADING,
     payload: true,
   });
-const {grow_level, name, variety, user_id, job_date} = cropData;
-    // console.log("dzeko", cropData);
+  const { grow_level, name, variety, user_id, job_date } = cropData;
 
-    const jobInfo2 = {
-        name,
-        life_cycle: "",
-        variety,
-        grow_level,
-        user_id,
-        job_date
-    };
-    let jobInfo5;
+  const jobInfo2 = {
+    name,
+    life_cycle: "",
+    variety,
+    grow_level,
+    user_id,
+    job_date,
+  };
+  let jobInfo5;
 
-    try {
-        const { data } = await apiRequest(`/crops/newCrop`, 'post', jobInfo2 );
-        console.log("rotexxxy344", data);
-        // console.log("rotexxxy3", cropData);
-        if (data && data?.data?.id !== '') {
-            //  jobInfo5 = {
-            //                 name,
-            //                 crop_id: data?.data.id,
-            //                 user_id: user_id,
-            //                 job_date,
-            //                 title: "PENDING",
-            //                 status: "PENDING",
-            //                 job_type: "PENDING",
-            //                 variety,
-            //                 crop_type: '',
-            //
-            //             };
-            //       const myCropGrown =  await dispatch(growCrop(jobInfo5, false))
-            // if(myCropGrown) {
-            //     return dispatch(getCurrentJob(myCropGrown))
-            //     // return console.log({elishasha: myCropGrown})
-            // }
-            // dispatch(getCropCycleDetails(data?.data.id));
-            // dispatch(getCropSteps(data?.data.id));
-        //
-            return data?.data?.id;
-        }
+  try {
+    const { data } = await apiRequest(`/crops/newCrop`, "post", jobInfo2);
 
-        dispatch({
-            type: LOADING,
-            payload: false,
-        });
-    } catch (error) {
-        console.log(error, "data___error");
-        // console.log('');
-
-        showApiError(error);
-
-        dispatch({
-            type: LOADING,
-            payload: false,
-        });
-        return error;
+    if (data && data?.data?.id !== "") {
+      return data?.data?.id;
     }
-return
+
+    dispatch({
+      type: LOADING,
+      payload: false,
+    });
+  } catch (error) {
+    console.log(error, "data___error");
+
+    showApiError(error);
+
+    dispatch({
+      type: LOADING,
+      payload: false,
+    });
+    return error;
+  }
+  return;
 
   // fetch(`${API_URL}/crops/newCrop`, {
   //   headers: {
@@ -227,10 +199,8 @@ export const addCrop2 = (name, setCrop) => (dispatch) => {
     type: LOADING,
     payload: true,
   });
-    // console.log({dzeko: formData})
 
-
-    apiRequest("/crops/newCrop", "post", { name })
+  apiRequest("/crops/newCrop", "post", { name })
     .then(({ data }) => {
       // console.log("new crop", data);
       setCrop(data?.data);
@@ -287,8 +257,6 @@ export const getCurrentGrowing = (userId) => async (dispatch) => {
       type: GET_CURRENT_GROW_CROPS,
       payload: data,
     });
-
-
   } catch (error) {
     return showApiError(error);
   }

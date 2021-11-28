@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Text, GradientButton } from "../index";
 
 import constants from "../../constants";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const { colors } = constants;
 
@@ -20,35 +20,65 @@ const FavoriteCropItem = ({
     <View>
       <TouchableOpacity
         style={[styles.flowers, { marginBottom: 10 }]}
-        onPress={ id === tipToShowId ? showTip('') : showTip(id) }
-
+        onPress={id === tipToShowId ? showTip("") : showTip(id)}
       >
         <View>
           <Image style={styles.flowerImg} source={{ uri: media_url }} />
         </View>
 
         <View style={[styles.flowerText]}>
+          <Text fontType="light" style={{ fontSize: 16, fontWeight: "normal" }}>
+            {name}
+          </Text>
 
-          <Text fontType="light" style={{ fontSize: 16, fontWeight: "normal" }}>{name}</Text>
-
-              {id === tipToShowId ? (
-                  <View style={{ display: "flex", textAlign: 'center', flexDirection: "row", }}>
-                      <MaterialIcons name="star" size={15} color={colors.green} style={{display: 'block', marginTop: 2, marginRight: 5, textAlign: 'center',}} />
-                      <Text style={{ fontSize: 14, fontWeight: "normal",  color: colors.green, display: 'flex' } }>
-                          {grow_level} {'Crop'}
-                      </Text>
-                  </View>
+          {id === tipToShowId ? (
+            <View
+              style={{
+                display: "flex",
+                textAlign: "center",
+                flexDirection: "row",
+              }}
+            >
+              <MaterialIcons
+                name="star"
+                size={15}
+                color={colors.green}
+                style={{
+                  display: "block",
+                  marginTop: 2,
+                  marginRight: 5,
+                  textAlign: "center",
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "normal",
+                  color: colors.green,
+                  display: "flex",
+                }}
+              >
+                {grow_level} {"Crop"}
+              </Text>
+            </View>
           ) : (
-                  <Text style={{fontSize: 12, fontWeight: "normal",  color: colors.black}}>
-                      {grow_level}
-                  </Text>
-              )}
-
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "normal",
+                color: colors.black,
+              }}
+            >
+              {grow_level}
+            </Text>
+          )}
         </View>
       </TouchableOpacity>
       {id === tipToShowId && (
         <View style={{ marginBottom: 25 }}>
-          <Text fontType={'light'} style={styles.quote}>{suggestion}</Text>
+          <Text fontType={"light"} style={styles.quote}>
+            {suggestion}
+          </Text>
 
           <GradientButton
             gradient={[colors.green, colors.greenDeep]}
@@ -98,12 +128,12 @@ const styles = StyleSheet.create({
   quote: {
     textAlign: "center",
     marginVertical: 15,
-      paddingHorizontal: 5,
-      fontSize: 16
+    paddingHorizontal: 5,
+    fontSize: 16,
   },
   btnText: {
     color: colors.white,
     fontWeight: "bold",
-      fontSize: 18
+    fontSize: 18,
   },
 });

@@ -62,10 +62,7 @@ export const Login = ({ navigation }) => {
             );
           });
       }
-    } catch ({ response, message }) {
-      console.log(response?.data, message);
-      // console.log('');
-    }
+    } catch ({ response, message }) {}
   };
 
   const initGoogleAsync = async () => {
@@ -129,7 +126,6 @@ export const Login = ({ navigation }) => {
         )
       );
     } catch (err) {
-      // console.log('');
       console.log(err);
       if (err.code !== "ERR_CANCELED") {
         Alert.alert("", "Something went wrong. Please try again later", [

@@ -53,19 +53,16 @@ const EndHarvestSchedule = ({ navigation }) => {
     };
     setSubmitting(true);
 
-      dispatch(growCrop(cropInfo, false)).then(
-          () => {
-
-              actions.setEndharvest(true);
-              actions.updateCropToGrowDetails({ fromJobs: false });
-              handleNavigation("Settings", {
-                  screen: "Main-Profile",
-                  params: {
-                      indexOfItemToShow: 5,
-                  },
-              })
-          }
-      );
+    dispatch(growCrop(cropInfo, false)).then(() => {
+      actions.setEndharvest(true);
+      actions.updateCropToGrowDetails({ fromJobs: false });
+      handleNavigation("Settings", {
+        screen: "Main-Profile",
+        params: {
+          indexOfItemToShow: 5,
+        },
+      });
+    });
     setSubmitting(false);
     if (!error) {
       // handleNavigation("Crop-Card");

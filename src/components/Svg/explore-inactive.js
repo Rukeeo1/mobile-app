@@ -1,8 +1,8 @@
-import {SvgXml} from "react-native-svg";
+import { SvgXml } from "react-native-svg";
 import * as React from "react";
 
 export default function SvgExploreInactive(props) {
-    const exploreInacative = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+  const exploreInacative = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
 viewBox="0 0 62 32" style="fill:none; stroke:#ffffff;" xml:space="preserve">
 <g id="Group_467" transform="translate(-63.763 -44.92)">
  <g id="Group_407" transform="translate(95.24 45.67)">
@@ -46,6 +46,8 @@ viewBox="0 0 62 32" style="fill:none; stroke:#ffffff;" xml:space="preserve">
  </g>
 </g>
 </svg>`;
-    const SvgExploreInactive = () => <SvgXml xml={exploreInacative} height="100%" width="100%" />;
-    return <SvgExploreInactive />;
+  const SvgExploreInactive = () => (
+    <SvgXml xml={exploreInacative} height="100%" width="100%" />
+  );
+  return <SvgExploreInactive />;
 }

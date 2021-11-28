@@ -23,8 +23,6 @@ export const getPosts =
 
     apiRequest("/posts/public")
       .then(({ data }) => {
-        // console.log(data)
-
         dispatch({
           type: FETCH_POSTS,
           payload: data,
@@ -58,13 +56,11 @@ export const addPost = (formData) => (dispatch, getState) => {
     body: formData,
   })
     .then(({ data }) => {
-      // console.log(dzeko2, data);
-
       dispatch(getPosts(true));
     })
     .catch((err) => {
       // showApiError(err, true, () => dispatch(addPost(formData)))
-      // console.log('add post error', err?.response ?? err.message)
+      console.log("add post error", err?.response ?? err.message);
     })
     .finally(() => {
       dispatch({
@@ -76,19 +72,11 @@ export const addPost = (formData) => (dispatch, getState) => {
 };
 export const addAltPost = (formData) => (dispatch, getState) => {
   const { token } = getState().auth;
-  // console.log(formData)
 
   dispatch({
     type: LOADING,
     payload: true,
   });
-
-  // axios
-  //   .post(`${API_URL}/posts/newpost`, formData, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
   fetch(`${API_URL}/posts/new_alternate_post`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -99,13 +87,11 @@ export const addAltPost = (formData) => (dispatch, getState) => {
     body: formData,
   })
     .then(({ data }) => {
-      console.log("add post", data);
-
       dispatch(getPosts(true));
     })
     .catch((err) => {
       // showApiError(err, true, () => dispatch(addPost(formData)))
-      // console.log('add post error', err?.response ?? err.message)
+      console.log("add post error", err?.response ?? err.message);
     })
     .finally(() => {
       dispatch({
@@ -119,19 +105,12 @@ export const addAltPost = (formData) => (dispatch, getState) => {
 export const editPost =
   (formData, postId, navigation) => (dispatch, getState) => {
     const { token } = getState().auth;
-    // console.log({martinmartins: formData})
 
     dispatch({
       type: LOADING,
       payload: true,
     });
 
-    // axios
-    //   .post(`${API_URL}/posts/newpost`, formData, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   })
     fetch(`${API_URL}/posts/${postId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -142,9 +121,6 @@ export const editPost =
       body: formData,
     })
       .then(({ data }) => {
-        // console.log('add post', data)
-        // Alert.alert("", "Post updated successfully", [{ text: "Dismiss" }]);
-        //
         if (data) {
           dispatch(getUserPosts());
           dispatch(getPosts(true));
@@ -155,7 +131,6 @@ export const editPost =
       })
       .catch((err) => {
         showApiError(err, true, () => dispatch(addPost(formData)));
-        // console.log('add post error', err?.response ?? err.message)
       })
       .finally(() => {
         dispatch({
@@ -179,17 +154,14 @@ export const getPostUser = (userId) => async (dispatch) => {
   try {
     // get user posts
     const userPosts = (await apiRequest(`/users/${userId}/posts`)).data;
-    // console.log({ userPosts })
 
     // get user growlist
     const userGrowList = (
       await apiRequest(`/jobs/current_growing?user_id=${userId}`)
     ).data;
-    console.log({ userGrowList });
 
     // get user data
     const userData = (await apiRequest(`/users/${userId}`)).data;
-    // console.log({ userData })
 
     dispatch({
       type: GET_POST_USER,

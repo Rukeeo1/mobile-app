@@ -1,8 +1,8 @@
-import {SvgXml} from "react-native-svg";
+import { SvgXml } from "react-native-svg";
 import * as React from "react";
 
 export default function SvgNotificationInactive(props) {
-    const notificationInactive = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+  const notificationInactive = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
 viewBox="0 0 62 32" style="fill:#ffffff;" xml:space="preserve">
 <g class="st0">
  <path class="st1" d="M20.5,24.2c-0.6,0-1-0.1-1.4-0.4c-0.3-0.3-0.5-0.6-0.5-1.1c0-0.2,0-0.3,0.1-0.5c0-0.2,0.1-0.4,0.2-0.6
@@ -19,6 +19,8 @@ viewBox="0 0 62 32" style="fill:#ffffff;" xml:space="preserve">
   L21.1,22.3L21.1,22.3z"/>
 </g>
 </svg>`;
-    const SvgNotificationInactive = () => <SvgXml xml={notificationInactive} height="100%" width="100%" />;
-    return <SvgNotificationInactive />;
+  const SvgNotificationInactive = () => (
+    <SvgXml xml={notificationInactive} height="100%" width="100%" />
+  );
+  return <SvgNotificationInactive />;
 }

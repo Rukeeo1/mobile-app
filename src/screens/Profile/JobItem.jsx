@@ -40,7 +40,6 @@ export const JobItem = ({ job }) => {
   const handleNavigation = (path) => () => {
     navigation.navigate(path);
 
-    console.log({yvone: job})
     manageCropContext?.actions?.updateCropToGrowDetails({
       //name in this case represents crop name...details for the crop was added to the job object
       cropName: job?.name,
@@ -52,16 +51,27 @@ export const JobItem = ({ job }) => {
       action: job?.job_type,
       jobDate: job?.job_date,
       fromJobs: true,
-        fromJobHistory: false,
+      fromJobHistory: false,
       jobId: job.id,
     });
   };
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const myDate = new Date(job?.job_date);
-    const dateIndexMonth = monthNames[myDate.getMonth()];
-    const dateIndexDay = myDate.getUTCDate();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const myDate = new Date(job?.job_date);
+  const dateIndexMonth = monthNames[myDate.getMonth()];
+  const dateIndexDay = myDate.getUTCDate();
 
   return (
     <TouchableOpacity
@@ -81,7 +91,7 @@ export const JobItem = ({ job }) => {
             (_, firstChar, rest) => firstChar + rest.toLowerCase()
           )} ${job?.name}`}</Text>
           <Text fontType="bold" style={styles.boldText}>
-              {dateIndexDay} {dateIndexMonth}
+            {dateIndexDay} {dateIndexMonth}
           </Text>
         </View>
       </View>

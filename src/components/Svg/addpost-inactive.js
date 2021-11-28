@@ -1,8 +1,8 @@
-import {SvgXml} from "react-native-svg";
+import { SvgXml } from "react-native-svg";
 import * as React from "react";
 
 export default function SvgAddPostInactive(props) {
-    const addpostInactive = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+  const addpostInactive = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
 viewBox="0 0 62 32" style="fill:#ffffff;" xml:space="preserve">
 <g class="st0">
  <path class="st1" d="M31.3,26c-0.2,0.2-0.5,0.3-0.8,0.3s-0.6-0.1-0.8-0.3c-0.2-0.2-0.3-0.5-0.3-0.7v-8.4h-8.1c-0.2,0-0.4,0-0.6-0.1
@@ -12,6 +12,8 @@ viewBox="0 0 62 32" style="fill:#ffffff;" xml:space="preserve">
   h-8.1v8.4C31.6,25.5,31.5,25.8,31.3,26z"/>
 </g>
 </svg>`;
-    const SvgAddPostInactive = () => <SvgXml xml={addpostInactive} height="100%" width="100%" />;
-    return <SvgAddPostInactive />;
+  const SvgAddPostInactive = () => (
+    <SvgXml xml={addpostInactive} height="100%" width="100%" />
+  );
+  return <SvgAddPostInactive />;
 }

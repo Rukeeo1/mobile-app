@@ -330,8 +330,8 @@ const Explore = () => {
                               {post.variety !== null &&
                                 post.variety !== "" &&
                                 post.variety !== "null" &&
-                              post.variety !== 'noVariety' &&
-                              post.variety !== "undefined" && (
+                                post.variety !== "noVariety" &&
+                                post.variety !== "undefined" && (
                                   <Text
                                     style={{
                                       fontFamily: "Hero-New-Light-Italic",

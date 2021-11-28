@@ -79,7 +79,6 @@ const Settings = ({ navigation }) => {
   });
 
   const submitForm = () => {
-    // console.log({values})
     if (values.profileImageUri !== user.avatar)
       dispatch(updateAvatar({ ...values, location }, navigation));
     else dispatch(updateProfile({ ...values, location }, navigation));
@@ -196,7 +195,6 @@ const Settings = ({ navigation }) => {
               <GooglePlacesAutocomplete
                 placeholder="Enter your location"
                 onPress={(data) => {
-                  // console.warn('location', data)
                   setLocation(data.description);
                 }}
                 query={{

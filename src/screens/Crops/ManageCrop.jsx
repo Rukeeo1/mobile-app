@@ -59,7 +59,6 @@ const ManageCrops = () => {
       await dispatch(getCurrentGrowing(userId));
     }
 
-      console.log({daramola: userId})
     setFechingJobs(false);
   }, []);
 
@@ -73,10 +72,6 @@ const ManageCrops = () => {
     dispatch(getUserJobs(user?.id));
   }, [user?.id]);
 
-
-    useEffect(() => {
-        console.log({daramola2: jobs})
-    }, [jobs]);
   useEffect(() => {
     getCurrentJobs();
     getPreviousHarvest();
@@ -90,13 +85,12 @@ const ManageCrops = () => {
       monthIndex: new Date(details?.job_date).getMonth(),
       variety: details?.variety,
       cropId: details?.crop_id,
-        crop_variety: details?.crop_variety,
+      crop_variety: details?.crop_variety,
       action: details?.job_type,
       jobId: details?.id,
       jobDate: details?.job_date,
       fromJobs: true,
     });
-    console.log({detailsBoys: details})
   };
 
   return (
@@ -166,22 +160,27 @@ const ManageCrops = () => {
                 {jobs?.jobs?.length > 0 ? "Current growing" : null}
               </Text>
               {jobs?.jobs
-                  .filter((job) => (job?.job_type === "HARVEST" && job?.status === "STARTED")
-                        || (job?.job_type === "PLANT" && job?.status !== "PENDING")
-                        || (job?.job_type === "SOW" && job?.status !== "PENDING")
-                        || (job?.job_type === "PENDING" && job?.status === "PENDING")
-                        || (job?.job_type === "SOW"  && job?.status === "PENDING")
-                        || (job?.job_type === "PLANT" && job?.status === "PENDING"))
-                  .map((job) => {
-                      // return (job.job_type === "HARVEST" && job.status === "DONE") && (
-                return  (
-                  <PlantItem
-                    job={job}
-                    key={job.id}
-                    onPress={handleNavigation("Grow-Crop", job)}
-                  />
-                );
-              })}
+                .filter(
+                  (job) =>
+                    (job?.job_type === "HARVEST" &&
+                      job?.status === "STARTED") ||
+                    (job?.job_type === "PLANT" && job?.status !== "PENDING") ||
+                    (job?.job_type === "SOW" && job?.status !== "PENDING") ||
+                    (job?.job_type === "PENDING" &&
+                      job?.status === "PENDING") ||
+                    (job?.job_type === "SOW" && job?.status === "PENDING") ||
+                    (job?.job_type === "PLANT" && job?.status === "PENDING")
+                )
+                .map((job) => {
+                  // return (job.job_type === "HARVEST" && job.status === "DONE") && (
+                  return (
+                    <PlantItem
+                      job={job}
+                      key={job.id}
+                      onPress={handleNavigation("Grow-Crop", job)}
+                    />
+                  );
+                })}
             </View>
           )}
           <View>
@@ -189,24 +188,20 @@ const ManageCrops = () => {
               {" "}
               {jobs?.jobs?.length > 0 ? "Past Harvest" : null}
             </Text>
-              {jobs?.jobs?.map((job) => {
-                  return (job.job_type === "HARVEST" && job.status === "DONE") ? (
-                      <PlantItem
-                          job={job}
-                          key={job.id}
-                          onPress={handleNavigation("Grow-Crop", job)}
-                      />
-                  ) : null;
-              })}
-              {jobs?.jobs?.map((job) => {
-                  return (job.job_type === "KILLED" && job.status === "KILLED") ? (
-                      <PlantItem
-                          job={job}
-                          key={job.id}
-                          onPress={()=>{}}
-                      />
-                  ) : null;
-              })}
+            {jobs?.jobs?.map((job) => {
+              return job.job_type === "HARVEST" && job.status === "DONE" ? (
+                <PlantItem
+                  job={job}
+                  key={job.id}
+                  onPress={handleNavigation("Grow-Crop", job)}
+                />
+              ) : null;
+            })}
+            {jobs?.jobs?.map((job) => {
+              return job.job_type === "KILLED" && job.status === "KILLED" ? (
+                <PlantItem job={job} key={job.id} onPress={() => {}} />
+              ) : null;
+            })}
           </View>
         </View>
       </ScrollView>
@@ -233,7 +228,7 @@ const PlantItem = ({ job, onPress = () => {} }) => {
         <View style={styles.cropText}>
           <Text>{`${job?.name}`}</Text>
 
-            {(job?.job_type === "SOW" || job?.job_type === "PLANT") &&
+          {(job?.job_type === "SOW" || job?.job_type === "PLANT") &&
             job?.status === "PENDING" && (
               <Text fontType="bold" style={styles.boldText}>
                 {`Scheduled ${dateIndex[2]} ${dateIndex[1]}`}
@@ -250,7 +245,7 @@ const PlantItem = ({ job, onPress = () => {} }) => {
               {`Sown ${dateIndex[2]} ${dateIndex[1]}`}
             </Text>
           )}
-            {job?.job_type === "PLANT" && job?.status !== "PENDING" && (
+          {job?.job_type === "PLANT" && job?.status !== "PENDING" && (
             <Text fontType="bold" style={styles.boldText}>
               {`Planted ${dateIndex[2]} ${dateIndex[1]}`}
             </Text>
@@ -284,10 +279,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-        lineHeight: 45,
+    lineHeight: 45,
     fontFamily: "Hero-New-Thin",
     textAlign: "center",
-},
+  },
   growCalendarCard: {
     backgroundColor: colors.greenTransparent,
     borderRadius: 50 / 2,
@@ -300,10 +295,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-    boldTextTitle: {
+  boldTextTitle: {
     fontSize: 16,
   },
-    boldText: {
+  boldText: {
     fontSize: 12,
   },
   cropCardContainer: {
@@ -351,7 +346,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
-      fontSize: 18
+    fontSize: 18,
   },
 });
 

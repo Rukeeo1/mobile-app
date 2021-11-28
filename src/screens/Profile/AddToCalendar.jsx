@@ -33,7 +33,7 @@ import {
   getJobHistory,
   getUserJobs,
   getUserReminders,
-    getUserOldJobs,
+  getUserOldJobs,
   updateReminder,
 } from "../../redux/actions";
 import ManageCropContext from "../../context/ManageCropsContext";
@@ -107,26 +107,14 @@ const AddToCalendar = () => {
 
   useEffect(() => {
     getFavoriteCrops();
-      dispatch(getUserOldJobs());
+    dispatch(getUserOldJobs());
     if (user?.id) {
       getJobs(user?.id, months[m], y);
-
     }
-      console.log({
-          xgracefull2: {
-              jobHistory,
-          },
-      });
-
   }, [m, user?.id, JSON.stringify(userJobs), m]);
 
   useEffect(() => {
-      dispatch(getUserOldJobs());
-      console.log({
-          xgracefull: {
-              jobHistory,
-          },
-      });
+    dispatch(getUserOldJobs());
   }, [user?.id]);
 
   let initialJobs = [];
@@ -139,7 +127,9 @@ const AddToCalendar = () => {
       })
       .slice(0, userJobs?.jobs.length)
       ?.map((job, index) => {
-        return job?.job_type !== "HARVEST" && job?.status !== "DONE" && job?.job_type !== "KILLED"
+        return job?.job_type !== "HARVEST" &&
+          job?.status !== "DONE" &&
+          job?.job_type !== "KILLED"
           ? initialJobs.push(job.job_type)
           : null;
       });
@@ -169,7 +159,6 @@ const AddToCalendar = () => {
   useEffect(() => {
     myUserJobs();
     setUserJobLength(initialJobs.length);
-    // console.log({ initialJobs });
   }, [m]);
 
   const nextItem = () => {
@@ -297,7 +286,7 @@ const AddToCalendar = () => {
                         <Text
                           style={{
                             color: `${index === m ? "#fff" : "black"}`,
-                              fontSize: `${index === m ? 16 : 14}`,
+                            fontSize: `${index === m ? 16 : 14}`,
                             // fontWeight: `${index === m ? "bold" : "100"}`,
                           }}
                           fontType={index === m ? "" : "light"}
@@ -326,7 +315,7 @@ const AddToCalendar = () => {
                   </TouchableOpacity>
                   <View style={{}}>
                     <Text
-                        fontType={'thin'}
+                      fontType={"thin"}
                       style={{
                         color: colors.black,
                         fontSize: 40,
@@ -348,7 +337,7 @@ const AddToCalendar = () => {
                     style={{
                       marginBottom: 15,
                       textAlign: "center",
-                        fontSize: 14,
+                      fontSize: 14,
                       color: colors.greenDeep2,
                     }}
                   >
@@ -374,7 +363,9 @@ const AddToCalendar = () => {
                       paddingHorizontal: 20,
                     }}
                   >
-                    <Text style={styles.btnText2}>Grow in {monthsFull[m]} </Text>
+                    <Text style={styles.btnText2}>
+                      Grow in {monthsFull[m]}{" "}
+                    </Text>
                     <AntDesign name="search1" size={25} color={colors.white} />
                   </View>
                 </GradientButton>
@@ -446,7 +437,10 @@ const AddToCalendar = () => {
                               [{ text: "Dismiss" }]
                             );
                           }
-                          if ((!isNumeric(day) && day < 1) || (!isNumeric(day) && day > 31)) {
+                          if (
+                            (!isNumeric(day) && day < 1) ||
+                            (!isNumeric(day) && day > 31)
+                          ) {
                             Alert.alert(
                               "",
                               "Your date is invalid. It should be between 1 and 31",
@@ -518,9 +512,9 @@ const AddToCalendar = () => {
                           : 3
                       )
                       ?.map((job, index) => {
-                        return job.job_type !== "HARVEST"
-                        && job?.status !== "DONE"
-                        &&  job.job_type !== "KILLED" ? (
+                        return job.job_type !== "HARVEST" &&
+                          job?.status !== "DONE" &&
+                          job.job_type !== "KILLED" ? (
                           <React.Fragment key={index}>
                             <JobItem job={job} />
                           </React.Fragment>
@@ -536,195 +530,226 @@ const AddToCalendar = () => {
                       ?.filter((reminder) => {
                         const date = new Date(reminder?.reminder_date);
 
-                        return y === date.getFullYear() && m === date.getMonth();
-                      })?.reverse()
-                        ?.slice(0, viewingMore ? userJobs?.jobs.length : (userJobLength >= 2 && reminders?.reminders.length >= 1 ? 1 : 3))
+                        return (
+                          y === date.getFullYear() && m === date.getMonth()
+                        );
+                      })
+                      ?.reverse()
+                      ?.slice(
+                        0,
+                        viewingMore
+                          ? userJobs?.jobs.length
+                          : userJobLength >= 2 &&
+                            reminders?.reminders.length >= 1
+                          ? 1
+                          : 3
+                      )
                       .map((reminder, index) => {
-                        return reminder.status === "PENDING" && (
-                          <TouchableOpacity
-                            style={[styles.tasks]}
-                            key={index}
-                            onPress={() => {
-                              if (!updatingReminder)
-                                dispatch(
-                                  updateReminder(
-                                    reminder,
-                                    reminder.status === "PENDING"
-                                      ? "DONE"
-                                      : "PENDING"
-                                  )
-                                );
-                            }}
-                          >
-                            <View style={[styles.jobsChild]}>
-                              <Image
-                                source={require("../../assets/job-indicator-pink.png")}
-                                style={{ height: 25, width: 25 }}
-                              />
-                              <View style={[styles.jobsText]}>
-                                <Text
-                                  style={{
-                                    textTransform: "capitalize",
-                                    color:
+                        return (
+                          reminder.status === "PENDING" && (
+                            <TouchableOpacity
+                              style={[styles.tasks]}
+                              key={index}
+                              onPress={() => {
+                                if (!updatingReminder)
+                                  dispatch(
+                                    updateReminder(
+                                      reminder,
                                       reminder.status === "PENDING"
-                                        ? colors.black
-                                        : colors.pink,
-                                  }}
-                                >
-                                  {reminder?.title}
-                                </Text>
-                                <Text
-                                  style={{
-                                    color:
+                                        ? "DONE"
+                                        : "PENDING"
+                                    )
+                                  );
+                              }}
+                            >
+                              <View style={[styles.jobsChild]}>
+                                <Image
+                                  source={require("../../assets/job-indicator-pink.png")}
+                                  style={{ height: 25, width: 25 }}
+                                />
+                                <View style={[styles.jobsText]}>
+                                  <Text
+                                    style={{
+                                      textTransform: "capitalize",
+                                      color:
+                                        reminder.status === "PENDING"
+                                          ? colors.black
+                                          : colors.pink,
+                                    }}
+                                  >
+                                    {reminder?.title}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      color:
+                                        reminder.status === "PENDING"
+                                          ? colors.black
+                                          : colors.pink,
+                                    }}
+                                  >
+                                    {`${new Date(
+                                      reminder?.reminder_date
+                                    ).getDate()} ${
+                                      monthsFull[
+                                        new Date(
+                                          reminder?.reminder_date
+                                        ).getMonth()
+                                      ]
+                                    }`}
+                                  </Text>
+                                </View>
+                                {updatingReminder === reminder.id ? (
+                                  <ActivityIndicator
+                                    color={colors.greyDark}
+                                    size="small"
+                                    animating
+                                  />
+                                ) : (
+                                  <MaterialIcons
+                                    size={24}
+                                    color={
                                       reminder.status === "PENDING"
-                                        ? colors.black
-                                        : colors.pink,
-                                  }}
-                                >
-                                  {`${new Date(
-                                    reminder?.reminder_date
-                                  ).getDate()} ${
-                                    monthsFull[
-                                      new Date(
-                                        reminder?.reminder_date
-                                      ).getMonth()
-                                    ]
-                                  }`}
-                                </Text>
+                                        ? colors.greyDark
+                                        : colors.pink
+                                    }
+                                    name={
+                                      reminder.status === "PENDING"
+                                        ? "check-circle-outline"
+                                        : "check-circle"
+                                    }
+                                  />
+                                )}
                               </View>
-                              {updatingReminder === reminder.id ? (
-                                <ActivityIndicator
-                                  color={colors.greyDark}
-                                  size="small"
-                                  animating
-                                />
-                              ) : (
-                                <MaterialIcons
-                                  size={24}
-                                  color={
-                                    reminder.status === "PENDING"
-                                      ? colors.greyDark
-                                      : colors.pink
-                                  }
-                                  name={
-                                    reminder.status === "PENDING"
-                                      ? "check-circle-outline"
-                                      : "check-circle"
-                                  }
-                                />
-                              )}
-                            </View>
-                          </TouchableOpacity>
+                            </TouchableOpacity>
+                          )
                         );
                       })}
                   </View>
 
-                    <View
-                        style={{
-                        }}>
+                  <View style={{}}>
+                    {loadingJobs || loading ? (
+                      <ActivityIndicator />
+                    ) : (
+                      jobHistory?.data
+                        ?.filter((job2) => {
+                          const date = new Date(job2?.job_date);
+                          return (
+                            y === date.getFullYear() && m === date.getMonth()
+                          );
+                        })
+                        ?.slice(
+                          0,
+                          viewingMore
+                            ? jobHistory?.data.length
+                            : userJobLength >= 2 && jobHistory?.data.length >= 1
+                            ? 0
+                            : 1
+                        )
+                        ?.map((job2, index2) => {
+                          return (
+                            (job2?.job_type === "SOW" ||
+                              job2?.job_type === "PLANT") && (
+                              <React.Fragment key={index2}>
+                                <JobItem2 job={job2} />
+                              </React.Fragment>
+                            )
+                          );
+                        })
+                    )}
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                    }}
+                  >
+                    {reminders?.reminders
+                      ?.filter((reminder) => {
+                        const date = new Date(reminder?.reminder_date);
 
-                        {loadingJobs || loading ? (
-                            <ActivityIndicator />
-                        ) : (
-                            jobHistory?.data
-                                ?.filter((job2) => {
-                                    const date = new Date(job2?.job_date);
-                                    return (
-                                        y === date.getFullYear() && m === date.getMonth()
-                                    );
-                                })
-                                ?.slice(0, viewingMore ? jobHistory?.data.length : (userJobLength >= 2 && jobHistory?.data.length >= 1 ? 0 : 1))
-                                ?.map((job2, index2) => {
-                                    console.log({dayodayo6: job2})
-                                    return (job2?.job_type === "SOW" || job2?.job_type === "PLANT" ) &&  (
-                                        <React.Fragment key={index2}>
-                                            <JobItem2 job={job2}/>
-                                        </React.Fragment>
-                                    )
-
-                                })
-                        )}
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "column",
-                        }}
-                    >
-                        {reminders?.reminders
-                            ?.filter((reminder) => {
-                                const date = new Date(reminder?.reminder_date);
-
-                                return y === date.getFullYear() && m === date.getMonth();
-                            })?.reverse()
-                            ?.slice(0, viewingMore ? userJobs?.jobs.length : (userJobLength >= 2 && reminders?.reminders.length >= 1 ? 0 : 3))
-                            .map((reminder, index) => {
-                                return reminder.status !== "PENDING" && (
-                                    <TouchableOpacity
-                                        style={[styles.tasks]}
-                                        key={index}
-                                    >
-                                        <View style={[styles.jobsChild]}>
-                                            <Image
-                                                source={require("../../assets/job-indicator-pink.png")}
-                                                style={{ height: 25, width: 25 }}
-                                            />
-                                            <View style={[styles.jobsText]}>
-                                                <Text
-                                                    style={{
-                                                        textTransform: "capitalize",
-                                                        color:
-                                                            reminder.status === "PENDING"
-                                                                ? colors.black
-                                                                : colors.pink,
-                                                    }}
-                                                >
-                                                    {reminder?.title}
-                                                </Text>
-                                                <Text
-                                                    style={{
-                                                        color:
-                                                            reminder.status === "PENDING"
-                                                                ? colors.black
-                                                                : colors.pink,
-                                                    }}
-                                                >
-                                                    {`${new Date(
-                                                        reminder?.reminder_date
-                                                    ).getDate()} ${
-                                                        monthsFull[
-                                                            new Date(
-                                                                reminder?.reminder_date
-                                                            ).getMonth()
-                                                            ]
-                                                    }`}
-                                                </Text>
-                                            </View>
-                                            {updatingReminder === reminder.id ? (
-                                                <ActivityIndicator
-                                                    color={colors.greyDark}
-                                                    size="small"
-                                                    animating
-                                                />
-                                            ) : (
-                                                <MaterialIcons
-                                                    size={24}
-                                                    color={
-                                                        reminder.status === "PENDING"
-                                                            ? colors.greyDark
-                                                            : colors.pink
-                                                    }
-                                                    name={
-                                                        reminder.status === "PENDING"
-                                                            ? "check-circle-outline"
-                                                            : "check-circle"
-                                                    }
-                                                />
-                                            )}
-                                        </View>
-                                    </TouchableOpacity>
-                                );
-                            })}
-                    </View>
+                        return (
+                          y === date.getFullYear() && m === date.getMonth()
+                        );
+                      })
+                      ?.reverse()
+                      ?.slice(
+                        0,
+                        viewingMore
+                          ? userJobs?.jobs.length
+                          : userJobLength >= 2 &&
+                            reminders?.reminders.length >= 1
+                          ? 0
+                          : 3
+                      )
+                      .map((reminder, index) => {
+                        return (
+                          reminder.status !== "PENDING" && (
+                            <TouchableOpacity
+                              style={[styles.tasks]}
+                              key={index}
+                            >
+                              <View style={[styles.jobsChild]}>
+                                <Image
+                                  source={require("../../assets/job-indicator-pink.png")}
+                                  style={{ height: 25, width: 25 }}
+                                />
+                                <View style={[styles.jobsText]}>
+                                  <Text
+                                    style={{
+                                      textTransform: "capitalize",
+                                      color:
+                                        reminder.status === "PENDING"
+                                          ? colors.black
+                                          : colors.pink,
+                                    }}
+                                  >
+                                    {reminder?.title}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      color:
+                                        reminder.status === "PENDING"
+                                          ? colors.black
+                                          : colors.pink,
+                                    }}
+                                  >
+                                    {`${new Date(
+                                      reminder?.reminder_date
+                                    ).getDate()} ${
+                                      monthsFull[
+                                        new Date(
+                                          reminder?.reminder_date
+                                        ).getMonth()
+                                      ]
+                                    }`}
+                                  </Text>
+                                </View>
+                                {updatingReminder === reminder.id ? (
+                                  <ActivityIndicator
+                                    color={colors.greyDark}
+                                    size="small"
+                                    animating
+                                  />
+                                ) : (
+                                  <MaterialIcons
+                                    size={24}
+                                    color={
+                                      reminder.status === "PENDING"
+                                        ? colors.greyDark
+                                        : colors.pink
+                                    }
+                                    name={
+                                      reminder.status === "PENDING"
+                                        ? "check-circle-outline"
+                                        : "check-circle"
+                                    }
+                                  />
+                                )}
+                              </View>
+                            </TouchableOpacity>
+                          )
+                        );
+                      })}
+                  </View>
                   {userJobLength > 3 && (
                     <TouchableOpacity
                       onPress={() => setViewingMore(!viewingMore)}
@@ -802,7 +827,7 @@ const AddToCalendar = () => {
                   )}
                 </View>
 
-                <View style={[styles.horizontalLine]}/>
+                <View style={[styles.horizontalLine]} />
 
                 <View style={[styles.favoriteContainer]}>
                   <Text style={styles.favouriteText2}>
@@ -858,7 +883,6 @@ const AddToCalendar = () => {
                   >
                     <View
                       style={{
-
                         justifyContent: "space-between",
                         alignItems: "center",
                         flexDirection: "row",
@@ -978,7 +1002,7 @@ const styles = StyleSheet.create({
   favoriteContainer: {
     justifyContent: "center",
     alignItems: "center",
-      marginBottom: 20,
+    marginBottom: 20,
   },
   favouriteText: {
     textAlign: "center",
@@ -993,18 +1017,18 @@ const styles = StyleSheet.create({
     color: colors.greenDeep2,
     maxWidth: 250,
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: "500",
     marginVertical: 5,
   },
   btnText: {
     color: colors.white,
     fontWeight: "bold",
-      fontSize: 18
+    fontSize: 18,
   },
   btnText2: {
     color: colors.white,
     fontWeight: "bold",
-      fontSize: 18
+    fontSize: 18,
   },
   flowers: {
     flexDirection: "row",
@@ -1035,7 +1059,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 8,
     marginTop: 6,
-      fontSize: 20,
+    fontSize: 20,
   },
   boldText: {
     fontWeight: "bold",

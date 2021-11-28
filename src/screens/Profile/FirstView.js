@@ -13,7 +13,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import {Entypo, Ionicons} from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 import { useManageCropContext } from "../../context/ManageCropsContext";
@@ -31,7 +31,7 @@ import constants from "../../constants";
 import ShareModal from "./ShareModal";
 import { getUserJobs } from "../../redux/actions";
 import globe from "../../assets/globe.png";
-import {getPosts} from "../../redux/actions/postsActions";
+import { getPosts } from "../../redux/actions/postsActions";
 
 const { colors, monthsAbr } = constants;
 
@@ -41,7 +41,7 @@ const FirstView = () => {
     (state) => state.auth
   );
 
-    const { all: posts = [] } = useSelector((state) => state.posts);
+  const { all: posts = [] } = useSelector((state) => state.posts);
   const { loading, refreshing, fetchingMore } = useSelector(
     (state) => state.loading
   );
@@ -64,18 +64,12 @@ const FirstView = () => {
   useEffect(() => {
     dispatch(getUserProfile());
     dispatch(getUserGrowList());
-      dispatch(getPosts());
+    dispatch(getPosts());
     dispatch(getUserPosts());
     dispatch(getUserJobs(user?.id));
     dispatch(getUserFollowers(false, true));
     dispatch(getUserFollowing(false, true));
   }, []);
-
-  useEffect(() => {
-   console.log({myMyPos: posts})
-  }, [posts]);
-
-
 
   const toggleModal = (post) => {
     setShowShare((prevState) => !prevState);
@@ -182,80 +176,94 @@ const FirstView = () => {
               {jobs?.jobs?.length > 0 ? (
                 <>
                   <Text style={[styles.growTitle]}>Current Grow It List</Text>
-                    {jobs?.jobs?.length === 1 && <ScrollView  style={[styles.lozenges1]}
-                                                              horizontal={true}
-                                                              showsHorizontalScrollIndicator={false}
+                  {jobs?.jobs?.length === 1 && (
+                    <ScrollView
+                      style={[styles.lozenges1]}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
                     >
+                      {jobs?.jobs?.map((crop) => {
+                        return crop.job_type !== "HARVEST" &&
+                          crop.job_type !== "KILLED" ? (
+                          <CurrentGrowList
+                            crop={crop}
+                            onPress={handleCurrentGrowingNav(crop)}
+                          />
+                        ) : null;
+                      })}
+                    </ScrollView>
+                  )}
 
-                        {jobs?.jobs?.map((crop) => {
-                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
-                                <CurrentGrowList
-                                    crop={crop}
-                                    onPress={handleCurrentGrowingNav(crop)}
-                                />
-                            ) : null;
-                        })}
-                    </ScrollView>}
-
-                    {jobs?.jobs?.length === 2 && <ScrollView  style={[styles.lozenges2]}
-                                                              horizontal={true}
-                                                              showsHorizontalScrollIndicator={false}
+                  {jobs?.jobs?.length === 2 && (
+                    <ScrollView
+                      style={[styles.lozenges2]}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
                     >
+                      {jobs?.jobs?.map((crop) => {
+                        return crop.job_type !== "HARVEST" &&
+                          crop.job_type !== "KILLED" ? (
+                          <CurrentGrowList
+                            crop={crop}
+                            onPress={handleCurrentGrowingNav(crop)}
+                          />
+                        ) : null;
+                      })}
+                    </ScrollView>
+                  )}
 
-                        {jobs?.jobs?.map((crop) => {
-                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
-                                <CurrentGrowList
-                                    crop={crop}
-                                    onPress={handleCurrentGrowingNav(crop)}
-                                />
-                            ) : null;
-                        })}
-                    </ScrollView>}
-
-                    {jobs?.jobs?.length === 3 && <ScrollView  style={[styles.lozenges3]}
-                                                              horizontal={true}
-                                                              showsHorizontalScrollIndicator={false}
+                  {jobs?.jobs?.length === 3 && (
+                    <ScrollView
+                      style={[styles.lozenges3]}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
                     >
+                      {jobs?.jobs?.map((crop) => {
+                        return crop.job_type !== "HARVEST" &&
+                          crop.job_type !== "KILLED" ? (
+                          <CurrentGrowList
+                            crop={crop}
+                            onPress={handleCurrentGrowingNav(crop)}
+                          />
+                        ) : null;
+                      })}
+                    </ScrollView>
+                  )}
 
-                        {jobs?.jobs?.map((crop) => {
-                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
-                                <CurrentGrowList
-                                    crop={crop}
-                                    onPress={handleCurrentGrowingNav(crop)}
-                                />
-                            ) : null;
-                        })}
-                    </ScrollView>}
-
-                    {jobs?.jobs?.length === 4 && <ScrollView  style={[styles.lozenges4]}
-                                                              horizontal={true}
-                                                              showsHorizontalScrollIndicator={false}
+                  {jobs?.jobs?.length === 4 && (
+                    <ScrollView
+                      style={[styles.lozenges4]}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
                     >
+                      {jobs?.jobs?.map((crop) => {
+                        return crop.job_type !== "HARVEST" &&
+                          crop.job_type !== "KILLED" ? (
+                          <CurrentGrowList
+                            crop={crop}
+                            onPress={handleCurrentGrowingNav(crop)}
+                          />
+                        ) : null;
+                      })}
+                    </ScrollView>
+                  )}
 
-                        {jobs?.jobs?.map((crop) => {
-                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
-                                <CurrentGrowList
-                                    crop={crop}
-                                    onPress={handleCurrentGrowingNav(crop)}
-                                />
-                            ) : null;
-                        })}
-                    </ScrollView>}
-
-                    {jobs?.jobs?.length > 4 && <ScrollView
-                                                              horizontal={true}
-                                                              showsHorizontalScrollIndicator={false}
+                  {jobs?.jobs?.length > 4 && (
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
                     >
-
-                        {jobs?.jobs?.map((crop) => {
-                            return crop.job_type !== "HARVEST" &&  crop.job_type !== "KILLED"  ? (
-                                <CurrentGrowList
-                                    crop={crop}
-                                    onPress={handleCurrentGrowingNav(crop)}
-                                />
-                            ) : null;
-                        })}
-                    </ScrollView>}
+                      {jobs?.jobs?.map((crop) => {
+                        return crop.job_type !== "HARVEST" &&
+                          crop.job_type !== "KILLED" ? (
+                          <CurrentGrowList
+                            crop={crop}
+                            onPress={handleCurrentGrowingNav(crop)}
+                          />
+                        ) : null;
+                      })}
+                    </ScrollView>
+                  )}
                 </>
               ) : (
                 <View>
@@ -296,92 +304,94 @@ const FirstView = () => {
                 return (
                   <View style={[styles.postCard]}>
                     <View style={[styles.postAvatarContainer]}>
-                        {user?.avatar ? (< Image
-                            style={[styles.postAvatarImg]}
-                            source={{uri: user?.avatar}}
-                        />) : <Text style={[styles.growText]}>
-                        {""}
-                            </Text>}
+                      {user?.avatar ? (
+                        <Image
+                          style={[styles.postAvatarImg]}
+                          source={{ uri: user?.avatar }}
+                        />
+                      ) : (
+                        <Text style={[styles.growText]}>{""}</Text>
+                      )}
                       <Text style={[styles.postTitle]}>{user?.fullname}</Text>
                     </View>
 
-                      { post.media_url ? (
-                    <View>
-                            <Image
-                            style={[styles.postImg]}
-                            source={{uri: post.media_url}}
+                    {post.media_url ? (
+                      <View>
+                        <Image
+                          style={[styles.postImg]}
+                          source={{ uri: post.media_url }}
                         />
+                      </View>
+                    ) : (
+                      <Text style={[styles.growText]}>{""}</Text>
+                    )}
+
+                    <View style={[styles.postDateTime]}>
+                      <Text style={[styles.date]}>
+                        {new Date(post?.created_at)
+                          .toDateString()
+                          .split(" ")
+                          .slice(1)
+                          .join(" ")}
+                      </Text>
+                      <TouchableOpacity onPress={() => toggleModal(post)}>
+                        <Text>...</Text>
+                      </TouchableOpacity>
                     </View>
-                      ) : <Text style={[styles.growText]}>
-                      {""}
-                          </Text>}
 
-
-
-                      <View style={[styles.postDateTime]}>
-                          <Text style={[styles.date]}>
-                              {new Date(post?.created_at)
-                                  .toDateString()
-                                  .split(" ")
-                                  .slice(1)
-                                  .join(" ")}
-                          </Text>
-                          <TouchableOpacity onPress={() => toggleModal(post)}>
-                              <Text>...</Text>
-                          </TouchableOpacity>
-                      </View>
-
-                      <View style={[styles.postText]}>
-                          <Text style={[styles.boldContainer, {}]}>
-                              {" "}
-                              {post?.post_type !== "private" ? (
-                                  <Image
-                                      source={globe}
-                                      style={{
-                                          maxWidth: 14,
-                                          maxHeight: 14,
-                                          width: 16,
-                                          marginTop: 2,
-                                          marginRight: 5,
-                                      }}
-                                  />
-                              ) : (
-                                  <Entypo name="lock" size={14}  color={colors.greyDark} />
-                              )}{" "}
-                              <Text style={[styles.bold]}>
-                                  {user?.fullname}
-                              </Text>{" "}
-                              <Text style={{ fontFamily: "Hero-New-Light" }}>
-                                     {' '}
-                        {post.content}
-                              </Text>
-                          </Text>
-                          <View style={{ paddingLeft: 25, paddingTop: 10 }}>
+                    <View style={[styles.postText]}>
+                      <Text style={[styles.boldContainer, {}]}>
+                        {" "}
+                        {post?.post_type !== "private" ? (
+                          <Image
+                            source={globe}
+                            style={{
+                              maxWidth: 14,
+                              maxHeight: 14,
+                              width: 16,
+                              marginTop: 2,
+                              marginRight: 5,
+                            }}
+                          />
+                        ) : (
+                          <Entypo
+                            name="lock"
+                            size={14}
+                            color={colors.greyDark}
+                          />
+                        )}{" "}
+                        <Text style={[styles.bold]}>{user?.fullname}</Text>{" "}
+                        <Text style={{ fontFamily: "Hero-New-Light" }}>
+                          {" "}
+                          {post.content}
+                        </Text>
+                      </Text>
+                      <View style={{ paddingLeft: 25, paddingTop: 10 }}>
+                        <Text
+                          style={{
+                            fontFamily: "Hero-New-Medium",
+                          }}
+                        >
+                          {post.name !== null &&
+                            post.name !== "" &&
+                            post.name !== "null" &&
+                            post.name !== "undefined" &&
+                            post.name !== "noCropName" &&
+                            post.name}{" "}
+                          {post.variety !== null &&
+                            post.variety !== "" &&
+                            post.variety !== "null" &&
+                            post.variety !== "noVariety" &&
+                            post.variety !== "undefined" && (
                               <Text
-                                  style={{
-                                      fontFamily: "Hero-New-Medium",
-                                  }}
-                              >
-                                  {post.name !== null &&
-                                  post.name !== "" &&
-                                  post.name !== "null" &&
-                                  post.name !== "undefined" &&
-                                  post.name !== "noCropName" &&
-                                  post.name}{" "}
-                                  {post.variety !== null &&
-                                  post.variety !== "" &&
-                                  post.variety !== "null" &&
-                                  post.variety !== 'noVariety' &&
-                                  post.variety !== "undefined" && (
-                                      <Text
-                                          style={{
-                                              fontFamily: "Hero-New-Light-Italic",
-                                          }}
-                                      >{`- ‘${post.variety}’`}</Text>
-                                  )}
-                              </Text>
-                          </View>
+                                style={{
+                                  fontFamily: "Hero-New-Light-Italic",
+                                }}
+                              >{`- ‘${post.variety}’`}</Text>
+                            )}
+                        </Text>
                       </View>
+                    </View>
                   </View>
                 );
               })
@@ -432,17 +442,23 @@ const FirstView = () => {
 const CurrentGrowList = ({ crop, onPress }) => {
   return (
     <TouchableOpacity style={[styles.growCard]} onPress={onPress}>
-        <View>
-            {crop.thumbnail_url ? (<Image
-                source={{uri: crop?.alternate_thumbnail ?? crop.thumbnail_url}}
-                style={{height: 60, width: 60, borderRadius: 30}}
-            />): <Text style={[styles.growText]}>
-                {""}
-            </Text>}
-            <Text style={[styles.growText]}>
-                {crop.name}{"\n"}{crop.crop_type && crop.crop_type !== 'N/A' ? `“${crop?.crop_type}”` : ""}
-            </Text>
-        </View>
+      <View>
+        {crop.thumbnail_url ? (
+          <Image
+            source={{ uri: crop?.alternate_thumbnail ?? crop.thumbnail_url }}
+            style={{ height: 60, width: 60, borderRadius: 30 }}
+          />
+        ) : (
+          <Text style={[styles.growText]}>{""}</Text>
+        )}
+        <Text style={[styles.growText]}>
+          {crop.name}
+          {"\n"}
+          {crop.crop_type && crop.crop_type !== "N/A"
+            ? `“${crop?.crop_type}”`
+            : ""}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -491,22 +507,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontFamily: "Hero-New-Light",
   },
-    lozenges1: {
-        width: Dimensions.get("screen").width,
-        marginLeft: "95%",
-    },
-    lozenges2: {
-        width: Dimensions.get("screen").width,
-        marginLeft: "69%",
-    },
-    lozenges3: {
-        width: Dimensions.get("screen").width,
-        marginLeft: "45%",
-    },
-    lozenges4: {
-        width: Dimensions.get("screen").width,
-        marginLeft: "25%",
-    },
+  lozenges1: {
+    width: Dimensions.get("screen").width,
+    marginLeft: "95%",
+  },
+  lozenges2: {
+    width: Dimensions.get("screen").width,
+    marginLeft: "69%",
+  },
+  lozenges3: {
+    width: Dimensions.get("screen").width,
+    marginLeft: "45%",
+  },
+  lozenges4: {
+    width: Dimensions.get("screen").width,
+    marginLeft: "25%",
+  },
   growCard: {
     alignItems: "center",
     marginHorizontal: 10,
@@ -530,7 +546,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: colors.white,
     fontWeight: "bold",
-      fontSize: 18
+    fontSize: 18,
   },
   growMovement: {
     height: 350,
@@ -608,23 +624,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-    dateTime: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginHorizontal: 20,
-    },
-    date: {
-        color: colors.greyDark,
-        fontFamily: "Hero-New-Light-Italic",
-    },
-    postText: {
-        marginVertical: 10,
-    },
-    boldContainer: {
-        marginHorizontal: 20,
-    },
-
+  dateTime: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 20,
+  },
+  date: {
+    color: colors.greyDark,
+    fontFamily: "Hero-New-Light-Italic",
+  },
+  postText: {
+    marginVertical: 10,
+  },
+  boldContainer: {
+    marginHorizontal: 20,
+  },
 });
 
 export default FirstView;

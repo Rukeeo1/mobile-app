@@ -1,8 +1,8 @@
-import {SvgXml} from "react-native-svg";
+import { SvgXml } from "react-native-svg";
 import * as React from "react";
 
 export default function SvgCalendar(props) {
-    const calendar = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+  const calendar = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
 viewBox="0 0 62 32" style="fill:#79A700;" xml:space="preserve">
 <g id="Group_467" transform="translate(13 0)">
 <g class="st0">
@@ -21,6 +21,8 @@ viewBox="0 0 62 32" style="fill:#79A700;" xml:space="preserve">
 </g>
 </g>
 </svg>`;
-    const CalendarSvg = () => <SvgXml xml={calendar} height="100%" width="100%" />;
-    return <CalendarSvg />;
+  const CalendarSvg = () => (
+    <SvgXml xml={calendar} height="100%" width="100%" />
+  );
+  return <CalendarSvg />;
 }

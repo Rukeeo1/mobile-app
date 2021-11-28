@@ -1,8 +1,8 @@
-import {SvgXml} from "react-native-svg";
+import { SvgXml } from "react-native-svg";
 import * as React from "react";
 
 export default function SvgManageCrop(props) {
-    const ManageCrop = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
+  const ManageCrop = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" 
 viewBox="0 0 62 32" style="fill:#FF4A95;" xml:space="preserve">
 <g class="st0">
  <path class="st1" d="M24.2,18.7c-0.8,0.8-1.8,1.3-2.9,1.3s-2.1-0.4-3-1.3c-0.8-0.8-1.3-1.8-1.3-3c0-1.1,0.4-2.1,1.3-3
@@ -30,6 +30,8 @@ viewBox="0 0 62 32" style="fill:#FF4A95;" xml:space="preserve">
   s-0.5-0.6-0.8-0.8s-0.7-0.3-1.1-0.3s-0.8,0.1-1.1,0.3s-0.6,0.5-0.8,0.8s-0.3,0.7-0.3,1.1C37.5,16.3,37.7,16.8,38.2,17.3z"/>
 </g>
 </svg>`;
-    const ManageCropSvg = () => <SvgXml xml={ManageCrop} height="100%" width="100%" />;
-    return <ManageCropSvg />;
+  const ManageCropSvg = () => (
+    <SvgXml xml={ManageCrop} height="100%" width="100%" />
+  );
+  return <ManageCropSvg />;
 }

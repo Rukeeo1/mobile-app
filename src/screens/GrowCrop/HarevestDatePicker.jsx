@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import {StyleSheet, View} from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import ManageCropContext from "../../context/ManageCropsContext";
 
@@ -29,12 +29,12 @@ export const HarevestDatePicker = ({
   onSubmitSelected,
   submitting,
   dateStartedTitle,
-                                       dateEndedTitle,
+  dateEndedTitle,
   onEndHarvest = () => {},
   harvestEnded,
-                                       currentJobDate,
-                                       currentJobDate2,
-                                       harvestEndDateFromServer
+  currentJobDate,
+  currentJobDate2,
+  harvestEndDateFromServer,
 }) => {
   const manageCropContext = useContext(ManageCropContext);
   const { cropToGrowDetails } = manageCropContext?.data;
@@ -116,8 +116,7 @@ export const HarevestDatePicker = ({
         </View>
       )}
       {showFullSelectedDate && (
-
-          <View style={[styles.showSelectedDateItem]}>
+        <View style={[styles.showSelectedDateItem]}>
           {/*<SelectedDate*/}
           {/*    // selectedDate={selectedDate}*/}
           {/*    // selectedMonth={selectedMonth}*/}
@@ -127,30 +126,35 @@ export const HarevestDatePicker = ({
           {/*  selectedYear={new Date(currentJobDate).getUTCFullYear()}*/}
           {/*  title={dateStartedTitle} //set a condition if harvest ended*/}
           {/*/>*/}
-            <Text fontType="light">{dateStartedTitle}</Text>
-            <Text
-                style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
-                fontType="light"
-            >
-                {new Date(currentJobDate ? currentJobDate : currentJobDate2).toDateString()}
-            </Text>
+          <Text fontType="light">{dateStartedTitle}</Text>
+          <Text
+            style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
+            fontType="light"
+          >
+            {new Date(
+              currentJobDate ? currentJobDate : currentJobDate2
+            ).toDateString()}
+          </Text>
           <View>
-              {harvestEndDateFromServer === '' ? (<Button
-                  title="End Harvest"
-                  gradient={[colors.pink, colors.pinkDeep]}
-                  onPress={onEndHarvest}
-              />):(
-                  <View>
-                      <Text fontType="light"  style={{ marginTop: "7%" }}>{dateEndedTitle}</Text>
-                      <Text
-                          style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
-                          fontType="light"
-                      >
-                          {new Date(harvestEndDateFromServer).toDateString()}
-                      </Text>
-                  </View>
-              )}
-
+            {harvestEndDateFromServer === "" ? (
+              <Button
+                title="End Harvest"
+                gradient={[colors.pink, colors.pinkDeep]}
+                onPress={onEndHarvest}
+              />
+            ) : (
+              <View>
+                <Text fontType="light" style={{ marginTop: "7%" }}>
+                  {dateEndedTitle}
+                </Text>
+                <Text
+                  style={{ color: colors.pink, fontSize: 18, marginTop: "2%" }}
+                  fontType="light"
+                >
+                  {new Date(harvestEndDateFromServer).toDateString()}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       )}
@@ -211,34 +215,34 @@ const SelectedDate = ({ selectedDate, selectedMonth, selectedYear, title }) => {
 };
 
 const styles = StyleSheet.create({
-    horizontalFlexSpBtw: {},
-    showSelectedDateItem: {
-        justifyContent: "center",
-        paddingHorizontal: "6%",
-        borderTopLeftRadius: 45,
-        borderBottomLeftRadius: 45,
-        borderTopRightRadius: 45,
-        marginTop: "5%",
-        borderBottomRightRadius: 45,
-        backgroundColor: "white",
-        flex: 1,
-        shadowColor: "white",
-        shadowOffset: {
-            width: 0.5,
-            height: 0.4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 15,
-        paddingVertical: "3%",
+  horizontalFlexSpBtw: {},
+  showSelectedDateItem: {
+    justifyContent: "center",
+    paddingHorizontal: "6%",
+    borderTopLeftRadius: 45,
+    borderBottomLeftRadius: 45,
+    borderTopRightRadius: 45,
+    marginTop: "5%",
+    borderBottomRightRadius: 45,
+    backgroundColor: "white",
+    flex: 1,
+    shadowColor: "white",
+    shadowOffset: {
+      width: 0.5,
+      height: 0.4,
     },
-    circularButton: {
-        height: 50,
-        width: 50,
-        borderRadius: 25,
-        backgroundColor: colors.pink,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 15,
-    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 15,
+    paddingVertical: "3%",
+  },
+  circularButton: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    backgroundColor: colors.pink,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 15,
+  },
 });

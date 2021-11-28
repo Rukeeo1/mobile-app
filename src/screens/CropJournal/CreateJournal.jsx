@@ -17,10 +17,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-    Header,
-    Input,
-    GradientButton as Button,
-    SafeArea, KeyboardAvoiding,
+  Header,
+  Input,
+  GradientButton as Button,
+  SafeArea,
+  KeyboardAvoiding,
 } from "../../components/";
 
 import ManageCropContext from "../../context/ManageCropsContext";
@@ -83,8 +84,6 @@ const CreateJournal = ({
         postImageUri: defaultPostImage,
       }));
     }
-    console.log({ bugzy: cropToGrowDetails });
-    console.log({ bugzy2: postData });
     // pickImage();
   }, [defaultPostImage, currentIndex]);
 
@@ -155,7 +154,7 @@ const CreateJournal = ({
       journalFormData.append("user_id", user_id);
       journalFormData.append("title", title);
       journalFormData.append("crop_id", crop_id);
-      journalFormData.append("variety", variety === '' ? 'noVariety' : variety);
+      journalFormData.append("variety", variety === "" ? "noVariety" : variety);
       journalFormData.append("type", type);
       journalFormData.append("postId", postId);
       journalFormData.append("post_type", isPublic ? "public" : "private");
@@ -255,83 +254,82 @@ const CreateJournal = ({
     // pickImage();
   }, [defaultPostImage, currentIndex]);
   return (
-          <KeyboardAvoiding>
-              <SafeArea>
-                  <View style={{ flex: 1 }}>
-
-      <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ justifyContent: "space-between" }}
-      >
-        <Header
-          title="Journal entry"
-          onIconPress={() =>
-            navigation.navigate("Crop-Journal", {
-              screen: "Crop-Journal",
-            })
-          }
-          containerStyle={styles.headerStyle}
-        />
-        <View style={styles.postInput}>
-          <TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>
-            {values.journalImageUri ? (
-              <Image
-                source={{ uri: values.journalImageUri }}
-                style={{ height: "100%", width: "100%" }}
+    <KeyboardAvoiding>
+      <SafeArea>
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{ justifyContent: "space-between" }}
+          >
+            <Header
+              title="Journal entry"
+              onIconPress={() =>
+                navigation.navigate("Crop-Journal", {
+                  screen: "Crop-Journal",
+                })
+              }
+              containerStyle={styles.headerStyle}
+            />
+            <View style={styles.postInput}>
+              <TouchableOpacity style={styles.imageWrapper} onPress={pickImage}>
+                {values.journalImageUri ? (
+                  <Image
+                    source={{ uri: values.journalImageUri }}
+                    style={{ height: "100%", width: "100%" }}
+                  />
+                ) : (
+                  <Ionicons
+                    name="ios-camera-outline"
+                    size={45}
+                    color={constants.colors.white}
+                  />
+                )}
+              </TouchableOpacity>
+              <View style={{ flex: 1, height: 150 }}>
+                <Input
+                  placeholder="Write a journal entry…"
+                  onChangeText={handleChange("content")}
+                  value={values.content}
+                  // numberOfLines={4}
+                  inputStyle={{ flex: 1 }}
+                  containerStyle={{ flex: 1 }}
+                  multiline
+                />
+              </View>
+            </View>
+            <View style={styles.switchContainer}>
+              <Text style={{ fontSize: 16 }}>Add to public profile</Text>
+              <Switch
+                trackColor={{ false: "#767577", true: colors.pink }}
+                value={values.isPublic}
+                onValueChange={(value) => setFieldValue("isPublic", value)}
               />
-            ) : (
-              <Ionicons
-                name="ios-camera-outline"
-                size={45}
-                color={constants.colors.white}
+            </View>
+            <View style={styles.switchContainer}>
+              <Text style={{ fontSize: 16 }}>Make crop cover image</Text>
+              <Switch
+                trackColor={{ false: "#767577", true: colors.pink }}
+                value={values.isCoverImage}
+                onValueChange={(value) => setFieldValue("isCoverImage", value)}
               />
-            )}
-          </TouchableOpacity>
-          <View style={{ flex: 1, height: 150 }}>
-            <Input
-              placeholder="Write a journal entry…"
-              onChangeText={handleChange("content")}
-              value={values.content}
-              // numberOfLines={4}
-              inputStyle={{ flex: 1 }}
-              containerStyle={{ flex: 1 }}
-              multiline
+            </View>
+          </ScrollView>
+          <View style={styles.footer}>
+            <Button
+              title="Share"
+              gradient={
+                disableForm
+                  ? [colors.grey, colors.grey]
+                  : [colors.green, colors.greenDeep]
+              }
+              loading={addingJournal}
+              // onPress={handleSubmit}
+              onPress={disableForm ? () => {} : handleSubmit}
             />
           </View>
         </View>
-        <View style={styles.switchContainer}>
-          <Text style={{ fontSize: 16 }}>Add to public profile</Text>
-          <Switch
-            trackColor={{ false: "#767577", true: colors.pink }}
-            value={values.isPublic}
-            onValueChange={(value) => setFieldValue("isPublic", value)}
-          />
-        </View>
-        <View style={styles.switchContainer}>
-          <Text style={{ fontSize: 16 }}>Make crop cover image</Text>
-          <Switch
-            trackColor={{ false: "#767577", true: colors.pink }}
-            value={values.isCoverImage}
-            onValueChange={(value) => setFieldValue("isCoverImage", value)}
-          />
-        </View>
-      </ScrollView>
-      <View style={styles.footer}>
-        <Button
-          title="Share"
-          gradient={
-            disableForm
-              ? [colors.grey, colors.grey]
-              : [colors.green, colors.greenDeep]
-          }
-          loading={addingJournal}
-          // onPress={handleSubmit}
-          onPress={disableForm ? () => {} : handleSubmit}
-        />
-      </View>
-    </View>
-    </SafeArea>
-          </KeyboardAvoiding>
+      </SafeArea>
+    </KeyboardAvoiding>
   );
 };
 
@@ -367,9 +365,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     marginBottom: "15%",
 
-      // padding: 22,
-      // justifyContent: "flex-end",
-      // marginTop: "auto",
+    // padding: 22,
+    // justifyContent: "flex-end",
+    // marginTop: "auto",
   },
 });
 

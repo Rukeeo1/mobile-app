@@ -18,7 +18,6 @@ const DeleteCrop = ({ navigation }) => {
     data: { cropToGrowDetails, jobId },
     value,
   } = useManageCropContext();
-  // console.log({ cropToGrowDetails });
 
   const { user } = useSelector((state) => ({
     user: state.auth.user,
@@ -45,7 +44,6 @@ const DeleteCrop = ({ navigation }) => {
     }
     setDeletingJob(false);
   };
-  // console.log(cropToGrowDetails.jobId, "this is the jobId");
 
   return (
     // <SafeAreaView style={{ flex: 1 }}>

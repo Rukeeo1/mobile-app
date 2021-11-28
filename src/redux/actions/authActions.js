@@ -100,17 +100,6 @@ export const register = (user, navigation) => async (dispatch) => {
       dispatch(
         login({ email: user.email, password: user.password }, navigation)
       );
-      // dispatch(saveUser(data.data.token, { ...data.data }))
-      // navigation.navigate('Splash')
-      // navigation.navigate('Onboarding')
-
-      // navigation.dispatch(CommonActions.reset({
-      //   index: 0,
-      //   key: null,
-      //   routes: [{
-      //     name: 'Splash'
-      //   }],
-      // }))
     })
     .catch((err) => {
       console.log("register", err?.response ?? err?.message);

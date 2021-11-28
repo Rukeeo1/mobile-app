@@ -40,7 +40,6 @@ export const JobItem2 = ({ job }) => {
   const handleNavigation = (path) => () => {
     navigation.navigate(path);
 
-    // console.log({yvone: job})
     manageCropContext?.actions?.updateCropToGrowDetails({
       //name in this case represents crop name...details for the crop was added to the job object
       cropName: job?.name,
@@ -51,72 +50,83 @@ export const JobItem2 = ({ job }) => {
       cropId: job?.crop_id,
       action: job?.job_type,
       jobDate: job?.job_date,
-        fromJobs: true,
+      fromJobs: true,
       fromJobHistory: true,
       jobId: job?.job_id,
     });
   };
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const myDate = new Date(job?.job_date);
-    const dateIndexMonth = monthNames[myDate.getMonth()];
-    const dateIndexDay = myDate.getUTCDate();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const myDate = new Date(job?.job_date);
+  const dateIndexMonth = monthNames[myDate.getMonth()];
+  const dateIndexDay = myDate.getUTCDate();
 
   return (
-      <TouchableOpacity
-          activeOpacity={0.9}
-          style={[styles.jobs]}
-          onPress={handleNavigation("Grow-Crop")}
-      >
-          <View style={[styles.jobsChild]}>
-              <Image
-                  source={getIcon(job?.job_type)}
-                  resizeMode="contain"
-                  style={{ height: screenHeight * 0.06, width: screenWidth * 0.05 }}
-              />
-              <View style={styles.jobsText}>
-                  <Text>{`${job?.name}`}</Text>
-                  {(job?.job_type === "SOW" || job?.job_type === "PLANT") &&
-                  job?.job_type === "PENDING" && (
-                      <Text fontType="bold" style={styles.boldText}>
-                          {`Scheduled ${dateIndexMonth} ${dateIndexDay}`}
-                      </Text>
-                  )}
-                  {job?.job_type === "PENDING" && job?.job_type === "PENDING" && (
-                      <Text fontType="bold" style={styles.boldText}>
-                          {`Scheduled ${dateIndexMonth} ${dateIndexDay}`}
-                      </Text>
-                  )}
-                  {job?.job_type === "SOW" && job?.job_type !== "PENDING" && (
-                      <Text fontType="bold" style={styles.boldText}>
-                          {`Sown ${dateIndexMonth} ${dateIndexDay}`}
-                      </Text>
-                  )}
-                  {job?.job_type === "PLANT" && job?.job_type !== "PENDING" && (
-                      <Text fontType="bold" style={styles.boldText}>
-                          {`Planted ${dateIndexMonth} ${dateIndexDay}`}
-                      </Text>
-                  )}
-                  {job?.job_type === "HARVEST" && job?.status === "STARTED" && (
-                      <Text fontType="bold" style={styles.boldText}>
-                          {`Harvest started ${dateIndexMonth} ${dateIndexDay}`}
-                      </Text>
-                  )}
-                  {job?.job_type === "HARVEST" && job?.status === "DONE" && (
-                      <Text fontType="bold" style={styles.boldText}>
-                          {`Harvest ended ${dateIndexMonth} ${dateIndexDay}`}
-                      </Text>
-                  )}
-                  {job?.job_type === "KILLED" && job?.status === "KILLED" && (
-                      <Text fontType="bold" style={styles.boldText}>
-                          {`Killed ${dateIndexMonth} ${dateIndexDay}`}
-                      </Text>
-                  )}
-              </View>
-          </View>
-          <AntDesign name="right" size={24} color={colors.green} />
-      </TouchableOpacity>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={[styles.jobs]}
+      onPress={handleNavigation("Grow-Crop")}
+    >
+      <View style={[styles.jobsChild]}>
+        <Image
+          source={getIcon(job?.job_type)}
+          resizeMode="contain"
+          style={{ height: screenHeight * 0.06, width: screenWidth * 0.05 }}
+        />
+        <View style={styles.jobsText}>
+          <Text>{`${job?.name}`}</Text>
+          {(job?.job_type === "SOW" || job?.job_type === "PLANT") &&
+            job?.job_type === "PENDING" && (
+              <Text fontType="bold" style={styles.boldText}>
+                {`Scheduled ${dateIndexMonth} ${dateIndexDay}`}
+              </Text>
+            )}
+          {job?.job_type === "PENDING" && job?.job_type === "PENDING" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Scheduled ${dateIndexMonth} ${dateIndexDay}`}
+            </Text>
+          )}
+          {job?.job_type === "SOW" && job?.job_type !== "PENDING" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Sown ${dateIndexMonth} ${dateIndexDay}`}
+            </Text>
+          )}
+          {job?.job_type === "PLANT" && job?.job_type !== "PENDING" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Planted ${dateIndexMonth} ${dateIndexDay}`}
+            </Text>
+          )}
+          {job?.job_type === "HARVEST" && job?.status === "STARTED" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Harvest started ${dateIndexMonth} ${dateIndexDay}`}
+            </Text>
+          )}
+          {job?.job_type === "HARVEST" && job?.status === "DONE" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Harvest ended ${dateIndexMonth} ${dateIndexDay}`}
+            </Text>
+          )}
+          {job?.job_type === "KILLED" && job?.status === "KILLED" && (
+            <Text fontType="bold" style={styles.boldText}>
+              {`Killed ${dateIndexMonth} ${dateIndexDay}`}
+            </Text>
+          )}
+        </View>
+      </View>
+      <AntDesign name="right" size={24} color={colors.green} />
+    </TouchableOpacity>
   );
 };
 
@@ -157,29 +167,29 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-    cropCardContainer: {
-        backgroundColor: colors.white,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "98%",
-        borderRadius: 100 / 2,
-        height: 70,
-        paddingRight: 20,
-        marginVertical: 5,
-        // shadow iOS
-        shadowColor: "grey",
-        shadowOffset: {
-            width: 0.5,
-            height: 0.4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        // shadow android
-        elevation: 15,
+  cropCardContainer: {
+    backgroundColor: colors.white,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "98%",
+    borderRadius: 100 / 2,
+    height: 70,
+    paddingRight: 20,
+    marginVertical: 5,
+    // shadow iOS
+    shadowColor: "grey",
+    shadowOffset: {
+      width: 0.5,
+      height: 0.4,
     },
-    cropDetails: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    // shadow android
+    elevation: 15,
+  },
+  cropDetails: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
