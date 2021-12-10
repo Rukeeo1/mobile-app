@@ -36,6 +36,8 @@ import { BottomSheet } from "react-native-btr";
 import ShareModal from "./ShareModal";
 import Toast from "react-native-toast-message";
 import { getUserJobs } from "../../redux/actions";
+import SvgBook from "../../components/Svg/book";
+import SvgExplore from "../../components/Svg/explore";
 
 const { colors } = constants;
 

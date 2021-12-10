@@ -41,13 +41,17 @@ import { SkipStep } from "./SkipStep";
 import constants from "../../constants";
 import { getCropCardData } from "../../utils/index";
 
-import home from "../../assets/home-icon.png";
 import pencil from "../../assets/pencil_circle.png";
 import moment from "moment";
 
 import plant from "../../assets/plant.png";
 import growingSeed from "../../assets/growing-seed.png";
 import harvestIcon from "../../assets/harvest-icon.png";
+import SvgPencil from "../../components/Svg/pencil";
+import SvgHome from "../../components/Svg/home";
+import SvgSow from "../../components/Svg/sow";
+import SvgPlant from "../../components/Svg/plant";
+import SvgHarvest from "../../components/Svg/harvest";
 
 const { colors, monthsAbr, PLANT, SOW, HARVEST } = constants;
 
@@ -169,13 +173,10 @@ const CropCard = ({ navigation, route }) => {
     }
   }, [currentJob?.jobs]);
 
-  // useEffect(() => {
-  //    console.log({osinbajo: {currentJob}})
-  // }, [currentJob]);
 
   const video = React.useRef(null);
 
-  const images = [growingSeed, plant, harvestIcon];
+  // const images = [growingSeed, plant, harvestIcon];
 
   const toggleBtmSheet = () => setShowBottomSheet((prevState) => !prevState);
 
@@ -465,14 +466,30 @@ const CropCard = ({ navigation, route }) => {
               alignItems: "center",
             }}
           >
-            <Image
-              source={images[index]}
-              style={{
-                height: screenHeight * 0.05,
-                width: screenHeight * 0.05,
-                resizeMode: "contain",
-              }}
-            />
+              {index === 0 && (
+                  <SvgSow
+                      style={{
+                          height: screenHeight * 0.05,
+                          width: screenHeight * 0.05,
+                          resizeMode: "contain",
+                      }}/>
+              )}
+              {index === 1 && (
+                  <SvgPlant
+                      style={{
+                          height: screenHeight * 0.05,
+                          width: screenHeight * 0.05,
+                          resizeMode: "contain",
+                      }}/>
+              )}
+              {index === 2 && (
+                 <SvgHarvest
+                      style={{
+                          height: screenHeight * 0.05,
+                          width: screenHeight * 0.05,
+                          resizeMode: "contain",
+                      }}/>
+              )}
           </LinearGradient>
         </TouchableOpacity>
         {season && (
@@ -586,7 +603,7 @@ const CropCard = ({ navigation, route }) => {
               alignItems: "center",
             }}
           >
-            <Image source={home} />
+              <SvgHome />
           </LinearGradient>
         </TouchableOpacity>
       )}
@@ -610,6 +627,7 @@ const CropCard = ({ navigation, route }) => {
           >
             <TouchableOpacity onPress={() => toggleBtmSheet()}>
               <Image source={pencil} style={{ height: 37, width: 37 }} />
+              {/*  <SvgPencil  />*/}
             </TouchableOpacity>
           </View>
           <EditableTitle cropToGrowDetails={cropToGrowDetails} />

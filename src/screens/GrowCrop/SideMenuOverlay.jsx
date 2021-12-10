@@ -20,6 +20,7 @@ import SvgManageCrop from "../../components/Svg/manageCrop";
 import SvgManageCropInactive from "../../components/Svg/manageCrop-inactive";
 import SvgCalendar from "../../components/Svg/calendars";
 import SvgCalendarInactive from "../../components/Svg/calendar-inactive";
+import SvgEllipsis from "../../components/Svg/ellipsis";
 
 const { colors, screenHeight, screenWidth } = constants;
 
@@ -194,8 +195,9 @@ const SideMenuOverlay = ({ toggleSideMenu }) => {
                   name="ellipsis-h"
                   size={24}
                   color={colors.white}
-                  style={{ opacity: 0.5 }}
+                  style={{ opacity: 1 }}
                 />
+                {/*  <SvgEllipsis />*/}
               </TouchableOpacity>
             </View>
             {/* <View

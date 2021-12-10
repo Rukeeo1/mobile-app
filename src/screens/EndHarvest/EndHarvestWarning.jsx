@@ -157,10 +157,11 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     backgroundColor: colors.white,
     borderRadius: 17,
-    height: Dimensions.get("screen").height * 0.2,
+    height: Dimensions.get("screen").height * 0.25,
     display: "flex",
     justifyContent: "center",
-    paddingHorizontal: "5%",
+      paddingVertical: "5%",
+      paddingHorizontal: "5%",
   },
   toolTipTitle: {
     textAlign: "center",
@@ -171,8 +172,9 @@ const styles = StyleSheet.create({
   },
   toolTipTitleContent: {
     textAlign: "center",
-    fontSize: 16,
-    marginTop: "2%",
+    fontSize: 14,
+      marginTop: "2%",
+      marginBottom: "2%",
     fontWeight: "200",
   },
 });

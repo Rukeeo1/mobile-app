@@ -72,6 +72,7 @@ export const getCropCycleDetails = (cropId) => async (dispatch) => {
 export const getCropSteps = (cropId) => async (dispatch) => {
   try {
     const { data } = await apiRequest(`/crop_steps/by_crop/${cropId}`);
+    console.log({prof: data})
     dispatch({
       type: GET_CROP_STEPS,
       payload: data,

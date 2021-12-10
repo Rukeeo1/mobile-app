@@ -205,7 +205,7 @@ const ProfileSideTab = ({
           name="ellipsis-h"
           size={24}
           color={colors.white}
-          style={{ opacity: 0.5 }}
+          style={{ opacity: 1 }}
         />
       </TouchableOpacity>
       <ScrollView
